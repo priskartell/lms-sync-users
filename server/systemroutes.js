@@ -4,9 +4,9 @@
 const rp = require('request-promise')
 const express = require('express')
 const router = express.Router()
-const config = require('../init/configuration')
-const version = require('../../config/version')
-const packageFile = require('../../package.json')
+const config = require('./init/configuration')
+const version = require('../config/version')
+const packageFile = require('../package.json')
 
 /* GET /_about
  * About page
