@@ -16,10 +16,5 @@ const log = require('kth-node-log')
  */
 
 require('./logging')
-require('./database')
-require('./authentication')
-require('./templating')
-require('./middleware')
-require('./routing')
 
 log.info('Server initialization done')
