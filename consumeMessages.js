@@ -7,7 +7,7 @@ function readMessage () {
   process.stdout.write('.')
 
   let message
-  queue
+  return queue
     .readMessageFromQueue('ug-canvas')
     .then(msg => {
       message = msg
@@ -27,7 +27,7 @@ function readMessage () {
       if (e.message !== 'abort_chain') {
         console.error(`Exception: `, e)
       }
-      readMessage()
+      return readMessage()
     })
 }
 readMessage()
