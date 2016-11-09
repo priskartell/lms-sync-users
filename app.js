@@ -5,3 +5,5 @@ app.start()
 
 const systemRoutes = require('./server/systemroutes')
 app.use(config.full.proxyPrefixPath.uri, systemRoutes)
+
+require('./consumeMessages')
