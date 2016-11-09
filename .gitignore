@@ -32,3 +32,5 @@ docker-compose*.yml
 
 # test coverage
 coverage
+
+allUsers.csv
