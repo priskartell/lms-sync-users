@@ -50,7 +50,7 @@ client.bind(config.secure.ldap.bind.username, config.secure.ldap.bind.password, 
         // console.log('.')
         const o = entry.object
         const userName = `${o.ugUsername}@kth.se`
-        writeLine([o.ugKthid, userName, o.ugEmailAddressHR || o.mail || userName, o.name, 'active' ])
+        writeLine([o.ugKthid, userName, /* o.ugEmailAddressHR || */o.mail || userName, o.name, 'active' ])
       })
       res.on('error', function (err) {
         console.error('error: ' + err.message)
