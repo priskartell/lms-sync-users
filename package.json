@@ -18,6 +18,7 @@
     "debug": "cross-env NODE_ENV=development concurrently --kill-others \"npm run startDebug\" \"npm run nodeInspector\" \"npm run openDebugBrowser\""
   },
   "dependencies": {
+    "blue-tape": "^1.0.0",
     "express": "^4.14.0",
     "kth-node-configuration": "KTH/kth-node-configuration.git#v1.0.1",
     "kth-node-log": "KTH/kth-node-log.git#v1.0.0",
