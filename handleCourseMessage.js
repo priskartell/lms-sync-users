@@ -1,17 +1,126 @@
 const {type} = require('message-type')
-module.exports = function (msg) {
-  console.log(msg)
-  if (msg._desc && msg._desc.userType === type.students) {
-    /*
-    TODO:
-    1) check if the course exist in canvas
-    2a) if the course doesn't exist in canvas, just ignore it
-    2b) if the course exist in canvas:build a csv file of the students in the member field and enroll them to the course in canvas
-    */
-    console.log('TODO: enroll the students', JSON.stringify(msg, null, 4))
+const config = require('./server/init/configuration')
+const canvasApi = require('./canvasApi')(config.safe.canvas.apiUrl, config.secure.canvas.apiKey)
+var Promise = require('bluebird');
+var testCourseArrayPeriod2 = require('./courseList')
+const fs = Promise.promisifyAll(require('fs'));
+var ROOTACCOUNT = null
+var _courses = {}
+var _stat = {}
+
+
+testCourseArrayPeriod2.forEach(c=> {_courses[c.courseCode] = true; _stat[c.courseCode] = 0})
+
+
+console.info(_courses)
+
+
+canvasApi.getRootAccount()
+    .then(rootAccount => {console.log('\nJust verifying that we can talk to canvas.', rootAccount); return ROOTACCOUNT = rootAccount})
+
+
+function _courseCode(ug1Name,msgtype) {
+  var sisCourseCode = null
+  var course = null
+  var termin = null
+  var year = null
+  var ladok = null
+  var sisCourseCode = null
+  var myRe = null
+  var myArray = []
+
+  if (msgtype === type.students) { // ladok2.kurser.DM.2517.registrerade_20162.1
+     myRe = /^(\w+).(\w+).(\w+).(\w+).(\w+)_(\d\d)(\d\d)(\d).(\d+)/g;
+     myArray = myRe.exec(ug1Name);
+    if (myArray != null) {
+       course = myArray[3] + myArray[4]
+       termin = myArray[8] === 1 ? "HT" : "VT"
+       year = myArray[7]
+       ladok = myArray[9]
+       sisCourseCode = course + termin + year + ladok
+    } else { // failed to parse course
+      console.warn("\nCourse code not parsable from ug1Name structure: " + ug1Name)
+      return -1
+    }
   }
+  else if (msgtype === type.teachers || msgtype === type.assistants ) {// edu.courses.AE.AE2302.20162.1.teachers edu.courses.DD.DD1310.20162.1.assistants
+     myRe = /^edu.courses.(\w+).(\w+).(\d\d)(\d\d)(\d).(\d).(\w+)$/g
+    myArray = myRe.exec(ug1Name);
+    if (myArray != null) {
+      course = myArray[2]
+      termin = myArray[5] === 1 ? "HT" : "VT"
+      year = myArray[4]
+      ladok = myArray[6]
+      sisCourseCode = course + termin + year + ladok
+    }
+      else { // failed to parse course
+      console.warn("\nCourse code not parsable from ug1Name structure: " + ug1Name)
+      return -1
+    }
+  }
+
   else {
-    console.log('this is something else than students, we can probably wait with this until the students is handled', JSON.stringify(msg, null, 4))
+    console.warn("\n Type unkown: " + ug1Name)
+    return -1
+  }
+  
+  if (_courseCode[course] != true) {
+    // Course not in canvas
+    console.warn("\nCourse code not in the selected course list: " + course )
+    return false
+  }
+  _stat[course] += 1
+  return sisCourseCode  // returning course code in accordance to canvas sis
+
+}
+
+function _processMessage(msg,csvfile,msgfile) {
+
+  var csvString = ""
+  msg.member.map(user => csvString +=  `${course},${user},${msgtype}, active\n`)
+  var data = header + csvString
+
+  console.log(data)
+
+  console.info("\nGoing to open file: " + csvfile + " " + msgfile);
+  return fs.writeFileAsync(csvfile, data, {})
+.then(()=> fs.writeFileAsync(msgfile, JSON.stringify(msg, null, 4), {}))
+      .then(()=> canvasApi.sendCreatedUsersCsv(csvfile))
+.then(canvasReturnValue=>console.log(canvasReturnValue,null,4))
+.catch(e => {
+    Promise.reject(e)
+  })
+}
+
+
+module.exports = function (msg) {
+
+  console.info ("\n Processing for msg..... " + msg.ug1Name)
+
+  var msgtype = msg._desc.userType
+
+  if (msg._desc && ( msgtype === type.students || msgtype === type.teachers || msgtype === type.assistants)) {
+
+    var course = _courseCode(msg.ug1Name,msgtype)
+    if (course === -1 || course === false )  // Wrong parse or not in selected course do nothing
+      return Promise.resolve("No Action, Parse error our out side course scope")
+
+    console.info(`in
+    handleCourseMessage
+    for ${course},
+    processing
+    for ${msgtype}`
+  )
+
+    var header = "course_id,user_id,role,status\n"
+    var d = Date.now()
+    var csvfileName = "./CSV/" + "enrollments_" + msgtype + "_" + course + "_" + d + ".csv"
+    var msgfileName = "./MSG/" + "msg_" + msgtype + "_" + course + "." + d
+    var status = _processMessage(msg,csvfileName,msgfileName)
+  }
+
+  else {
+    console.warn('\nthis is something else than students, teacher, assistant, we can probably wait with this until the students is handled', JSON.stringify(msg, null, 4))
   }
   return msg
 }
