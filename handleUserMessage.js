@@ -17,7 +17,7 @@ module.exports = function (msg) {
    user["pseudonym"] = msg.kthid
   //user["pseudonym"] = msg.username + "@kth.se"
   user["user"] = {"name": msg.given_name + " " + msg.family_name,
-    "username": msg.username + "@kth.se",
+    "username": msg.username,
     "email": msg.primary_email,
     "sis-integration-id": msg.kthid}
   if (_stat[msg.kthid] === undefined )

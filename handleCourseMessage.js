@@ -2,19 +2,17 @@ const {type} = require('message-type')
 const config = require('./server/init/configuration')
 const canvasApi = require('./canvasApi')(config.safe.canvas.apiUrl, config.secure.canvas.apiKey)
 var Promise = require('bluebird');
-var testCourseArrayPeriod2 = require('./courseList')
+// var testCourseArrayPeriod2 = require('./courseList')
 const fs = Promise.promisifyAll(require('fs'));
 const colors = require('colors')
 var ROOTACCOUNT = null
-var _courses = {}
+// var _courses = {}
 var _canvasCourses = {}
 var _stat = {}
 
 
-testCourseArrayPeriod2.forEach(c=> {_courses[c.courseCode] = true; _stat[c.courseCode] = 0})
-
-
-console.info(_courses)
+//testCourseArrayPeriod2.forEach(c=> {_courses[c.courseCode] = true; _stat[c.courseCode] = 0})
+//console.info(_courses)
 
 
 canvasApi.listCourses ()
@@ -64,12 +62,14 @@ function _courseCode(ug1Name,msgtype) {
   }
 
 
-  if (_courseCode[course] != true) {
+  if (_canvasCourses[sisCourseCode] != true) {
     // Course not in canvas
     console.warn("\nCourse code not in the selected course list: " + course )
     return -2
   }
-  _stat[course] += 1
+  if (_stat[sisCourseCode] === undefined)
+    _stat[sisCourseCode] = 0
+  _stat[sisCourseCode] += 1
   return sisCourseCode  // returning course code in accordance to canvas sis
 
 }
@@ -86,15 +86,15 @@ function _processMessage(msg,csvfile,msgfile) {
 .then(()=> fs.writeFileAsync(msgfile, JSON.stringify(msg, null, 4), {}))
 .then(()=> canvasApi.sendCreatedUsersCsv(csvfile))
 .then(canvasReturnValue=>console.log(canvasReturnValue,null,4))
-.catch(e => {
-    Promise.reject(e)
-  })
 }
 
+canvasApi.listCourses ()
+    .then(courselist => courselist.map(item=>_canvasCourses[item.sis_course_id] = true))
+.then(()=>console.log(_canvasCourses))
+.then(()=> {
+  module.exports = function (msg) {
 
-module.exports = function (msg) {
-
-  console.info ("\nProcessing for msg..... " + msg.ug1Name)
+  console.info("\nProcessing for msg..... " + msg.ug1Name)
 
   var msgtype = msg._desc.userType
 
@@ -111,7 +111,12 @@ module.exports = function (msg) {
         return msg
       default:
       {
-        console.info(`in handleCourseMessage for ${course}, processing for ${msgtype}`)
+        console.info(`in
+        handleCourseMessage
+        for ${course},
+        processing
+        for ${msgtype}`
+      )
         var d = Date.now()
         var csvfileName = "./CSV/" + "enrollments_" + msgtype + "_" + course + "_" + d + ".csv"
         var msgfileName = "./MSG/" + "msg_" + msgtype + "_" + course + "." + d
@@ -124,3 +129,4 @@ module.exports = function (msg) {
     return Promise.resolve("Skipping......")
   }
 }
+})
