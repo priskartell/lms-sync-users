@@ -2,9 +2,10 @@ const config = require('./server/init/configuration')
 const queue = require('node-queue-adapter')(config.secure.azure.queueConnectionString)
 const {addDescription} = require('message-type')
 const handleMessage = require('./handleMessage')
-
+var MESSAGECOUNTER = 0
 function readMessage () {
-  process.stdout.write('.')
+  MESSAGECOUNTER += 1
+  process.stdout.write('\nChecking Azure queue... ' + MESSAGECOUNTER)
 
   let message
   return queue

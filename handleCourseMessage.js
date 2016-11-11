@@ -4,8 +4,10 @@ const canvasApi = require('./canvasApi')(config.safe.canvas.apiUrl, config.secur
 var Promise = require('bluebird');
 var testCourseArrayPeriod2 = require('./courseList')
 const fs = Promise.promisifyAll(require('fs'));
+const colors = require('colors')
 var ROOTACCOUNT = null
 var _courses = {}
+var _canvasCourses = {}
 var _stat = {}
 
 
@@ -15,8 +17,10 @@ testCourseArrayPeriod2.forEach(c=> {_courses[c.courseCode] = true; _stat[c.cours
 console.info(_courses)
 
 
-canvasApi.getRootAccount()
-    .then(rootAccount => {console.log('\nJust verifying that we can talk to canvas.', rootAccount); return ROOTACCOUNT = rootAccount})
+canvasApi.listCourses ()
+    .then(courselist => courselist.map(item=>_canvasCourses[item.sis_course_id] = true))
+    .then(()=>console.log(_canvasCourses))
+
 
 
 function _courseCode(ug1Name,msgtype) {
@@ -43,7 +47,7 @@ function _courseCode(ug1Name,msgtype) {
       return -1
     }
   }
-  else if (msgtype === type.teachers || msgtype === type.assistants ) {// edu.courses.AE.AE2302.20162.1.teachers edu.courses.DD.DD1310.20162.1.assistants
+  if (msgtype === type.teachers || msgtype === type.assistants ) {// edu.courses.AE.AE2302.20162.1.teachers edu.courses.DD.DD1310.20162.1.assistants
      myRe = /^edu.courses.(\w+).(\w+).(\d\d)(\d\d)(\d).(\d).(\w+)$/g
     myArray = myRe.exec(ug1Name);
     if (myArray != null) {
@@ -59,15 +63,11 @@ function _courseCode(ug1Name,msgtype) {
     }
   }
 
-  else {
-    console.warn("\n Type unkown: " + ug1Name)
-    return -1
-  }
-  
+
   if (_courseCode[course] != true) {
     // Course not in canvas
     console.warn("\nCourse code not in the selected course list: " + course )
-    return false
+    return -2
   }
   _stat[course] += 1
   return sisCourseCode  // returning course code in accordance to canvas sis
@@ -75,17 +75,16 @@ function _courseCode(ug1Name,msgtype) {
 }
 
 function _processMessage(msg,csvfile,msgfile) {
-
+  var header = "course_id,user_id,role,status\n"
   var csvString = ""
   msg.member.map(user => csvString +=  `${course},${user},${msgtype}, active\n`)
   var data = header + csvString
 
-  console.log(data)
-
+  console.info(data)
   console.info("\nGoing to open file: " + csvfile + " " + msgfile);
   return fs.writeFileAsync(csvfile, data, {})
 .then(()=> fs.writeFileAsync(msgfile, JSON.stringify(msg, null, 4), {}))
-      .then(()=> canvasApi.sendCreatedUsersCsv(csvfile))
+.then(()=> canvasApi.sendCreatedUsersCsv(csvfile))
 .then(canvasReturnValue=>console.log(canvasReturnValue,null,4))
 .catch(e => {
     Promise.reject(e)
@@ -95,32 +94,33 @@ function _processMessage(msg,csvfile,msgfile) {
 
 module.exports = function (msg) {
 
-  console.info ("\n Processing for msg..... " + msg.ug1Name)
+  console.info ("\nProcessing for msg..... " + msg.ug1Name)
 
   var msgtype = msg._desc.userType
 
   if (msg._desc && ( msgtype === type.students || msgtype === type.teachers || msgtype === type.assistants)) {
 
-    var course = _courseCode(msg.ug1Name,msgtype)
-    if (course === -1 || course === false )  // Wrong parse or not in selected course do nothing
-      return Promise.resolve("No Action, Parse error our out side course scope")
+    var course = _courseCode(msg.ug1Name, msgtype)
 
-    console.info(`in
-    handleCourseMessage
-    for ${course},
-    processing
-    for ${msgtype}`
-  )
-
-    var header = "course_id,user_id,role,status\n"
-    var d = Date.now()
-    var csvfileName = "./CSV/" + "enrollments_" + msgtype + "_" + course + "_" + d + ".csv"
-    var msgfileName = "./MSG/" + "msg_" + msgtype + "_" + course + "." + d
-    var status = _processMessage(msg,csvfileName,msgfileName)
+    switch (course) {
+      case -1:
+        console.warn("\nSkipping " + msg.ug1Name + " " + msgtype + " Parse error")
+        return msg
+      case -2:
+        console.warn("\nSkipping " + msg.ug1Name + " " + msgtype + " Unselected course")
+        return msg
+      default:
+      {
+        console.info(`in handleCourseMessage for ${course}, processing for ${msgtype}`)
+        var d = Date.now()
+        var csvfileName = "./CSV/" + "enrollments_" + msgtype + "_" + course + "_" + d + ".csv"
+        var msgfileName = "./MSG/" + "msg_" + msgtype + "_" + course + "." + d
+        return _processMessage(msg, csvfileName, msgfileName)
+      }
+    }
   }
-
   else {
     console.warn('\nthis is something else than students, teacher, assistant, we can probably wait with this until the students is handled', JSON.stringify(msg, null, 4))
+    return Promise.resolve("Skipping......")
   }
-  return msg
 }
