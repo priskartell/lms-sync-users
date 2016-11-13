@@ -10,18 +10,17 @@ var ROOTACCOUNT = null
 var _canvasCourses = {}
 var _stat = {}
 
+canvasApi.listCourses ()
+    .then(courselist => courselist.map(item=>_canvasCourses[item.sis_course_id] = true))
+.then(()=>console.log(_canvasCourses))
 
 //testCourseArrayPeriod2.forEach(c=> {_courses[c.courseCode] = true; _stat[c.courseCode] = 0})
 //console.info(_courses)
 
 
-canvasApi.listCourses ()
-    .then(courselist => courselist.map(item=>_canvasCourses[item.sis_course_id] = true))
-    .then(()=>console.log(_canvasCourses))
-
-
-
 function _courseCode(ug1Name,msgtype) {
+
+
   var sisCourseCode = null
   var course = null
   var termin = null
@@ -64,7 +63,7 @@ function _courseCode(ug1Name,msgtype) {
 
   if (_canvasCourses[sisCourseCode] != true) {
     // Course not in canvas
-    console.warn("\nCourse code not in the selected course list: " + course )
+    console.warn("\nCourse code not in the selected course list: " + sisCourseCode )
     return -2
   }
   if (_stat[sisCourseCode] === undefined)
@@ -88,45 +87,48 @@ function _processMessage(msg,csvfile,msgfile) {
 .then(canvasReturnValue=>console.log(canvasReturnValue,null,4))
 }
 
-canvasApi.listCourses ()
-    .then(courselist => courselist.map(item=>_canvasCourses[item.sis_course_id] = true))
-.then(()=>console.log(_canvasCourses))
-.then(()=> {
+
+
   module.exports = function (msg) {
+  if (_canvasCourses === {}) {
+    console.info("\nWaiting for canvasApi to return list of courses......")
+    return process.nextTick(this(msg))
+  }
 
-  console.info("\nProcessing for msg..... " + msg.ug1Name)
+    else {
+    console.info("\nProcessing for msg..... " + msg.ug1Name)
 
-  var msgtype = msg._desc.userType
+    var msgtype = msg._desc.userType
 
-  if (msg._desc && ( msgtype === type.students || msgtype === type.teachers || msgtype === type.assistants)) {
+    if (msg._desc && ( msgtype === type.students || msgtype === type.teachers || msgtype === type.assistants)) {
 
-    var course = _courseCode(msg.ug1Name, msgtype)
+      var course = _courseCode(msg.ug1Name, msgtype)
 
-    switch (course) {
-      case -1:
-        console.warn("\nSkipping " + msg.ug1Name + " " + msgtype + " Parse error")
-        return msg
-      case -2:
-        console.warn("\nSkipping " + msg.ug1Name + " " + msgtype + " Unselected course")
-        return msg
-      default:
-      {
-        console.info(`in
-        handleCourseMessage
-        for ${course},
-        processing
-        for ${msgtype}`
-      )
-        var d = Date.now()
-        var csvfileName = "./CSV/" + "enrollments_" + msgtype + "_" + course + "_" + d + ".csv"
-        var msgfileName = "./MSG/" + "msg_" + msgtype + "_" + course + "." + d
-        return _processMessage(msg, csvfileName, msgfileName)
+      switch (course) {
+        case -1:
+          console.warn("\nSkipping " + msg.ug1Name + " " + msgtype + " Parse error")
+          return msg
+        case -2:
+          console.warn("\nSkipping " + msg.ug1Name + " " + msgtype + " Unselected course")
+          return msg
+        default:
+        {
+          console.info(`in
+          handleCourseMessage
+          for ${course},
+          processing
+          for ${msgtype}`
+        )
+          var d = Date.now()
+          var csvfileName = "./CSV/" + "enrollments_" + msgtype + "_" + course + "_" + d + ".csv"
+          var msgfileName = "./MSG/" + "msg_" + msgtype + "_" + course + "." + d
+          return _processMessage(msg, csvfileName, msgfileName)
+        }
       }
     }
-  }
-  else {
-    console.warn('\nthis is something else than students, teacher, assistant, we can probably wait with this until the students is handled', JSON.stringify(msg, null, 4))
-    return Promise.resolve("Skipping......")
+    else {
+      console.warn('\nthis is something else than students, teacher, assistant, we can probably wait with this until the students is handled', JSON.stringify(msg, null, 4))
+      return Promise.resolve("Skipping......")
+    }
   }
 }
-})
