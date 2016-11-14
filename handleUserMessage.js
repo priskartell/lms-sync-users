@@ -14,16 +14,20 @@ module.exports = function (msg) {
 
   if (affArray.indexOf("employee") >= 0 || affArray.indexOf("student") >= 0)
   {
-  var user = {}
-   user["pseudonym"] = {"unique_id": msg.kthid + "@kth.se"}
-  user["user"] = {"name": msg.given_name + " " + msg.family_name,
-    "username": msg.username,
-    "email": msg.primary_email,
-    "sis-integration-id": msg.kthid}
+    const user = {
+      pseudonym: {unique_id: `${msg.username}@kth.se`}, // CSVs analogi av 'login_id'
+      user: {
+        name: `${msg.given_name} ${msg.family_name}`, // CSVs analogi av 'full_name'
+        username: msg.username, //inte säker
+        email: msg.primary_email,
+        sis-integration-id: msg.kthid //prova om det är rätt analog av CSVs 'user_id'
+      }
 
- return  canvasApi.getUser(user["pseudonym"])
-         .then(msg=>canvasApi.updateUser(user,user["pseudonym"]))
-         .catch(err=>{console.log("Error" + JSON.stringify(err),null,4);return canvasApi.createUser(user)})
+  return canvasApi.updateUser(user)
+      .catch(e => canvasApi.createUser(user)) // where to put updateUser?
+      .then(user => {
+        console.log(`${user.user_id} is created in canvas`)
+      })
   }
  else {
     if (affArray.length == 0)
