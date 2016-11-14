@@ -2,8 +2,6 @@ const {type} = require('message-type')
 const config = require('./server/init/configuration')
 const canvasApi = require('./canvasApi')(config.safe.canvas.apiUrl, config.secure.canvas.apiKey)
 var Promise = require('bluebird');
-var ROOTACCOUNT = null
-var _stat = {}
 
 
 // canvasApi.listUsers()
@@ -11,8 +9,7 @@ var _stat = {}
 
 
 module.exports = function (msg) {
-
-  console.info ("\nProcessing for msg..... " + msg.ugClass + " " + msg.kthid)
+    console.info ("\nProcessing for msg..... " + msg.ugClass + " " + msg.kthid)
   var affArray = msg.affiliation
 
   if (affArray.indexOf("employee") >= 0 || affArray.indexOf("student") >= 0)
@@ -23,13 +20,10 @@ module.exports = function (msg) {
     "username": msg.username,
     "email": msg.primary_email,
     "sis-integration-id": msg.kthid}
-  if (_stat[msg.kthid] === undefined )
-    _stat[msg.kthid] = 1
-  _stat[msg.kthid] +=1
+
  return  canvasApi.getUser(user["pseudonym"])
          .then(msg=>canvasApi.updateUser(user,user["pseudonym"]))
          .catch(err=>{console.log("Error" + JSON.stringify(err),null,4);return canvasApi.createUser(user)})
-
   }
  else {
     if (affArray.length == 0)
