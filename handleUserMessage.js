@@ -18,8 +18,7 @@ module.exports = function (msg) {
   if (affArray.indexOf("employee") >= 0 || affArray.indexOf("student") >= 0)
   {
   var user = {}
-   user["pseudonym"] = msg.kthid
-  //user["pseudonym"] = msg.username + "@kth.se"
+   user["pseudonym"] = {"unique_id": msg.kthid + "@kth.se"}
   user["user"] = {"name": msg.given_name + " " + msg.family_name,
     "username": msg.username,
     "email": msg.primary_email,
@@ -28,9 +27,8 @@ module.exports = function (msg) {
     _stat[msg.kthid] = 1
   _stat[msg.kthid] +=1
  return  canvasApi.getUser(user["pseudonym"])
-         .then(msg=>msg.indexOf("Exception:  an error occured ") < 0 ? canvasApi.updateUser(user,user["pseudonym"]) : canvasApi.createUser(user))
-         .then(canvasMsg=>console.log("Canvas output " +  canvasMsg))
-         .catch(err=>console.log("Error" + err))
+         .then(msg=>canvasApi.updateUser(user,user["pseudonym"]))
+         .catch(err=>{console.log("Error" + JSON.stringify(err),null,4);return canvasApi.createUser(user)})
 
   }
  else {
