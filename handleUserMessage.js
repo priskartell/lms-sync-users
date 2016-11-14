@@ -23,10 +23,10 @@ module.exports = function (msg) {
         sis-integration-id: msg.kthid //prova om det är rätt analog av CSVs 'user_id'
       }
 
-  return canvasApi.updateUser(user)
-      .catch(e => canvasApi.createUser(user)) // where to put updateUser?
+  return canvasApi.updateUser(user, user.pseudonym.unique_id)
+      .catch(e => canvasApi.createUser(user))
       .then(user => {
-        console.log(`${user.user_id} is created in canvas`)
+        console.log(`${user.pseudonym.unique_id} is created in canvas`)
       })
   }
  else {
