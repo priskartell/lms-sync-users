@@ -2,6 +2,7 @@ const config = require('./server/init/configuration')
 const queue = require('node-queue-adapter')(config.secure.azure.queueConnectionString)
 const {addDescription} = require('message-type')
 const handleMessage = require('./handleMessage')
+require('colors')
 
 function readMessage () {
   process.stdout.write('.')
@@ -16,9 +17,14 @@ function readMessage () {
         // http://stackoverflow.com/questions/11302271/how-to-properly-abort-a-node-js-promise-chain-using-q
         throw new Error('abort_chain')
       }
+
       return msg
     })
     .then(msg => JSON.parse(msg.body))
+    .then(msg =>{
+        console.log(JSON.stringify(msg,null,4).blue);
+        return msg
+    })
     .then(addDescription)
     .then(handleMessage)
     .then(() => queue.deleteMessageFromQueue(message))

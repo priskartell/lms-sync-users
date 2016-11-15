@@ -9,8 +9,11 @@ module.exports = function (msg) {
     console.log('TODO: CREATE THE USER IN CANVAS')
   }
   else if (msg._desc && msg._desc.type !== type.unknown) {
-    return msg
     console.log('this is a known type of message that should be handled:', msg.type)
     console.log(JSON.stringify(msg, null, 4))
+    return msg
+  } else {
+    console.log('unknown message, do nothing');
+    return msg
   }
 }
