@@ -84,7 +84,7 @@ function _process(msg) {
   .then(()=> {  end = new Date() - d;console.info("Execution time: %dms", end);return end})
   .catch(error=>
 {
-  console.info("Course is not selected for Canvas....." + JSON.stringify(error,null,4))
+  console.info("\nCourse is not selected for Canvas, skipping........" + JSON.stringify(error,null,4))
 _stat[sisCourseCode] = false
  end = new Date() - d;console.info("Execution time: %dms", end)
   return -1

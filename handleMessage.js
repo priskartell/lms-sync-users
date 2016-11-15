@@ -15,4 +15,6 @@ module.exports = function (msg) {
     console.info(JSON.stringify(msg, null, 4))
     return msg
   }
+  else
+    return msg
 }

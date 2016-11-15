@@ -28,7 +28,6 @@ function readMessage () {
       if (e.message !== 'abort_chain') {
         console.log("\nIn Error handling function testing to remove the message from queue.....")
         console.error(`Exception: `, e)
-        queue.deleteMessageFromQueue(message) // To test
       }
       return readMessage()
     })
