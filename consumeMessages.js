@@ -32,13 +32,11 @@ function readMessage () {
     .then(addDescription)
     .then(handleMessage)
     .then(() => queue.deleteMessageFromQueue(message))
-    .then(readMessage)
     .catch(e => {
       if (e.message !== 'abort_chain') {
         console.log("\nIn Error handling function testing to remove the message from queue.....")
         console.error(`Exception: `, e)
       }
-      return readMessage()
-    })
+    }).finally(readMessage)
 }
 readMessage()
