@@ -2,10 +2,15 @@ const config = require('./server/init/configuration')
 const queue = require('node-queue-adapter')(config.secure.azure.queueConnectionString)
 const {addDescription} = require('message-type')
 const handleMessage = require('./handleMessage')
+<<<<<<< HEAD
 require('colors')
 
+=======
+var MESSAGECOUNTER = 0
+>>>>>>> 2be91919e12578a68c13130ac99f6a52f27ef2af
 function readMessage () {
-  process.stdout.write('.')
+  MESSAGECOUNTER += 1
+  process.stdout.write('\nChecking Azure queue... ' + MESSAGECOUNTER)
 
   let message
   return queue
@@ -31,6 +36,7 @@ function readMessage () {
     .then(readMessage)
     .catch(e => {
       if (e.message !== 'abort_chain') {
+        console.log("\nIn Error handling function testing to remove the message from queue.....")
         console.error(`Exception: `, e)
       }
       return readMessage()
