@@ -24,6 +24,7 @@ function _process(msg) {
   var data = ""
   var msgtype = msg._desc.userType
   var d = 0
+  var end = 0
   var csvfileName = "./CSV/" + "enrollments_" + msgtype + "_"
   var msgfileName = "./MSG/" + "msg_" + msgtype + "_"
 
@@ -80,14 +81,14 @@ function _process(msg) {
   .then(()=> canvasApi.sendCreatedUsersCsv(csvfile))
   .then(canvasReturnValue=>console.log(canvasReturnValue,null,4))
   })
+  .then(()=> {  end = new Date() - d;console.info("Execution time: %dms", end);return end})
   .catch(error=>
 {
   console.info("Course is not selected for Canvas....." + JSON.stringify(error,null,4))
 _stat[sisCourseCode] = false
+ end = new Date() - d;console.info("Execution time: %dms", end)
   return -1
-}
-)
-}
+})}
 
 
   module.exports = function (msg) {
