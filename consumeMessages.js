@@ -14,6 +14,7 @@ function readMessage () {
   let message
   return queue
     .readMessageFromQueue('ug-canvas')
+    .then(msg => { console.log(new Date()); return msg })
     .then(msg => {
       message = msg
       if (!msg) {
@@ -24,14 +25,16 @@ function readMessage () {
 
       return msg
     })
-    .then(msg => JSON.parse(msg.body))
     .then(msg =>{
         console.log(JSON.stringify(msg,null,4).blue);
         return msg
     })
+    .then(msg => JSON.parse(msg.body))
     .then(addDescription)
     .then(handleMessage)
-    .then(() => queue.deleteMessageFromQueue(message))
+    .then(msg => { console.log(new Date()); return msg })
+    .then(() => { console.log('Deleting: ', message); return queue.deleteMessageFromQueue(message) })
+    .then(() => { console.log('Delete done: ', new Date())})
     .catch(e => {
       if (e.message !== 'abort_chain') {
         console.log("\nIn Error handling function testing to remove the message from queue.....")

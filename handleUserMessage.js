@@ -14,8 +14,8 @@ module.exports = function (msg) {
 
   if (affArray.indexOf('employee') >= 0 || affArray.indexOf('student') >= 0)
   {
-      counter +=1
-      if (counter % 10 == 0)
+      _counter +=1
+      if (_counter % 10 == 0)
         console.log(_users)
       console.log(JSON.stringify(msg,null,4))
     const user = {
