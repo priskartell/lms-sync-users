@@ -6,10 +6,10 @@ const handleMessage = require('./handleMessage')
 require('colors')
 
 var MESSAGECOUNTER = 0
-
+var d = 0
 function readMessage () {
   MESSAGECOUNTER += 1
-  //process.stdout.write('\nChecking Azure queue... ' + MESSAGECOUNTER)
+  process.stdout.write('\nChecking Azure queue... ' + MESSAGECOUNTER )
 
   let message
   return queue
@@ -24,18 +24,20 @@ function readMessage () {
 
       return msg
     })
-    .then(msg => JSON.parse(msg.body))
     .then(msg =>{
+        d = new Date()
         console.log(JSON.stringify(msg,null,4).blue);
         return msg
     })
+     .then(msg => JSON.parse(msg.body))
+
     .then(addDescription)
     .then(handleMessage)
-    .then(() => queue.deleteMessageFromQueue(message))
+    .then(() => {console.log("From delete: " + JSON.stringify(message));  console.info("\nExecution time: %dms", new Date() - d) ;return queue.deleteMessageFromQueue(message)})
     .catch(e => {
       if (e.message !== 'abort_chain') {
-        console.log("\nIn Error handling function testing to remove the message from queue.....")
-        console.error(`Exception: `, e)
+        console.log("\nIn Error handling function testing to remove the message from queue.....", message)
+        //console.error(`Exception: `, e)
       }
     }).finally(readMessage)
 }
