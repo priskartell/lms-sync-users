@@ -13,7 +13,7 @@ function readMessage () {
 
   let message
   return queue
-    .readMessageFromQueue('ug-canvas')
+    .readMessageFromQueue(config.secure.azure.queueName)
     .then(msg => { console.log(new Date()); return msg })
     .then(msg => {
       message = msg
