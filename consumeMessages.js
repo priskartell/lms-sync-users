@@ -13,7 +13,7 @@ function readMessage () {
 
   let message
   return queue
-    .readMessageFromQueue(config.secure.azure.queueName)
+    .readMessageFromQueue('ug-canvas')
     .then(msg => { console.log(new Date()); return msg })
     .then(msg => {
       message = msg
@@ -37,7 +37,7 @@ function readMessage () {
     .then(() => { console.log('Delete done: ', new Date())})
     .catch(e => {
       if (e.message !== 'abort_chain') {
-        console.log("In Error".red + new Date())
+        console.log("In Error ".red + new Date())
         console.log("\nIn Error handling function testing to remove the message from queue.....", JSON.stringify(message,null,4).yellow,e)
         //console.error(`Exception: `, e)
       }
