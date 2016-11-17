@@ -8,6 +8,7 @@
   "scripts": {
     "test": "tape \"test/**/*.js\" | tap-spec",
     "test:coverage": "istanbul cover tape -- \"test/**/*.js\"",
+    "codecheck": "standard",
     "postversion": "git push && git push --tags",
     "nodeInspector": "node-inspector --web-port 8890",
     "openDebugBrowser": "sleep 2s && open http://127.0.0.1:8890/\\?port\\=5858 &2>/dev/null",
