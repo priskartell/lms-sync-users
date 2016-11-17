@@ -25,7 +25,7 @@ user: {
         'email': msg.primary_email,
         'sis-integration-id': msg.kthid // prova om det är rätt analog av CSVs 'user_id'
 }}
-console.info(JSON.stringify(user,null,4))
+console.info("Creating canvas User:  " + JSON.stringify(user,null,4))
 }
 else
 return false
@@ -43,12 +43,12 @@ module.exports = function (msg) {
         }
         else {
             console.log("\nIncomplete fields to create user in cavas.....")
-            return Promise.resolve()
+            return Promise.resolve("User feels missing...")
         }
     }
     else
     {
     console.info('\nUser not in affiliation scope..... ' + msg.ugClass + ' ' + msg.kthid )
-    return Promise.resolve()
+    return Promise.resolve("User not in affiliation scope...")
     }
 }

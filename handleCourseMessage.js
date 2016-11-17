@@ -21,7 +21,7 @@ function _process (msg) {
   var msgtype = msg._desc.userType
   var csvfileName = './CSV/' + 'enrollments_' + msgtype + '_'
   var msgfileName = './MSG/' + 'msg_' + msgtype + '_'
-
+  var d = 0
 
   if (msgtype === type.students) { // ladok2.kurser.DM.2517.registrerade_20162.1
     myRe = /^(\w+).(\w+).(\w+).(\w+).(\w+)_(\d\d)(\d\d)(\d).(\d+)/g
@@ -39,7 +39,7 @@ function _process (msg) {
       sisCourseCode = course + termin + year + ladok
     } else { // failed to parse course
       console.warn('\nCourse code not parsable from ug1Name structure: ' + msg.ug1Name)
-      return Promise.resolve()
+      return Promise.resolve("Key parse error")
     }
   }
 
@@ -59,10 +59,10 @@ function _process (msg) {
     }
     else { // failed to parse course
       console.warn('\nCourse code not parsable from ug1Name structure: ' + msg.ug1Name)
-      return Promise.resolve()
+      return Promise.resolve("Key parse error")
     }
   }
-
+  d = new Date()
   console.info(`\nIn _process ${sisCourseCode}, processing for ${msgtype}`)
   var csvfileName = csvfileName + sisCourseCode + '_' + d + '.csv'
   var msgfileName = msgfileName + sisCourseCode + '.' + d
@@ -79,7 +79,7 @@ function _process (msg) {
   .then(() => canvasApi.sendCreatedUsersCsv(csvfile))
   .then(canvasReturnValue => console.log(canvasReturnValue, null, 4))
       })
-.catch(error=>{console.log(error);return Promise.resolve()})
+.catch(error=>Promise.resolve("Error" + JSON.stringify(error)))
  }
 
 
@@ -91,7 +91,7 @@ module.exports = function (msg) {
     return _process(msg)
   }
   else {
-    console.warn('\nthis is something else than students, teacher, assistant, we can probably wait with this until the students is handled', JSON.stringify(msg, null, 4))
-    return Promise.resolve()
+    console.warn('\nThis is something else than students, teacher, assistant, we can probably wait with this until the students is handled', JSON.stringify(msg, null, 4))
+    return Promise.resolve("Unknown flag")
   }
 }

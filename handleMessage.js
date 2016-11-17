@@ -3,22 +3,20 @@ const handleUserMessage =  require('./handleUserMessage')
 const {type} = require('message-type')
 
 module.exports = function (msg) {
-  var tmp = Promise.resolve()
-  if (msg._desc && msg._desc.type === type.course) {
+  if (!msg._desc.type) {
+    return Promise.resolve("\nMessage type is missing, message not processed by handle message....")
+  }
+
+  if (msg._desc.type === type.course) {
+    console.log("\nHandling message for course...".green,msg.ug1Name)
     return handleCourseMessage(msg)
   }
-  else if (msg._desc && msg._desc.type === type.user) {
-    console.log(msg)
+  else if (msg._desc.type === type.user) {
+    console.log("\nHandling message for user...".green,msg.ug1Name)
     return  handleUserMessage(msg)
   }
-  else if (msg._desc && msg._desc.type !== type.unknown) {
-    console.warn('this should never happen:', msg.type)
-    console.info(JSON.stringify(msg, null, 4))
-    return Promise.resolve()
-  }
   else {
-    console.warn('unkown type:', msg._desc.type )
-    JSON.stringify(msg, null, 4)
-    return Promise.resolve()
+    console.log("\nMessage type irrelevant for this app.....".red,msg._desc.type)
+    Promise.resolve("Message type irrelevant for this app....." + msg._desc.type)
   }
 }
