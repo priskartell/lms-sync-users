@@ -153,6 +153,27 @@ example:
 const canvasApi = require('./canvasApi')('http://my.canvas.api', 'my canvas key')
 */
 
+function sendCreatedUsersCsv(filename){ //NOT USED YET, WAIT UNTIL FILTER ADMINS OUT IS DONE
+  console.log("Ready to send CSV file: " + filename)
+  var formData = {
+    attachment: [
+      fs.createReadStream(filename)
+    ]
+  }
+  return rp({
+    url: `${apiUrl}/accounts/1/sis_imports`,
+  auth: {
+    'bearer': apiKey
+  },
+  method: 'POST',
+      headers: {
+    'content-type': 'multipart/form-data'
+  },
+  formData
+})}
+
+
+
 module.exports = function init (_apiUrl, _apiKey) {
   apiUrl = _apiUrl
   apiKey = _apiKey
@@ -172,5 +193,7 @@ module.exports = function init (_apiUrl, _apiKey) {
     requestCanvas,
     listCourses,
     findCourse,
-  enrollUser}
+  enrollUser,
+    sendCreatedUsersCsv
+  }
 }

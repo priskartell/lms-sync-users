@@ -37,8 +37,8 @@ function readMessage () {
     .then(() => { console.log('Delete done: ', new Date())})
     .catch(e => {
       if (e.message !== 'abort_chain') {
-        console.log("\nIn Error handling function testing to remove the message from queue.....")
-        console.error(`Exception: `, e)
+        console.log("\nIn Error handling function testing to remove the message from queue.....", message)
+        //console.error(`Exception: `, e)
       }
     }).finally(readMessage)
 }
