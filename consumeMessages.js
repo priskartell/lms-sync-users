@@ -7,7 +7,7 @@ require('colors')
 function readMessage () {
   let message
   return queue
-    .readMessageFromQueue('ug-canvas')
+    .readMessageFromQueue(config.secure.azure.queueName)
     .then(msg => {
       message = msg
       if (!msg) {

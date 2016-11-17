@@ -34,7 +34,8 @@ module.exports = {
       apiKey: ''
     },
     azure: {
-      queueConnectionString: 'Endpoint=sb://kth-integral.servicebus.windows.net/;SharedAccessKeyName=canvas-consumer;SharedAccessKey='
+      queueConnectionString: 'Endpoint=sb://kth-integral.servicebus.windows.net/;SharedAccessKeyName=canvas-consumer;SharedAccessKey=',
+      queueName: ''
     }
   }
 }
