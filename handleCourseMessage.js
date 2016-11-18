@@ -1,12 +1,12 @@
 const {type} = require('message-type')
 const config = require('./server/init/configuration')
-const canvasApi = require('canvas-api')(config.safe.canvas.apiUrl, config.secure.canvas.apiKey)
+const canvasApi = require('canvas-api')(config.full.canvas.apiUrl, config.secure.canvas.apiKey)
+console.log(JSON.stringify(config,null,4))
 var Promise = require('bluebird')
 // var testCourseArrayPeriod2 = require('./courseList')
 const fs = Promise.promisifyAll(require('fs'))
 const colors = require('colors')
-var _processCounter = 0
-var _stat = {}
+
 
 function _process (msg) {
   var sisCourseCode = null
@@ -26,22 +26,23 @@ function _process (msg) {
   var csvfileName = './CSV/' + 'enrollments_' + msgtype + '_'
   var msgfileName = './MSG/' + 'msg_' + msgtype + '_'
 
-  _processCounter += 1
-  if (_processCounter % 10 == 0)
-    { console.log(_stat) }
-
   if (msgtype === type.students) { // ladok2.kurser.DM.2517.registrerade_20162.1
     myRe = /^(\w+).(\w+).(\w+).(\w+).(\w+)_(\d\d)(\d\d)(\d).(\d+)/g
     myArray = myRe.exec(msg.ug1Name)
     if (myArray != null) {
-      course = myArray[3] + myArray[4]
-      termin = myArray[8] === 1 ? 'HT' : 'VT'
-      year = myArray[7]
-      ladok = myArray[9]
+      let courseInOne = 3
+      let courseInTwo = 4
+      let terminIn = 8
+      let yearIn = 7
+      let ladokIn = 9
+      course = myArray[courseInOne] + myArray[courseInTwo]
+      termin = myArray[terminIn] === 1 ? 'HT' : 'VT'
+      year = myArray[yearIn]
+      ladok = myArray[ladokIn]
       sisCourseCode = course + termin + year + ladok
     } else { // failed to parse course
       console.warn('\nCourse code not parsable from ug1Name structure: ' + msg.ug1Name)
-      return msg
+      return Promise.resolve("Key parse error")
     }
   }
 
@@ -49,43 +50,42 @@ function _process (msg) {
     myRe = /^edu.courses.(\w+).(\w+).(\d\d)(\d\d)(\d).(\d).(\w+)$/g
     myArray = myRe.exec(msg.ug1Name)
     if (myArray != null) {
-      course = myArray[2]
-      termin = myArray[5] === 1 ? 'HT' : 'VT'
-      year = myArray[4]
-      ladok = myArray[6]
+      let courseIn = 2
+      let terminIn = 5
+      let yearIn = 4
+      let ladokIn = 6
+      course = myArray[courseIn]
+      termin = myArray[terminIn] === 1 ? 'HT' : 'VT'
+      year = myArray[yearIn]
+      ladok = myArray[ladokIn]
       sisCourseCode = course + termin + year + ladok
     }
     else { // failed to parse course
       console.warn('\nCourse code not parsable from ug1Name structure: ' + msg.ug1Name)
-      return msg
+      return Promise.resolve("Key parse error")
     }
   }
-
+  d = new Date()
   console.info(`\nIn _process ${sisCourseCode}, processing for ${msgtype}`)
-  d = Date.now()
   var csvfileName = csvfileName + sisCourseCode + '_' + d + '.csv'
   var msgfileName = msgfileName + sisCourseCode + '.' + d
 
   return canvasApi.getCourse(sisCourseCode)
       .then(result => {
+        console.log("before")
         msg.member.map(user => csvString += `${course},${user},${msgtype}, active\n`)
-        var data = header + csvString
+        let data = header + csvString
         console.info(data)
         console.info('\nGoing to open file: ' + csvfile + ' ' + msgfile)
-        _stat[sisCourseCode] = true
         return fs.writeFileAsync(csvfile, data, {})
             .then(() => fs.writeFileAsync(msgfile, JSON.stringify(msg, null, 4), {}))
   .then(() => canvasApi.sendCreatedUsersCsv(csvfile))
   .then(canvasReturnValue => console.log(canvasReturnValue, null, 4))
       })
-  .then(() => { end = new Date() - d; console.info('Execution time: %dms', end); return end })
-  .catch(error =>
-{
-    console.info('\nCourse is not selected for Canvas, skipping........' + JSON.stringify(error, null, 4))
-    _stat[sisCourseCode] = false
-    end = new Date() - d; console.info('Execution time: %dms', end)
-    return msg
-  }) }
+.catch(error=>Promise.resolve("Error" + JSON.stringify(error)))
+ }
+
+
 
 module.exports = function (msg) {
   console.info('\nProcessing for msg..... ' + msg.ug1Name)
@@ -94,7 +94,7 @@ module.exports = function (msg) {
     return _process(msg)
   }
   else {
-    console.warn('\nthis is something else than students, teacher, assistant, we can probably wait with this until the students is handled', JSON.stringify(msg, null, 4))
-    return msg
+    console.warn('\nThis is something else than students, teacher, assistant, we can probably wait with this until the students is handled', JSON.stringify(msg, null, 4))
+    return Promise.resolve("Unknown flag")
   }
 }
