@@ -21,10 +21,12 @@ function readMessage () {
   return msg
 })
 .then(msg => JSON.parse(msg.body))
+/*
 .then(body => {
   console.log(JSON.stringify(body, null, 4).blue)
 return body
 })
+*/
 .then(addDescription)
     .then(handleMessage)
     .then(() => {

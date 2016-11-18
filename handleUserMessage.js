@@ -14,7 +14,7 @@ function isInScope(msg)
 
 
 function createCanvasUser(msg) {
-
+    console.log(msg)
     if (msg.username && (msg.given_name || msg.family_name) &&  msg.username &&  msg.primary_emai &&  msg.kthid)
     {
     let  user = {

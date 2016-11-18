@@ -1,9 +1,7 @@
 const {type} = require('message-type')
 const config = require('./server/init/configuration')
 const canvasApi = require('canvas-api')(config.full.canvas.apiUrl, config.secure.canvas.apiKey)
-console.log(JSON.stringify(config,null,4))
 var Promise = require('bluebird')
-// var testCourseArrayPeriod2 = require('./courseList')
 const fs = Promise.promisifyAll(require('fs'))
 const colors = require('colors')
 
@@ -70,6 +68,7 @@ function _process (msg) {
   var csvfileName = csvfileName + sisCourseCode + '_' + d + '.csv'
   var msgfileName = msgfileName + sisCourseCode + '.' + d
 
+  /*
   return canvasApi.getCourse(sisCourseCode)
       .then(result => {
         console.log("before")
@@ -82,7 +81,17 @@ function _process (msg) {
   .then(() => canvasApi.sendCreatedUsersCsv(csvfile))
   .then(canvasReturnValue => console.log(canvasReturnValue, null, 4))
       })
-.catch(error=>Promise.resolve("Error" + JSON.stringify(error)))
+.catch(error=>{console.log(error); return Promise.resolve("Error" + JSON.stringify(error))})
+*/
+
+  msg.member.map(user => csvString += `${course},${user},${msgtype}, active\n`)
+  data = header + csvString
+  console.info(data)
+  console.info('\nGoing to open file: ' + csvfileName + ' ' + msgfileName)
+  return fs.writeFileAsync(csvfileName, data, {})
+          .then(() => fs.writeFileAsync(msgfileName, JSON.stringify(msg, null, 4), {}))
+.then(() => canvasApi.sendCreatedUsersCsv(csvfileName))
+.then(canvasReturnValue => console.log(canvasReturnValue, null, 4))
  }
 
 
