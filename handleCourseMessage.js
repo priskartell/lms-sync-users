@@ -88,6 +88,7 @@ function _process (msg) {
   data = header + csvString
   console.info(data)
   console.info('\nGoing to open file: ' + csvfileName + ' ' + msgfileName)
+  
   return fs.writeFileAsync(csvfileName, data, {})
           .then(() => fs.writeFileAsync(msgfileName, JSON.stringify(msg, null, 4), {}))
 .then(() => canvasApi.sendCreatedUsersCsv(csvfileName))
