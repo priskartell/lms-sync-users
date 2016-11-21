@@ -41,7 +41,7 @@ function _process (msg) {
       sisCourseCode = course + termin + year + ladok
     } else { // failed to parse course
       console.warn('\nCourse code not parsable from ug1Name structure: ' + msg.ug1Name)
-      return -1
+      return msg
     }
   }
 
@@ -57,7 +57,7 @@ function _process (msg) {
     }
     else { // failed to parse course
       console.warn('\nCourse code not parsable from ug1Name structure: ' + msg.ug1Name)
-      return -1
+      return msg
     }
   }
 
@@ -84,7 +84,7 @@ function _process (msg) {
     console.info('\nCourse is not selected for Canvas, skipping........' + JSON.stringify(error, null, 4))
     _stat[sisCourseCode] = false
     end = new Date() - d; console.info('Execution time: %dms', end)
-    return -1
+    return msg
   }) }
 
 module.exports = function (msg) {
@@ -95,6 +95,6 @@ module.exports = function (msg) {
   }
   else {
     console.warn('\nthis is something else than students, teacher, assistant, we can probably wait with this until the students is handled', JSON.stringify(msg, null, 4))
-    return -1
+    return msg
   }
 }
