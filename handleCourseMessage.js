@@ -7,22 +7,22 @@ const colors = require('colors')
 
 
 function _process (msg) {
-  var sisCourseCode = null
-  var course = null
-  var termin = null
-  var year = null
-  var ladok = null
-  var sisCourseCode = null
-  var myRe = null
-  var myArray = []
-  var header = 'course_id,user_id,role,status\n'
-  var csvString = ''
-  var data = ''
-  var msgtype = msg._desc.userType
-  var d = 0
-  var end = 0
-  var csvfileName = './CSV/' + 'enrollments_' + msgtype + '_'
-  var msgfileName = './MSG/' + 'msg_' + msgtype + '_'
+
+  let course = null
+  let termin = null
+  let year = null
+  let ladok = null
+  let sisCourseCode = null
+  let myRe = null
+  let myArray = []
+  let header = 'course_id,user_id,role,status\n'
+  let csvString = ''
+  let data = ''
+  let msgtype = msg._desc.userType
+  let d = 0
+  let end = 0
+  let csvfileName = './CSV/' + 'enrollments_' + msgtype + '_'
+  let msgfileName = './MSG/' + 'msg_' + msgtype + '_'
 
   if (msgtype === type.students) { // ladok2.kurser.DM.2517.registrerade_20162.1
     myRe = /^(\w+).(\w+).(\w+).(\w+).(\w+)_(\d\d)(\d\d)(\d).(\d+)/g
@@ -40,7 +40,7 @@ function _process (msg) {
       sisCourseCode = course + termin + year + ladok
     } else { // failed to parse course
       console.warn('\nCourse code not parsable from ug1Name structure: ' + msg.ug1Name)
-      return Promise.resolve("Key parse error")
+      return Promise.resolve("Key parse error, Student")
     }
   }
 
@@ -60,18 +60,17 @@ function _process (msg) {
     }
     else { // failed to parse course
       console.warn('\nCourse code not parsable from ug1Name structure: ' + msg.ug1Name)
-      return Promise.resolve("Key parse error")
+      return Promise.resolve("Key parse error, Teacher or Assistant")
     }
   }
   d = new Date()
   console.info(`\nIn _process ${sisCourseCode}, processing for ${msgtype}`)
-  var csvfileName = csvfileName + sisCourseCode + '_' + d + '.csv'
-  var msgfileName = msgfileName + sisCourseCode + '.' + d
+  csvfileName = csvfileName + sisCourseCode + '_' + d + '.csv'
+  msgfileName = msgfileName + sisCourseCode + '.' + d + '.msg'
 
-  /*
+
   return canvasApi.getCourse(sisCourseCode)
       .then(result => {
-        console.log("before")
         msg.member.map(user => csvString += `${course},${user},${msgtype}, active\n`)
         let data = header + csvString
         console.info(data)
@@ -81,18 +80,15 @@ function _process (msg) {
   .then(() => canvasApi.sendCreatedUsersCsv(csvfile))
   .then(canvasReturnValue => console.log(canvasReturnValue, null, 4))
       })
-.catch(error=>{console.log(error); return Promise.resolve("Error" + JSON.stringify(error))})
-*/
-
-  msg.member.map(user => csvString += `${course},${user},${msgtype}, active\n`)
-  data = header + csvString
-  console.info(data)
-  console.info('\nGoing to open file: ' + csvfileName + ' ' + msgfileName)
-  
-  return fs.writeFileAsync(csvfileName, data, {})
-          .then(() => fs.writeFileAsync(msgfileName, JSON.stringify(msg, null, 4), {}))
-.then(() => canvasApi.sendCreatedUsersCsv(csvfileName))
-.then(canvasReturnValue => console.log(canvasReturnValue, null, 4))
+.catch(error=> {
+    if (error.indexOf('StatusCodeError: 404') >= 0) // The course code is not in canvas, do nothing.....
+{
+  console.warn("Course does not exist in canvas, skipping, ".red + sisCourseCode.red)
+    return Promise.resolve("Course does not exist in canvas.........")
+}
+else {
+  // These are errors related to creating a file or sending CSV file to Canvas through the API
+  return Promise.resolve("Error in handleCourseMessage, _process function....." + JSON.stringify(e,null,4))}})
  }
 
 
@@ -105,6 +101,6 @@ module.exports = function (msg) {
   }
   else {
     console.warn('\nThis is something else than students, teacher, assistant, we can probably wait with this until the students is handled', JSON.stringify(msg, null, 4))
-    return Promise.resolve("Unknown flag")
+    return Promise.resolve("Unknown flag: " + msgtype)
   }
 }
