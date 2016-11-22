@@ -88,7 +88,7 @@ function _process (msg) {
 }
 else {
   // These are errors related to creating a file or sending CSV file to Canvas through the API
-  return Promise.resolve("Error in handleCourseMessage, _process function" + JSON.stringify(e,null,4))}})
+  return Promise.resolve("Error in handleCourseMessage, _process function" + JSON.stringify(error,null,4))}})
 }
 
 
