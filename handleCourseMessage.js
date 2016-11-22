@@ -71,25 +71,25 @@ function _process (msg) {
 
   return canvasApi.getCourse(sisCourseCode)
       .then(result => {
-        msg.member.map(user => csvString += `${course},${user},${msgtype}, active\n`)
-        let data = header + csvString
-        console.info(data)
-        console.info('\nGoing to open file: ' + csvfile + ' ' + msgfile)
-        return fs.writeFileAsync(csvfile, data, {})
-            .then(() => fs.writeFileAsync(msgfile, JSON.stringify(msg, null, 4), {}))
-  .then(() => canvasApi.sendCreatedUsersCsv(csvfile))
-  .then(canvasReturnValue => console.log(canvasReturnValue, null, 4))
-      })
+    msg.member.map(user => csvString += `${sisCourseCode},${user},${msgtype}, active\n`)
+  let data = header + csvString
+  console.info(data)
+  console.info('\nGoing to open file: ' + csvfile + ' ' + msgfile)
+  return fs.writeFileAsync(csvfile, data, {})
+          .then(() => fs.writeFileAsync(msgfile, JSON.stringify(msg, null, 4), {}))
+.then(() => canvasApi.sendCreatedUsersCsv(csvfile))
+.then(canvasReturnValue => console.log(canvasReturnValue, null, 4))
+})
 .catch(error=> {
-    if (error.indexOf('StatusCodeError: 404') >= 0) // The course code is not in canvas, do nothing.....
+  if (error.indexOf('StatusCodeError: 404') >= 0) // The course code is not in canvas, do nothing.....
 {
   console.warn("Course does not exist in canvas, skipping, ".red + sisCourseCode.red)
-    return Promise.resolve("Course does not exist in canvas.........")
+  return Promise.resolve("Course does not exist in canvas")
 }
 else {
   // These are errors related to creating a file or sending CSV file to Canvas through the API
-  return Promise.resolve("Error in handleCourseMessage, _process function....." + JSON.stringify(e,null,4))}})
- }
+  return Promise.resolve("Error in handleCourseMessage, _process function" + JSON.stringify(e,null,4))}})
+}
 
 
 
