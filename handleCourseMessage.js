@@ -127,9 +127,9 @@ function _process (msg) {
           .then(result => _craeteCsvFile(msg))
           .then(csvData=> {
                         console.info('\nGoing to open file: ' + csvfile + ' ' + msgfile)
-                        return fs.writeFileAsync(csvfile, data, {})})
-          .then(() => fs.writeFileAsync(msgfile, JSON.stringify(msg, null, 4), {}))
-          .then(() => canvasApi.sendCreatedUsersCsv(csvfile))
+                        return fs.writeFileAsync(csvfileName, csvData, {})})
+          .then(() => fs.writeFileAsync(msgfileName, JSON.stringify(msg, null, 4), {}))
+          .then(() => canvasApi.sendCreatedUsersCsv(csvfileName))
           .then(canvasReturnValue => console.log(canvasReturnValue, null, 4))
           .catch(error => _handleError(error,sisCourseCode))}
 
