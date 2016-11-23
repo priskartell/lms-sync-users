@@ -51,6 +51,17 @@ function _handleError(err,sisCourseCode) {
 
 }
 
+function _craeteCsvFile(msg){
+  let data = ''
+  let csvString = ''
+  let header = 'course_id,user_id,role,status\n'
+  msg.member.map(user => csvString += `${sisCourseCode},${user},${msgtype},active\n`)
+  data = header + csvString
+  console.info(data)
+  return data
+
+}
+
 function _process (msg) {
 
   let course = null
@@ -60,9 +71,6 @@ function _process (msg) {
   let sisCourseCode = null
   let myRe = null
   let myArray = []
-  let header = 'course_id,user_id,role,status\n'
-  let csvString = ''
-  let data = ''
   let msgtype = msg._desc.userType
   let d = 0
   let end = 0
@@ -109,25 +117,22 @@ function _process (msg) {
     }
   }
   d = new Date()
-  console.info(`\nIn_process ${sisCourseCode}, processing
-  for ${msgtype}`
-)
+  console.info(`\nIn_process ${sisCourseCode}, processingfor ${msgtype}`)
+
   csvfileName = csvfileName + sisCourseCode + '_' + d + '.csv'
   msgfileName = msgfileName + sisCourseCode + '.' + d + '.msg'
 
 
   return canvasApi.getCourse(sisCourseCode)
-      .then(result => {
-    msg.member.map(user => csvString += `${sisCourseCode},${user},${msgtype},active\n`)
-  let data = header + csvString
-  console.info(data)
-  console.info('\nGoing to open file: ' + csvfile + ' ' + msgfile)
-  return fs.writeFileAsync(csvfile, data, {})
-          .then(() => fs.writeFileAsync(msgfile, JSON.stringify(msg, null, 4), {})
-).then(() => canvasApi.sendCreatedUsersCsv(csvfile)
-).then(canvasReturnValue => console.log(canvasReturnValue, null, 4))})
-.catch(error => _handleError(error,sisCourseCode))
-}
+          .then(result => _craeteCsvFile(msg))
+          .then(csvData=> {
+                        console.info('\nGoing to open file: ' + csvfile + ' ' + msgfile)
+                        return fs.writeFileAsync(csvfile, data, {})})
+          .then(() => fs.writeFileAsync(msgfile, JSON.stringify(msg, null, 4), {}))
+          .then(() => canvasApi.sendCreatedUsersCsv(csvfile))
+          .then(canvasReturnValue => console.log(canvasReturnValue, null, 4))
+          .catch(error => _handleError(error,sisCourseCode))}
+
 
 
 
