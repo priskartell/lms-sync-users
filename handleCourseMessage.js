@@ -47,7 +47,7 @@ function _handleError(err,sisCourseCode) {
   }// Handels error of type error
 
     console.warn("Some Error occured, rejecting promise..... ".red + sisCourseCode.red)
-    Promise.reject(err)
+    return Promise.reject(err)
 
 }
 
