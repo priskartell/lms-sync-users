@@ -34,3 +34,4 @@ docker-compose*.yml
 coverage
 
 allUsers.csv
+canvasApi.js
