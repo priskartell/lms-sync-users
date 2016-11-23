@@ -126,7 +126,7 @@ function _process (msg) {
   return canvasApi.getCourse(sisCourseCode)
           .then(result => _craeteCsvFile(msg))
           .then(csvData=> {
-                        console.info('\nGoing to open file: ' + csvfile + ' ' + msgfile)
+                        console.info('\nGoing to open file: ' + csvfileName + ' ' + msgfileName)
                         return fs.writeFileAsync(csvfileName, csvData, {})})
           .then(() => fs.writeFileAsync(msgfileName, JSON.stringify(msg, null, 4), {}))
           .then(() => canvasApi.sendCreatedUsersCsv(csvfileName))
