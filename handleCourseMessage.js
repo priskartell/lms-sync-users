@@ -26,6 +26,7 @@ function _parseError(err) {
 
 
 function _handleError(err,sisCourseCode) {
+
   if  (typeof(err) === "string") // when in arror, canvas API returns a prmoise reject with a string value, future code refactroring...
   {
     let eCode = _parseError(err)
@@ -43,14 +44,10 @@ function _handleError(err,sisCourseCode) {
       console.warn("Other error..... ".red + sisCourseCode.red)
       return Promise.reject(new Error(err))
     }
-  }
-  else // Handels error of type error
-  {
+  }// Handels error of type error
+
     console.warn("Some Error occured, rejecting promise..... ".red + sisCourseCode.red)
     Promise.reject(err)
-  }
-
-
 
 }
 
