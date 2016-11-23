@@ -29,17 +29,17 @@ function _handleError(err,sisCourseCode) {
   if  (typeof(err) === "string") // when in arror, canvas API returns a prmoise reject with a string value, future code refactroring...
   {
     let eCode = _parseError(err)
-    if (eCode == 404) // The course code is not in canvas, do nothing.....
+    if (eCode === 404) // The course code is not in canvas, do nothing.....
     {
       console.warn("Course does not exist in canvas, skipping, ".red + sisCourseCode.red)
       return Promise.resolve("Course does not exist in canvas")
     }
-    else if (eCode > 400) // Besides course not incanvase, Probably other problems with canvas.....
+    else if (eCode >= 400) // Besides course not in Canvas, Probably an other type of problem with canvas.....
     {
       console.warn("Canvas is not accessable, Invalid token or other Canvas related errors..... ".red + sisCourseCode.red)
       return Promise.reject(new Error(err))
     }
-    else { //It is an error and unrelated to canvas HTTP requests probably IO errors
+    else { //It is an error and unrelated to the Canvas HTTP requests, probably IO errors
       console.warn("Other error..... ".red + sisCourseCode.red)
       return Promise.reject(new Error(err))
     }
