@@ -3,7 +3,7 @@ const config = require('../server/init/configuration')
 const fs = require('fs')
 
 const fileName = 'allUsers.csv'
-const headers = ['user_id', 'login_id', 'email', 'full_name', 'status']
+const headers = ['user_id', 'login_id', 'full_name', 'status']
 const attributes = ['ugKthid', 'ugUsername', 'mail', 'email_address', 'name', 'ugEmailAddressHR']
 function escapeCsvData (str) {
   if (str.includes(',') || str.includes('"')) {
@@ -50,7 +50,7 @@ client.bind(config.secure.ldap.bind.username, config.secure.ldap.bind.password, 
         // console.log('.')
         const o = entry.object
         const userName = `${o.ugUsername}@kth.se`
-        writeLine([o.ugKthid, userName, /* o.ugEmailAddressHR || */o.mail || userName, o.name, 'active' ])
+        writeLine([o.ugKthid, userName, o.name, 'active' ])
       })
       res.on('error', function (err) {
         console.error('error: ' + err.message)

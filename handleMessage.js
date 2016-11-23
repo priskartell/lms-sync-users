@@ -18,6 +18,6 @@ module.exports = function (msg) {
     return  handleUserMessage(msg)
   }
   else {
-    Promise.resolve("Message type irrelevant for this app....." + msg._desc.type)
+    return Promise.resolve("Message type irrelevant for this app.....")
   }
 }
