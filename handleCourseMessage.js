@@ -38,7 +38,7 @@ function _handleError(err,sisCourseCode) {
     else if (eCode > 400) // Besides course not incanvase, Probably other problems with canvas.....
     {
       console.warn("Canvas is not accessable, Invalid token or other Canvas related errors..... ".red + sisCourseCode.red)
-      return Promise.reject(new Error(er))
+      return Promise.reject(new Error(err))
     }
     else { //It is an error and unrelated to canvas HTTP requests probably IO errors
       console.warn("Other error..... ".red + sisCourseCode.red)
