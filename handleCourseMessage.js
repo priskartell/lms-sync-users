@@ -20,7 +20,6 @@ function _parseError(err) {
   if (errorCode) {
     return errorCode
   }
-
   return false
 }
 
@@ -51,7 +50,7 @@ function _handleError(err,sisCourseCode) {
 
 }
 
-function _craeteCsvFile(msg){
+function _createCsvFile(msg){
   let data = ''
   let csvString = ''
   let header = 'course_id,user_id,role,status\n'
@@ -124,7 +123,7 @@ function _process (msg) {
 
 
   return canvasApi.getCourse(sisCourseCode)
-          .then(result => _craeteCsvFile(msg))
+          .then(result => _createCsvFile(msg))
           .then(csvData=> {
                         console.info('\nGoing to open file: ' + csvfileName + ' ' + msgfileName)
                         return fs.writeFileAsync(csvfileName, csvData, {})})
