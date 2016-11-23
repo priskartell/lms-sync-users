@@ -86,7 +86,7 @@ function _process (msg) {
       let yearIn = 7
       let ladokIn = 9
       course = myArray[courseInOne] + myArray[courseInTwo]
-      termin = myArray[terminIn] === 1 ? 'HT' : 'VT'
+      termin = myArray[terminIn] === 1 ? 'VT' : 'HT'
       year = myArray[yearIn]
       ladok = myArray[ladokIn]
       sisCourseCode = course + termin + year + ladok
@@ -105,7 +105,7 @@ function _process (msg) {
       let yearIn = 4
       let ladokIn = 6
       course = myArray[courseIn]
-      termin = myArray[terminIn] === 1 ? 'HT' : 'VT'
+      termin = myArray[terminIn] === 1 ? 'VT' : 'HT'
       year = myArray[yearIn]
       ladok = myArray[ladokIn]
       sisCourseCode = course + termin + year + ladok
