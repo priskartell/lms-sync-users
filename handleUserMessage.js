@@ -19,13 +19,14 @@ function createCanvasUser(msg) {
     if (msg.username && (msg.given_name || msg.family_name) &&  msg.kthid)
         {
             let  user = {
-                pseudonym: {unique_id: `${msg.username}@kth.se`}, // CSVs analogi av 'login_id'
+                pseudonym: {
+                   unique_id: `${msg.username}@kth.se`, // CSVs analogi av 'login_id'
+                   sis_user_id: msg.kthid // CSVs analogi av 'user_id' needed for enrollments
+                },
                 user: {
                     'name': `${msg.given_name} ${msg.family_name}`, // CSVs analogi av 'full_name'
                     'username': msg.username, // inte säker
-                    'sis-integration-id': msg.kthid // prova om det är rätt analog av CSVs 'user_id'
                 }}
-            console.info("Creating canvas User object:  ".green + JSON.stringify(user,null,4))
             return user
         }
     else return false
@@ -37,7 +38,7 @@ module.exports = function (msg) {
     if (isInScope(msg)) {
         let user = createCanvasUser(msg)
         if (user) {
-            console.log("USER OBJECT READY", JSON.stringify(user,null,4))
+            console.log("User object is ready to be sent to Canvas API: ", JSON.stringify(user,null,4))
             return canvasApi.getUser(user.pseudonym.unique_id)
                     .then(userFromCanvas => canvasApi.updateUser(user, userFromCanvas.id))
                     .catch(e => {
@@ -45,10 +46,10 @@ module.exports = function (msg) {
                       console.log("Try to create user".green)
                       return canvasApi.createUser(user)
                     })
-                    // .then(user => {
-                    //   console.log(`${user.user.username} is created in canvas`)
-                    //   return Promise.resolve("USER UPDATE/CREATION IS DONE")
-                    // })
+                  //   .then(user => {
+                  //      console.log(`${user.user.username} is created in canvas`)
+                  //      return Promise.resolve("USER UPDATE/CREATION IS DONE")
+                  //  })
         }
         else {
             console.log("\nIncomplete fields to create user in cavas.....")
