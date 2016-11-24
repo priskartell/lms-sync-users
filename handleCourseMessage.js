@@ -53,6 +53,7 @@ function _handleError(err,sisCourseCode) {
 function _createCsvFile(msg,sisCourseCode){
   let data = ''
   let csvString = ''
+  let msgtype = msg._desc.userType
   let header = 'course_id,user_id,role,status\n'
   msg.member.map(user => csvString += `${sisCourseCode},${user},${msgtype},active\n`)
   data = header + csvString
