@@ -29,17 +29,17 @@ function _handleError(err,sisCourseCode) {
   if  (typeof(err) === "string") // when in arror, canvas API returns a prmoise reject with a string value, future code refactroring...
   {
     let eCode = _parseError(err)
-    if (eCode == 404) // The course code is not in canvas, do nothing.....
+    if (eCode === 404) // The course code is not in canvas, do nothing.....
     {
       console.warn("Course does not exist in canvas, skipping, ".red + sisCourseCode.red)
       return Promise.resolve("Course does not exist in canvas")
     }
-    else if (eCode > 400) // Besides course not incanvase, Probably other problems with canvas.....
+    else if (eCode >= 400) // Besides course not in Canvas, Probably an other type of problem with canvas.....
     {
       console.warn("Canvas is not accessable, Invalid token or other Canvas related errors..... ".red + sisCourseCode.red)
       return Promise.reject(new Error(err))
     }
-    else { //It is an error and unrelated to canvas HTTP requests probably IO errors
+    else { //It is an error and unrelated to the Canvas HTTP requests, probably IO errors
       console.warn("Other error..... ".red + sisCourseCode.red)
       return Promise.reject(new Error(err))
     }
@@ -50,9 +50,10 @@ function _handleError(err,sisCourseCode) {
 
 }
 
-function _createCsvFile(msg){
+function _createCsvFile(msg,sisCourseCode){
   let data = ''
   let csvString = ''
+  let msgtype = msg._desc.userType
   let header = 'course_id,user_id,role,status\n'
   msg.member.map(user => csvString += `${sisCourseCode},${user},${msgtype},active\n`)
   data = header + csvString
@@ -86,7 +87,7 @@ function _process (msg) {
       let yearIn = 7
       let ladokIn = 9
       course = myArray[courseInOne] + myArray[courseInTwo]
-      termin = myArray[terminIn] === 1 ? 'HT' : 'VT'
+      termin = myArray[terminIn] === 1 ? 'VT' : 'HT'
       year = myArray[yearIn]
       ladok = myArray[ladokIn]
       sisCourseCode = course + termin + year + ladok
@@ -105,7 +106,7 @@ function _process (msg) {
       let yearIn = 4
       let ladokIn = 6
       course = myArray[courseIn]
-      termin = myArray[terminIn] === 1 ? 'HT' : 'VT'
+      termin = myArray[terminIn] === 1 ? 'VT' : 'HT'
       year = myArray[yearIn]
       ladok = myArray[ladokIn]
       sisCourseCode = course + termin + year + ladok
@@ -123,7 +124,7 @@ function _process (msg) {
 
 
   return canvasApi.getCourse(sisCourseCode)
-          .then(result => _createCsvFile(msg))
+          .then(result => _createCsvFile(msg,sisCourseCode))
           .then(csvData=> {
                         console.info('\nGoing to open file: ' + csvfileName + ' ' + msgfileName)
                         return fs.writeFileAsync(csvfileName, csvData, {})})
