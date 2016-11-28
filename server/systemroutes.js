@@ -11,7 +11,7 @@ const packageFile = require('../package.json')
 /* GET /_about
  * About page
  */
-var _about = function (req, res) {
+var _about = function(req, res) {
   res.setHeader('Content-Type', 'text/plain')
   res.send(`
     packageFile.name:${packageFile.name}
@@ -26,7 +26,7 @@ var _about = function (req, res) {
 /* GET /_monitor
  * Monitor page
  */
-var _monitor = function (req, res) {
+var _monitor = function(req, res) {
   res.setHeader('Content-Type', 'text/plain')
   res.send(`APPLICATION_STATUS: OK`)
 }
@@ -37,7 +37,7 @@ router.get('/_monitor_all', _monitor)
 router.get('/_monitor_core', _monitor)
 router.get('/_about', _about)
 
-router.get('/', function (req, res) {
+router.get('/', function(req, res) {
   res.redirect(`${config.full.proxyPrefixPath.uri}/_monitor`)
 })
 

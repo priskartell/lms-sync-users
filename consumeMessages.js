@@ -5,7 +5,7 @@ const handleMessage = require('./handleMessage')
 const deleteMessage = require('./deleteMessage')
 require('colors')
 
-function readMessage () {
+function readMessage() {
   console.log('.')
   let message
   return queue
@@ -13,8 +13,8 @@ function readMessage () {
     .then(msg => {
       message = msg
       if (!msg) {
-    // Best way to abort a promise chain is by a custom error according to:
-    // http://stackoverflow.com/questions/11302271/how-to-properly-abort-a-node-js-promise-chain-using-q
+        // Best way to abort a promise chain is by a custom error according to:
+        // http://stackoverflow.com/questions/11302271/how-to-properly-abort-a-node-js-promise-chain-using-q
         throw new Error('abort_chain')
       }
 

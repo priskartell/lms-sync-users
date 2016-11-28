@@ -24,45 +24,44 @@ function _parseError(err) {
 }
 
 
-function _handleError(err,sisCourseCode) {
+function _handleError(err, sisCourseCode) {
 
-  if  (typeof(err) === "string") // when in arror, canvas API returns a prmoise reject with a string value, future code refactroring...
+  if (typeof (err) === "string") // when in arror, canvas API returns a prmoise reject with a string value, future code refactroring...
   {
     let eCode = _parseError(err)
     if (eCode === 404) // The course code is not in canvas, do nothing.....
     {
       console.warn("Course does not exist in canvas, skipping, ".red + sisCourseCode.red)
       return Promise.resolve("Course does not exist in canvas")
-    }
-    else if (eCode >= 400) // Besides course not in Canvas, Probably an other type of problem with canvas.....
+    } else if (eCode >= 400) // Besides course not in Canvas, Probably an other type of problem with canvas.....
     {
       console.warn("Canvas is not accessable, Invalid token or other Canvas related errors..... ".red + sisCourseCode.red)
       return Promise.reject(new Error(err))
-    }
-    else { //It is an error and unrelated to the Canvas HTTP requests, probably IO errors
+    } else { //It is an error and unrelated to the Canvas HTTP requests, probably IO errors
       console.warn("Other error..... ".red + sisCourseCode.red)
       return Promise.reject(new Error(err))
     }
-  }// Handels error of type error
+  } // Handels error of type error
 
-    console.warn("Some Error occured, rejecting promise..... ".red + sisCourseCode.red)
-    return Promise.reject(err)
+  console.warn("Some Error occured, rejecting promise..... ".red + sisCourseCode.red)
+  return Promise.reject(err)
 
 }
 
-function _createCsvFile(msg,sisCourseCode){
+function _createCsvFile(msg, sisCourseCode) {
   let data = ''
   let csvString = ''
   let msgtype = msg._desc.userType
   let header = 'course_id,user_id,role,status\n'
-  msg.member.map(user => csvString += `${sisCourseCode},${user},${msgtype},active\n`)
+  msg.member.map(user => csvString += `${sisCourseCode},${user},${msgtype},active
+`)
   data = header + csvString
   console.info(data)
   return data
 
 }
 
-function _process (msg) {
+function _process(msg) {
 
   let course = null
   let termin = null
@@ -110,40 +109,41 @@ function _process (msg) {
       year = myArray[yearIn]
       ladok = myArray[ladokIn]
       sisCourseCode = course + termin + year + ladok
-    }
-    else { // failed to parse course
+    } else { // failed to parse course
       console.warn('\nCourse code not parsable from ug1Name structure: ' + msg.ug1Name)
       return Promise.resolve("Key parse error, Teacher or Assistant")
     }
   }
   d = new Date()
-  console.info(`\nIn_process ${sisCourseCode}, processingfor ${msgtype}`)
+  console.info(`
+In_process ${sisCourseCode}, processingfor ${msgtype}`)
 
   csvfileName = csvfileName + sisCourseCode + '_' + d + '.csv'
   msgfileName = msgfileName + sisCourseCode + '.' + d + '.msg'
 
 
   return canvasApi.getCourse(sisCourseCode)
-          .then(result => _createCsvFile(msg,sisCourseCode))
-          .then(csvData=> {
-                        console.info('\nGoing to open file: ' + csvfileName + ' ' + msgfileName)
-                        return fs.writeFileAsync(csvfileName, csvData, {})})
-          .then(() => fs.writeFileAsync(msgfileName, JSON.stringify(msg, null, 4), {}))
-          .then(() => canvasApi.sendCreatedUsersCsv(csvfileName))
-          .then(canvasReturnValue => console.log(canvasReturnValue, null, 4))
-          .catch(error => _handleError(error,sisCourseCode))}
+    .then(result => _createCsvFile(msg, sisCourseCode))
+    .then(csvData => {
+      console.info('\nGoing to open file: ' + csvfileName + ' ' + msgfileName)
+      return fs.writeFileAsync(csvfileName, csvData, {})
+    })
+    .then(() => fs.writeFileAsync(msgfileName, JSON.stringify(msg, null, 4), {}))
+    .then(() => canvasApi.sendCreatedUsersCsv(csvfileName))
+    .then(canvasReturnValue => console.log(canvasReturnValue, null, 4))
+    .catch(error => _handleError(error, sisCourseCode))
+}
 
 
 
 
 
-module.exports = function (msg) {
+module.exports = function(msg) {
   console.info('\nProcessing for msg..... ' + msg.ug1Name)
   var msgtype = msg._desc.userType
   if (msg._desc && (msgtype === type.students || msgtype === type.teachers || msgtype === type.assistants)) {
     return _process(msg)
-  }
-  else {
+  } else {
     console.warn('\nThis is something else than students, teacher, assistant, we can probably wait with this until the students is handled', JSON.stringify(msg, null, 4))
     return Promise.resolve("Unknown flag: " + msgtype)
   }
