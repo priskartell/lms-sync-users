@@ -5,7 +5,7 @@
  let body
 
  const queue = sinon.stub().returns({
-   readMessageFromQueue: sinon.stub().returns(Promise.resolve({body: ''}))
+   readMessageFromQueue: sinon.stub().returns(Promise.resolve({body}))
  })
 
  const consumeMessages = proxyquire('../../../consumeMessages.js', {
@@ -19,10 +19,8 @@
  const readMessageStub = sinon.stub()
  consumeMessages.__set__('readMessage', readMessageStub)
 
-
  test('read message without body should call read message again', t => {
    t.plan(1)
-
 
    readMessage()
   .then(res => t.equal(readMessageStub.called, true))
