@@ -5,12 +5,13 @@ const queue = require('node-queue-adapter')(config.secure.azure.queueConnectionS
 
 const {addDescription} = require('message-type')
 const handleMessage = require('./handleMessage')
+
 const deleteMessage = require('./deleteMessage')
 require('colors')
 
-console.log('queue', queue, queue.readMessageFromQueue)
+// console.log('queue', queue, queue.readMessageFromQueue)
 function readMessage() {
-  console.log('.')
+
   let message
   return queue
     .readMessageFromQueue(config.secure.azure.queueName)
@@ -37,4 +38,7 @@ function readMessage() {
       return readMessage()
     })
 }
-readMessage()
+
+module.exports = {
+  readMessage
+}
