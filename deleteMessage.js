@@ -1,6 +1,8 @@
-module.exports = function(message, queue) {
+'use strict'
+
+module.exports = function (message, queue) {
   console.log('Started delete at: ', new Date())
-  promise = queue.deleteMessageFromQueue(message)
+  const promise = queue.deleteMessageFromQueue(message)
   console.log('Finished delete at: ', new Date())
   return promise
 }
