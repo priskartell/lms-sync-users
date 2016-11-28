@@ -117,8 +117,7 @@ function _process (msg) {
 
 
 
-//  return canvasApi.findCourse(sisCourseCode)
-          Promise.resolve("Hej")
+          return canvasApi.findCourse(sisCourseCode)
           .then(() => _createCsvFile(msg,sisCourseCode))
           .then(csvObject=>{console.log(csvObject.csvContent); return csvObject.csvFileName })
           .then(fileName => canvasApi.sendCreatedUsersCsv(fileName))
