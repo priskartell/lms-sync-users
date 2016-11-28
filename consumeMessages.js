@@ -2,12 +2,14 @@
 
 const config = require('./server/init/configuration')
 const queue = require('node-queue-adapter')(config.secure.azure.queueConnectionString)
+
 const {addDescription} = require('message-type')
 const handleMessage = require('./handleMessage')
 const deleteMessage = require('./deleteMessage')
 require('colors')
 
-function readMessage () {
+console.log('queue', queue, queue.readMessageFromQueue)
+function readMessage() {
   console.log('.')
   let message
   return queue
