@@ -19,6 +19,10 @@
     "startDebug": "node --debug-brk app.js",
     "debug": "cross-env NODE_ENV=development concurrently --kill-others \"npm run startDebug\" \"npm run nodeInspector\" \"npm run openDebugBrowser\""
   },
+  "pre-push": [
+    "codecheck",
+    "test"
+  ],
   "dependencies": {
     "blue-tape": "^1.0.0",
     "canvas-api": "github:kth/canvas-api",
@@ -36,6 +40,7 @@
     "concurrently": "^2.2.0",
     "cross-env": "^2.0.0",
     "istanbul": "^0.4.4",
+    "pre-push": "^0.1.1",
     "proxyquire": "^1.7.10",
     "standard": "^7.1.2",
     "tap-spec": "^4.1.1",
