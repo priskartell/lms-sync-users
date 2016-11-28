@@ -4,11 +4,6 @@ const {type} = require('message-type')
 
 module.exports = function (msg) {
 
-  if (! msg.hasOwnProperty('_desc')) {
-    console.warn("\nDescription field is missing....".red,msg)
-    return Promise.resolve("\nMessage type is missing, message not processed by handle message....")
-  }
-
   if (msg._desc.type === type.course) {
     console.info("\nHandling message for course...".green)
     return handleCourseMessage(msg)

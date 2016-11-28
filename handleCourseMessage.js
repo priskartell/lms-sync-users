@@ -6,23 +6,71 @@ const fs = Promise.promisifyAll(require('fs'))
 const colors = require('colors')
 
 
-function _process (msg) {
 
-  let course = null
-  let termin = null
-  let year = null
-  let ladok = null
-  let sisCourseCode = null
-  let myRe = null
-  let myArray = []
+
+function _handleError(err,sisCourseCode) {
+    let eCode = err.statusCode
+    if (eCode === 404) // The course code is not in canvas, do nothing.....
+    {
+      console.warn("Course does not exist in canvas, skipping, ".red + sisCourseCode.red)
+      return Promise.resolve("Course does not exist in canvas")
+    }
+
+    if (eCode >= 400) // Besides course not in Canvas, Probably an other type of problem with canvas.....
+    {
+      console.warn("Canvas is not accessable, Invalid token or other Canvas related errors..... ".red + sisCourseCode.red)
+    }
+    else { //It is an error and unrelated to the Canvas HTTP requests, probably IO errors
+      console.warn("Other error..... ".red + sisCourseCode.red)
+    }
+
+    return Promise.reject(err)
+}
+
+
+
+function _createCsvFile(msg,sisCourseCode) {
+  let d = Date.now();
   let header = 'course_id,user_id,role,status\n'
-  let csvString = ''
-  let data = ''
   let msgtype = msg._desc.userType
-  let d = 0
-  let end = 0
-  let csvfileName = './CSV/' + 'enrollments_' + msgtype + '_'
-  let msgfileName = './MSG/' + 'msg_' + msgtype + '_'
+  let fileName = 'enrollments.' + msgtype + '.' + sisCourseCode + "." + d
+  let csvFileName = "./CSV/" + fileName + ".csv"
+  let msgFileName = "./MSG/" + fileName + ".msg"
+  let csvString = ""
+
+if (msg.member && msg.member.length > 0)
+{
+let csvArray = msg.member.map(user => {
+  csvObj = {}
+  csvObj["course_id"] = sisCourseCode
+  csvObj["user_id"] = user
+  csvObj["role"] = msgtype
+  csvObj["status"] =  "active"
+  return csvObj
+})
+csvArray.forEach(csvRow=> csvString = csvString + `${csvRow.course_id},${csvRow.user_id},${csvRow.role},${csvRow.status}\n`)
+}
+
+let csvData = header + csvString
+console.info('\nGoing to open file: ' + csvFileName + ' ' + msgFileName)
+fs.writeFileAsync(csvFileName, csvData, {})
+fs.writeFileAsync(msgFileName, msg, {})
+return {"csvContent": csvData, "csvFileName": csvFileName}
+
+}
+
+
+
+function _process (msg) {
+   let course = null
+   let termin = null
+   let year = null
+   let ladok = null
+   let sisCourseCode = null
+   let myRe = null
+   let myArray = []
+   let msgtype = msg._desc.userType
+
 
   if (msgtype === type.students) { // ladok2.kurser.DM.2517.registrerade_20162.1
     myRe = /^(\w+).(\w+).(\w+).(\w+).(\w+)_(\d\d)(\d\d)(\d).(\d+)/g
@@ -63,33 +111,20 @@ function _process (msg) {
       return Promise.resolve("Key parse error, Teacher or Assistant")
     }
   }
-  d = new Date()
+
+
   console.info(`\nIn _process ${sisCourseCode}, processing for ${msgtype}`)
-  csvfileName = csvfileName + sisCourseCode + '_' + d + '.csv'
-  msgfileName = msgfileName + sisCourseCode + '.' + d + '.msg'
 
 
-  return canvasApi.getCourse(sisCourseCode)
-      .then(result => {
-    msg.member.map(user => csvString += `${sisCourseCode},${user},${msgtype}, active\n`)
-  let data = header + csvString
-  console.info(data)
-  console.info('\nGoing to open file: ' + csvfile + ' ' + msgfile)
-  return fs.writeFileAsync(csvfile, data, {})
-          .then(() => fs.writeFileAsync(msgfile, JSON.stringify(msg, null, 4), {}))
-.then(() => canvasApi.sendCreatedUsersCsv(csvfile))
-.then(canvasReturnValue => console.log(canvasReturnValue, null, 4))
-})
-.catch(error=> {
-  if (error.indexOf('StatusCodeError: 404') >= 0) // The course code is not in canvas, do nothing.....
-{
-  console.warn("Course does not exist in canvas, skipping, ".red + sisCourseCode.red)
-  return Promise.resolve("Course does not exist in canvas")
-}
-else {
-  // These are errors related to creating a file or sending CSV file to Canvas through the API
-  return Promise.resolve("Error in handleCourseMessage, _process function" + JSON.stringify(error,null,4))}})
-}
+
+//  return canvasApi.findCourse(sisCourseCode)
+          Promise.resolve("Hej")
+          .then(() => _createCsvFile(msg,sisCourseCode))
+          .then(csvObject=>{console.log(csvObject.csvContent); return csvObject.csvFileName })
+          .then(fileName => canvasApi.sendCreatedUsersCsv(fileName))
+          .then(canvasReturnValue => console.log(canvasReturnValue, null, 4))
+          .catch(error => _handleError(error,sisCourseCode))
+        }
 
 
 
