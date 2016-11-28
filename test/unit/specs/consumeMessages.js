@@ -2,10 +2,10 @@
  require('rewire-global').enable()
  const sinon = require('sinon')
  const proxyquire = require('proxyquire').noCallThru()
- let body
 
+ const readMessageFromQueueStub = sinon.stub()
  const queue = sinon.stub().returns({
-   readMessageFromQueue: sinon.stub().returns(Promise.resolve({body}))
+   readMessageFromQueue: readMessageFromQueueStub
  })
 
  const consumeMessages = proxyquire('../../../consumeMessages.js', {
@@ -21,6 +21,7 @@
 
  test('read message without body should call read message again', t => {
    t.plan(1)
+   readMessageFromQueueStub.returns(Promise.resolve({}))
 
    readMessage()
   .then(res => t.equal(readMessageStub.called, true))
@@ -28,9 +29,17 @@
 
  test('read message with incorrect body should call read message again', t => {
    t.plan(1)
-   body = ''
+   readMessageFromQueueStub.returns(Promise.resolve({body: ''}))
 
    readMessage()
-  .then(res => t.equal(readMessageStub.called, true)
-  )
+   .then(res => t.equal(readMessageStub.called, true)
+   )
+ })
+
+ test('read message with correct body should call read message again', t => {
+   t.plan(1)
+   readMessageFromQueueStub.returns(Promise.resolve({body: '{}'}))
+
+   readMessage()
+    .then(res => t.equal(readMessageStub.called, true))
  })
