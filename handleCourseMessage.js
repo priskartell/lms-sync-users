@@ -2,7 +2,7 @@ const {type} = require('message-type')
 const config = require('./server/init/configuration')
 const canvasApi = require('canvas-api')(config.full.canvas.apiUrl, config.secure.canvas.apiKey)
 const Promise = require('bluebird')
-const fs = require('fs')
+const fs = Promise.promisifyAll(require('fs'))
 const colors = require('colors')
 
 
@@ -53,8 +53,8 @@ csvArray.forEach(csvRow=> csvString = csvString + `${csvRow.course_id},${csvRow.
 
 let csvData = header + csvString
 console.info('\nGoing to open file: ' + csvFileName + ' ' + msgFileName)
-fs.writeFileSync(csvFileName, csvData, 'utf8') // we are in a promise chain, if error thrown it shoud be cateched in error handling funciton
-fs.writeFileSync(msgFileName, msg, 'utf8')
+fs.writeFileSync(csvFileName, csvData, {}) // we are in a promise chain, if error thrown it shoud be cateched in error handling funciton
+fs.writeFileSync(msgFileName, msg, {})
 return {"csvContent": csvData, "csvFileName": csvFileName}
 
 }
