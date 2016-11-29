@@ -4,6 +4,8 @@ const {type} = require('message-type')
 const canvasApi = require('../canvasApi')
 const Promise = require('bluebird')
 const fs = Promise.promisifyAll(require('fs'))
+const azureStorage = require("../azureStorage")
+
 require('colors')
 
 function _handleError (err, sisCourseCode) {
@@ -51,7 +53,10 @@ function _createCsvFile (msg, sisCourseCode) {
 
   return fs.writeFileAsync(csvFileName, csvData, {}) // we are in a promise chain, if error thrown it shoud be cateched in error handling funciton
     .then(() => fs.writeFileAsync(msgFileName, msg, {}))
-    .then(() => { return {csvContent: csvData, csvFileName: csvFileName} })
+    .then(() => azureStorage.cloudStore(csvFileName))
+    .then(result => {console.log(result); return azureStorage.cloudStore(msgFileName)})
+    .then(result => {console.log(result); return {csvContent: csvData, csvFileName: csvFileName} })
+
 }
 
 function _process (msg) {
@@ -103,10 +108,9 @@ function _process (msg) {
     }
   }
 
-  console.info(`
-In _process ${sisCourseCode}, processing for ${msgtype}`)
+  console.info(`In _process ${sisCourseCode}, processing for ${msgtype}`)
 
-  return canvasApi.findCourse(sisCourseCode)
+    return canvasApi.findCourse(sisCourseCode)
     .then(() => _createCsvFile(msg, sisCourseCode))
     .then(csvObject => {
       console.log(csvObject.csvContent)
