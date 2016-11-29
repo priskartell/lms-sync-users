@@ -1,8 +1,8 @@
 'use strict'
 
 const log = require('kth-node-log')
-const config = require('../configuration')
-const packageFile = require('../../../package.json')
+const config = require('./configuration')
+const packageFile = require('../../package.json')
 const path = require('path')
 const fs = require('fs')
 
