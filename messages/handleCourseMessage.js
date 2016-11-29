@@ -7,7 +7,7 @@ var Promise = require('bluebird')
 const fs = Promise.promisifyAll(require('fs'))
 require('colors')
 
-function _parseError(err) {
+function _parseError (err) {
   // this function has to parse the error string, due to canvas API Promise rejecting error as a string, to be addressed later
   let errorCodeString = 'StatusCodeError:'
   let errorCode = false
@@ -25,7 +25,7 @@ function _parseError(err) {
   return false
 }
 
-function _handleError(err, sisCourseCode) {
+function _handleError (err, sisCourseCode) {
   if (typeof (err) === 'string') {
     let eCode = _parseError(err)
     if (eCode === 404) {
@@ -44,7 +44,7 @@ function _handleError(err, sisCourseCode) {
   return Promise.reject(err)
 }
 
-function _createCsvFile(msg, sisCourseCode) {
+function _createCsvFile (msg, sisCourseCode) {
   let data = ''
   let csvString = ''
   let msgtype = msg._desc.userType
@@ -58,7 +58,7 @@ function _createCsvFile(msg, sisCourseCode) {
   return data
 }
 
-function _process(msg) {
+function _process (msg) {
   let course = null
   let termin = null
   let year = null
@@ -128,7 +128,7 @@ In_process ${sisCourseCode}, processingfor ${msgtype}`)
     .catch(error => _handleError(error, sisCourseCode))
 }
 
-module.exports = function(msg) {
+module.exports = function (msg) {
   console.info('\nProcessing for msg..... ' + msg.ug1Name)
   var msgtype = msg._desc.userType
   if (msg._desc && (msgtype === type.students || msgtype === type.teachers || msgtype === type.assistants)) {
