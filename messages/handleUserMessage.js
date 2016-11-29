@@ -1,11 +1,11 @@
 'use strict'
 
-const config = require('./server/init/configuration')
+const config = require('../server/init/configuration')
 const canvasApi = require('canvas-api')(config.full.canvas.apiUrl, config.secure.canvas.apiKey)
 var Promise = require('bluebird')
 require('colors')
 
-function isInScope (msg) {
+function isInScope(msg) {
   var affArray = msg.affiliation
   if (affArray && (affArray.indexOf('employee') >= 0 || affArray.indexOf('student') >= 0)) {
     return true
@@ -13,7 +13,7 @@ function isInScope (msg) {
   return false
 }
 
-function createCanvasUser (msg) {
+function createCanvasUser(msg) {
   // UG_USER_ATTRIBUTES=kthid,username,family_name,given_name,affiliation,email_address,primary_email
 
   if (msg.username && (msg.given_name || msg.family_name) && msg.kthid) {
@@ -33,7 +33,7 @@ function createCanvasUser (msg) {
   }
 }
 
-module.exports = function (msg) {
+module.exports = function(msg) {
   console.info('\nProcessing for user msg..... ' + msg.ugClass + ' ' + msg.kthid, ' msg affiliation ', msg.affiliation)
   if (isInScope(msg)) {
     let user = createCanvasUser(msg)

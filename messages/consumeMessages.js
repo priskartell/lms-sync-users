@@ -1,6 +1,6 @@
 'use strict'
 
-const config = require('./server/init/configuration')
+const config = require('../server/init/configuration')
 const queue = require('node-queue-adapter')(config.secure.azure.queueConnectionString)
 
 const {addDescription} = require('message-type')
@@ -10,7 +10,7 @@ const deleteMessage = require('./deleteMessage')
 require('colors')
 
 // console.log('queue', queue, queue.readMessageFromQueue)
-function readMessage () {
+function readMessage() {
   let message
   return queue
     .readMessageFromQueue(config.secure.azure.queueName)
