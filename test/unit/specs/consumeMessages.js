@@ -4,7 +4,10 @@ require('rewire-global').enable()
 const sinon = require('sinon')
 const proxyquire = require('proxyquire').noCallThru()
 
-require('kth-node-log').init({level: 'info'})
+require('kth-node-log').init({level: 'error',  name: 'packageFile.name',
+  console: {
+    enabled: true
+  }})
 
 const readMessageFromQueueStub = sinon.stub()
 const deleteMessageFromQueue = sinon.stub()
