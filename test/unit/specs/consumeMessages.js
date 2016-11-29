@@ -37,7 +37,7 @@ test('read message without body should call read message again', t => {
   readMessage()
     .then(res => {
       t.equal(readMessageStub.called, true)
-      t.equal(deleteMessageFromQueue.called, false)
+      t.equal(deleteMessageFromQueue.called, true)
     })
 })
 
@@ -65,7 +65,7 @@ test('read message with incorrect body should call read message again', t => {
   readMessage()
     .then(res => {
       t.equal(readMessageStub.called, true)
-      t.equal(deleteMessageFromQueue.called, false) // its ok to keep these messages. They will eventually be moved to the error queue where they will be reported as incorrect messages
+      t.equal(deleteMessageFromQueue.called, true) // its ok to keep these messages. They will eventually be moved to the error queue where they will be reported as incorrect messages
     })
 })
 
