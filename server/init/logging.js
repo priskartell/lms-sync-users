@@ -43,3 +43,4 @@ if (configuration.logstash) {
 }
 
 log.init(logConfiguration)
+module.exports = log

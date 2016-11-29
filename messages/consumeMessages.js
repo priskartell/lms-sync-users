@@ -2,10 +2,9 @@
 
 const config = require('../server/init/configuration')
 const queue = require('node-queue-adapter')(config.secure.azure.queueConnectionString)
-
+const log = require('../server/init/logging')
 const {addDescription} = require('message-type')
 const handleMessage = require('./handleMessage')
-
 require('colors')
 
 // console.log('queue', queue, queue.readMessageFromQueue)
@@ -30,8 +29,8 @@ function readMessage () {
     .then(readMessage)
     .catch(e => {
       if (e.message !== 'abort_chain') {
-        console.log('\nAn Error occured.....')
-        console.error('Exception: ', e)
+        log.info('\nAn Error occured.....')
+        log.error('Exception: ', e)
       }
       return readMessage()
     })
