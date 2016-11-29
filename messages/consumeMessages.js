@@ -26,7 +26,7 @@ function readMessage () {
     .then(msg => JSON.parse(msg.body))
     .then(addDescription)
     .then(handleMessage)
-    .then(()=> queue.deleteMessageFromQueue(message))
+    .then(() => queue.deleteMessageFromQueue(message))
     .then(readMessage)
     .catch(e => {
       if (e.message !== 'abort_chain') {
