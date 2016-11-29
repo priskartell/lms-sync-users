@@ -8,6 +8,7 @@
   "scripts": {
     "test": "cross-env NODE_ENV=development tape \"test/**/*.js\" | tap-spec",
     "coverage": "cross-env NODE_ENV=development istanbul cover tape -- \"messages/*.js\" -- \"server/**/*.js\" -- \"test/**/*.js\"",
+    "verify": "npm test && npm run codecheck",
     "codecheck": "standard",
     "postversion": "git push && git push --tags",
     "nodeInspector": "node-inspector --web-port 8890",

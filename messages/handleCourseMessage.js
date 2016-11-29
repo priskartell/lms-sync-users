@@ -1,8 +1,7 @@
 'use strict'
 
 const {type} = require('message-type')
-const config = require('../server/init/configuration')
-const canvasApi = require('canvas-api')(config.full.canvas.apiUrl, config.secure.canvas.apiKey)
+const canvasApi = require('../canvasApi')
 var Promise = require('bluebird')
 const fs = Promise.promisifyAll(require('fs'))
 require('colors')

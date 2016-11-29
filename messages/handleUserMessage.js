@@ -1,7 +1,6 @@
 'use strict'
 
-const config = require('../server/init/configuration')
-const canvasApi = require('canvas-api')(config.full.canvas.apiUrl, config.secure.canvas.apiKey)
+const canvasApi = require('../canvasApi')
 var Promise = require('bluebird')
 require('colors')
 
