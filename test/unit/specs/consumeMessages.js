@@ -4,7 +4,8 @@ require('rewire-global').enable()
 const sinon = require('sinon')
 const proxyquire = require('proxyquire').noCallThru()
 
-require('kth-node-log').init({level: 'error',  name: 'packageFile.name',
+require('kth-node-log').init({
+  level: 'error',
   console: {
     enabled: true
   }})

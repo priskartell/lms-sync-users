@@ -35,7 +35,10 @@ function readMessage () {
   let message
   return queue
     .readMessageFromQueue(config.secure.azure.queueName)
-    .then(msg => message = msg)
+    .then(msg => {
+      message = msg
+      return message
+    })
     .then(abortIfNoMessage)
     .then(parseBody)
     .then(addDescription)
