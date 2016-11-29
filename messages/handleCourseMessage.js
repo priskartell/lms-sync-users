@@ -51,12 +51,7 @@ function _createCsvFile (msg, sisCourseCode) {
 
   return fs.writeFileAsync(csvFileName, csvData, {}) // we are in a promise chain, if error thrown it shoud be cateched in error handling funciton
     .then(() => fs.writeFileAsync(msgFileName, msg, {}))
-    .then(() => {
-      let returnObject = {}
-      returnObject['csvContent'] = csvData
-      returnObject['csvFileName'] = csvFileName
-      return returnObject
-    })
+    .then(() => { return {csvContent: csvData, csvFileName: csvFileName} })
 }
 
 function _process (msg) {
@@ -114,7 +109,8 @@ In _process ${sisCourseCode}, processing for ${msgtype}`)
   return canvasApi.findCourse(sisCourseCode)
     .then(() => _createCsvFile(msg, sisCourseCode))
     .then(csvObject => {
-      console.log(csvObject.csvContent); return csvObject.csvFileName
+      console.log(csvObject.csvContent)
+      return csvObject.csvFileName
     })
     .then(fileName => canvasApi.sendCsvFile(fileName))
     .then(canvasReturnValue => console.log(JSON.parse(canvasReturnValue)))
