@@ -1,7 +1,7 @@
 const {type} = require('message-type')
 const config = require('./server/init/configuration')
 const canvasApi = require('canvas-api')(config.full.canvas.apiUrl, config.secure.canvas.apiKey)
-var Promise = require('bluebird')
+const Promise = require('bluebird')
 const fs = require('fs')
 const colors = require('colors')
 
