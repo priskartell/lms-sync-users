@@ -6,7 +6,6 @@ const queue = require('node-queue-adapter')(config.secure.azure.queueConnectionS
 const {addDescription} = require('message-type')
 const handleMessage = require('./handleMessage')
 
-const deleteMessage = require('./deleteMessage')
 require('colors')
 
 // console.log('queue', queue, queue.readMessageFromQueue)
@@ -27,7 +26,7 @@ function readMessage () {
     .then(msg => JSON.parse(msg.body))
     .then(addDescription)
     .then(handleMessage)
-    .then(() => deleteMessage(message, queue))
+    .then(()=> queue.deleteMessageFromQueue(message))
     .then(readMessage)
     .catch(e => {
       if (e.message !== 'abort_chain') {
