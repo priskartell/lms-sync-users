@@ -53,10 +53,14 @@ csvArray.forEach(csvRow=> csvString = csvString + `${csvRow.course_id},${csvRow.
 
 let csvData = header + csvString
 console.info('\nGoing to open file: ' + csvFileName + ' ' + msgFileName)
-fs.writeFileSync(csvFileName, csvData, {}) // we are in a promise chain, if error thrown it shoud be cateched in error handling funciton
-fs.writeFileSync(msgFileName, msg, {})
-return {"csvContent": csvData, "csvFileName": csvFileName}
 
+return fs.writeFileAsync(csvFileName, csvData, {}) // we are in a promise chain, if error thrown it shoud be cateched in error handling funciton
+.then(()=> fs.writeFileAsync(msgFileName, msg, {}))
+.then(()=> {
+  let returnObject = {}
+  returnObject["csvContent"] = csvData
+  returnObject["csvFileName"] = csvFileName
+  return returnObject})
 }
 
 
@@ -121,7 +125,7 @@ function _process (msg) {
           .then(() => _createCsvFile(msg,sisCourseCode))
           .then(csvObject=>{console.log(csvObject.csvContent); return csvObject.csvFileName })
           .then(fileName => canvasApi.sendCsvFile(fileName))
-          .then(canvasReturnValue => console.log(canvasReturnValue, null, 4))
+          .then(canvasReturnValue => console.log(JSON.parse(canvasReturnValue)))
           .catch(error => _handleError(error,sisCourseCode))
         }
 
