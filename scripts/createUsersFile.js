@@ -33,12 +33,8 @@ const client = ldap.createClient({
 
 writeLine(headers, fileName)
 
-client.bind(config.secure.ldap.bind.username, config.secure.ldap.bind.password, function (err) {
-  if (err) {
-    throw err
-  }
-
-  ['employee', 'student'].forEach(type => {
+function appendUsers (type) {
+  return new Promise((resolve, reject) => {
     let counter = 0
 
     const opts = {
@@ -66,7 +62,20 @@ client.bind(config.secure.ldap.bind.username, config.secure.ldap.bind.password, 
       })
       res.on('end', function (result) {
         console.log('Done with ', type, counter)
+        resolve()
       })
     })
   })
+}
+
+client.bind(config.secure.ldap.bind.username, config.secure.ldap.bind.password, function (err) {
+  if (err) {
+    throw err
+  }
+
+  Promise.all([
+    appendUsers('employee'),
+    appendUsers('student')])
+    .then(result => client.unbind())
+    .then(() => console.log('Done with creating the file', fileName))
 })
