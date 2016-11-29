@@ -28,6 +28,14 @@ test('read message without body should call read message again', t => {
     .then(res => t.equal(readMessageStub.called, true))
 })
 
+test('read message without message should call read message again', t => {
+  t.plan(1)
+  readMessageFromQueueStub.returns(Promise.resolve())
+
+  readMessage()
+    .then(res => t.equal(readMessageStub.called, true))
+})
+
 test('read message with incorrect body should call read message again', t => {
   t.plan(1)
   readMessageFromQueueStub.returns(Promise.resolve({

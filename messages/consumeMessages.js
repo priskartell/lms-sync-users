@@ -10,7 +10,7 @@ const deleteMessage = require('./deleteMessage')
 require('colors')
 
 // console.log('queue', queue, queue.readMessageFromQueue)
-function readMessage () {
+function readMessage() {
   let message
   return queue
     .readMessageFromQueue(config.secure.azure.queueName)
