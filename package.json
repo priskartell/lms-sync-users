@@ -1,13 +1,14 @@
 {
   "//": "The production flag is added in the jenkins build script.",
-  "name": "node-api",
+  "name": "lms-sync",
   "version": "1.0.0",
   "description": "Node.js based API template application.",
   "main": "app.js",
   "private": true,
   "scripts": {
-    "test": "tape \"test/**/*.js\" | tap-spec",
-    "test:coverage": "istanbul cover tape -- \"test/**/*.js\"",
+    "test": "cross-env NODE_ENV=development tape \"test/**/*.js\" | tap-spec",
+    "coverage": "cross-env NODE_ENV=development istanbul cover tape -- \"messages/*.js\" -- \"server/**/*.js\" -- \"test/**/*.js\"",
+    "verify": "npm test && npm run codecheck",
     "codecheck": "standard",
     "postversion": "git push && git push --tags",
     "nodeInspector": "node-inspector --web-port 8890",
@@ -42,6 +43,9 @@
     "istanbul": "^0.4.4",
     "pre-push": "^0.1.1",
     "proxyquire": "^1.7.10",
+    "rewire": "^2.5.2",
+    "rewire-global": "^1.0.11",
+    "sinon": "^1.17.6",
     "standard": "^7.1.2",
     "tap-spec": "^4.1.1",
     "tape": "^4.6.0"
