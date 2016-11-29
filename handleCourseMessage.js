@@ -2,7 +2,7 @@ const {type} = require('message-type')
 const config = require('./server/init/configuration')
 const canvasApi = require('canvas-api')(config.full.canvas.apiUrl, config.secure.canvas.apiKey)
 var Promise = require('bluebird')
-const fs = Promise.promisifyAll(require('fs'))
+const fs = require('fs')
 const colors = require('colors')
 
 
@@ -53,8 +53,8 @@ csvArray.forEach(csvRow=> csvString = csvString + `${csvRow.course_id},${csvRow.
 
 let csvData = header + csvString
 console.info('\nGoing to open file: ' + csvFileName + ' ' + msgFileName)
-fs.writeFileAsync(csvFileName, csvData, {})
-fs.writeFileAsync(msgFileName, msg, {})
+fs.writeFileSync(csvFileName, csvData, 'utf8') // we are in a promise chain, if error thrown it shoud be cateched in error handling funciton
+fs.writeFileSync(msgFileName, msg, 'utf8')
 return {"csvContent": csvData, "csvFileName": csvFileName}
 
 }
@@ -120,7 +120,7 @@ function _process (msg) {
           return canvasApi.findCourse(sisCourseCode)
           .then(() => _createCsvFile(msg,sisCourseCode))
           .then(csvObject=>{console.log(csvObject.csvContent); return csvObject.csvFileName })
-          .then(fileName => canvasApi.sendCreatedUsersCsv(fileName))
+          .then(fileName => canvasApi.sendCsvFile(fileName))
           .then(canvasReturnValue => console.log(canvasReturnValue, null, 4))
           .catch(error => _handleError(error,sisCourseCode))
         }
