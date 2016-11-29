@@ -22,7 +22,7 @@ const readMessage = consumeMessages.readMessage
 const readMessageStub = sinon.stub()
 consumeMessages.__set__('readMessage', readMessageStub)
 
-function reset() {
+function reset () {
   readMessageFromQueueStub.reset()
   deleteMessageFromQueue.reset()
 }
