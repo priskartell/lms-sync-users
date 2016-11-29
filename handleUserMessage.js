@@ -38,7 +38,7 @@ module.exports = function(msg) {
     let user = createCanvasUser(msg)
     if (user) {
       console.log("User object is ready to be sent to Canvas API: ", JSON.stringify(user, null, 4))
-      return canvasApi.getUser(user.pseudonym.unique_id)
+      return canvasApi.getUser(user.pseudonym.sis_user_id)
         .then(userFromCanvas => canvasApi.updateUser(user, userFromCanvas.id))
         .catch(e => {
           console.log("Error".yellow, e)
