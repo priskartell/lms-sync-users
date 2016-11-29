@@ -11,13 +11,12 @@ function parseBody (msg) {
   return Promise.resolve()
   .then(() => JSON.parse(msg.body))
   .catch(e => {
-    console.warn('an error occured while trying to parse json:', e, msg)
+    log.warn('an error occured while trying to parse json:', e, msg)
     queue.deleteMessageFromQueue(msg)
     throw e
   })
 }
 
-// console.log('queue', queue, queue.readMessageFromQueue)
 function readMessage () {
   let message
   return queue
