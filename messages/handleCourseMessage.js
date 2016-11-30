@@ -24,13 +24,16 @@ function _handleError (err, sisCourseCode) {
   return Promise.reject(err)
 }
 
+function _createCsvFileCloud(fileName,data) {
+  return azureStorage.cloudStoreTextToFile(fileName,data)
+}
+
 function _createCsvFile (msg, sisCourseCode) {
   let d = Date.now()
   let header = 'course_id,user_id,role,status\n'
   let msgtype = msg._desc.userType
-  let fileName = 'enrollments.' + msgtype + '.' + sisCourseCode + '.' + d
-  let csvFileName = './CSV/' + fileName + '.csv'
-  let msgFileName = './MSG/' + fileName + '.msg'
+  let csvFileName = 'enrollments.' + msgtype + '.' + sisCourseCode + '.' + d + ".csv"
+  let msgFileName = 'enrollments.' + msgtype + '.' + sisCourseCode + '.' + d + ".msg"
   let csvString = ''
 
   if (msg.member && msg.member.length > 0) {
@@ -51,11 +54,9 @@ function _createCsvFile (msg, sisCourseCode) {
   let csvData = header + csvString
   console.info('\nGoing to open file: ' + csvFileName + ' ' + msgFileName)
 
-  return fs.writeFileAsync(csvFileName, csvData, {}) // we are in a promise chain, if error thrown it shoud be cateched in error handling funciton
-    .then(() => fs.writeFileAsync(msgFileName, msg, {}))
-    .then(() => azureStorage.cloudStore(csvFileName))
-    .then(result => { console.log(result); return azureStorage.cloudStore(msgFileName) })
-    .then(result => { console.log(result); return {csvContent: csvData, csvFileName: csvFileName} })
+  return azureStorage.cloudStoreTextToFile(csvFileName,csvData)
+  .then(result=>{console.info(result); return azureStorage.cloudStoreTextToFile(msgFileName,msg)})
+  .then(result=>{console.info(result); return {csvContent: csvData, csvFileName: csvFileName}})
 }
 
 function _process (msg) {
@@ -109,8 +110,8 @@ function _process (msg) {
 
   console.info(`In _process ${sisCourseCode}, processing for ${msgtype}`)
 
-    return canvasApi.findCourse(sisCourseCode)
-    // return Promise.resolve("gurka")
+  // return canvasApi.findCourse(sisCourseCode)
+     return Promise.resolve("gurka")
     .then(() => _createCsvFile(msg, sisCourseCode))
     .then(csvObject => {
       console.log(csvObject.csvContent)
