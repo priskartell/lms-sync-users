@@ -50,8 +50,8 @@ function _createCsvFile (msg, sisCourseCode) {
   console.info('\nGoing to open file: ' + csvFileName + ' ' + msgFileName)
   let messageText = JSON.stringify(msg, null, 4)
   return azureStorage.cloudStoreTextToFile(csvFileName, csvData)
-  .then(result => { console.info(result); return azureStorage.cloudStoreTextToFile(msgFileName, messageText)})
-  .then(()=> azureStorage.cloudgetFile(csvFileName))
+  .then(result => { console.info(result); return azureStorage.cloudStoreTextToFile(msgFileName, messageText) })
+  .then(() => azureStorage.cloudgetFile(csvFileName))
   .then(result => { console.info(result); return {csvContent: csvData, csvFileName: result} })
 }
 
@@ -106,8 +106,7 @@ function _process (msg) {
 
   console.info(`In _process ${sisCourseCode}, processing for ${msgtype}`)
 
-  // return canvasApi.findCourse(sisCourseCode)
-  return Promise.resolve('gurka')
+  return canvasApi.findCourse(sisCourseCode)
     .then(() => _createCsvFile(msg, sisCourseCode))
     .then(csvObject => {
       console.log(csvObject.csvContent)

@@ -112,17 +112,17 @@ function _getFileFromAzure (fileName) {
   fileName = fileName.trim()
   let filetypeIndex = -3
   let container = 'lms' + fileName.slice(filetypeIndex)
-  let localFileName = "./CSV/" + fileName
+  let localFileName = './CSV/' + fileName
 
   return new Promise(function (resolve, reject) {
-  blobSvc.getBlobToStream(container, fileName, fs.createWriteStream(localFileName), function (error, result, response) {
-    if (!error) {
-      console.info('File: ' + fileName + 'retrived from Azure....\n')
-      resolve(localFileName)
-    }
-    reject(error)
+    blobSvc.getBlobToStream(container, fileName, fs.createWriteStream(localFileName), function (error, result, response) {
+      if (!error) {
+        console.info('File: ' + fileName + 'retrived from Azure....\n')
+        resolve(localFileName)
+      }
+      reject(error)
+    })
   })
-})
 }
 
 function _delFileFromAzure (fileName) {
