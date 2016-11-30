@@ -48,10 +48,11 @@ function _createCsvFile (msg, sisCourseCode) {
 
   let csvData = header + csvString
   console.info('\nGoing to open file: ' + csvFileName + ' ' + msgFileName)
-  let messageText = JSON.stringify(msg,null,4)
+  let messageText = JSON.stringify(msg, null, 4)
   return azureStorage.cloudStoreTextToFile(csvFileName, csvData)
-  .then(result => { console.info(result); return azureStorage.cloudStoreTextToFile(msgFileName, messageText) })
-  .then(result => { console.info(result); return {csvContent: csvData, csvFileName: csvFileName} })
+  .then(result => { console.info(result); return azureStorage.cloudStoreTextToFile(msgFileName, messageText)})
+  .then(()=> azureStorage.cloudgetFile(csvFileName))
+  .then(result => { console.info(result); return {csvContent: csvData, csvFileName: result} })
 }
 
 function _process (msg) {

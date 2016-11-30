@@ -85,8 +85,8 @@ function _listFilesInAzure (containerName) {
       let transArrayText = JSON.stringify(result.entries)
       let transArray = JSON.parse(transArrayText)
       let counter = 0
-      console.info("listing files in cloud container: " + containerName + "\n")
-      transArray.forEach(trans => { counter += 1; transLogListCsv = transLogListCsv + "[ " + counter + " ] " +  trans.name + '    ' + trans.lastModified + '\n' })
+      console.info('listing files in cloud container: ' + containerName + '\n')
+      transArray.forEach(trans => { counter += 1; transLogListCsv = transLogListCsv + '[ ' + counter + ' ] ' + trans.name + '    ' + trans.lastModified + '\n' })
       console.log(transLogListCsv)
       return transArray
       // result.entries contains the entries
@@ -112,15 +112,17 @@ function _getFileFromAzure (fileName) {
   fileName = fileName.trim()
   let filetypeIndex = -3
   let container = 'lms' + fileName.slice(filetypeIndex)
+  let localFileName = "./CSV/" + fileName
 
-  blobSvc.getBlobToStream(container, fileName, fs.createWriteStream(fileName), function (error, result, response) {
+  return new Promise(function (resolve, reject) {
+  blobSvc.getBlobToStream(container, fileName, fs.createWriteStream(localFileName), function (error, result, response) {
     if (!error) {
       console.info('File: ' + fileName + 'retrived from Azure....\n')
-      return
+      resolve(localFileName)
     }
-    console.log(error)
-    return
+    reject(error)
   })
+})
 }
 
 function _delFileFromAzure (fileName) {
