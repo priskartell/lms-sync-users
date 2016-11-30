@@ -6,10 +6,11 @@ require('colors')
 
 function isInScope (msg) {
   var affArray = msg.affiliation
-  if (affArray && (affArray.indexOf('employee') >= 0 || affArray.indexOf('student') >= 0)) {
+  if (affArray && (affArray.includes('employee') || affArray.includes('student'))) {
     return true
+  } else {
+    return false
   }
-  return false
 }
 
 function createCanvasUser (msg) {
@@ -28,7 +29,7 @@ function createCanvasUser (msg) {
     }
     return user
   } else {
-    return false
+    return
   }
 }
 
@@ -50,7 +51,7 @@ module.exports = function (msg) {
     //      return Promise.resolve("USER UPDATE/CREATION IS DONE")
     //  })
     } else {
-      console.log('\nIncomplete fields to create user in cavas.....')
+      console.log('\nIncomplete fields to create user in canvas.....')
       return Promise.resolve('User fields are missing...')
     }
   } else {

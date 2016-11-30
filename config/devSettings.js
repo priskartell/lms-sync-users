@@ -6,7 +6,7 @@ module.exports = {
   },
   logging: {
     log: {
-      level: 'info'
+      level: 'debug'
     }
   },
   ldap: {
