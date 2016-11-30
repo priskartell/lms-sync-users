@@ -3,7 +3,6 @@
 const {type} = require('message-type')
 const canvasApi = require('../canvasApi')
 const Promise = require('bluebird')
-const fs = Promise.promisifyAll(require('fs'))
 const azureStorage = require('../azureStorage')
 
 require('colors')
@@ -24,16 +23,12 @@ function _handleError (err, sisCourseCode) {
   return Promise.reject(err)
 }
 
-function _createCsvFileCloud(fileName,data) {
-  return azureStorage.cloudStoreTextToFile(fileName,data)
-}
-
 function _createCsvFile (msg, sisCourseCode) {
   let d = Date.now()
   let header = 'course_id,user_id,role,status\n'
   let msgtype = msg._desc.userType
-  let csvFileName = 'enrollments.' + msgtype + '.' + sisCourseCode + '.' + d + ".csv"
-  let msgFileName = 'enrollments.' + msgtype + '.' + sisCourseCode + '.' + d + ".msg"
+  let csvFileName = 'enrollments.' + msgtype + '.' + sisCourseCode + '.' + d + '.csv'
+  let msgFileName = 'enrollments.' + msgtype + '.' + sisCourseCode + '.' + d + '.msg'
   let csvString = ''
 
   if (msg.member && msg.member.length > 0) {
@@ -53,10 +48,10 @@ function _createCsvFile (msg, sisCourseCode) {
 
   let csvData = header + csvString
   console.info('\nGoing to open file: ' + csvFileName + ' ' + msgFileName)
-
-  return azureStorage.cloudStoreTextToFile(csvFileName,csvData)
-  .then(result=>{console.info(result); return azureStorage.cloudStoreTextToFile(msgFileName,msg)})
-  .then(result=>{console.info(result); return {csvContent: csvData, csvFileName: csvFileName}})
+  let messageText = JSON.stringify(msg,null,4)
+  return azureStorage.cloudStoreTextToFile(csvFileName, csvData)
+  .then(result => { console.info(result); return azureStorage.cloudStoreTextToFile(msgFileName, messageText) })
+  .then(result => { console.info(result); return {csvContent: csvData, csvFileName: csvFileName} })
 }
 
 function _process (msg) {
@@ -111,7 +106,7 @@ function _process (msg) {
   console.info(`In _process ${sisCourseCode}, processing for ${msgtype}`)
 
   // return canvasApi.findCourse(sisCourseCode)
-     return Promise.resolve("gurka")
+  return Promise.resolve('gurka')
     .then(() => _createCsvFile(msg, sisCourseCode))
     .then(csvObject => {
       console.log(csvObject.csvContent)

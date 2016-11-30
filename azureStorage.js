@@ -12,7 +12,7 @@ function _createContainer (cName) {
       throw error
     }
 
-    if (result &&  result.created === true) {
+    if (result && result.created === true) {
       console.info(`Just created the ${cName} container`)
     } else {
       console.info(`Container ${cName} already exist`)
@@ -84,15 +84,16 @@ function _listFilesInAzure (containerName) {
       let transLogListCsv = ''
       let transArrayText = JSON.stringify(result.entries)
       let transArray = JSON.parse(transArrayText)
-      transArray.forEach(trans => { transLogListCsv = transLogListCsv + trans.name + '    ' + trans.lastModified + '\n' })
+      let counter = 0
+      console.info("listing files in cloud container: " + containerName + "\n")
+      transArray.forEach(trans => { counter += 1; transLogListCsv = transLogListCsv + "[ " + counter + " ] " +  trans.name + '    ' + trans.lastModified + '\n' })
       console.log(transLogListCsv)
       return transArray
       // result.entries contains the entries
       // If not all blobs were returned, result.continuationToken has the continuation token.
     } else { // Error
       console.warn('listFileInAzure', error.statusCode)
-      if (error.statusCode === 404)
-      {
+      if (error.statusCode === 404) {
         _createContainer('lmscsv')
         _createContainer('lmsmsg')
         return
@@ -142,7 +143,6 @@ function _delFileFromAzure (fileName) {
   })
 }
 
-
 _listFilesInAzure('lmscsv')
 _listFilesInAzure('lmsmsg')
 
@@ -150,7 +150,7 @@ _listFilesInAzure('lmsmsg')
 // _delFileFromAzure("enrollments.STUDENTS.DM1578VT152.1480494800005.csv  ")
 // _storeTexttoFileAzure ("payam.csv","hej testar skapa en fil med detta content").then(result=>console.log(result))
 // .catch(error=>console.log(error))
-//_delFileFromAzure('payam.csv')
+// _delFileFromAzure('payam.csv')
 
 module.exports = {
   cloudStore: _storeFiletoAzure,
