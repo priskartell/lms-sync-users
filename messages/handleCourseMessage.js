@@ -4,7 +4,7 @@ const {type} = require('message-type')
 const canvasApi = require('../canvasApi')
 const Promise = require('bluebird')
 const fs = Promise.promisifyAll(require('fs'))
-const azureStorage = require("../azureStorage")
+const azureStorage = require('../azureStorage')
 
 require('colors')
 
@@ -35,12 +35,12 @@ function _createCsvFile (msg, sisCourseCode) {
 
   if (msg.member && msg.member.length > 0) {
     let csvArray = msg.member.map(user => {
-      const csvObj = {}
-      csvObj['course_id'] = sisCourseCode
-      csvObj['user_id'] = user
-      csvObj['role'] = msgtype
-      csvObj['status'] = 'active'
-      return csvObj
+      return {
+        course_id: sisCourseCode,
+        user_id: user,
+        role: msgtype,
+        status: 'active'
+      }
     })
     csvArray.forEach(csvRow => {
       csvString = csvString + `${csvRow.course_id},${csvRow.user_id},${csvRow.role},${csvRow.status}
@@ -54,9 +54,8 @@ function _createCsvFile (msg, sisCourseCode) {
   return fs.writeFileAsync(csvFileName, csvData, {}) // we are in a promise chain, if error thrown it shoud be cateched in error handling funciton
     .then(() => fs.writeFileAsync(msgFileName, msg, {}))
     .then(() => azureStorage.cloudStore(csvFileName))
-    .then(result => {console.log(result); return azureStorage.cloudStore(msgFileName)})
-    .then(result => {console.log(result); return {csvContent: csvData, csvFileName: csvFileName} })
-
+    .then(result => { console.log(result); return azureStorage.cloudStore(msgFileName) })
+    .then(result => { console.log(result); return {csvContent: csvData, csvFileName: csvFileName} })
 }
 
 function _process (msg) {
@@ -111,6 +110,7 @@ function _process (msg) {
   console.info(`In _process ${sisCourseCode}, processing for ${msgtype}`)
 
     return canvasApi.findCourse(sisCourseCode)
+    // return Promise.resolve("gurka")
     .then(() => _createCsvFile(msg, sisCourseCode))
     .then(csvObject => {
       console.log(csvObject.csvContent)
