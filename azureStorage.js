@@ -5,6 +5,7 @@ const config = require('./server/init/configuration')
 process.env['AZURE_STORAGE_CONNECTION_STRING'] = config.secure.azure.StorageConnectionString
 const blobSvc = azure.createBlobService()
 
+
 function _createContainer (cName) {
   blobSvc.createContainerIfNotExists(cName, function (error, result, response) {
     if (error) {
@@ -78,7 +79,7 @@ function _listFilesInAzure (containerName) {
     console.info('listFilesInAzure: Invalid container name: ' + containerName + '\n')
     return
   }
-
+  return new Promise(function (resolve, reject) {
   blobSvc.listBlobsSegmented(containerName, null, function (error, result, response) {
     if (!error) {
       let transLogListCsv = ''
@@ -88,7 +89,7 @@ function _listFilesInAzure (containerName) {
       console.info('listing files in cloud container: ' + containerName + '\n')
       transArray.forEach(trans => { counter += 1; transLogListCsv = transLogListCsv + '[ ' + counter + ' ] ' + trans.name + '    ' + trans.lastModified + '\n' })
       console.log(transLogListCsv)
-      return transArray
+      resolve({fileArray: transArray, fileList: transLogListCsv})
       // result.entries contains the entries
       // If not all blobs were returned, result.continuationToken has the continuation token.
     } else { // Error
@@ -96,16 +97,38 @@ function _listFilesInAzure (containerName) {
       if (error.statusCode === 404) {
         _createContainer('lmscsv')
         _createContainer('lmsmsg')
-        return
+        resolve({fileArray: [],fileList: []})
       }
-      throw error
+      reject(error)
     }
   })
+})
 }
+
+function _pruneFilesFromAzure(anArray,miliSecondDate) {
+    anArray.forEach(fileObj=>{
+    let fileName = fileObj.name
+    let timeIndexInFileName = 3
+    let timeStamp = parseInt(fileName.split(".")[timeIndexInFileName])
+    if (timeStamp <= miliSecondDate) {
+      console.info("Deleteing file: " + fileName + " from Azure...")
+      _delFileFromAzure (fileName)
+    }
+    return
+})}
+
+function _delFilesInAzureBeforeDate(date){
+  let thisDate = date.getTime()
+    return _listFilesInAzure("lmscsv")
+    .then(msgObj=> _pruneFilesFromAzure(msgObj.fileArray,thisDate))
+    .then(()=> _listFilesInAzure("lmsmsg"))
+    .then(msgObj=> _pruneFilesFromAzure(msgObj.fileArray,thisDate))
+  }
+
 
 function _getFileFromAzure (fileName) {
   if (!fileName) {
-    console.warn('getFileToAzure, fileName not valid: ' + fileName + '\n')
+    console.warn('_getFileFromAzure, fileName not valid: ' + fileName + '\n')
     return
   }
 
@@ -125,9 +148,33 @@ function _getFileFromAzure (fileName) {
   })
 }
 
+function _getStreamFromAzure (fileName) {
+  if (!fileName) {
+    console.warn('_getStreamFromAzure, fileName not valid: ' + fileName + '\n')
+    return
+  }
+
+  fileName = fileName.trim()
+  let filetypeIndex = -3
+  let container = 'lms' + fileName.slice(filetypeIndex)
+
+
+  return new Promise(function (resolve, reject) {
+    blobSvc.getBlobToStream(container, fileName,fileName, function (error, result, response) {
+      if (!error) {
+        console.info('Stream: ' + fileName + 'retrived from Azure....\n')
+        resolve(result)
+      }
+      reject(error)
+    })
+  })
+}
+
+
+
 function _delFileFromAzure (fileName) {
   if (!fileName) {
-    console.warn('getFileToAzure, fileName not valid: ' + fileName + '\n')
+    console.warn('_delFileToAzure, fileName not valid: ' + fileName + '\n')
     return
   }
 
@@ -148,6 +195,8 @@ function _delFileFromAzure (fileName) {
 _listFilesInAzure('lmscsv')
 _listFilesInAzure('lmsmsg')
 
+
+// _delFilesInAzureBeforeDate(new Date())
 // _getFileFromAzure("enrollments.STUDENTS.DM1578VT152.1480494800005.csv  ")
 // _delFileFromAzure("enrollments.STUDENTS.DM1578VT152.1480494800005.csv  ")
 // _storeTexttoFileAzure ("payam.csv","hej testar skapa en fil med detta content").then(result=>console.log(result))
@@ -158,6 +207,8 @@ module.exports = {
   cloudStore: _storeFiletoAzure,
   cloudListFile: _listFilesInAzure,
   cloudgetFile: _getFileFromAzure,
+  cloudgetStream: _getStreamFromAzure,
   cloudDelFile: _delFileFromAzure,
-  cloudStoreTextToFile: _storeTexttoFileAzure
+  cloudStoreTextToFile: _storeTexttoFileAzure,
+  cloudDeleteFilesBeforeDate: _delFilesInAzureBeforeDate
 }
