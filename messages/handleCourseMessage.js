@@ -49,9 +49,9 @@ function _createCsvFile (msg, sisCourseCode) {
   let csvData = header + csvString
   console.info('\nGoing to open file: ' + csvFileName + ' ' + msgFileName)
   let messageText = JSON.stringify(msg, null, 4)
-  return azureStorage.cloudStoreTextToFile(csvFileName, csvData)
-  .then(result => { console.info(result); return azureStorage.cloudStoreTextToFile(msgFileName, messageText) })
-  .then(() => azureStorage.cloudgetFile(csvFileName))
+  return azureStorage.cloudStoreTextToFile(csvFileName, 'lmscsv', csvData)
+  .then(result => { console.info(result); return azureStorage.cloudStoreTextToFile(msgFileName, 'lmsmsg', messageText) })
+  .then(() => azureStorage.cloudgetFile(csvFileName, 'lmscsv', './CSV/'))
   .then(result => { console.info(result); return {csvContent: csvData, csvFileName: result} })
 }
 
