@@ -47,8 +47,9 @@ function _storeFiletoAzure (fileName, containerName) {
         if (error) {
           console.warn('storeFileToAzure', error)
           reject(error)
+        } else {
+          resolve(result)
         }
-        resolve(result)
       })
     })
   })
@@ -98,6 +99,7 @@ function _listFilesInAzure (containerName) {
     })
   })
 }
+
 
 function _pruneFilesFromAzure (anArray, miliSecondDate, containerName) {
   anArray.forEach(fileObj => {
