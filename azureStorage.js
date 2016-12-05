@@ -1,16 +1,15 @@
  'use strict'
-const azure = require('azure')
-const fs = require('fs')
-const config = require('./server/init/configuration')
-const check = require("./azureParamCheck")
-process.env['AZURE_STORAGE_CONNECTION_STRING'] = config.secure.azure.StorageConnectionString
-const blobSvc = azure.createBlobService()
+ const azure = require('azure')
+ const fs = require('fs')
+ const config = require('./server/init/configuration')
+ const check = require('./azureParamCheck')
+ process.env['AZURE_STORAGE_CONNECTION_STRING'] = config.secure.azure.StorageConnectionString
+ const blobSvc = azure.createBlobService()
 
-console.log(check.parameterName)
+ console.log(check.parameterName)
 
-
-function _createContainerInAzure (containerName) {
-  return check.parameterName(containerName)
+ function _createContainerInAzure (containerName) {
+   return check.parameterName(containerName)
   .then(() => {
     return new Promise(function (resolve, reject) {
       blobSvc.createContainerIfNotExists(containerName, function (error, result, response) {
@@ -29,10 +28,10 @@ function _createContainerInAzure (containerName) {
       })
     })
   })
-}
+ }
 
-function _storeFiletoAzure (fileName, containerName) {
-  return check.parameterName(fileName)
+ function _storeFiletoAzure (fileName, containerName) {
+   return check.parameterName(fileName)
   .then(() => check.parameterName(containerName))
   .then(() => {
     return new Promise(function (resolve, reject) {
@@ -46,13 +45,10 @@ function _storeFiletoAzure (fileName, containerName) {
       })
     })
   })
-}
+ }
 
-
-
-
-function _storeTexttoExistingFileAzure (fileName, containerName, txt) {
-  return check.parameterName(fileName)
+ function _storeTexttoExistingFileAzure (fileName, containerName, txt) {
+   return check.parameterName(fileName)
   .then(() => check.parameterName(containerName))
   .then(() => check.parameterName(txt))
   .then(() => {
@@ -66,11 +62,10 @@ function _storeTexttoExistingFileAzure (fileName, containerName, txt) {
       })
     })
   })
-}
+ }
 
-
-function _storeTexttoFileAzure (fileName, containerName, txt) {
-  return check.parameterName(fileName)
+ function _storeTexttoFileAzure (fileName, containerName, txt) {
+   return check.parameterName(fileName)
   .then(() => check.parameterName(containerName))
   .then(() => check.parameterName(txt))
   .then(() => {
@@ -84,10 +79,10 @@ function _storeTexttoFileAzure (fileName, containerName, txt) {
       })
     })
   })
-}
+ }
 
-function _listFilesInAzure (containerName) {
-  return check.parameterName(containerName)
+ function _listFilesInAzure (containerName) {
+   return check.parameterName(containerName)
   .then(() => {
     return new Promise(function (resolve, reject) {
       blobSvc.listBlobsSegmented(containerName, null, function (error, result, response) {
@@ -112,32 +107,32 @@ function _listFilesInAzure (containerName) {
       })
     })
   })
-}
+ }
 
-function _pruneFilesFromAzure (anArray, miliSecondDate, containerName,timeIndexInFileName) {
-  anArray.forEach(fileObj => {
-    let fileName = fileObj.name
+ function _pruneFilesFromAzure (anArray, miliSecondDate, containerName, timeIndexInFileName) {
+   anArray.forEach(fileObj => {
+     let fileName = fileObj.name
     // let timeIndexInFileName = 3 // enrollments.STUDENTS.LH221VVT161.1480532056928.csv
-    let timeStamp = parseInt(fileName.split('.')[timeIndexInFileName])
-    if (timeStamp <= miliSecondDate) {
-      console.info('Deleteing file: ' + fileName + ' from Azure...')
-      _delFileFromAzure(fileName, containerName)
-    }
-    return
-  })
-}
+     let timeStamp = parseInt(fileName.split('.')[timeIndexInFileName])
+     if (timeStamp <= miliSecondDate) {
+       console.info('Deleteing file: ' + fileName + ' from Azure...')
+       _delFileFromAzure(fileName, containerName)
+     }
+     return
+   })
+ }
 
-function _delFilesInAzureBeforeDate (date, containerName,timeIndexInFileName) {
-  let thisDate = date.getTime()
-  return check.parameterName(thisDate)
+ function _delFilesInAzureBeforeDate (date, containerName, timeIndexInFileName) {
+   let thisDate = date.getTime()
+   return check.parameterName(thisDate)
   .then(() => check.parameterName(containerName))
   .then(() => check.parameterName(timeIndexInFileName))
   .then(() => _listFilesInAzure(containerName))
-  .then(msgObj => _pruneFilesFromAzure(msgObj.fileArray, thisDate, containerName,timeIndexInFileName))
-}
+  .then(msgObj => _pruneFilesFromAzure(msgObj.fileArray, thisDate, containerName, timeIndexInFileName))
+ }
 
-function _getFileFromAzure (fileName, containerName, pathToStore) {
-  return check.parameterName(fileName)
+ function _getFileFromAzure (fileName, containerName, pathToStore) {
+   return check.parameterName(fileName)
   .then(() => check.parameterName(containerName))
   .then(() => check.parameterName(pathToStore))
   .then(() => {
@@ -153,10 +148,10 @@ function _getFileFromAzure (fileName, containerName, pathToStore) {
       })
     })
   })
-}
+ }
 
-function _getStreamFromAzure (fileName, containerName, localStream) {
-  return check.parameterName(fileName)
+ function _getStreamFromAzure (fileName, containerName, localStream) {
+   return check.parameterName(fileName)
   .then(() => check.parameterName(containerName))
   .then(() => check.parameterName(localStream))
   .then(() => {
@@ -171,10 +166,10 @@ function _getStreamFromAzure (fileName, containerName, localStream) {
       })
     })
   })
-}
+ }
 
-function _delFileFromAzure (fileName, containerName) {
-  return check.parameterName(fileName)
+ function _delFileFromAzure (fileName, containerName) {
+   return check.parameterName(fileName)
   .then(() => check.parameterName(containerName))
   .then(() => {
     return new Promise(function (resolve, reject) {
@@ -189,16 +184,16 @@ function _delFileFromAzure (fileName, containerName) {
       })
     })
   })
-}
+ }
 
-module.exports = {
-  cloudStore: _storeFiletoAzure,
-  cloudListFile: _listFilesInAzure,
-  cloudgetFile: _getFileFromAzure,
-  cloudgetStream: _getStreamFromAzure,
-  cloudDelFile: _delFileFromAzure,
-  cloudStoreTextToFile: _storeTexttoFileAzure,
-  cloudDeleteFilesBeforeDate: _delFilesInAzureBeforeDate,
-  cloudCreateContainer: _createContainerInAzure,
-  cloudStoreTextToExistingFile: _storeTexttoExistingFileAzure
-}
+ module.exports = {
+   cloudStore: _storeFiletoAzure,
+   cloudListFile: _listFilesInAzure,
+   cloudgetFile: _getFileFromAzure,
+   cloudgetStream: _getStreamFromAzure,
+   cloudDelFile: _delFileFromAzure,
+   cloudStoreTextToFile: _storeTexttoFileAzure,
+   cloudDeleteFilesBeforeDate: _delFilesInAzureBeforeDate,
+   cloudCreateContainer: _createContainerInAzure,
+   cloudStoreTextToExistingFile: _storeTexttoExistingFileAzure
+ }
