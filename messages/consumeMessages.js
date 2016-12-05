@@ -1,5 +1,5 @@
 'use strict'
-const Promise = require('bluebird')
+// const Promise = require('bluebird')
 const config = require('../server/init/configuration')
 const queue = require('node-queue-adapter')(config.secure.azure.queueConnectionString)
 const log = require('../server/init/logging')
@@ -74,6 +74,7 @@ function readMessage () {
           log.info('\nAn Error occured.....')
           log.error('Exception: ', e)
         }
+        // return
       })
       .finally(() => {
         isReading = false
