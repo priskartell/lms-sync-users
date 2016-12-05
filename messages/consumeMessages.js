@@ -69,7 +69,7 @@ function readMessage () {
 }
 
 function readMessageUnlessReading () {
-  process.stdout.write('.')
+  console.log('readMessageUnlessReading...')
   if (isReading) {
     // console.log('is already reading a message, abort')
     return
