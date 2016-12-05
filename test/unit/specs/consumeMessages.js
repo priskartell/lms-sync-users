@@ -33,7 +33,7 @@ function readMessageUnlessReading(){
   consumeMessages.__get__('readMessageUnlessReading')()
 }
 
-test.only('is already reading should just return ', t=>{
+test('if it is already reading, then it should just return ', t=>{
   t.plan(1)
   readMessage = sinon.stub()
   consumeMessages.__set__('readMessage', readMessage)
@@ -43,14 +43,17 @@ test.only('is already reading should just return ', t=>{
   t.equal(readMessage.called,false)
 })
 
-test('is not reading should read message ', t=>{
+test('if it is not already reading, then it should just call readMessage ', t=>{
   t.plan(1)
+  readMessage = sinon.stub()
+  consumeMessages.__set__('readMessage', readMessage)
   consumeMessages.__set__('isReading', false)
+
   readMessageUnlessReading()
-  t.equal(readMessageFromQueueStub.called,true)
+  t.equal(readMessage.called,true)
 })
 
-test('no message from azure should abort promise chain',t =>{
+test.skip('no message from azure should abort promise chain',t =>{
   t.plan(1)
   consumeMessages.__set__('isReading', false)
   const parseBody = sinon.stub()
