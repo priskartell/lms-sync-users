@@ -1,3 +1,4 @@
+'use strict'
 const cl = require('./azureStorage')
 
 function _test () {
@@ -16,7 +17,7 @@ function _test () {
 .then(() => console.log('\nlisting files in conainer test again'))
 .then(() => cl.cloudListFile('test'))
 .then(() => console.log('\n (3) Passed........\n'))
-.then(() => console.log('\ntesting missing argument list in _storeTexttoFileAzure'))
+.then(() => console.log('\nTesting missing argument list in _storeTexttoFileAzure'))
 .then(() => cl.cloudStoreTextToFile('', 'test', 'Hej på dig ole'))
 .catch(error => console.log('In Error: ', error))
 .then(() => cl.cloudStoreTextToFile('enrollments.STUDENTS.DM1578VT152.1480494800011.csv', '', 'Hej på dig dole'))
@@ -30,7 +31,7 @@ function _test () {
 .then(() => cl.cloudgetFile('enrollments.STUDENTS.DM1578VT152.1480494800009.csv', 'test', './AZURETEST/'))
 .then(() => cl.cloudgetFile('enrollments.STUDENTS.DM1578VT152.1480494800010.csv', 'test', './AZURETEST/'))
 .then(() => console.log('\n (5) Passed........\n'))
-.then(() => cl.cloudDeleteFilesBeforeDate(new Date(), 'test'))
+.then(() => cl.cloudDeleteFilesBeforeDate(new Date(), 'test',3))
 .then(() => cl.cloudListFile('test'))
 .then(() => cl.cloudListFile('test'))
 .then(() => console.log('\n (6) Passed........\n'))
@@ -38,7 +39,7 @@ function _test () {
 .then(() => cl.cloudStore('./AZURETEST/enrollments.STUDENTS.DM1578VT152.1480494800005.csv', 'test'))
 .then(() => cl.cloudListFile('test'))
 .then(() => console.log('\n (7) Passed........\n'))
-.then(() => cl.cloudDelFile('./AZURETEST/enrollments.STUDENTS.DM1578VT152.1480494800005.csv', 'test'))
+.then(() => cl.cloudDelFile('./AZURETEST/enrollments.STUDENTS.DM1578VT152.1480494800005.csv', 'test',3))
 .then(() => cl.cloudListFile('test'))
 .then(() => console.log('\n (8) Passed........\n'))
 .then(() => Promise.resolve(true))

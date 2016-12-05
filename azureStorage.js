@@ -1,23 +1,16 @@
-'use strict'
+ 'use strict'
 const azure = require('azure')
 const fs = require('fs')
 const config = require('./server/init/configuration')
+const check = require("./azureParamCheck")
 process.env['AZURE_STORAGE_CONNECTION_STRING'] = config.secure.azure.StorageConnectionString
 const blobSvc = azure.createBlobService()
 
-function checkParamterName (parameterName) {
-  return new Promise(function (resolve, reject) {
-    if (!parameterName) {
-      console.warn('checkParameterName: parameterName not valid: ' + parameterName + '\n')
-      reject('checkParameterName: parameterName not valid: ' + parameterName)
-    } else {
-      resolve(true)
-    }
-  })
-}
+console.log(check.parameterName)
+
 
 function _createContainerInAzure (containerName) {
-  return checkParamterName(containerName)
+  return check.parameterName(containerName)
   .then(() => {
     return new Promise(function (resolve, reject) {
       blobSvc.createContainerIfNotExists(containerName, function (error, result, response) {
@@ -39,8 +32,8 @@ function _createContainerInAzure (containerName) {
 }
 
 function _storeFiletoAzure (fileName, containerName) {
-  return checkParamterName(fileName)
-  .then(() => checkParamterName(containerName))
+  return check.parameterName(fileName)
+  .then(() => check.parameterName(containerName))
   .then(() => {
     return new Promise(function (resolve, reject) {
       blobSvc.createBlockBlobFromLocalFile(containerName, fileName, fileName, function (error, result, response) {
@@ -55,10 +48,31 @@ function _storeFiletoAzure (fileName, containerName) {
   })
 }
 
+
+
+
+function _storeTexttoExistingFileAzure (fileName, containerName, txt) {
+  return check.parameterName(fileName)
+  .then(() => check.parameterName(containerName))
+  .then(() => check.parameterName(txt))
+  .then(() => {
+    return new Promise(function (resolve, reject) {
+      blobSvc.appendFromText(containerName, fileName, txt, function (error, result, response) {
+        if (!error) {
+          resolve(result)
+        } else {
+          reject(error)
+        }
+      })
+    })
+  })
+}
+
+
 function _storeTexttoFileAzure (fileName, containerName, txt) {
-  return checkParamterName(fileName)
-  .then(() => checkParamterName(containerName))
-  .then(() => checkParamterName(txt))
+  return check.parameterName(fileName)
+  .then(() => check.parameterName(containerName))
+  .then(() => check.parameterName(txt))
   .then(() => {
     return new Promise(function (resolve, reject) {
       blobSvc.createAppendBlobFromText(containerName, fileName, txt, function (error, result, response) {
@@ -73,7 +87,7 @@ function _storeTexttoFileAzure (fileName, containerName, txt) {
 }
 
 function _listFilesInAzure (containerName) {
-  return checkParamterName(containerName)
+  return check.parameterName(containerName)
   .then(() => {
     return new Promise(function (resolve, reject) {
       blobSvc.listBlobsSegmented(containerName, null, function (error, result, response) {
@@ -100,11 +114,10 @@ function _listFilesInAzure (containerName) {
   })
 }
 
-
-function _pruneFilesFromAzure (anArray, miliSecondDate, containerName) {
+function _pruneFilesFromAzure (anArray, miliSecondDate, containerName,timeIndexInFileName) {
   anArray.forEach(fileObj => {
     let fileName = fileObj.name
-    let timeIndexInFileName = 3 // enrollments.STUDENTS.LH221VVT161.1480532056928.csv
+    // let timeIndexInFileName = 3 // enrollments.STUDENTS.LH221VVT161.1480532056928.csv
     let timeStamp = parseInt(fileName.split('.')[timeIndexInFileName])
     if (timeStamp <= miliSecondDate) {
       console.info('Deleteing file: ' + fileName + ' from Azure...')
@@ -114,18 +127,19 @@ function _pruneFilesFromAzure (anArray, miliSecondDate, containerName) {
   })
 }
 
-function _delFilesInAzureBeforeDate (date, containerName) {
+function _delFilesInAzureBeforeDate (date, containerName,timeIndexInFileName) {
   let thisDate = date.getTime()
-  return checkParamterName(thisDate)
-  .then(() => checkParamterName(containerName))
+  return check.parameterName(thisDate)
+  .then(() => check.parameterName(containerName))
+  .then(() => check.parameterName(timeIndexInFileName))
   .then(() => _listFilesInAzure(containerName))
-  .then(msgObj => _pruneFilesFromAzure(msgObj.fileArray, thisDate, containerName))
+  .then(msgObj => _pruneFilesFromAzure(msgObj.fileArray, thisDate, containerName,timeIndexInFileName))
 }
 
 function _getFileFromAzure (fileName, containerName, pathToStore) {
-  return checkParamterName(fileName)
-  .then(() => checkParamterName(containerName))
-  .then(() => checkParamterName(pathToStore))
+  return check.parameterName(fileName)
+  .then(() => check.parameterName(containerName))
+  .then(() => check.parameterName(pathToStore))
   .then(() => {
     let localFileName = pathToStore + fileName
     return new Promise(function (resolve, reject) {
@@ -142,9 +156,9 @@ function _getFileFromAzure (fileName, containerName, pathToStore) {
 }
 
 function _getStreamFromAzure (fileName, containerName, localStream) {
-  return checkParamterName(fileName)
-  .then(() => checkParamterName(containerName))
-  .then(() => checkParamterName(localStream))
+  return check.parameterName(fileName)
+  .then(() => check.parameterName(containerName))
+  .then(() => check.parameterName(localStream))
   .then(() => {
     return new Promise(function (resolve, reject) {
       blobSvc.getBlobToStream(containerName, fileName, localStream, function (error, result, response) {
@@ -160,8 +174,8 @@ function _getStreamFromAzure (fileName, containerName, localStream) {
 }
 
 function _delFileFromAzure (fileName, containerName) {
-  return checkParamterName(fileName)
-  .then(() => checkParamterName(containerName))
+  return check.parameterName(fileName)
+  .then(() => check.parameterName(containerName))
   .then(() => {
     return new Promise(function (resolve, reject) {
       blobSvc.deleteBlob(containerName, fileName, function (error, response) {
@@ -185,5 +199,6 @@ module.exports = {
   cloudDelFile: _delFileFromAzure,
   cloudStoreTextToFile: _storeTexttoFileAzure,
   cloudDeleteFilesBeforeDate: _delFilesInAzureBeforeDate,
-  cloudCreateContainer: _createContainerInAzure
+  cloudCreateContainer: _createContainerInAzure,
+  cloudStoreTextToExistingFile: _storeTexttoExistingFileAzure
 }
