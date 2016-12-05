@@ -6,7 +6,6 @@ const proxyquire = require('proxyquire')
 
 const consumeMessages = proxyquire('../../../messages/consumeMessages', {'node-queue-adapter': sinon.stub().returns({})})
 
-
 test('if it is already reading, then it should just return ', t => {
   t.plan(1)
   const readMessage = sinon.stub()
