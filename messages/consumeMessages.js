@@ -32,7 +32,7 @@ function abortIfNoMessage (msg) {
 function parseBody (msg) {
   return Promise.resolve()
   .then(() => {
-    log.debug('message:', msg.body)
+    log.info('message:', msg.body)
     return JSON.parse(msg.body)
   })
   .catch(e => {
