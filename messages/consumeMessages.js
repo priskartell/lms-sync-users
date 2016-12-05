@@ -23,6 +23,7 @@ function start () {
 
 function abortIfNoMessage (msg) {
   if (!msg) {
+    console.log('msg', msg)
     // Best way to abort a promise chain is by a custom error according to:
     // http://stackoverflow.com/questions/11302271/how-to-properly-abort-a-node-js-promise-chain-using-q
 
