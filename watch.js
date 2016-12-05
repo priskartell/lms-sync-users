@@ -67,7 +67,7 @@ function _watch (blobName, fileNamePrefix) {
 .catch(error => console.log(error))
 }
 
-_watch('log', 'log')
+// _watch('log', 'log')
 
 module.exports = {
   cloudWatch: _watch

@@ -1,8 +1,18 @@
 'use strict'
 const cl = require('./azureStorage')
+const Promise = require('bluebird')
+const mkdir = Promise.promisify(require('fs').mkdir)
 
-function _test () {
-  return cl.cloudCreateContainer('test')
+function _test (path) {
+  return mkdir(path)
+  .catch(err => {
+    if (err.code === 'EEXIST') {
+      return
+    } else {
+      Promise.reject(err)
+    }
+  })
+.then(() => cl.cloudCreateContainer('test'))
 .then(() => console.log('\nlisting files in container test'))
 .then(() => cl.cloudListFile('test'))
 .then(() => console.log('\n (1) Passed........\n'))
@@ -46,7 +56,7 @@ function _test () {
 .catch(error => console.log(error))
 }
 
-_test()
+_test('./AZURETEST')
 .then(status => {
   if (status === true) {
     console.log('TEST IS OK')
