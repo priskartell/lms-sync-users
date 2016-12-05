@@ -82,5 +82,6 @@ function readMessage () {
 }
 
 module.exports = {
-  start
+  start,
+  readMessage
 }

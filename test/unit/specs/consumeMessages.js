@@ -10,8 +10,8 @@ require('kth-node-log').init({
     enabled: true
   }})
 
-const readMessageFromQueueStub = sinon.stub()
-const deleteMessageFromQueue = sinon.stub()
+const readMessageFromQueueStub = sinon.stub().returns(Promise.resolve())
+const deleteMessageFromQueue = sinon.stub().returns(Promise.resolve())
 
 const queue = sinon.stub().returns({
   readMessageFromQueue: readMessageFromQueueStub,
@@ -32,6 +32,13 @@ function reset () {
   readMessageFromQueueStub.reset()
   deleteMessageFromQueue.reset()
 }
+
+test.only('is already reading should just return ', t=>{
+  consumeMessages.__set__('isReading', true)
+  t.plan(1)
+  consumeMessages.readMessage()
+  t.equal(readMessageFromQueueStub.called,false)
+})
 
 test('read message without body should call read message again', t => {
   t.plan(2)
