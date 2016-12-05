@@ -7,13 +7,6 @@ const {addDescription} = require('message-type')
 const handleMessage = require('./handleMessage')
 require('colors')
 
-const memwatch = require('memwatch-next')
-
-memwatch.on('leak', function (info) {
-  console.log('memory leak!', JSON.stringify(info, null, 4))
-  process.exit()
-})
-
 let isReading = false
 
 function start () {
