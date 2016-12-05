@@ -14,20 +14,23 @@ memwatch.on('leak', function (info) {
   process.exit()
 })
 
-
 let isReading = false
 
 function start () {
   setInterval(readMessageUnlessReading, 100)
 }
 
+function abort () {
+  // Best way to abort a promise chain is by a custom error according to:
+  // http://stackoverflow.com/questions/11302271/how-to-properly-abort-a-node-js-promise-chain-using-q
+
+  throw new Error('abort_chain')
+}
+
 function abortIfNoMessage (msg) {
   if (!msg) {
     console.log('msg', msg)
-    // Best way to abort a promise chain is by a custom error according to:
-    // http://stackoverflow.com/questions/11302271/how-to-properly-abort-a-node-js-promise-chain-using-q
-
-    throw new Error('abort_chain')
+    abort()
   }
 
   return msg
@@ -46,7 +49,7 @@ function parseBody (msg) {
   })
 }
 
-function readMessage() {
+function readMessage () {
   let message
   return queue
     .readMessageFromQueue(config.secure.azure.queueName)
@@ -59,7 +62,7 @@ function readMessage() {
     .then(abortIfNoMessage)
     .then(parseBody)
     .then(addDescription)
-    // .then(handleMessage)
+    .then(handleMessage)
     .then(() => queue.deleteMessageFromQueue(message))
     .catch(e => {
       if (e.message !== 'abort_chain') {
