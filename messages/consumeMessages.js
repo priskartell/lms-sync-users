@@ -10,7 +10,7 @@ require('colors')
 let isReading = false
 
 function start () {
-  setInterval(readMessageUnlessReading, 5)
+  setInterval(readMessageUnlessReading, 50)
 }
 
 function abort () {
