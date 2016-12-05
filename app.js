@@ -4,7 +4,7 @@ const app = require('kth-node-server')
 
 app.start()
 const consumeMessages = require('./messages/consumeMessages')
-consumeMessages.readMessage()
+consumeMessages.start()
 
 const systemRoutes = require('./server/systemroutes')
 app.use(config.full.proxyPrefixPath.uri, systemRoutes)

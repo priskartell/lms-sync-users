@@ -6,11 +6,7 @@ require('colors')
 
 function isInScope (msg) {
   var affArray = msg.affiliation
-  if (affArray && (affArray.includes('employee') || affArray.includes('student'))) {
-    return true
-  } else {
-    return false
-  }
+  return affArray && (affArray.includes('employee') || affArray.includes('student'))
 }
 
 function createCanvasUser (msg) {
@@ -46,10 +42,6 @@ module.exports = function (msg) {
           console.log('Try to create user'.green)
           return canvasApi.createUser(user)
         })
-    //   .then(user => {
-    //      console.log(`${user.user.username} is created in canvas`)
-    //      return Promise.resolve("USER UPDATE/CREATION IS DONE")
-    //  })
     } else {
       console.log('\nIncomplete fields to create user in canvas.....')
       return Promise.resolve('User fields are missing...')
