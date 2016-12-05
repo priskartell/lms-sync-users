@@ -1,5 +1,5 @@
 'use strict'
-// const Promise = require('bluebird')
+const Promise = require('bluebird')
 const config = require('../server/init/configuration')
 const queue = require('node-queue-adapter')(config.secure.azure.queueConnectionString)
 const log = require('../server/init/logging')
@@ -18,7 +18,7 @@ memwatch.on('leak', function (info) {
 let isReading = false
 
 function start () {
-  setInterval(readMessage, 100)
+  setInterval(readMessageUnlessReading, 100)
 }
 
 function abortIfNoMessage (msg) {
@@ -45,44 +45,43 @@ function parseBody (msg) {
   })
 }
 
-function readMessage () {
+function readMessage() {
+  let message
+  return queue
+    .readMessageFromQueue(config.secure.azure.queueName)
+    .then(msg => {
+      message = msg
+
+      return message
+    })
+
+    .then(abortIfNoMessage)
+    .then(parseBody)
+    .then(addDescription)
+    // .then(handleMessage)
+    .then(() => queue.deleteMessageFromQueue(message))
+    .catch(e => {
+      if (e.message !== 'abort_chain') {
+        log.info('\nAn Error occured.....')
+        log.error('Exception: ', e)
+      }
+    })
+    .finally(() => {
+      isReading = false
+    })
+}
+
+function readMessageUnlessReading () {
   process.stdout.write('.')
   if (isReading) {
     // console.log('is already reading a message, abort')
     return
   } else {
     isReading = true
-
-    // console.log("reading...");
-    let message
-    queue
-      .readMessageFromQueue(config.secure.azure.queueName)
-      .then(msg => {
-        message = msg
-        // console.log('msg', msg);
-        return message
-      })
-      // .then(msg=> Promise.delay(1000,msg))
-      .then(abortIfNoMessage)
-      .then(parseBody)
-      .then(addDescription)
-      // .then(handleMessage)
-      .then(() => queue.deleteMessageFromQueue(message))
-      // .then(readMessage)
-      .catch(e => {
-        if (e.message !== 'abort_chain') {
-          log.info('\nAn Error occured.....')
-          log.error('Exception: ', e)
-        }
-        // return
-      })
-      .finally(() => {
-        isReading = false
-      })
+    readMessage()
   }
 }
 
 module.exports = {
-  start,
-  readMessage
+  start
 }

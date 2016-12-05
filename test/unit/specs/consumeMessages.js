@@ -29,18 +29,35 @@ function reset () {
   deleteMessageFromQueue.reset()
 }
 
-test('is already reading should just return ', t=>{
+function readMessageUnlessReading(){
+  consumeMessages.__get__('readMessageUnlessReading')()
+}
+
+test.only('is already reading should just return ', t=>{
   t.plan(1)
+  readMessage = sinon.stub()
+  consumeMessages.__set__('readMessage', readMessage)
   consumeMessages.__set__('isReading', true)
-  consumeMessages.readMessage()
-  t.equal(readMessageFromQueueStub.called,false)
+
+  readMessageUnlessReading()
+  t.equal(readMessage.called,false)
 })
 
 test('is not reading should read message ', t=>{
   t.plan(1)
   consumeMessages.__set__('isReading', false)
-  consumeMessages.readMessage()
+  readMessageUnlessReading()
   t.equal(readMessageFromQueueStub.called,true)
+})
+
+test('no message from azure should abort promise chain',t =>{
+  t.plan(1)
+  consumeMessages.__set__('isReading', false)
+  const parseBody = sinon.stub()
+  consumeMessages.__set__('parseBody', parseBody)
+  consumeMessages.readMessage().then(msg =>{
+      t.equal(parseBody.called, false)
+  })
 })
 
 // test('read message without body should call read message again', t => {})
