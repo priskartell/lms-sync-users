@@ -10,7 +10,7 @@ require('colors')
 let isReading = false
 
 function start () {
-  setInterval(readMessageUnlessReading, 100)
+  setInterval(readMessageUnlessReading, 5)
 }
 
 function abort () {
@@ -69,7 +69,6 @@ function readMessage () {
 }
 
 function readMessageUnlessReading () {
-  console.log('readMessageUnlessReading...')
   if (isReading) {
     // console.log('is already reading a message, abort')
     return
