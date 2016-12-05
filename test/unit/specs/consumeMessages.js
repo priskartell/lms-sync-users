@@ -53,14 +53,14 @@ test('if it is not already reading, then it should just call readMessage ', t=>{
   t.equal(readMessage.called,true)
 })
 
-test.skip('no message from azure should abort promise chain',t =>{
-  t.plan(1)
-  consumeMessages.__set__('isReading', false)
-  const parseBody = sinon.stub()
-  consumeMessages.__set__('parseBody', parseBody)
-  consumeMessages.readMessage().then(msg =>{
-      t.equal(parseBody.called, false)
-  })
+// test.skip('no message from azure should abort promise chain',t =>{
+//   t.plan(1)
+//   consumeMessages.__set__('isReading', false)
+//   const parseBody = sinon.stub()
+//   consumeMessages.__set__('parseBody', parseBody)
+//   consumeMessages.readMessage().then(msg =>{
+//       t.equal(parseBody.called, false)
+//   })
 })
 
 // test('read message without body should call read message again', t => {})
