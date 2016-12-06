@@ -9,7 +9,7 @@ function isInScope (msg) {
   return affArray && (affArray.includes('employee') || affArray.includes('student'))
 }
 
-function createCanvasUser (msg) {
+function convertToCanvasUser (msg) {
   // UG_USER_ATTRIBUTES=kthid,username,family_name,given_name,affiliation,email_address,primary_email
 
   if (msg.username && (msg.given_name || msg.family_name) && msg.kthid) {
@@ -32,15 +32,18 @@ function createCanvasUser (msg) {
 module.exports = function (msg) {
   console.info('\nProcessing for user msg..... ' + msg.ugClass + ' ' + msg.kthid, ' msg affiliation ', msg.affiliation)
   if (isInScope(msg)) {
-    let user = createCanvasUser(msg)
+    let user = convertToCanvasUser(msg)
     if (user) {
       console.log('User object is ready to be sent to Canvas API: ', JSON.stringify(user, null, 4))
       return canvasApi.getUser(user.pseudonym.sis_user_id)
         .then(userFromCanvas => canvasApi.updateUser(user, userFromCanvas.id))
         .catch(e => {
-          console.log('Error'.yellow, e)
-          console.log('Try to create user'.green)
-          return canvasApi.createUser(user)
+          if (e.statusCode === 404) {
+            // user doesn't exist
+            return canvasApi.createUser(user)
+          } else {
+            throw e
+          }
         })
     } else {
       console.log('\nIncomplete fields to create user in canvas.....')
