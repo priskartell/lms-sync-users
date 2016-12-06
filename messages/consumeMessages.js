@@ -22,7 +22,6 @@ function abort () {
 
 function abortIfNoMessage (msg) {
   if (!msg) {
-    console.log('msg', msg)
     abort()
   }
 
@@ -41,7 +40,6 @@ function parseBody (msg) {
     abort()
   })
 }
-
 function readMessage () {
   let message
   return queue
