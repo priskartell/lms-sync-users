@@ -46,6 +46,9 @@ function _test (path, path1) {
 .then(() => cl.cloudDelFile('./AZURETEST/enrollments.STUDENTS.DM1578VT152.1480494800005.csv', 'test', 3))
 .then(() => cl.cloudListFile('test'))
 .then(() => console.log('\n (8) Passed........\n'))
+.then(() => console.log('\n Creating a table called lmstable in azure bigtable\n'))
+.then(() => cl.cloudCreateTable('lmstable'))
+.then(() => console.log('\n (9) Passed........\n'))
 .then(() => Promise.resolve(true))
 .catch(error => console.log(error))
 }
