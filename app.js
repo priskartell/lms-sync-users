@@ -2,7 +2,9 @@
 const config = require('./server/init/configuration')
 const app = require('kth-node-server')
 const processWatcher = require('./watch')
-processWatcher.cloudWatch('log', 'log')
+const logVol = config.secure.azure.logBlobName
+
+processWatcher.cloudWatch(logVol, 'log')
 app.start()
 const consumeMessages = require('./messages/consumeMessages')
 consumeMessages.readMessage()

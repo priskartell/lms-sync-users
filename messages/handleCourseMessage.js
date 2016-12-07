@@ -3,7 +3,11 @@
 const {type} = require('message-type')
 const canvasApi = require('../canvasApi')
 const Promise = require('bluebird')
-const azureStorage = require('../azureStorage')
+const cl = require('../azureStorage')
+const config = require('../server/init/configuration')
+const csvVol = config.secure.azure.csvBlobName
+const msgVol = config.secure.azure.msgBlobName
+const csvDir = config.secure.localFile.csvDir
 
 require('colors')
 
@@ -49,9 +53,9 @@ function _createCsvFile (msg, sisCourseCode) {
   let csvData = header + csvString
   console.info('\nGoing to open file: ' + csvFileName + ' ' + msgFileName)
   let messageText = JSON.stringify(msg, null, 4)
-  return azureStorage.cloudStoreTextToFile(csvFileName, 'lmscsv', csvData)
-  .then(result => { console.info(result); return azureStorage.cloudStoreTextToFile(msgFileName, 'lmsmsg', messageText) })
-  .then(() => azureStorage.cloudgetFile(csvFileName, 'lmscsv', './CSV/'))
+  return cl.cloudStoreTextToFile(csvFileName, csvVol, csvData)
+  .then(result => { console.info(result); return cl.cloudStoreTextToFile(msgFileName, msgVol, messageText) })
+  .then(() => cl.cloudgetFile(csvFileName, csvVol, csvDir))
   .then(result => { console.info(result); return {csvContent: csvData, csvFileName: result} })
 }
 

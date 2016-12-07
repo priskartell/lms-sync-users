@@ -50,7 +50,7 @@ function _logSystem (fileName, blobName) {
   })
 }
 
-function _watch (blobName, fileNamePrefix) {
+function cloudWatch (blobName, fileNamePrefix) {
   return cl.cloudCreateContainer(blobName)
 .then(() => cl.cloudListFile(blobName))
 .then(() => {
@@ -70,5 +70,5 @@ function _watch (blobName, fileNamePrefix) {
 // _watch('log', 'log')
 
 module.exports = {
-  cloudWatch: _watch
+  cloudWatch
 }

@@ -2,40 +2,51 @@
  const azure = require('azure')
  const fs = require('fs')
  const config = require('./server/init/configuration')
- const check = require('./azureParamCheck')
  process.env['AZURE_STORAGE_CONNECTION_STRING'] = config.secure.azure.StorageConnectionString
  const Promise = require('bluebird')
  const mkdir = Promise.promisify(require('fs').mkdir)
- const pz = Promise.promisifyAll(azure.createBlobService())
+ const pabs = Promise.promisifyAll(azure.createBlobService()) // PromiseAzureBlobService
+ const pats = Promise.promisifyAll(azure.createTableService()) // PromiseAzureTableService
 
- function _createContainerInAzure (containerName) {
-   return check.parameterName(containerName)
-  .then(() => pz.createContainerIfNotExistsAsync(containerName))
+ function checkParameterName (...p) {
+   let result = true
+   p.forEach(parameter => {
+     if (!parameter) {
+       result = false
+     }
+   })
+
+   if (result) {
+     return Promise.resolve(result)
+   } else {
+     console.warn('checkParameterName: parameterName not valid: ')
+     throw Error('checkParameterName: parameterName not valid:')
+   }
  }
 
- function _storeFiletoAzure (fileName, containerName) {
-   return check.parameterName(fileName)
-  .then(() => check.parameterName(containerName))
-  .then(() => pz.createBlockBlobFromLocalFileAsync(containerName, fileName, fileName))
+ function cloudCreateContainer (containerName) {
+   return checkParameterName(containerName)
+  .then(() => pabs.createContainerIfNotExistsAsync(containerName))
  }
 
- function _storeTexttoExistingFileAzure (fileName, containerName, txt) {
-   return check.parameterName(fileName)
-  .then(() => check.parameterName(containerName))
-  .then(() => check.parameterName(txt))
-  .then(() => pz.appendFromTextAsync(containerName, fileName, txt))
+ function cloudStoreFile (fileName, containerName) {
+   return checkParameterName(fileName, containerName)
+  .then(() => pabs.createBlockBlobFromLocalFileAsync(containerName, fileName, fileName))
  }
 
- function _storeTexttoFileAzure (fileName, containerName, txt) {
-   return check.parameterName(fileName)
-  .then(() => check.parameterName(containerName))
-  .then(() => check.parameterName(txt))
-  .then(() => pz.createAppendBlobFromTextAsync(containerName, fileName, txt))
+ function cloudStoreTextToExistingFile (fileName, containerName, txt) {
+   return checkParameterName(fileName, containerName, txt)
+  .then(() => pabs.appendFromTextAsync(containerName, fileName, txt))
  }
 
- function _listFilesInAzure (containerName) {
-   return check.parameterName(containerName)
-  .then(() => pz.listBlobsSegmentedAsync(containerName, null))
+ function cloudStoreTextToFile (fileName, containerName, txt) {
+   return checkParameterName(fileName, containerName, txt)
+  .then(() => pabs.createAppendBlobFromTextAsync(containerName, fileName, txt))
+ }
+
+ function cloudListFile (containerName) {
+   return checkParameterName(containerName)
+  .then(() => pabs.listBlobsSegmentedAsync(containerName, null))
   .then(result => {
     let transLogListCsv = ''
     let transArrayText = JSON.stringify(result.entries)
@@ -51,29 +62,50 @@
   })
  }
 
- function _pruneFilesFromAzure (anArray, miliSecondDate, containerName, timeIndexInFileName) {
-   anArray.forEach(fileObj => {
-     let fileName = fileObj.name
-    // let timeIndexInFileName = 3 // enrollments.STUDENTS.LH221VVT161.1480532056928.csv
-     let timeStamp = parseInt(fileName.split('.')[timeIndexInFileName])
-     if (timeStamp <= miliSecondDate) {
-       console.info('Deleteing file: ' + fileName + ' from Azure...')
-       _delFileFromAzure(fileName, containerName)
-     }
-     return
-   })
+ function getTimeStampFromFile (fileName, timeIndexInFileName) {
+   let timeStamp = parseInt(fileName.split('.')[timeIndexInFileName])
+   if (!timeStamp) {
+     throw Error('Can not get time stamp from fileName:' + fileName)
+   }
+   return timeStamp
  }
 
- function _delFilesInAzureBeforeDate (date, containerName, timeIndexInFileName) {
+ function cloudDeleteFilesBeforeDate (date, containerName, timeIndexInFileName) {
    let thisDate = date.getTime()
-   return check.parameterName(thisDate)
-  .then(() => check.parameterName(containerName))
-  .then(() => check.parameterName(timeIndexInFileName))
-  .then(() => _listFilesInAzure(containerName))
-  .then(msgObj => _pruneFilesFromAzure(msgObj.fileArray, thisDate, containerName, timeIndexInFileName))
+   return checkParameterName(thisDate, containerName, timeIndexInFileName)
+  .then(() => cloudListFile(containerName))
+  .then(msgObj => {
+    msgObj.fileArray.forEach(fileObj => {
+      let timeStamp = getTimeStampFromFile(fileObj.name, timeIndexInFileName)
+      if (timeStamp <= thisDate) {
+        console.info('Deleteing file: ' + fileObj.name + ' from Azure...')
+        cloudDelFile(fileObj.name, containerName)
+      }
+    })
+    return msgObj.fileArray
+  })
  }
 
- function _getFileFromAzure (fileName, containerName, pathToStore) {
+ function cloudGetFilesBeforeDate (date, containerName, timeIndexInFileName, directory) {
+   let thisDate = date.getTime()
+   return checkParameterName(thisDate, containerName, timeIndexInFileName, directory)
+  .then(() => cloudListFile(containerName))
+  .then(msgObj => {
+    msgObj.fileArray.forEach(fileObj => {
+      let timeStamp = getTimeStampFromFile(fileObj.name, timeIndexInFileName)
+      if (timeStamp <= thisDate) {
+        console.info('Getting file: ' + fileObj.name + ' from Azure, storeing to:' + directory)
+        cloudgetFile(fileObj.name, containerName, directory)
+      }
+    })
+    return msgObj.fileArray
+  })
+ }
+
+ function cloudgetFile (fileName, containerName, pathToStore) {
+   if (!pathToStore) {
+     pathToStore = './tmp/'
+   }
    return mkdir(pathToStore)
    .catch(err => {
      if (err.code === 'EEXIST') {
@@ -82,33 +114,35 @@
        Promise.reject(err)
      }
    })
-  .then(() => check.parameterName(fileName))
-  .then(() => check.parameterName(containerName))
-  .then(() => check.parameterName(pathToStore))
-  .then(() => pz.getBlobToStreamAsync(containerName, fileName, fs.createWriteStream(pathToStore + fileName)))
+  .then(() => checkParameterName(fileName, containerName))
+  .then(() => pabs.getBlobToStreamAsync(containerName, fileName, fs.createWriteStream(pathToStore + fileName)))
  }
 
- function _getStreamFromAzure (fileName, containerName, localStream) {
-   return check.parameterName(fileName)
-  .then(() => check.parameterName(containerName))
-  .then(() => check.parameterName(localStream))
-  .then(() => pz.getBlobToStreamAsync(containerName, fileName, localStream))
+ function cloudgetStream (fileName, containerName, localStream) {
+   return checkParameterName(fileName, containerName, localStream)
+  .then(() => pabs.getBlobToStreamAsync(containerName, fileName, localStream))
  }
 
- function _delFileFromAzure (fileName, containerName) {
-   return check.parameterName(fileName)
-  .then(() => check.parameterName(containerName))
-  .then(() => pz.deleteBlobAsync(containerName, fileName))
+ function cloudDelFile (fileName, containerName) {
+   return checkParameterName(fileName, containerName)
+  .then(() => pabs.deleteBlobAsync(containerName, fileName))
+ }
+
+ function cloudCreateTable (tableName) {
+   return checkParameterName(tableName)
+   .then(() => pats.createTableIfNotExistsAsync(tableName))
  }
 
  module.exports = {
-   cloudStore: _storeFiletoAzure,
-   cloudListFile: _listFilesInAzure,
-   cloudgetFile: _getFileFromAzure,
-   cloudgetStream: _getStreamFromAzure,
-   cloudDelFile: _delFileFromAzure,
-   cloudStoreTextToFile: _storeTexttoFileAzure,
-   cloudDeleteFilesBeforeDate: _delFilesInAzureBeforeDate,
-   cloudCreateContainer: _createContainerInAzure,
-   cloudStoreTextToExistingFile: _storeTexttoExistingFileAzure
+   cloudStoreFile,
+   cloudListFile,
+   cloudgetFile,
+   cloudgetStream,
+   cloudDelFile,
+   cloudStoreTextToFile,
+   cloudDeleteFilesBeforeDate,
+   cloudCreateContainer,
+   cloudStoreTextToExistingFile,
+   cloudCreateTable,
+   cloudGetFilesBeforeDate
  }

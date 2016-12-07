@@ -1,18 +1,10 @@
 'use strict'
 const cl = require('./azureStorage')
 const Promise = require('bluebird')
-const mkdir = Promise.promisify(require('fs').mkdir)
+// const mkdir = Promise.promisify(require('fs').mkdir)
 
-function _test (path) {
-  return mkdir(path)
-  .catch(err => {
-    if (err.code === 'EEXIST') {
-      return
-    } else {
-      Promise.reject(err)
-    }
-  })
-.then(() => cl.cloudCreateContainer('test'))
+function _test (path, path1) {
+  return cl.cloudCreateContainer('test')
 .then(() => console.log('\nlisting files in container test'))
 .then(() => cl.cloudListFile('test'))
 .then(() => console.log('\n (1) Passed........\n'))
@@ -34,19 +26,21 @@ function _test (path) {
 .catch(error => console.log('In Error: ', error))
 .then(() => console.log('\n (4) Passed........\n'))
 .then(() => console.log('\nRetriving 6 files from Azure to CSV catalog'))
-.then(() => cl.cloudgetFile('enrollments.STUDENTS.DM1578VT152.1480494800005.csv', 'test', './AZURETEST/'))
-.then(() => cl.cloudgetFile('enrollments.STUDENTS.DM1578VT152.1480494800006.csv', 'test', './AZURETEST/'))
-.then(() => cl.cloudgetFile('enrollments.STUDENTS.DM1578VT152.1480494800007.csv', 'test', './AZURETEST/'))
-.then(() => cl.cloudgetFile('enrollments.STUDENTS.DM1578VT152.1480494800008.csv', 'test', './AZURETEST/'))
-.then(() => cl.cloudgetFile('enrollments.STUDENTS.DM1578VT152.1480494800009.csv', 'test', './AZURETEST/'))
-.then(() => cl.cloudgetFile('enrollments.STUDENTS.DM1578VT152.1480494800010.csv', 'test', './AZURETEST/'))
+.then(() => cl.cloudgetFile('enrollments.STUDENTS.DM1578VT152.1480494800005.csv', 'test', path))
+.then(() => cl.cloudgetFile('enrollments.STUDENTS.DM1578VT152.1480494800006.csv', 'test', path))
+.then(() => cl.cloudgetFile('enrollments.STUDENTS.DM1578VT152.1480494800007.csv', 'test', path))
+.then(() => cl.cloudgetFile('enrollments.STUDENTS.DM1578VT152.1480494800008.csv', 'test', path))
+.then(() => cl.cloudgetFile('enrollments.STUDENTS.DM1578VT152.1480494800009.csv', 'test', path))
+.then(() => cl.cloudgetFile('enrollments.STUDENTS.DM1578VT152.1480494800010.csv', 'test', path))
 .then(() => console.log('\n (5) Passed........\n'))
+.then(() => cl.cloudGetFilesBeforeDate(new Date(), 'test', 3, path1))
+.then(() => console.log('\n (5.1) Passed........\n'))
 .then(() => cl.cloudDeleteFilesBeforeDate(new Date(), 'test', 3))
 .then(() => cl.cloudListFile('test'))
 .then(() => cl.cloudListFile('test'))
 .then(() => console.log('\n (6) Passed........\n'))
 .then(() => console.log('\nCopy a file to Azure...'))
-.then(() => cl.cloudStore('./AZURETEST/enrollments.STUDENTS.DM1578VT152.1480494800005.csv', 'test'))
+.then(() => cl.cloudStoreFile('./AZURETEST/enrollments.STUDENTS.DM1578VT152.1480494800005.csv', 'test'))
 .then(() => cl.cloudListFile('test'))
 .then(() => console.log('\n (7) Passed........\n'))
 .then(() => cl.cloudDelFile('./AZURETEST/enrollments.STUDENTS.DM1578VT152.1480494800005.csv', 'test', 3))
@@ -56,7 +50,7 @@ function _test (path) {
 .catch(error => console.log(error))
 }
 
-_test('./AZURETEST')
+_test('./AZURETEST/', './REPLAY/')
 .then(status => {
   if (status === true) {
     console.log('TEST IS OK')
