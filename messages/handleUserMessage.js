@@ -31,14 +31,23 @@ function convertToCanvasUser (msg) {
 
 module.exports = function (msg) {
   log.info('\nProcessing for user msg..... ' + msg.ugClass + ' ' + msg.kthid, ' msg affiliation ', msg.affiliation)
-  if (isInScope(msg)) {
-    let user = convertToCanvasUser(msg)
-    if (user) {
-      console.log('User object is ready to be sent to Canvas API: ', JSON.stringify(user, null, 4))
-      return canvasApi.getUser(user.pseudonym.sis_user_id)
-        .then(userFromCanvas => {
-          return canvasApi.updateUser(user, userFromCanvas.id)
-        })
+
+  if (!isInScope(msg)) {
+    console.info('\nUser not in affiliation scope..... ' + msg.ugClass + ' ' + msg.kthid)
+    return Promise.resolve('User not in affiliation scope...')
+  }
+
+  let user = convertToCanvasUser(msg)
+
+  if (!user) {
+    console.log('\nIncomplete fields to create user in canvas.....')
+    return Promise.resolve('User fields are missing...')
+  }
+
+  console.log('User object is ready to be sent to Canvas API: ', JSON.stringify(user, null, 4))
+
+  return canvasApi.getUser(user.pseudonym.sis_user_id)
+        .then(userFromCanvas => canvasApi.updateUser(user, userFromCanvas.id))
         .catch(e => {
           if (e.statusCode === 404) {
             // user doesn't exist
@@ -47,12 +56,4 @@ module.exports = function (msg) {
             throw e
           }
         })
-    } else {
-      console.log('\nIncomplete fields to create user in canvas.....')
-      return Promise.resolve('User fields are missing...')
-    }
-  } else {
-    console.info('\nUser not in affiliation scope..... ' + msg.ugClass + ' ' + msg.kthid)
-    return Promise.resolve('User not in affiliation scope...')
-  }
 }
