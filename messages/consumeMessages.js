@@ -21,7 +21,7 @@ function abort () {
 }
 
 function abortIfNoMessage (msg) {
-  if (!msg) {
+  if (!msg || !msg.body) {
     abort()
   }
 
@@ -30,10 +30,7 @@ function abortIfNoMessage (msg) {
 
 function parseBody (msg) {
   return Promise.resolve()
-  .then(() => {
-    log.info('message:', msg.body)
-    return JSON.parse(msg.body)
-  })
+  .then(() => JSON.parse(msg.body))
   .catch(e => {
     log.warn('an error occured while trying to parse json:', e, msg)
     queue.deleteMessageFromQueue(msg)

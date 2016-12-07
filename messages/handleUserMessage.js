@@ -1,7 +1,6 @@
 'use strict'
 
 const canvasApi = require('../canvasApi')
-var Promise = require('bluebird')
 require('colors')
 const log = require('../server/init/logging')
 
@@ -44,14 +43,21 @@ module.exports = function (msg) {
     return Promise.resolve('User fields are missing...')
   }
 
-  console.log('User object is ready to be sent to Canvas API: ', JSON.stringify(user, null, 4))
-
   return canvasApi.getUser(user.pseudonym.sis_user_id)
+        .then(userFromCanvas => {
+          log.info('found user in canvas', userFromCanvas)
+          log.info('update the user with new values: ', user)
+          return userFromCanvas
+        })
         .then(userFromCanvas => canvasApi.updateUser(user, userFromCanvas.id))
         .catch(e => {
           if (e.statusCode === 404) {
-            // user doesn't exist
+            log.info('user doesnt exist in canvas. Create it.', user)
             return canvasApi.createUser(user)
+            .then(res => {
+              log.info('user created', res)
+              return res
+            })
           } else {
             throw e
           }
