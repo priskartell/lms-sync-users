@@ -5,9 +5,10 @@ const processWatcher = require('./watch')
 const logVol = config.secure.azure.logBlobName
 
 processWatcher.cloudWatch(logVol, 'log')
+
 app.start()
 const consumeMessages = require('./messages/consumeMessages')
-consumeMessages.readMessage()
+consumeMessages.start()
 
 const systemRoutes = require('./server/systemroutes')
 app.use(config.full.proxyPrefixPath.uri, systemRoutes)
