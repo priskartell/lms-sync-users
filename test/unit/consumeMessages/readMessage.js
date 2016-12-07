@@ -2,7 +2,7 @@ var test = require('tape')
 require('rewire-global').enable()
 const sinon = require('sinon')
 
-test('should abort promise chain if no message is read', t => {
+test.skip('should abort promise chain if no message is read', t => {
   t.plan(1)
   const consumeMessages = require('../../../messages/consumeMessages.js')
   const queue = {readMessageFromQueue: sinon.stub().returns(Promise.resolve())}
