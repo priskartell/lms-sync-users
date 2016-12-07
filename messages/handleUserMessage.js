@@ -3,6 +3,7 @@
 const canvasApi = require('../canvasApi')
 var Promise = require('bluebird')
 require('colors')
+const log = require('../server/init/logging')
 
 function isInScope (msg) {
   var affArray = msg.affiliation
@@ -19,8 +20,7 @@ function convertToCanvasUser (msg) {
         sis_user_id: msg.kthid // CSVs analogi av 'user_id' needed for enrollments
       },
       user: {
-        'name': `${msg.given_name} ${msg.family_name}`, // CSVs analogi av 'full_name'
-        'username': msg.username // inte säker
+        'name': `${msg.given_name} ${msg.family_name}`
       }
     }
     return user
@@ -30,13 +30,15 @@ function convertToCanvasUser (msg) {
 }
 
 module.exports = function (msg) {
-  console.info('\nProcessing for user msg..... ' + msg.ugClass + ' ' + msg.kthid, ' msg affiliation ', msg.affiliation)
+  log.info('\nProcessing for user msg..... ' + msg.ugClass + ' ' + msg.kthid, ' msg affiliation ', msg.affiliation)
   if (isInScope(msg)) {
     let user = convertToCanvasUser(msg)
     if (user) {
       console.log('User object is ready to be sent to Canvas API: ', JSON.stringify(user, null, 4))
       return canvasApi.getUser(user.pseudonym.sis_user_id)
-        .then(userFromCanvas => canvasApi.updateUser(user, userFromCanvas.id))
+        .then(userFromCanvas => {
+          return canvasApi.updateUser(user, userFromCanvas.id)
+        })
         .catch(e => {
           if (e.statusCode === 404) {
             // user doesn't exist
