@@ -119,12 +119,6 @@
     })
  }
 
-// let collectionUrl = `dbs/${databaseId}/colls/${collectionId}`
- cloudGetDatabase(config.secure.azure.databaseName)
-.then(() => console.log('Database connected successfully: ' + config.secure.azure.databaseName))
-.then(() => cloudGetCollection(config.secure.azure.databaseName, config.secure.azure.collectionName))
-.then(() => console.log('Collection connected successfully: ' + config.secure.azure.collectionName))
-.catch(error => console.log('Completed with error', error))
 
  function cloudCreateContainer (containerName) {
    return checkParameterName(containerName)
