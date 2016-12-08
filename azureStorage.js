@@ -40,33 +40,6 @@
  })
  }
 
-/*
- function parseUrl (url, type) {
-   //    let collectionUrl = `dbs/${databaseId}/colls/${collectionId}`
-   if (!url) {
-     throw Error('parseUrl, undefined Url' + url)
-   }
-   console.log('got Url:' + url)
-   let myRe = /^dbs\/(\w+)\/colls\/(\w+)$/g
-   let myArray = myRe.exec(url)
-   if (myArray) {
-     let databaseIndex = 0
-     let collectionIndex = 1
-     console.log('Database: ' + myArray[databaseIndex] + 'Collectoin: ' + myArray[collectionIndex])
-   } else {
-     throw Error('parseUrl, Invalid Url format: ' + url)
-   }
-   if (type === 'db') {
-     return myArray[0]
-   }
-   if (type === 'col') {
-     return myArray[1]
-   } else {
-     throw Error('parseUrl, unknown type' + type)
-   }
- }
- */
-
  function cloudGetCollection (dbName, collName) {
    return checkParameterName(dbName, collName)
  .then(() => {
@@ -78,8 +51,8 @@
    if (error.code === HttpStatusCodes.NOTFOUND) {
      let databaseUrl = `dbs/${dbName}`
      let config = {id: collName}
-     console.log(databaseUrl,config)
-     return azureDbClient.createCollectionAsync(databaseUrl, config,{offerThroughput: 400 })
+     console.log(databaseUrl, config)
+     return azureDbClient.createCollectionAsync(databaseUrl, config, {offerThroughput: 400})
    } else {
      Promise.reject(error)
    }
@@ -148,9 +121,9 @@
 
 // let collectionUrl = `dbs/${databaseId}/colls/${collectionId}`
  cloudGetDatabase(config.secure.azure.databaseName)
-.then(() => console.log(`Database connected successfully: ` + config.secure.azure.databaseName))
-.then(() => cloudGetCollection(config.secure.azure.databaseName,config.secure.azure.collectionName))
-.then(() => console.log(`Collection connected successfully: ` + config.secure.azure.collectionName))
+.then(() => console.log('Database connected successfully: ' + config.secure.azure.databaseName))
+.then(() => cloudGetCollection(config.secure.azure.databaseName, config.secure.azure.collectionName))
+.then(() => console.log('Collection connected successfully: ' + config.secure.azure.collectionName))
 .catch(error => console.log('Completed with error', error))
 
  function cloudCreateContainer (containerName) {
