@@ -6,14 +6,16 @@ const {type} = require('message-type')
 const log = require('../server/init/logging')
 
 module.exports = function (msg) {
+  log.info('logging statistics...')
   log.info({'metric.handleMessage': 1})
   if (msg._desc.type === type.course) {
-    log.info('\nStarted handling message to update a course info...'.green)
+    log.info('Started handling message to update a course info...'.green)
     return handleCourseMessage(msg)
   } else if (msg._desc.type === type.user) {
-    log.info('\nStarted handling the queue message to create/update a user...'.green)
+    log.info('Started handling the queue message to create/update a user...'.green)
     return handleUserMessage(msg)
   } else {
-    return Promise.resolve('This message type is irrelevant for this app.....')
+    log.info('This message type is irrelevant for this app.....')
+    return Promise.resolve(msg)
   }
 }
