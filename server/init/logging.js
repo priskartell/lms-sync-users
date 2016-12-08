@@ -7,6 +7,8 @@ const packageFile = require('../../package.json')
 const configuration = config.full.logging
 const environment = config.env
 
+console.log('>>>>>>log',configuration)
+
 let logConfiguration = {
   name: packageFile.name,
   app: packageFile.name,
@@ -14,7 +16,8 @@ let logConfiguration = {
   level: configuration.log.level,
   console: {
     enabled: true
-  }
+  },
+  stdout: configuration.stdout
 }
 
 log.init(logConfiguration)

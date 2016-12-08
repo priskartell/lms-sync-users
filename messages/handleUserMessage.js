@@ -33,6 +33,7 @@ function convertToCanvasUser (msg) {
   }
 }
 
+// Should this function be moved into canvasApi instead?
 function createOrUpdate (user) {
   return canvasApi.getUser(user.pseudonym.sis_user_id)
         .then(userFromCanvas => {
