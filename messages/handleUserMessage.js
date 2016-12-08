@@ -6,7 +6,11 @@ const log = require('../server/init/logging')
 
 function isInScope (msg) {
   var affArray = msg.affiliation
-  return affArray && (affArray.includes('employee') || affArray.includes('student'))
+  const result = affArray && (affArray.includes('employee') || affArray.includes('student'))
+  if (!result) {
+    log.info('\nUser is not an employee and not a student, out of the affilication scope. User ' + msg.username + ' ' + msg.kthid + ' with affiliation ' + msg.affiliation)
+  }
+  return result
 }
 
 function convertToCanvasUser (msg) {
@@ -24,6 +28,7 @@ function convertToCanvasUser (msg) {
     }
     return user
   } else {
+    log.info('\nIncomplete fields to create user in canvas, skipping. Probably,it is missing a name(given_name, family_name) or a username or kth_id.....', msg)
     return
   }
 }
@@ -38,7 +43,7 @@ function createOrUpdate (user) {
         .then(userFromCanvas => canvasApi.updateUser(user, userFromCanvas.id))
         .catch(e => {
           if (e.statusCode === 404) {
-            log.info('user doesnt exist in canvas. Trying to create it.', user)
+            log.info('user doesnt exist in canvas. Create it.', user)
             return canvasApi.createUser(user)
             .then(res => {
               log.info('Success! User created', res)
@@ -51,17 +56,12 @@ function createOrUpdate (user) {
 }
 
 module.exports = function (msg) {
-  if (!isInScope(msg)) {
-    log.info('\nUser is not an employee and not a student, out of the affilication scope. Skipping user ' + msg.username + ' ' + msg.kthid + ' with affiliation ' + msg.affiliation)
-    return Promise.resolve('User not in affiliation scope...')
+  const user = convertToCanvasUser(msg)
+
+  if (isInScope(msg) && user) {
+    return createOrUpdate(user)
+    .then(user => msg)
+  } else {
+    return Promise.resolve(msg)
   }
-
-  let user = convertToCanvasUser(msg)
-
-  if (!user) {
-    log.info('\nIncomplete fields to create user in canvas, skipping. Probably,it is missing a name(given_name, family_name) or a username or kth_id.....', msg)
-    return Promise.resolve('Some of required users fields are missing (a name(given_name, family_name) or a username or kth_id), skipping message')
-  }
-
-  return createOrUpdate(user)
 }
