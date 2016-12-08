@@ -39,12 +39,14 @@ function createOrUpdate (user) {
         .then(userFromCanvas => {
           log.info('found user in canvas', userFromCanvas)
           log.info('update the user with new values: ', user)
+          log.info({'metric.updateUser':1})
           return userFromCanvas
         })
         .then(userFromCanvas => canvasApi.updateUser(user, userFromCanvas.id))
         .catch(e => {
           if (e.statusCode === 404) {
             log.info('user doesnt exist in canvas. Create it.', user)
+            log.info({'metric.createUser':1})
             return canvasApi.createUser(user)
             .then(res => {
               log.info('Success! User created', res)
