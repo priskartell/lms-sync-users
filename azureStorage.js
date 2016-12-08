@@ -119,7 +119,6 @@
     })
  }
 
-
  function cloudCreateContainer (containerName) {
    return checkParameterName(containerName)
   .then(() => pabs.createContainerIfNotExistsAsync(containerName))

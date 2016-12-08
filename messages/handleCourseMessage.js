@@ -8,7 +8,10 @@ const config = require('../server/init/configuration')
 const csvVol = config.secure.azure.csvBlobName
 const msgVol = config.secure.azure.msgBlobName
 const csvDir = config.secure.localFile.csvDir
-
+cl.cloudCreateContainer(config.secure.azure.csvBlobName)
+.then(() => console.log('Created: ' + config.secure.azure.csvBlobName))
+cl.cloudCreateContainer(config.secure.azure.msgBlobName)
+.then(() => console.log('Created: ' + config.secure.azure.msgBlobName))
 require('colors')
 
 function _handleError (err, sisCourseCode) {
