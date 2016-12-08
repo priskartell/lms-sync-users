@@ -7,6 +7,7 @@ const log = require('../server/init/logging')
 
 module.exports = function (msg) {
   log.info({'metric.handleMessage': 1})
+  log.info('----------------- New message ---------------------')
   if (msg._desc.type === type.course) {
     log.info('\nStarted handling message to update a course info...'.green)
     return handleCourseMessage(msg)
