@@ -13,6 +13,7 @@ function start () {
   setInterval(readMessageUnlessReading, 50)
 }
 
+
 function abort () {
   // Best way to abort a promise chain is by a custom error according to:
   // http://stackoverflow.com/questions/11302271/how-to-properly-abort-a-node-js-promise-chain-using-q
@@ -38,6 +39,7 @@ function parseBody (msg) {
   })
 }
 function readMessage () {
+  isReading = true
   let message
   return queue
     .readMessageFromQueue(config.secure.azure.queueName)
@@ -68,7 +70,6 @@ function readMessageUnlessReading () {
     // console.log('is already reading a message, abort')
     return
   } else {
-    isReading = true
     readMessage()
   }
 }
