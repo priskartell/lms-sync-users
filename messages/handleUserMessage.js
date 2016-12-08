@@ -10,7 +10,7 @@ function isInScope (msg) {
 }
 
 function convertToCanvasUser (msg) {
-  // UG_USER_ATTRIBUTES=kthid,username,family_name,given_name,affiliation,email_address,primary_email
+  log.info('\nConverting the user-type message to canvasApi format for: ' + msg.username + ' ' + msg.kthid, ' msg affiliation ', msg.affiliation)
 
   if (msg.username && (msg.given_name || msg.family_name) && msg.kthid) {
     let user = {
@@ -28,20 +28,7 @@ function convertToCanvasUser (msg) {
   }
 }
 
-module.exports = function (msg) {
-  if (!isInScope(msg)) {
-    log.info('\nUser is not an employee and not a student, out of the affilication scope. Skipping user ' + msg.username + ' ' + msg.kthid + ' with affiliation ' + msg.affiliation)
-    return Promise.resolve('User not in affiliation scope...')
-  }
-
-  log.info('\nConverting the user-type message to canvasApi format for: ' + msg.username + ' ' + msg.kthid, ' msg affiliation ', msg.affiliation)
-  let user = convertToCanvasUser(msg)
-
-  if (!user) {
-    log.info('\nIncomplete fields to create user in canvas, skipping. Probably,it is missing a name(given_name, family_name) or a username or kth_id.....')
-    return Promise.resolve('Some of required users fields are missing (a name(given_name, family_name) or a username or kth_id), skipping message')
-  }
-
+function createOrUpdate (user) {
   return canvasApi.getUser(user.pseudonym.sis_user_id)
         .then(userFromCanvas => {
           log.info('found user in canvas', userFromCanvas)
@@ -61,4 +48,20 @@ module.exports = function (msg) {
             throw e
           }
         })
+}
+
+module.exports = function (msg) {
+  if (!isInScope(msg)) {
+    log.info('\nUser is not an employee and not a student, out of the affilication scope. Skipping user ' + msg.username + ' ' + msg.kthid + ' with affiliation ' + msg.affiliation)
+    return Promise.resolve('User not in affiliation scope...')
+  }
+
+  let user = convertToCanvasUser(msg)
+
+  if (!user) {
+    log.info('\nIncomplete fields to create user in canvas, skipping. Probably,it is missing a name(given_name, family_name) or a username or kth_id.....', msg)
+    return Promise.resolve('Some of required users fields are missing (a name(given_name, family_name) or a username or kth_id), skipping message')
+  }
+
+  return createOrUpdate(user)
 }

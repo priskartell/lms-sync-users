@@ -38,6 +38,7 @@ function parseBody (msg) {
   })
 }
 function readMessage () {
+  isReading = true
   let message
   return queue
     .readMessageFromQueue(config.secure.azure.queueName)
@@ -68,7 +69,6 @@ function readMessageUnlessReading () {
     // console.log('is already reading a message, abort')
     return
   } else {
-    isReading = true
     readMessage()
   }
 }
