@@ -126,8 +126,7 @@ function _process (msg) {
 
   console.info(`In _process ${sisCourseCode}, processing for ${msgtype}`)
 
-  // return canvasApi.findCourse(sisCourseCode)
-  return Promise.resolve('gurka')
+  return canvasApi.findCourse(sisCourseCode)
     .then(() => _createCsvFile(msg, sisCourseCode))
     .then(csvObject => {
       console.log('FileName: ', csvObject.csvFileName)
