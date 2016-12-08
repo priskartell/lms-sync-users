@@ -5,30 +5,56 @@ const canvasApi = require('../canvasApi')
 const Promise = require('bluebird')
 const fs = Promise.promisifyAll(require('fs'))
 require('colors')
-const log = require('../server/init/logging')
-const {createLine} = require('../csvFile')
 
-const fileHeaders = ['course_id', 'user_id', 'role', 'status']
+function _handleError (err, sisCourseCode) {
+  let eCode = err.statusCode
+  if (eCode === 404) {
+    console.warn('Course does not exist in canvas, skipping, '.red + sisCourseCode.red)
+    return Promise.resolve('Course does not exist in canvas')
+  }
+
+  if (eCode >= 400) { // Besides course not in Canvas, Probably an other type of problem with canvas.....
+    console.warn('Canvas is not accessable, Invalid token or other Canvas related errors..... '.red + sisCourseCode.red)
+  } else { // It is an error and unrelated to the Canvas HTTP requests, probably IO errors
+    console.warn('Other error..... '.red + sisCourseCode.red)
+  }
+
+  return Promise.reject(err)
+}
 
 function _createCsvFile (msg, sisCourseCode) {
-  const d = Date.now()
-  const msgtype = msg._desc.userType
-  const fileName = `enrollments.${msgtype}.${sisCourseCode}.${d}`
+  let d = Date.now()
+  let header = 'course_id,user_id,role,status\n'
+  let msgtype = msg._desc.userType
+  let fileName = 'enrollments.' + msgtype + '.' + sisCourseCode + '.' + d
+  let csvFileName = './CSV/' + fileName + '.csv'
+  let msgFileName = './MSG/' + fileName + '.msg'
+  let csvString = ''
 
-  const csvFileName = './CSV/' + fileName + '.csv'
-  const msgFileName = './MSG/' + fileName + '.msg'
+  if (msg.member && msg.member.length > 0) {
+    let csvArray = msg.member.map(user => {
+      const csvObj = {}
+      csvObj['course_id'] = sisCourseCode
+      csvObj['user_id'] = user
+      csvObj['role'] = msgtype
+      csvObj['status'] = 'active'
+      return csvObj
+    })
+    csvArray.forEach(csvRow => {
+      csvString = csvString + `${csvRow.course_id},${csvRow.user_id},${csvRow.role},${csvRow.status}
+`
+    })
+  }
 
-  const csvLines = msg.member.map(userId => createLine('sisCourseCode', userId, msgtype, 'active'))
-  const csvData = createLine(fileHeaders) + csvLines.join()
-
-  log.info('Going to open file: ', csvFileName, msgFileName)
+  let csvData = header + csvString
+  console.info('\nGoing to open file: ' + csvFileName + ' ' + msgFileName)
 
   return fs.writeFileAsync(csvFileName, csvData, {}) // we are in a promise chain, if error thrown it shoud be cateched in error handling funciton
     .then(() => fs.writeFileAsync(msgFileName, msg, {}))
     .then(() => { return {csvContent: csvData, csvFileName: csvFileName} })
 }
 
-function handleMessage (msg) {
+function _process (msg) {
   let course = null
   let termin = null
   let year = null
@@ -78,42 +104,26 @@ function handleMessage (msg) {
   }
 
   console.info(`
-In handleMessage ${sisCourseCode}, processing for ${msgtype}`)
+In _process ${sisCourseCode}, processing for ${msgtype}`)
 
   return canvasApi.findCourse(sisCourseCode)
-    .catch(e => {
-      if (e.statusCode === 404) {
-        // course not found in canvas. This is ok, just skip it
-      } else {
-        throw e
-      }
-    })
     .then(() => _createCsvFile(msg, sisCourseCode))
     .then(csvObject => {
       console.log(csvObject.csvContent)
       return csvObject.csvFileName
     })
     .then(fileName => canvasApi.sendCsvFile(fileName))
-    .then(canvasReturnValue => {
-      log.info('csv file sent to canvas', canvasReturnValue)
-      return msg
-    })
+    .then(canvasReturnValue => console.log(JSON.parse(canvasReturnValue)))
+    .catch(error => _handleError(error, sisCourseCode))
 }
 
 module.exports = function (msg) {
-  log.info('\nProcessing for msg..... ' + msg.ug1Name)
-
-  if(!msg.member || !msg._desc){
-    log.warn('incorrect message', msg)
-    return Promise.resolve(msg)
-  }
-
+  console.info('\nProcessing for msg..... ' + msg.ug1Name)
   var msgtype = msg._desc.userType
-
-  if (msgtype === type.students || msgtype === type.teachers || msgtype === type.assistants) {
-    return handleMessage(msg)
+  if (msg._desc && (msgtype === type.students || msgtype === type.teachers || msgtype === type.assistants)) {
+    return _process(msg)
   } else {
-    log.info('\nThis is something else than students, teacher, assistant, we can probably wait with this until the students is handled', JSON.stringify(msg, null, 4))
-    return Promise.resolve(msg)
+    console.warn('\nThis is something else than students, teacher, assistant, we can probably wait with this until the students is handled', JSON.stringify(msg, null, 4))
+    return Promise.resolve('Unknown flag: ' + msgtype)
   }
 }
