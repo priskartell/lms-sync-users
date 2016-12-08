@@ -3,7 +3,7 @@ const log = require('./server/init/logging')
 
 function escapeCsvData (str) {
   if (str.includes(',') || str.includes('"')) {
-    log.error('oh no! bad data!', str)
+    log.warn('oh no! bad data!', str)
   }
   return str
 }

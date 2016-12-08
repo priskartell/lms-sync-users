@@ -6,7 +6,7 @@ const Promise = require('bluebird')
 const fs = Promise.promisifyAll(require('fs'))
 require('colors')
 const log = require('../server/init/logging')
-const {writeLine} = require('../csvFile')
+const {createLine} = require('../csvFile')
 
 const fileHeaders = ['course_id', 'user_id', 'role', 'status']
 
@@ -18,21 +18,17 @@ function _createCsvFile (msg, sisCourseCode) {
   const csvFileName = './CSV/' + fileName + '.csv'
   const msgFileName = './MSG/' + fileName + '.msg'
 
-  writeLine(fileHeaders, fileName)
+  const csvLines = msg.member.map(userId => createLine('sisCourseCode', userId, msgtype, 'active'))
+  const csvData = createLine(fileHeaders) + csvLines.join()
 
-  if (msg.member) {
-    msg.member.forEach(userId => writeLine('sisCourseCode', userId, msgtype, 'active'))
-  }
-
-  let csvData = header + csvString
-  console.info('\nGoing to open file: ' + csvFileName + ' ' + msgFileName)
+  log.info('Going to open file: ', csvFileName, msgFileName)
 
   return fs.writeFileAsync(csvFileName, csvData, {}) // we are in a promise chain, if error thrown it shoud be cateched in error handling funciton
     .then(() => fs.writeFileAsync(msgFileName, msg, {}))
     .then(() => { return {csvContent: csvData, csvFileName: csvFileName} })
 }
 
-function _process (msg) {
+function handleMessage (msg) {
   let course = null
   let termin = null
   let year = null
@@ -82,7 +78,7 @@ function _process (msg) {
   }
 
   console.info(`
-In _process ${sisCourseCode}, processing for ${msgtype}`)
+In handleMessage ${sisCourseCode}, processing for ${msgtype}`)
 
   return canvasApi.findCourse(sisCourseCode)
     .catch(e => {
@@ -106,9 +102,16 @@ In _process ${sisCourseCode}, processing for ${msgtype}`)
 
 module.exports = function (msg) {
   log.info('\nProcessing for msg..... ' + msg.ug1Name)
+
+  if(!msg.member || !msg._desc){
+    log.warn('incorrect message', msg)
+    return Promise.resolve(msg)
+  }
+
   var msgtype = msg._desc.userType
-  if (msg._desc && (msgtype === type.students || msgtype === type.teachers || msgtype === type.assistants)) {
-    return _process(msg)
+
+  if (msgtype === type.students || msgtype === type.teachers || msgtype === type.assistants) {
+    return handleMessage(msg)
   } else {
     log.info('\nThis is something else than students, teacher, assistant, we can probably wait with this until the students is handled', JSON.stringify(msg, null, 4))
     return Promise.resolve(msg)
