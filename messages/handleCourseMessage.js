@@ -42,8 +42,8 @@ function _handleError (err, sisCourseCode) {
   return Promise.reject(err)
 }
 
-function _createCsvFile (msg, sisCourseCode) {
-  let d = Date.now()
+function _createCsvFile (msg, sisCourseCode, millisecondDate) {
+  let d = millisecondDate
   let header = 'course_id,user_id,role,status\n'
   let msgtype = msg._desc.userType
   let csvFileName = 'enrollments.' + msgtype + '.' + sisCourseCode + '.' + d + '.csv'
@@ -125,16 +125,18 @@ function _process (msg) {
   }
 
   console.info(`In _process ${sisCourseCode}, processing for ${msgtype}`)
+  let d = Date.now()
 
   return canvasApi.findCourse(sisCourseCode)
-    .then(() => _createCsvFile(msg, sisCourseCode))
+    .then(() => _createCsvFile(msg, sisCourseCode, d))
     .then(csvObject => {
       console.log('FileName: ', csvObject.csvFileName)
       return csvObject.csvFileName
     })
     .then(fileName => canvasApi.sendCsvFile(fileName))
     .then(canvasReturnValue => {
-      let document = {id: sisCourseCode, msg: msg, resp: canvasReturnValue}
+      let documentId = sisCourseCode + '.' + d
+      let document = {id: documentId, msg: msg, resp: canvasReturnValue}
       let collectionUrl = `dbs/${lmsDatabase}/colls/${lmsCollection}`
       return cl.cloudCreateDocument(document, collectionUrl)
     })
