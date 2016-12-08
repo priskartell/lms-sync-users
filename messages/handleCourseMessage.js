@@ -5,14 +5,26 @@ const canvasApi = require('../canvasApi')
 const Promise = require('bluebird')
 const cl = require('../azureStorage')
 const config = require('../server/init/configuration')
+require('colors')
+
 const csvVol = config.secure.azure.csvBlobName
 const msgVol = config.secure.azure.msgBlobName
 const csvDir = config.secure.localFile.csvDir
-cl.cloudCreateContainer(config.secure.azure.csvBlobName)
-.then(() => console.log('Created: ' + config.secure.azure.csvBlobName))
-cl.cloudCreateContainer(config.secure.azure.msgBlobName)
-.then(() => console.log('Created: ' + config.secure.azure.msgBlobName))
-require('colors')
+const lmsDatabase = config.secure.azure.databaseName
+const lmsCollection = config.secure.azure.collectionName
+
+function _connectoToAzure () {
+  return cl.cloudGetDatabase(lmsDatabase)
+.then(() => cl.cloudGetCollection(lmsDatabase, lmsCollection))
+.then(() => console.log('Connected to database: ' + lmsDatabase + ' , Collection: ' + lmsCollection + ' successfully:'))
+.then(() => cl.cloudCreateContainer(csvVol))
+.then(() => console.log('Created: ' + csvVol))
+.then(() => cl.cloudCreateContainer(msgVol))
+.then(() => console.log('Created: ' + msgVol))
+.catch(error => Error(error))
+}
+
+_connectoToAzure()
 
 function _handleError (err, sisCourseCode) {
   let eCode = err.statusCode
@@ -59,7 +71,7 @@ function _createCsvFile (msg, sisCourseCode) {
   return cl.cloudStoreTextToFile(csvFileName, csvVol, csvData)
   .then(result => { console.info(result); return cl.cloudStoreTextToFile(msgFileName, msgVol, messageText) })
   .then(() => cl.cloudgetFile(csvFileName, csvVol, csvDir))
-  .then(result => { console.info(result); return {csvContent: csvData, csvFileName: result} })
+  .then(result => { console.info(result); return {csvContent: csvData, csvFileName: csvDir + result.name} })
   .catch(error => { console.error(error); return Promise.reject(error) })
 }
 
@@ -114,14 +126,19 @@ function _process (msg) {
 
   console.info(`In _process ${sisCourseCode}, processing for ${msgtype}`)
 
-  return canvasApi.findCourse(sisCourseCode)
+  // return canvasApi.findCourse(sisCourseCode)
+  return Promise.resolve('gurka')
     .then(() => _createCsvFile(msg, sisCourseCode))
     .then(csvObject => {
-      console.log(csvObject.csvContent)
+      console.log('FileName: ', csvObject.csvFileName)
       return csvObject.csvFileName
     })
     .then(fileName => canvasApi.sendCsvFile(fileName))
-    .then(canvasReturnValue => console.log(JSON.parse(canvasReturnValue)))
+    .then(canvasReturnValue => {
+      let document = {id: sisCourseCode, msg: msg, resp: canvasReturnValue}
+      let collectionUrl = `dbs/${lmsDatabase}/colls/${lmsCollection}`
+      return cl.cloudCreateDocument(document, collectionUrl)
+    })
     .catch(error => _handleError(error, sisCourseCode))
 }
 
