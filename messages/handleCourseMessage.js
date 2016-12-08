@@ -57,6 +57,7 @@ function _createCsvFile (msg, sisCourseCode) {
   .then(result => { console.info(result); return cl.cloudStoreTextToFile(msgFileName, msgVol, messageText) })
   .then(() => cl.cloudgetFile(csvFileName, csvVol, csvDir))
   .then(result => { console.info(result); return {csvContent: csvData, csvFileName: result} })
+  .catch(error => { console.error(error); return Promise.reject(error) })
 }
 
 function _process (msg) {

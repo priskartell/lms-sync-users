@@ -37,6 +37,7 @@ module.exports = {
       queueConnectionString: 'Endpoint=sb://kth-integral.servicebus.windows.net/;SharedAccessKeyName=canvas-consumer;SharedAccessKey=',
       queueName: '',
       StorageConnectionString: '',
+      databaseConnectionString '',
       csvBlobName: 'l',
       msgBlobName: '',
       logBlobName: ''
