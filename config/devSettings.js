@@ -8,7 +8,7 @@ module.exports = {
     log: {
       level: 'debug'
     },
-    stdout:{enabled:true}
+    stdout:{enabled:false}
   },
   ldap: {
     client: {
