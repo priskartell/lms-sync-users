@@ -9,7 +9,7 @@ function escapeCsvData (str) {
 }
 
 function writeLine (strArr, fileName) {
-  const line = strArr.map(escapeCsvData).join(',') + '\n'
+  const line = createLine(strArr)
   fs.appendFile(fileName, line, err => {
     if (err) {
       throw err
@@ -17,6 +17,10 @@ function writeLine (strArr, fileName) {
   })
 }
 
+function createLine (strArr) {
+  return strArr.map(escapeCsvData).join(',') + '\n'
+}
+
 module.exports = {
-  escapeCsvData, writeLine
+  escapeCsvData, writeLine, createLine
 }

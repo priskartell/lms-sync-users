@@ -6,28 +6,22 @@ const Promise = require('bluebird')
 const fs = Promise.promisifyAll(require('fs'))
 require('colors')
 const log = require('../server/init/logging')
+const {writeLine} = require('../csvFile')
+
+const fileHeaders = ['course_id', 'user_id', 'role', 'status']
 
 function _createCsvFile (msg, sisCourseCode) {
-  let d = Date.now()
-  let header = 'course_id,user_id,role,status\n'
-  let msgtype = msg._desc.userType
-  let fileName = 'enrollments.' + msgtype + '.' + sisCourseCode + '.' + d
-  let csvFileName = './CSV/' + fileName + '.csv'
-  let msgFileName = './MSG/' + fileName + '.msg'
-  let csvString = ''
+  const d = Date.now()
+  const msgtype = msg._desc.userType
+  const fileName = `enrollments.${msgtype}.${sisCourseCode}.${d}`
 
-  if (msg.member && msg.member.length > 0) {
-    let csvArray = msg.member.map(user => {
-      const csvObj = {}
-      csvObj['course_id'] = sisCourseCode
-      csvObj['user_id'] = user
-      csvObj['role'] = msgtype
-      csvObj['status'] = 'active'
-      return csvObj
-    })
-    csvArray.forEach(csvRow => {
-      csvString = csvString + `${csvRow.course_id},${csvRow.user_id},${csvRow.role},${csvRow.status}\n`
-    })
+  const csvFileName = './CSV/' + fileName + '.csv'
+  const msgFileName = './MSG/' + fileName + '.msg'
+
+  writeLine(fileHeaders, fileName)
+
+  if (msg.member) {
+    msg.member.forEach(userId => writeLine('sisCourseCode', userId, msgtype, 'active'))
   }
 
   let csvData = header + csvString
@@ -105,7 +99,7 @@ In _process ${sisCourseCode}, processing for ${msgtype}`)
     })
     .then(fileName => canvasApi.sendCsvFile(fileName))
     .then(canvasReturnValue => {
-      log.info('csv file sent to canvas',canvasReturnValue)
+      log.info('csv file sent to canvas', canvasReturnValue)
       return msg
     })
 }
