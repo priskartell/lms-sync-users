@@ -1,7 +1,7 @@
 const ldap = require('ldapjs')
 const config = require('../server/init/configuration')
 const fs = require('fs')
-const {writeLine} = require('../csvFile');
+const {writeLine} = require('../csvFile')
 const fileName = 'allUsers.csv'
 const headers = ['user_id', 'login_id', 'full_name', 'status']
 const attributes = ['ugKthid', 'ugUsername', 'mail', 'email_address', 'name', 'ugEmailAddressHR']

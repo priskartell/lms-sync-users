@@ -1,12 +1,7 @@
 var test = require('tape')
 require('rewire-global').enable()
-const sinon = require('sinon')
+// const sinon = require('sinon')
 
-test.only('should resolve if message has no _desc field', t => {
-  t.plan(1)
-  const handleCourseMessage = require('../../../messages/handleCourseMessage.js');
+test.skip('should resolve if message has no _desc field', t => {
 
-  handleCourseMessage({}).then(result => )
-
-  t.equal(1, 0)
 })
