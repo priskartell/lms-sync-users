@@ -5,22 +5,7 @@ const canvasApi = require('../canvasApi')
 const Promise = require('bluebird')
 const fs = Promise.promisifyAll(require('fs'))
 require('colors')
-
-function _handleError (err, sisCourseCode) {
-  let eCode = err.statusCode
-  if (eCode === 404) {
-    console.warn('Course does not exist in canvas, skipping, '.red + sisCourseCode.red)
-    return Promise.resolve('Course does not exist in canvas')
-  }
-
-  if (eCode >= 400) { // Besides course not in Canvas, Probably an other type of problem with canvas.....
-    console.warn('Canvas is not accessable, Invalid token or other Canvas related errors..... '.red + sisCourseCode.red)
-  } else { // It is an error and unrelated to the Canvas HTTP requests, probably IO errors
-    console.warn('Other error..... '.red + sisCourseCode.red)
-  }
-
-  return Promise.reject(err)
-}
+const log = require('../server/init/logging')
 
 function _createCsvFile (msg, sisCourseCode) {
   let d = Date.now()
@@ -41,8 +26,7 @@ function _createCsvFile (msg, sisCourseCode) {
       return csvObj
     })
     csvArray.forEach(csvRow => {
-      csvString = csvString + `${csvRow.course_id},${csvRow.user_id},${csvRow.role},${csvRow.status}
-`
+      csvString = csvString + `${csvRow.course_id},${csvRow.user_id},${csvRow.role},${csvRow.status}\n`
     })
   }
 
@@ -107,23 +91,32 @@ function _process (msg) {
 In _process ${sisCourseCode}, processing for ${msgtype}`)
 
   return canvasApi.findCourse(sisCourseCode)
+    .catch(e => {
+      if (e.statusCode === 404) {
+        // course not found in canvas. This is ok, just skip it
+      } else {
+        throw e
+      }
+    })
     .then(() => _createCsvFile(msg, sisCourseCode))
     .then(csvObject => {
       console.log(csvObject.csvContent)
       return csvObject.csvFileName
     })
     .then(fileName => canvasApi.sendCsvFile(fileName))
-    .then(canvasReturnValue => console.log(JSON.parse(canvasReturnValue)))
-    .catch(error => _handleError(error, sisCourseCode))
+    .then(canvasReturnValue => {
+      log.info('csv file sent to canvas',canvasReturnValue)
+      return msg
+    })
 }
 
 module.exports = function (msg) {
-  console.info('\nProcessing for msg..... ' + msg.ug1Name)
+  log.info('\nProcessing for msg..... ' + msg.ug1Name)
   var msgtype = msg._desc.userType
   if (msg._desc && (msgtype === type.students || msgtype === type.teachers || msgtype === type.assistants)) {
     return _process(msg)
   } else {
-    console.warn('\nThis is something else than students, teacher, assistant, we can probably wait with this until the students is handled', JSON.stringify(msg, null, 4))
-    return Promise.resolve('Unknown flag: ' + msgtype)
+    log.info('\nThis is something else than students, teacher, assistant, we can probably wait with this until the students is handled', JSON.stringify(msg, null, 4))
+    return Promise.resolve(msg)
   }
 }
