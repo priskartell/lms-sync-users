@@ -13,12 +13,11 @@ const csvDir = config.secure.localFile.csvDir
 const lmsDatabase = config.secure.azure.databaseName
 const lmsCollection = config.secure.azure.collectionName
 
-function _createCsvFile (msg, sisCourseCode, millisecondDate) {
-  let d = millisecondDate
+function _createCsvFile (msg, sisCourseCode, timeStamp) {
   let header = 'course_id,user_id,role,status\n'
   let msgtype = msg._desc.userType
-  let csvFileName = 'enrollments.' + msgtype + '.' + sisCourseCode + '.' + d + '.csv'
-  let msgFileName = 'enrollments.' + msgtype + '.' + sisCourseCode + '.' + d + '.msg'
+  let csvFileName = 'enrollments.' + msgtype + '.' + sisCourseCode + '.' + timeStamp + '.csv'
+  let msgFileName = 'enrollments.' + msgtype + '.' + sisCourseCode + '.' + timeStamp + '.msg'
   let csvString = ''
 
   if (msg.member && msg.member.length > 0) {
@@ -98,7 +97,7 @@ function _parseKey (key, msgtype) {
 
 function _process (msg) {
   let sisCourseCode = ''
-  let d = Date.now()
+  let timeStamp = Date.now()
 
   return _parseKey(msg.ug1Name, msg._desc.userType)
     .then(sisCode => {
@@ -106,14 +105,22 @@ function _process (msg) {
       console.info(`In _process ${sisCourseCode}, processing for ${msg._desc.userType}`)
       return canvasApi.findCourse(sisCourseCode)
     })
-    .then(() => _createCsvFile(msg, sisCourseCode, d))
+    .then(result => {
+      console.log(JSON.stringify(result), null, 4)
+      // return canvasApi.getEnrollmentList(sisCourseCode)})
+      return result
+    })
+    .then(enrollmentsArray => {
+      // console.log(enrollmentsArray)
+      return _createCsvFile(msg, sisCourseCode, timeStamp)
+    })
     .then(csvObject => {
       console.log('FileName: ', csvObject.csvFileName)
       return csvObject.csvFileName
     })
     .then(fileName => canvasApi.sendCsvFile(fileName))
     .then(canvasReturnValue => {
-      let documentId = sisCourseCode + '.' + d
+      let documentId = sisCourseCode + '.' + timeStamp
       let document = {id: documentId, msg: msg, resp: canvasReturnValue}
       let collectionUrl = `dbs/${lmsDatabase}/colls/${lmsCollection}`
       return cl.cloudCreateDocument(document, collectionUrl)
