@@ -71,7 +71,7 @@ function _parseKey (key, msgtype) {
       sisCourseCode = course + termin + year + ladok
     } else { // failed to parse course
       console.warn('\nCourse code not parsable from ug1Name structure: ' + key)
-      return Promise.reject('Key parse error, Student')
+      return Promise.reject(Error('Key parse error, Student'))
     }
   }
 
@@ -90,7 +90,7 @@ function _parseKey (key, msgtype) {
       sisCourseCode = course + termin + year + ladok
     } else { // failed to parse course
       console.warn('\nCourse code not parsable from ug1Name structure: ' + key)
-      return Promise.reject('Key parse error, Teacher or Assistant')
+      return Promise.reject(Error('Key parse error, Teacher or Assistant'))
     }
   }
   return Promise.resolve(sisCourseCode)
@@ -123,7 +123,7 @@ function _process (msg) {
         console.warn('Course does not exist in canvas, skipping, '.red + sisCourseCode.red)
         return Promise.resolve('Course does not exist in canvas')
       } else {
-        return Promise.reject(err)
+        return Promise.reject(Error(err))
       }
     })
 }
