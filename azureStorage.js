@@ -12,6 +12,23 @@
  const dbClient = new DocumentClient(config.secure.azure.databaseEndPoint, {'masterKey': config.secure.azure.databaseKey})
  const azureDbClient = Promise.promisifyAll(dbClient)
 
+ function _connectoToAzure () {
+   const csvVol = config.secure.azure.csvBlobName
+   const msgVol = config.secure.azure.msgBlobName
+   const lmsDatabase = config.secure.azure.databaseName
+   const lmsCollection = config.secure.azure.collectionName
+   return cloudGetDatabase(lmsDatabase)
+ .then(() => cloudGetCollection(lmsDatabase, lmsCollection))
+ .then(() => console.log('Connected to database: ' + lmsDatabase + ' , Collection: ' + lmsCollection + ' successfully:'))
+ .then(() => cloudCreateContainer(csvVol))
+ .then(() => console.log('Created: ' + csvVol))
+ .then(() => cloudCreateContainer(msgVol))
+ .then(() => console.log('Created: ' + msgVol))
+ .catch(error => Error(error))
+ }
+
+ _connectoToAzure()
+
  function checkParameterName (...p) {
    let result = true
    p.forEach(parameter => {
@@ -29,8 +46,11 @@
  }
 
  function cloudGetDatabase (databaseName) {
-   let databaseUrl = `dbs/${databaseName}`
-   return azureDbClient.readDatabaseAsync(databaseUrl)
+   return checkParameterName(databaseName)
+   .then(() => {
+     let databaseUrl = `dbs/${databaseName}`
+     return azureDbClient.readDatabaseAsync(databaseUrl)
+   })
  .catch(error => {
    if (error.code === HttpStatusCodes.NOTFOUND) {
      return azureDbClient.createDatabaseAsync({id: databaseName})

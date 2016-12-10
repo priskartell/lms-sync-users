@@ -13,35 +13,6 @@ const csvDir = config.secure.localFile.csvDir
 const lmsDatabase = config.secure.azure.databaseName
 const lmsCollection = config.secure.azure.collectionName
 
-function _connectoToAzure () {
-  return cl.cloudGetDatabase(lmsDatabase)
-.then(() => cl.cloudGetCollection(lmsDatabase, lmsCollection))
-.then(() => console.log('Connected to database: ' + lmsDatabase + ' , Collection: ' + lmsCollection + ' successfully:'))
-.then(() => cl.cloudCreateContainer(csvVol))
-.then(() => console.log('Created: ' + csvVol))
-.then(() => cl.cloudCreateContainer(msgVol))
-.then(() => console.log('Created: ' + msgVol))
-.catch(error => Error(error))
-}
-
-_connectoToAzure()
-
-function _handleError (err, sisCourseCode) {
-  let eCode = err.statusCode
-  if (eCode === 404) {
-    console.warn('Course does not exist in canvas, skipping, '.red + sisCourseCode.red)
-    return Promise.resolve('Course does not exist in canvas')
-  }
-
-  if (eCode >= 400) { // Besides course not in Canvas, Probably an other type of problem with canvas.....
-    console.warn('Canvas is not accessable, Invalid token or other Canvas related errors..... '.red + sisCourseCode.red)
-  } else { // It is an error and unrelated to the Canvas HTTP requests, probably IO errors
-    console.warn('Other error..... '.red + sisCourseCode.red)
-  }
-
-  return Promise.reject(err)
-}
-
 function _createCsvFile (msg, sisCourseCode, millisecondDate) {
   let d = millisecondDate
   let header = 'course_id,user_id,role,status\n'
@@ -75,7 +46,7 @@ function _createCsvFile (msg, sisCourseCode, millisecondDate) {
   .catch(error => { console.error(error); return Promise.reject(error) })
 }
 
-function _process (msg) {
+function _parseKey (key, msgtype) {
   let course = null
   let termin = null
   let year = null
@@ -83,11 +54,10 @@ function _process (msg) {
   let sisCourseCode = null
   let myRe = null
   let myArray = []
-  let msgtype = msg._desc.userType
 
   if (msgtype === type.students) { // ladok2.kurser.DM.2517.registrerade_20162.1
     myRe = /^(\w+).(\w+).(\w+).(\w+).(\w+)_(\d\d)(\d\d)(\d).(\d+)/g
-    myArray = myRe.exec(msg.ug1Name)
+    myArray = myRe.exec(key)
     if (myArray != null) {
       let courseInOne = 3
       let courseInTwo = 4
@@ -100,14 +70,14 @@ function _process (msg) {
       ladok = myArray[ladokIn]
       sisCourseCode = course + termin + year + ladok
     } else { // failed to parse course
-      console.warn('\nCourse code not parsable from ug1Name structure: ' + msg.ug1Name)
-      return Promise.resolve('Key parse error, Student')
+      console.warn('\nCourse code not parsable from ug1Name structure: ' + key)
+      return Promise.reject('Key parse error, Student')
     }
   }
 
   if (msgtype === type.teachers || msgtype === type.assistants) { // edu.courses.AE.AE2302.20162.1.teachers edu.courses.DD.DD1310.20162.1.assistants
     myRe = /^edu.courses.(\w+).(\w+).(\d\d)(\d\d)(\d).(\d).(\w+)$/g
-    myArray = myRe.exec(msg.ug1Name)
+    myArray = myRe.exec(key)
     if (myArray != null) {
       let courseIn = 2
       let terminIn = 5
@@ -119,15 +89,23 @@ function _process (msg) {
       ladok = myArray[ladokIn]
       sisCourseCode = course + termin + year + ladok
     } else { // failed to parse course
-      console.warn('\nCourse code not parsable from ug1Name structure: ' + msg.ug1Name)
-      return Promise.resolve('Key parse error, Teacher or Assistant')
+      console.warn('\nCourse code not parsable from ug1Name structure: ' + key)
+      return Promise.reject('Key parse error, Teacher or Assistant')
     }
   }
+  return Promise.resolve(sisCourseCode)
+}
 
-  console.info(`In _process ${sisCourseCode}, processing for ${msgtype}`)
+function _process (msg) {
+  let sisCourseCode = ''
   let d = Date.now()
 
-  return canvasApi.findCourse(sisCourseCode)
+  return _parseKey(msg.ug1Name, msg._desc.userType)
+    .then(sisCode => {
+      sisCourseCode = sisCode
+      console.info(`In _process ${sisCourseCode}, processing for ${msg._desc.userType}`)
+      return canvasApi.findCourse(sisCourseCode)
+    })
     .then(() => _createCsvFile(msg, sisCourseCode, d))
     .then(csvObject => {
       console.log('FileName: ', csvObject.csvFileName)
@@ -140,7 +118,14 @@ function _process (msg) {
       let collectionUrl = `dbs/${lmsDatabase}/colls/${lmsCollection}`
       return cl.cloudCreateDocument(document, collectionUrl)
     })
-    .catch(error => _handleError(error, sisCourseCode))
+    .catch(err => {
+      if (err.statusCode === 404) {
+        console.warn('Course does not exist in canvas, skipping, '.red + sisCourseCode.red)
+        return Promise.resolve('Course does not exist in canvas')
+      } else {
+        return Promise.reject(err)
+      }
+    })
 }
 
 module.exports = function (msg) {
