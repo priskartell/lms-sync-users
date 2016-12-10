@@ -13,6 +13,14 @@ const csvDir = config.secure.localFile.csvDir
 const lmsDatabase = config.secure.azure.databaseName
 const lmsCollection = config.secure.azure.collectionName
 
+let selectedCourses = {}
+let skippedCourses = {}
+
+function printStat () {
+  console.log('In Canvas: ', selectedCourses)
+  console.log('Not in Canvas: ', skippedCourses)
+}
+
 function _createCsvFile (msg, sisCourseCode, timeStamp) {
   let header = 'course_id,user_id,role,status\n'
   let msgtype = msg._desc.userType
@@ -107,6 +115,17 @@ function _process (msg) {
     })
     .then(result => {
       console.log(JSON.stringify(result), null, 4)
+      if (!selectedCourses[sisCourseCode]) {
+        selectedCourses[sisCourseCode] = 1
+      } else {
+        selectedCourses[sisCourseCode] += 1
+      }
+      // Here to drag out list of enrollments from canvas and compare it
+      // with the content of the message based on user type
+      // This is necessary to understand what the message content really mean,
+      // if the message is activate or deactivation enrollments
+      // Investigate if there is a chance if the message both contains
+      // activation and deactivation, for now pressumed unlikekly
       // return canvasApi.getEnrollmentList(sisCourseCode)})
       return result
     })
@@ -127,6 +146,11 @@ function _process (msg) {
     })
     .catch(err => {
       if (err.statusCode === 404) {
+        if (!skippedCourses[sisCourseCode]) {
+          skippedCourses[sisCourseCode] = 1
+        } else {
+          skippedCourses[sisCourseCode] += 1
+        }
         console.warn('Course does not exist in canvas, skipping, '.red + sisCourseCode.red)
         return Promise.resolve('Course does not exist in canvas')
       } else {
@@ -135,10 +159,12 @@ function _process (msg) {
     })
 }
 
-module.exports = function (msg) {
+module.exports = function (msg, counter) {
   console.info('\nProcessing for msg..... ' + msg.ug1Name)
   var msgtype = msg._desc.userType
   if (msg._desc && (msgtype === type.students || msgtype === type.teachers || msgtype === type.assistants)) {
+    printStat()
+
     return _process(msg)
   } else {
     console.warn('\nThis is something else than students, teacher, assistant, we can probably wait with this until the students is handled', JSON.stringify(msg, null, 4))
