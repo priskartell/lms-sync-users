@@ -14,7 +14,6 @@ const csvDir = config.secure.localFile.csvDir
 const lmsDatabase = config.secure.azure.databaseName
 const lmsCollection = config.secure.azure.collectionName
 
-
 function _createCsvFile (msg, sisCourseCode, timeStamp) {
   let header = 'course_id,user_id,role,status\n'
   let msgtype = msg._desc.userType

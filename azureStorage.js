@@ -42,7 +42,7 @@
      return Promise.resolve(result)
    } else {
      log.error('checkParameterName: parameterName not valid: ')
-     throw Error('checkParameterName: parameterName not valid:')
+     return Promise.reject(Error('checkParameterName: parameterName not valid:'))
    }
  }
 
@@ -65,7 +65,7 @@
    return checkParameterName(dbName, collName)
  .then(() => {
    let collectionUrl = `dbs/${dbName}/colls/${collName}`
-   log.info("Reading collection: " + collectionUrl)
+   log.info('Reading collection: ' + collectionUrl)
    return azureDbClient.readCollectionAsync(collectionUrl)
  })
  .catch(error => {
