@@ -8,7 +8,7 @@ const handleMessage = require('./handleMessage')
 require('colors')
 
 let isReading = false
-let counter = 0
+var COUNTER = 0
 
 function start () {
   setInterval(readMessageUnlessReading, 50)
@@ -43,7 +43,10 @@ function parseBody (msg) {
 }
 
 function readMessage () {
-  counter += 1
+  COUNTER += 1
+  if (COUNTER % 100 === 0) {
+    console.info('\nProcessed: ' + COUNTER + ' messages.....')
+  }
   let message
   return queue
     .readMessageFromQueue(config.secure.azure.queueName)
@@ -56,7 +59,7 @@ function readMessage () {
     .then(abortIfNoMessage)
     .then(parseBody)
     .then(addDescription)
-    .then(handleMessage, counter)
+    .then(handleMessage)
     .then(() => queue.deleteMessageFromQueue(message))
     .catch(e => {
       if (e.message !== 'abort_chain') {

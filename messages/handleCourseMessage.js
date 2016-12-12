@@ -13,6 +13,7 @@ const csvDir = config.secure.localFile.csvDir
 const lmsDatabase = config.secure.azure.databaseName
 const lmsCollection = config.secure.azure.collectionName
 
+var COUNTER = 0
 let selectedCourses = {}
 let skippedCourses = {}
 
@@ -45,60 +46,74 @@ function _createCsvFile (msg, sisCourseCode, timeStamp) {
 
   let csvData = header + csvString
   console.info('\nGoing to open file: ' + csvFileName + ' ' + msgFileName)
-  let messageText = JSON.stringify(msg, null, 4)
   return cl.cloudStoreTextToFile(csvFileName, csvVol, csvData)
-  .then(result => { console.info(result); return cl.cloudStoreTextToFile(msgFileName, msgVol, messageText) })
+  .then(result => { console.info(result); return cl.cloudStoreTextToFile(msgFileName, msgVol, JSON.stringify(msg, null, 4)) })
   .then(() => cl.cloudgetFile(csvFileName, csvVol, csvDir))
   .then(result => { console.info(result); return {csvContent: csvData, csvFileName: csvDir + result.name} })
   .catch(error => { console.error(error); return Promise.reject(error) })
 }
 
-function _parseKey (key, msgtype) {
+function _parseKeyStudent (key) {
+  // ladok2.kurser.DM.2517.registrerade_20162.1
   let course = null
   let termin = null
   let year = null
   let ladok = null
-  let sisCourseCode = null
-  let myRe = null
-  let myArray = []
-
-  if (msgtype === type.students) { // ladok2.kurser.DM.2517.registrerade_20162.1
-    myRe = /^(\w+).(\w+).(\w+).(\w+).(\w+)_(\d\d)(\d\d)(\d).(\d+)/g
-    myArray = myRe.exec(key)
-    if (myArray != null) {
-      let courseInOne = 3
-      let courseInTwo = 4
-      let terminIn = 8
-      let yearIn = 7
-      let ladokIn = 9
-      course = myArray[courseInOne] + myArray[courseInTwo]
-      termin = myArray[terminIn] === 1 ? 'HT' : 'VT'
-      year = myArray[yearIn]
-      ladok = myArray[ladokIn]
-      sisCourseCode = course + termin + year + ladok
-    } else { // failed to parse course
-      console.warn('\nCourse code not parsable from ug1Name structure: ' + key)
-      return Promise.reject(Error('Key parse error, Student'))
-    }
+  let myRe = /^(\w+).(\w+).(\w+).(\w+).(\w+)_(\d\d)(\d\d)(\d).(\d+)/g
+  let myArray = myRe.exec(key)
+  if (myArray != null) {
+    let courseInOne = 3
+    let courseInTwo = 4
+    let terminIn = 8
+    let yearIn = 7
+    let ladokIn = 9
+    course = myArray[courseInOne] + myArray[courseInTwo]
+    termin = myArray[terminIn] === 1 ? 'HT' : 'VT'
+    year = myArray[yearIn]
+    ladok = myArray[ladokIn]
+    let sisCourseCode = course + termin + year + ladok
+    return sisCourseCode
   }
+  return 0
+}
 
-  if (msgtype === type.teachers || msgtype === type.assistants) { // edu.courses.AE.AE2302.20162.1.teachers edu.courses.DD.DD1310.20162.1.assistants
-    myRe = /^edu.courses.(\w+).(\w+).(\d\d)(\d\d)(\d).(\d).(\w+)$/g
-    myArray = myRe.exec(key)
-    if (myArray != null) {
-      let courseIn = 2
-      let terminIn = 5
-      let yearIn = 4
-      let ladokIn = 6
-      course = myArray[courseIn]
-      termin = myArray[terminIn] === 1 ? 'HT' : 'VT'
-      year = myArray[yearIn]
-      ladok = myArray[ladokIn]
-      sisCourseCode = course + termin + year + ladok
-    } else { // failed to parse course
-      console.warn('\nCourse code not parsable from ug1Name structure: ' + key)
-      return Promise.reject(Error('Key parse error, Teacher or Assistant'))
-    }
+function _parseKeyTeacher (key) {
+   // edu.courses.AE.AE2302.20162.1.teachers edu.courses.DD.DD1310.20162.1.assistants
+  let course = null
+  let termin = null
+  let year = null
+  let ladok = null
+  let courseIn = 2
+  let terminIn = 5
+  let yearIn = 4
+  let ladokIn = 6
+
+  let myRe = /^edu.courses.(\w+).(\w+).(\d\d)(\d\d)(\d).(\d).(\w+)$/g
+  let myArray = myRe.exec(key)
+  if (myArray != null) {
+    course = myArray[courseIn]
+    termin = myArray[terminIn] === 1 ? 'HT' : 'VT'
+    year = myArray[yearIn]
+    ladok = myArray[ladokIn]
+    let sisCourseCode = course + termin + year + ladok
+    return sisCourseCode
+  }
+  return 0
+}
+
+function _parseKey (key, msgtype) {
+  let sisCourseCode = 0
+  if (msgtype === type.students) {
+ // ladok2.kurser.DM.2517.registrerade_20162.1
+
+    sisCourseCode = _parseKeyStudent(key)
+  }
+  if (msgtype === type.teachers || msgtype === type.assistants) {
+    sisCourseCode = _parseKeyTeacher(key)
+  }
+  if (!sisCourseCode) {
+    console.warn('\nCourse code not parsable from ug1Name. type, ' + msgtype + ' key, ' + key)
+    return Promise.reject(Error('Key parse error, type, ' + msgtype + ' key, ' + key))
   }
   return Promise.resolve(sisCourseCode)
 }
@@ -112,9 +127,10 @@ function _process (msg) {
       sisCourseCode = sisCode
       console.info(`In _process ${sisCourseCode}, processing for ${msg._desc.userType}`)
       return canvasApi.findCourse(sisCourseCode)
+      // return {msg: "running with out canvas..."}
     })
     .then(result => {
-      console.log(JSON.stringify(result), null, 4)
+      console.log(JSON.stringify(result, null, 4))
       if (!selectedCourses[sisCourseCode]) {
         selectedCourses[sisCourseCode] = 1
       } else {
@@ -163,8 +179,11 @@ module.exports = function (msg, counter) {
   console.info('\nProcessing for msg..... ' + msg.ug1Name)
   var msgtype = msg._desc.userType
   if (msg._desc && (msgtype === type.students || msgtype === type.teachers || msgtype === type.assistants)) {
-    printStat()
-
+    COUNTER += 1
+    console.log('Counter = ' + COUNTER)
+    if (COUNTER % 10 === 0) {
+      printStat()
+    }
     return _process(msg)
   } else {
     console.warn('\nThis is something else than students, teacher, assistant, we can probably wait with this until the students is handled', JSON.stringify(msg, null, 4))
