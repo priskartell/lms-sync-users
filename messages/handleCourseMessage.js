@@ -68,7 +68,7 @@ function _parseKeyStudent (key) {
     let yearIn = 7
     let ladokIn = 9
     course = myArray[courseInOne] + myArray[courseInTwo]
-    termin = myArray[terminIn] === 1 ? 'HT' : 'VT'
+    termin = myArray[terminIn] === 1 ? 'VT' : 'HT'
     year = myArray[yearIn]
     ladok = myArray[ladokIn]
     let sisCourseCode = course + termin + year + ladok
@@ -92,7 +92,7 @@ function _parseKeyTeacher (key) {
   let myArray = myRe.exec(key)
   if (myArray != null) {
     course = myArray[courseIn]
-    termin = myArray[terminIn] === 1 ? 'HT' : 'VT'
+    termin = myArray[terminIn] === 1 ? 'VT' : 'HT'
     year = myArray[yearIn]
     ladok = myArray[ladokIn]
     let sisCourseCode = course + termin + year + ladok
@@ -104,8 +104,6 @@ function _parseKeyTeacher (key) {
 function _parseKey (key, msgtype) {
   let sisCourseCode = 0
   if (msgtype === type.students) {
- // ladok2.kurser.DM.2517.registrerade_20162.1
-
     sisCourseCode = _parseKeyStudent(key)
   }
   if (msgtype === type.teachers || msgtype === type.assistants) {
