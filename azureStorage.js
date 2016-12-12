@@ -81,7 +81,7 @@
 
 // let collectionUrl = `dbs/${databaseId}/colls/${collectionId}`
  function cloudQueryCollection (query, collectionUrl) {
-   log.info(`Querying collection through index:\n${collectionUrl}`)
+   log.info(`Querying collection through index: ${collectionUrl}`)
    return checkParameterName(query, collectionUrl)
      .then(() => azureDbClient.queryDocumentsAsync(collectionUrl, query))
      .then(results => {
@@ -107,7 +107,7 @@
    return checkParameterName(document, collectionUrl)
     .then(() => {
       let documentUrl = `${collectionUrl}/docs/${document.id}`
-      log.info(`Getting document:\n${document.id}\n`)
+      log.info(`Getting document:${document.id}`)
       return azureDbClient.readDocumentAsync(documentUrl)
     })
  }
@@ -168,9 +168,9 @@
     let counter = 0
     transArray.forEach(trans => { counter += 1; transLogListCsv = transLogListCsv + '[ ' + counter + ' ] ' + trans.name + '    ' + trans.lastModified + '\n' })
     if (transArray.length > 0) {
-      console.log(transLogListCsv)
+      log.info(transLogListCsv)
     } else {
-      console.log('[]')
+      log.info('[]')
     }
     return {fileArray: transArray, fileList: transLogListCsv}
   })
