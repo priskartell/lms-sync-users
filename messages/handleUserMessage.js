@@ -1,17 +1,20 @@
 'use strict'
 
 const canvasApi = require('../canvasApi')
-var Promise = require('bluebird')
 require('colors')
 const log = require('../server/init/logging')
 
 function isInScope (msg) {
   var affArray = msg.affiliation
-  return affArray && (affArray.includes('employee') || affArray.includes('student'))
+  const result = affArray && (affArray.includes('employee') || affArray.includes('student'))
+  if (!result) {
+    log.info('\nUser is not an employee and not a student, out of the affilication scope. User ' + msg.username + ' ' + msg.kthid + ' with affiliation ' + msg.affiliation)
+  }
+  return result
 }
 
 function convertToCanvasUser (msg) {
-  // UG_USER_ATTRIBUTES=kthid,username,family_name,given_name,affiliation,email_address,primary_email
+  log.info('\nConverting the user-type message to canvasApi format for: ' + msg.username + ' ' + msg.kthid, ' msg affiliation ', msg.affiliation)
 
   if (msg.username && (msg.given_name || msg.family_name) && msg.kthid) {
     let user = {
@@ -25,35 +28,43 @@ function convertToCanvasUser (msg) {
     }
     return user
   } else {
+    log.info('\nIncomplete fields to create user in canvas, skipping. Probably,it is missing a name(given_name, family_name) or a username or kth_id.....', msg)
     return
   }
 }
 
-module.exports = function (msg) {
-  log.info('\nProcessing for user msg..... ' + msg.ugClass + ' ' + msg.kthid, ' msg affiliation ', msg.affiliation)
-
-  if (!isInScope(msg)) {
-    console.info('\nUser not in affiliation scope..... ' + msg.ugClass + ' ' + msg.kthid)
-    return Promise.resolve('User not in affiliation scope...')
-  }
-
-  let user = convertToCanvasUser(msg)
-
-  if (!user) {
-    console.log('\nIncomplete fields to create user in canvas.....')
-    return Promise.resolve('User fields are missing...')
-  }
-
-  console.log('User object is ready to be sent to Canvas API: ', JSON.stringify(user, null, 4))
-
+// Should this function be moved into canvasApi instead?
+function createOrUpdate (user) {
   return canvasApi.getUser(user.pseudonym.sis_user_id)
+        .then(userFromCanvas => {
+          log.info('found user in canvas', userFromCanvas)
+          log.info('update the user with new values: ', user)
+          log.info({'metric.updateUser': 1})
+          return userFromCanvas
+        })
         .then(userFromCanvas => canvasApi.updateUser(user, userFromCanvas.id))
         .catch(e => {
           if (e.statusCode === 404) {
-            // user doesn't exist
+            log.info('user doesnt exist in canvas. Create it.', user)
+            log.info({'metric.createUser': 1})
             return canvasApi.createUser(user)
+            .then(res => {
+              log.info('Success! User created', res)
+              return res
+            })
           } else {
             throw e
           }
         })
+}
+
+module.exports = function (msg) {
+  const user = convertToCanvasUser(msg)
+
+  if (isInScope(msg) && user) {
+    return createOrUpdate(user)
+    .then(user => msg)
+  } else {
+    return Promise.resolve(msg)
+  }
 }
