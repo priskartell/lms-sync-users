@@ -8,7 +8,6 @@ const handleMessage = require('./handleMessage')
 require('colors')
 
 let isReading = false
-var COUNTER = 0
 
 function start () {
   setInterval(readMessageUnlessReading, 50)
@@ -22,7 +21,7 @@ function abort () {
 }
 
 function abortIfNoMessage (msg) {
-  if (!msg) {
+  if (!msg || !msg.body) {
     abort()
   }
 
@@ -31,22 +30,15 @@ function abortIfNoMessage (msg) {
 
 function parseBody (msg) {
   return Promise.resolve()
-  .then(() => {
-    log.info('message:', msg.body)
-    return JSON.parse(msg.body)
-  })
+  .then(() => JSON.parse(msg.body))
   .catch(e => {
     log.warn('an error occured while trying to parse json:', e, msg)
     queue.deleteMessageFromQueue(msg)
     abort()
   })
 }
-
 function readMessage () {
-  COUNTER += 1
-  if (COUNTER % 100 === 0) {
-    console.info('\nProcessed: ' + COUNTER + ' messages.....')
-  }
+  isReading = true
   let message
   return queue
     .readMessageFromQueue(config.secure.azure.queueName)
@@ -77,7 +69,6 @@ function readMessageUnlessReading () {
     // console.log('is already reading a message, abort')
     return
   } else {
-    isReading = true
     readMessage()
   }
 }

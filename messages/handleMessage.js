@@ -3,15 +3,20 @@
 const handleCourseMessage = require('./handleCourseMessage')
 const handleUserMessage = require('./handleUserMessage')
 const {type} = require('message-type')
+const log = require('../server/init/logging')
 
-module.exports = function (msg, counter) {
+module.exports = function (msg) {
+  log.info('logging statistics...')
+  log.info({'metric.handleMessage': 1})
+  log.info('----------------- New message ---------------------')
   if (msg._desc.type === type.course) {
-    console.info('\nHandling message for course...'.green)
-    return handleCourseMessage(msg, counter)
+    log.info('Started handling message to update a course info...'.green)
+    return handleCourseMessage(msg)
   } else if (msg._desc.type === type.user) {
-    console.info('\nHandling message for user...'.green)
+    log.info('Started handling the queue message to create/update a user...'.green)
     return handleUserMessage(msg)
   } else {
-    return Promise.resolve('Message type irrelevant for this app.....')
+    log.info('This message type is irrelevant for this app.....')
+    return Promise.resolve(msg)
   }
 }

@@ -1,25 +1,10 @@
 const ldap = require('ldapjs')
 const config = require('../server/init/configuration')
 const fs = require('fs')
-
+const {writeLine} = require('../csvFile')
 const fileName = 'allUsers.csv'
 const headers = ['user_id', 'login_id', 'full_name', 'status']
 const attributes = ['ugKthid', 'ugUsername', 'mail', 'email_address', 'name', 'ugEmailAddressHR']
-function escapeCsvData (str) {
-  if (str.includes(',') || str.includes('"')) {
-    console.error('oh no! bad data!', str)
-  }
-  return str
-}
-
-function writeLine (strArr, _fileName = fileName) {
-  const line = strArr.map(escapeCsvData).join(',') + '\n'
-  fs.appendFile(_fileName, line, (err) => {
-    if (err) {
-      throw err
-    }
-  })
-}
 
 try {
   fs.unlinkSync(fileName)
@@ -55,7 +40,7 @@ function appendUsers (type) {
         // console.log('.')
         const o = entry.object
         const userName = `${o.ugUsername}@kth.se`
-        writeLine([o.ugKthid, userName, o.name, 'active'])
+        writeLine([o.ugKthid, userName, o.name, 'active'], fileName)
       })
       res.on('error', function (err) {
         console.error('error: ' + err.message)

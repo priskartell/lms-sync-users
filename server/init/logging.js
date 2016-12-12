@@ -14,7 +14,8 @@ let logConfiguration = {
   level: configuration.log.level,
   console: {
     enabled: true
-  }
+  },
+  stdout: configuration.stdout
 }
 
 log.init(logConfiguration)
