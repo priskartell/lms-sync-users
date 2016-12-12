@@ -110,7 +110,7 @@ function _parseKey (key, msgtype) {
     sisCourseCode = _parseKeyTeacher(key)
   }
   if (!sisCourseCode) {
-    console.warn('\nCourse code not parsable from ug1Name. type, ' + msgtype + ' key, ' + key)
+    console.warn('\nCourse code not parsable from Key. type, ' + msgtype + ' key, ' + key)
     return Promise.reject(Error('Key parse error, type, ' + msgtype + ' key, ' + key))
   }
   return Promise.resolve(sisCourseCode)
@@ -125,7 +125,6 @@ function _process (msg) {
       sisCourseCode = sisCode
       console.info(`In _process ${sisCourseCode}, processing for ${msg._desc.userType}`)
       return canvasApi.findCourse(sisCourseCode)
-      // return {msg: "running with out canvas..."}
     })
     .then(result => {
       console.log(JSON.stringify(result, null, 4))
