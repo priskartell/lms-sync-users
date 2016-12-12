@@ -5,6 +5,7 @@ const canvasApi = require('../canvasApi')
 const Promise = require('bluebird')
 const cl = require('../azureStorage')
 const config = require('../server/init/configuration')
+const log = require('../server/init/logging')
 require('colors')
 
 const csvVol = config.secure.azure.csvBlobName
@@ -13,14 +14,6 @@ const csvDir = config.secure.localFile.csvDir
 const lmsDatabase = config.secure.azure.databaseName
 const lmsCollection = config.secure.azure.collectionName
 
-var COUNTER = 0
-let selectedCourses = {}
-let skippedCourses = {}
-
-function printStat () {
-  console.log('In Canvas: ', selectedCourses)
-  console.log('Not in Canvas: ', skippedCourses)
-}
 
 function _createCsvFile (msg, sisCourseCode, timeStamp) {
   let header = 'course_id,user_id,role,status\n'
@@ -45,12 +38,12 @@ function _createCsvFile (msg, sisCourseCode, timeStamp) {
   }
 
   let csvData = header + csvString
-  console.info('\nGoing to open file: ' + csvFileName + ' ' + msgFileName)
+  log.info('\nGoing to open file: ' + csvFileName + ' ' + msgFileName)
   return cl.cloudStoreTextToFile(csvFileName, csvVol, csvData)
-  .then(result => { console.info(result); return cl.cloudStoreTextToFile(msgFileName, msgVol, JSON.stringify(msg, null, 4)) })
+  .then(result => { log.info(result); return cl.cloudStoreTextToFile(msgFileName, msgVol, JSON.stringify(msg, null, 4)) })
   .then(() => cl.cloudgetFile(csvFileName, csvVol, csvDir))
-  .then(result => { console.info(result); return {csvContent: csvData, csvFileName: csvDir + result.name} })
-  .catch(error => { console.error(error); return Promise.reject(error) })
+  .then(result => { log.info(result); return {csvContent: csvData, csvFileName: csvDir + result.name} })
+  .catch(error => { log.error(error); return Promise.reject(error) })
 }
 
 function _parseKeyStudent (key) {
@@ -110,7 +103,7 @@ function _parseKey (key, msgtype) {
     sisCourseCode = _parseKeyTeacher(key)
   }
   if (!sisCourseCode) {
-    console.warn('\nCourse code not parsable from Key. type, ' + msgtype + ' key, ' + key)
+    log.error('\nCourse code not parsable from Key. type, ' + msgtype + ' key, ' + key)
     return Promise.reject(Error('Key parse error, type, ' + msgtype + ' key, ' + key))
   }
   return Promise.resolve(sisCourseCode)
@@ -123,16 +116,11 @@ function _process (msg) {
   return _parseKey(msg.ug1Name, msg._desc.userType)
     .then(sisCode => {
       sisCourseCode = sisCode
-      console.info(`In _process ${sisCourseCode}, processing for ${msg._desc.userType}`)
+      log.info(`In _process ${sisCourseCode}, processing for ${msg._desc.userType}`)
       return canvasApi.findCourse(sisCourseCode)
     })
     .then(result => {
-      console.log(JSON.stringify(result, null, 4))
-      if (!selectedCourses[sisCourseCode]) {
-        selectedCourses[sisCourseCode] = 1
-      } else {
-        selectedCourses[sisCourseCode] += 1
-      }
+      log.info(JSON.parse(result, null, 4))
       // Here to drag out list of enrollments from canvas and compare it
       // with the content of the message based on user type
       // This is necessary to understand what the message content really mean,
@@ -147,7 +135,7 @@ function _process (msg) {
       return _createCsvFile(msg, sisCourseCode, timeStamp)
     })
     .then(csvObject => {
-      console.log('FileName: ', csvObject.csvFileName)
+      log.info('FileName: ', csvObject.csvFileName)
       return csvObject.csvFileName
     })
     .then(fileName => canvasApi.sendCsvFile(fileName))
@@ -159,12 +147,7 @@ function _process (msg) {
     })
     .catch(err => {
       if (err.statusCode === 404) {
-        if (!skippedCourses[sisCourseCode]) {
-          skippedCourses[sisCourseCode] = 1
-        } else {
-          skippedCourses[sisCourseCode] += 1
-        }
-        console.warn('Course does not exist in canvas, skipping, '.red + sisCourseCode.red)
+        log.info('Course does not exist in canvas, skipping, '.red + sisCourseCode.red)
         return Promise.resolve('Course does not exist in canvas')
       } else {
         return Promise.reject(Error(err))
@@ -173,17 +156,12 @@ function _process (msg) {
 }
 
 module.exports = function (msg, counter) {
-  console.info('\nProcessing for msg..... ' + msg.ug1Name)
+  log.info('\nProcessing for msg..... ' + msg.ug1Name)
   var msgtype = msg._desc.userType
   if (msg._desc && (msgtype === type.students || msgtype === type.teachers || msgtype === type.assistants)) {
-    COUNTER += 1
-    console.log('Counter = ' + COUNTER)
-    if (COUNTER % 10 === 0) {
-      printStat()
-    }
     return _process(msg)
   } else {
-    console.warn('\nThis is something else than students, teacher, assistant, we can probably wait with this until the students is handled', JSON.stringify(msg, null, 4))
+    log.error('\nThis is something else than students, teacher, assistant, we can probably wait with this until the students is handled', JSON.stringify(msg, null, 4))
     return Promise.resolve('Unknown flag: ' + msgtype)
   }
 }

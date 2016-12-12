@@ -1,5 +1,6 @@
  'use strict'
  const azure = require('azure')
+ const log = require('./server/init/logging')
  const fs = require('fs')
  const config = require('./server/init/configuration')
  process.env['AZURE_STORAGE_CONNECTION_STRING'] = config.secure.azure.StorageConnectionString
@@ -19,11 +20,11 @@
    const lmsCollection = config.secure.azure.collectionName
    return cloudGetDatabase(lmsDatabase)
  .then(() => cloudGetCollection(lmsDatabase, lmsCollection))
- .then(() => console.log('Connected to database: ' + lmsDatabase + ' , Collection: ' + lmsCollection + ' successfully:'))
+ .then(() => log.info('Connected to database: ' + lmsDatabase + ' , Collection: ' + lmsCollection + ' successfully:'))
  .then(() => cloudCreateContainer(csvVol))
- .then(() => console.log('Created: ' + csvVol))
+ .then(() => log.info('Created: ' + csvVol))
  .then(() => cloudCreateContainer(msgVol))
- .then(() => console.log('Created: ' + msgVol))
+ .then(() => log.info('Created: ' + msgVol))
  .catch(error => Error(error))
  }
 
@@ -40,7 +41,7 @@
    if (result) {
      return Promise.resolve(result)
    } else {
-     console.warn('checkParameterName: parameterName not valid: ')
+     log.error('checkParameterName: parameterName not valid: ')
      throw Error('checkParameterName: parameterName not valid:')
    }
  }
@@ -64,14 +65,13 @@
    return checkParameterName(dbName, collName)
  .then(() => {
    let collectionUrl = `dbs/${dbName}/colls/${collName}`
-   console.log(collectionUrl)
+   log.info("Reading collection: " + collectionUrl)
    return azureDbClient.readCollectionAsync(collectionUrl)
  })
  .catch(error => {
    if (error.code === HttpStatusCodes.NOTFOUND) {
      let databaseUrl = `dbs/${dbName}`
      let config = {id: collName}
-     console.log(databaseUrl, config)
      return azureDbClient.createCollectionAsync(databaseUrl, config, {offerThroughput: 400})
    } else {
      Promise.reject(error)
@@ -81,16 +81,15 @@
 
 // let collectionUrl = `dbs/${databaseId}/colls/${collectionId}`
  function cloudQueryCollection (query, collectionUrl) {
-   console.log(`Querying collection through index:\n${collectionUrl}`)
+   log.info(`Querying collection through index:\n${collectionUrl}`)
    return checkParameterName(query, collectionUrl)
      .then(() => azureDbClient.queryDocumentsAsync(collectionUrl, query))
      .then(results => {
        let rArray = results.toArray(results)
        for (let queryResult of rArray) {
          let resultString = JSON.stringify(queryResult)
-         console.log(`\tQuery returned ${resultString}`)
+         log.info(`\tQuery returned ${resultString}`)
        }
-       console.log()
        return rArray
      })
  }
@@ -99,7 +98,7 @@
    return checkParameterName(database)
     .then(() => {
       let databaseUrl = `dbs/${database}`
-      console.log(`Cleaning up by deleting database ${databaseUrl}`)
+      log.info(`Cleaning up by deleting database ${databaseUrl}`)
       return azureDbClient.deleteDatabase(databaseUrl)
     })
  }
@@ -108,7 +107,7 @@
    return checkParameterName(document, collectionUrl)
     .then(() => {
       let documentUrl = `${collectionUrl}/docs/${document.id}`
-      console.log(`Getting document:\n${document.id}\n`)
+      log.info(`Getting document:\n${document.id}\n`)
       return azureDbClient.readDocumentAsync(documentUrl)
     })
  }
@@ -116,7 +115,7 @@
  function cloudCreateDocument (document, collectionUrl) {
    return checkParameterName(document, collectionUrl)
   .then(() => {
-    console.log(`Creating document:\n${document.id}\n`)
+    log.info(`Creating document: ${document.id}`)
     return azureDbClient.createDocumentAsync(collectionUrl, document)
   })
  }
@@ -125,7 +124,7 @@
    return checkParameterName(document)
     .then(() => {
       let documentUrl = `${collectionUrl}/docs/${document.id}`
-      console.log(`Replacing document:\n${document.id}\n`)
+      log.info(`Replacing document: ${document.id}`)
       return azureDbClient.replaceDocumentAsync(documentUrl, document)
     })
  }
@@ -134,7 +133,7 @@
    return checkParameterName(document, collectionUrl)
     .then(() => {
       let documentUrl = `${collectionUrl}/docs/${document.id}`
-      console.log(`Deleting document:\n${document.id}\n`)
+      log.info(`Deleting document: ${document.id}`)
       return azureDbClient.deleteDocument(documentUrl)
     })
  }
@@ -193,7 +192,7 @@
     msgObj.fileArray.forEach(fileObj => {
       let timeStamp = getTimeStampFromFile(fileObj.name, timeIndexInFileName)
       if (timeStamp <= thisDate) {
-        console.info('Deleteing file: ' + fileObj.name + ' from Azure...')
+        log.info('Deleteing file: ' + fileObj.name + ' from Azure...')
         cloudDelFile(fileObj.name, containerName)
       }
     })
@@ -209,7 +208,7 @@
     msgObj.fileArray.forEach(fileObj => {
       let timeStamp = getTimeStampFromFile(fileObj.name, timeIndexInFileName)
       if (timeStamp <= thisDate) {
-        console.info('Getting file: ' + fileObj.name + ' from Azure, storeing to:' + directory)
+        log.info('Getting file: ' + fileObj.name + ' from Azure, storeing to:' + directory)
         cloudgetFile(fileObj.name, containerName, directory)
       }
     })
