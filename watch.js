@@ -2,15 +2,16 @@
 const cl = require('./azureStorage')
 const usage = require('usage')
 const memwatch = require('memwatch-next')
+const log = require('./server/init/logging')
 let leak = ''
 let FILENAME = ''
 let BLOBNAME = ''
 
 function _quit (code) {
-  console.log(`About to exit with code: ${code} closeing file: ${FILENAME}`)
+  log.info(`About to exit with code: ${code} closeing file: ${FILENAME}`)
   cl.cloudStoreTextToExistingFile(FILENAME, BLOBNAME, '{}] \n // Terminating @' + new Date())
-  .then(data => { console.log(data); process.exit(code) }) // wait to seconds make sure previous call to azure completes
-  .catch(error => console.log(error))
+  .then(data => { log.info(data); process.exit(code) }) // wait to seconds make sure previous call to azure completes
+  .catch(error => log.info(error))
 }
 
 function _setSignals () {
@@ -35,7 +36,7 @@ function _logSystem (fileName, blobName) {
   let options = { keepHistory: true }
   usage.lookup(pid, options, function (err, result) {
     if (err) {
-      console.log(err)
+      log.info(err)
       return Promise.resolve(err)
     } else {
       if (leak) {
@@ -44,8 +45,8 @@ function _logSystem (fileName, blobName) {
       result.time = new Date().getTime()
       let perfString = JSON.stringify(result, null, 4) + ','
       return cl.cloudStoreTextToExistingFile(fileName, blobName, perfString)
-  .then(() => console.log(perfString))
-  .then(() => console.log('\nAzure Alive.....'))
+  .then(() => log.info(perfString))
+  .then(() => log.info('\nAzure Alive.....'))
     }
   })
 }
@@ -64,7 +65,7 @@ function cloudWatch (blobName, fileNamePrefix) {
 .then(fileName => { cl.cloudStoreTextToFile(fileName, blobName, '// starting @' + new Date() + '\n ['); return fileName })
 .then(fileName => setInterval(function () { _logSystem(fileName, blobName) }, 30000))
 .then(() => _setSignals())
-.catch(error => console.log(error))
+.catch(error => log.info(error))
 }
 
 // _watch('log', 'log')
