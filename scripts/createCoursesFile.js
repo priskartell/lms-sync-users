@@ -20,7 +20,7 @@ function get (url) {
   })
 }
 
-/***
+/** *
 * return example:
 * {"round":{"courseCode":"MJ2244","startTerm":"20171","roundId":"1","xmlns":""},"periods":[{"term":"20171","number":"3"}]}
 */
