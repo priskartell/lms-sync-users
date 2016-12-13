@@ -14,27 +14,56 @@ const csvDir = config.secure.localFile.csvDir
 const lmsDatabase = config.secure.azure.databaseName
 const lmsCollection = config.secure.azure.collectionName
 
-function _createCsvFile (msg, sisCourseCode, timeStamp) {
+function _createCsvFile (msg, sisCourseCode, enrollmentsArray, timeStamp) {
   let header = 'course_id,user_id,role,status\n'
   let msgtype = msg._desc.userType
   let csvFileName = 'enrollments.' + msgtype + '.' + sisCourseCode + '.' + timeStamp + '.csv'
   let msgFileName = 'enrollments.' + msgtype + '.' + sisCourseCode + '.' + timeStamp + '.msg'
   let csvString = ''
+  let msgUsers = new Set([])
+  let canvasUsers = new Set([])
+  let canvasUserArray = []
+  let csvArray = []
+  let csvDarray = []
 
   if (msg.member && msg.member.length > 0) {
-    let csvArray = msg.member.map(user => {
-      return {
-        course_id: sisCourseCode,
-        user_id: user,
-        role: msgtype,
-        status: 'active'
-      }
-    })
-    csvArray.forEach(csvRow => {
-      csvString = csvString + `${csvRow.course_id},${csvRow.user_id},${csvRow.role},${csvRow.status}
-`
-    })
+    msgUsers = new Set(msg.member)
   }
+  canvasUserArray = enrollmentsArray.map(canvasUser => canvasUser.sis_user_id)
+
+  if (canvasUserArray && canvasUserArray.length > 0) {
+    canvasUsers = new Set(canvasUserArray)
+  }
+
+  let activateSet = new Set([...msgUsers].filter(user => !canvasUsers.has(user)))
+  let deactivateSet = new Set([...canvasUsers].filter(user => !msgUsers.has(user)))
+
+  csvArray = [...activateSet].map(user => {
+    log.info('User: ' + user + ' will be enrolled to course: ' + sisCourseCode)
+    return {
+      course_id: sisCourseCode,
+      user_id: user,
+      role: msgtype,
+      status: 'active'
+    }
+  })
+
+
+  csvDarray = [...deactivateSet].map(user => {
+    log.info('User: ' + user + ' should be deactivated in canvas, no action taken for now: ')
+    return {
+      course_id: sisCourseCode,
+      user_id: user,
+      role: msgtype,
+      status: 'deactivate'
+    }
+  })
+
+
+  csvArray.forEach(csvRow => {
+    csvString = csvString + `${csvRow.course_id},${csvRow.user_id},${csvRow.role},${csvRow.status}
+`
+  })
 
   let csvData = header + csvString
   log.info('\nGoing to open file: ' + csvFileName + ' ' + msgFileName)
@@ -108,30 +137,46 @@ function _parseKey (key, msgtype) {
   return Promise.resolve(sisCourseCode)
 }
 
+function getEnrollmentsForCourse (canvasCourseId, msgtype) {
+  let enrollType = ''
+  switch (msgtype) {
+    case type.students:
+      enrollType = 'StudentEnrollment'
+      break
+    case type.teachers:
+      enrollType = 'TeacherEnrollment'
+      break
+    case type.assistants:
+      enrollType = 'TaEnrollment'
+      break
+    default:
+      enrollType = '' // This will cause canvas API to return all the enrollments on the course
+      console.info('enrollType not defined, will get all the enrollmenttypes for this course')
+  }
+
+  return canvasApi.getEnrollmentList(canvasCourseId, enrollType)
+}
+
 function _process (msg) {
   let sisCourseCode = ''
   let timeStamp = Date.now()
+  let msgtype = msg._desc.userType
+  let key = msg.ug1Name
 
-  return _parseKey(msg.ug1Name, msg._desc.userType)
+  return _parseKey(key, msgtype)
     .then(sisCode => {
       sisCourseCode = sisCode
-      log.info(`In _process ${sisCourseCode}, processing for ${msg._desc.userType}`)
+      log.info(`In _process ${sisCourseCode}, processing for ${msgtype}`)
       return canvasApi.findCourse(sisCourseCode)
     })
     .then(result => {
-      log.info(JSON.parse(result, null, 4))
-      // Here to drag out list of enrollments from canvas and compare it
-      // with the content of the message based on user type
-      // This is necessary to understand what the message content really mean,
-      // if the message is activate or deactivation enrollments
-      // Investigate if there is a chance if the message both contains
-      // activation and deactivation, for now pressumed unlikekly
-      // return canvasApi.getEnrollmentList(sisCourseCode)})
-      return result
+      let Result = JSON.parse(result)
+      log.info(Result)
+      return getEnrollmentsForCourse(Result.id, msgtype)
     })
     .then(enrollmentsArray => {
-      // console.log(enrollmentsArray)
-      return _createCsvFile(msg, sisCourseCode, timeStamp)
+      log.info("Enrollment array size: " + enrollmentsArray.length)
+      return _createCsvFile(msg, sisCourseCode, enrollmentsArray, timeStamp)
     })
     .then(csvObject => {
       log.info('FileName: ', csvObject.csvFileName)
