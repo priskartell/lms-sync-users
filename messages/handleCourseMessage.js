@@ -34,8 +34,10 @@ function _createCsvFile (msg, sisCourseCode, enrollmentsArray, timeStamp) {
   }
   let activateSet = new Set([...msgUsers].filter(user => !canvasUsers.has(user)))
   let deactivateSet = new Set([...canvasUsers].filter(user => !msgUsers.has(user)))
+  let counter = 0
   csvArray = [...activateSet].map(user => {
-    log.info('User: ' + user + ' will be enrolled to course: ' + sisCourseCode)
+    counter += 1
+    log.info("["+ counter + "] " + 'User: ' + user + ' will be enrolled to course: ' + sisCourseCode)
     return {
       course_id: sisCourseCode,
       user_id: user,
@@ -44,7 +46,8 @@ function _createCsvFile (msg, sisCourseCode, enrollmentsArray, timeStamp) {
     }
   })
   csvDarray = [...deactivateSet].map(user => {
-    log.info('User: ' + user + ' should be unrolled from course ' + sisCourseCode + ' ,no action taken for now: ')
+    counter += 1
+    log.info("["+ counter + "] " +'User: ' + user + ' should be unrolled from course ' + sisCourseCode + ' ,no action taken for now: ')
     return {
       course_id: sisCourseCode,
       user_id: user,
@@ -166,7 +169,8 @@ function _process (msg) {
       return _getEnrollmentsForCourse(Result.id, msgtype)
     })
     .then(enrollmentsArray => {
-      log.info('Enrolled array size recived from canvas: ' + enrollmentsArray.length)
+      log.info('Number of users recived from canvas: ' + enrollmentsArray.length)
+      log.info('Number of users recieved from message: ' + msg.member.length)
       return _createCsvFile(msg, sisCourseCode, enrollmentsArray, timeStamp)
     })
     .then(csvObject => {
@@ -175,8 +179,8 @@ function _process (msg) {
     })
     .then(fileName => {
       if (fileName.split('.')[6] === 'EMPTY') {
-        log.info("CSV file is empty, will not be sent to canvas, skipping....")
-        return {status: 'EMPTYCSV',filename: fileName}
+        log.info('CSV file is empty, will not be sent to canvas, skipping....')
+        return {status: 'EMPTYCSV', filename: fileName}
       } else {
         return canvasApi.sendCsvFile(fileName)
       }
