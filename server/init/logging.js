@@ -12,9 +12,7 @@ let logConfiguration = {
   app: packageFile.name,
   env: environment,
   level: configuration.log.level,
-  console: {
-    enabled: true
-  },
+  console: configuration.console,
   stdout: configuration.stdout
 }
 
