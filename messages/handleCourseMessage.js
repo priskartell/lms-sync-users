@@ -25,19 +25,15 @@ function _createCsvFile (msg, sisCourseCode, enrollmentsArray, timeStamp) {
   let canvasUserArray = []
   let csvArray = []
   let csvDarray = []
-
   if (msg.member && msg.member.length > 0) {
     msgUsers = new Set(msg.member)
   }
   canvasUserArray = enrollmentsArray.map(canvasUser => canvasUser.sis_user_id)
-
   if (canvasUserArray && canvasUserArray.length > 0) {
     canvasUsers = new Set(canvasUserArray)
   }
-
   let activateSet = new Set([...msgUsers].filter(user => !canvasUsers.has(user)))
   let deactivateSet = new Set([...canvasUsers].filter(user => !msgUsers.has(user)))
-
   csvArray = [...activateSet].map(user => {
     log.info('User: ' + user + ' will be enrolled to course: ' + sisCourseCode)
     return {
@@ -48,7 +44,7 @@ function _createCsvFile (msg, sisCourseCode, enrollmentsArray, timeStamp) {
     }
   })
   csvDarray = [...deactivateSet].map(user => {
-    log.info('User: ' + user + ' should be unrolled from course ' + sisCourseCode +' ,no action taken for now: ')
+    log.info('User: ' + user + ' should be unrolled from course ' + sisCourseCode + ' ,no action taken for now: ')
     return {
       course_id: sisCourseCode,
       user_id: user,
@@ -56,14 +52,14 @@ function _createCsvFile (msg, sisCourseCode, enrollmentsArray, timeStamp) {
       status: 'deactivate'
     }
   })
-  csvDarray = [] // Just to shut up the linting....
-  log.info(csvDarray) // Just to shut up the linting....
+  csvDarray = [] // Just to shut up the linter....
+  log.info(csvDarray) // Just to shut up the linter....
   csvArray.forEach(csvRow => {
-    csvString = csvString + `${csvRow.course_id},${csvRow.user_id},${csvRow.role},${csvRow.status}
-`
+    csvString = csvString + `${csvRow.course_id},${csvRow.user_id},${csvRow.role},${csvRow.status}\n`
   })
   let csvData = header + csvString
   log.info('\nGoing to open file: ' + csvFileName + ' ' + msgFileName)
+
   return cl.cloudStoreTextToFile(csvFileName, csvVol, csvData)
   .then(result => { log.info(result); return cl.cloudStoreTextToFile(msgFileName, msgVol, JSON.stringify(msg, null, 4)) })
   .then(() => cl.cloudgetFile(csvFileName, csvVol, csvDir))
@@ -90,9 +86,9 @@ function _parseKeyStudent (key) {
     year = myArray[yearIn]
     ladok = myArray[ladokIn]
     let sisCourseCode = course + termin + year + ladok
-    return sisCourseCode
+    return Promise.resolve(sisCourseCode)
   }
-  return 0
+  return Promise.reject(Error('_parseKeyStudent, ' + key + ' could not be decoded'))
 }
 
 function _parseKeyTeacher (key) {
@@ -105,7 +101,6 @@ function _parseKeyTeacher (key) {
   let terminIn = 5
   let yearIn = 4
   let ladokIn = 6
-
   let myRe = /^edu.courses.(\w+).(\w+).(\d\d)(\d\d)(\d).(\d).(\w+)$/g
   let myArray = myRe.exec(key)
   if (myArray != null) {
@@ -114,27 +109,23 @@ function _parseKeyTeacher (key) {
     year = myArray[yearIn]
     ladok = myArray[ladokIn]
     let sisCourseCode = course + termin + year + ladok
-    return sisCourseCode
+    return Promise.resolve(sisCourseCode)
   }
-  return 0
+  return Promise.reject(Error('_parseKeyTeacher, ' + key + ' could not be decoded'))
 }
 
 function _parseKey (key, msgtype) {
-  let sisCourseCode = 0
   if (msgtype === type.students) {
-    sisCourseCode = _parseKeyStudent(key)
+    return _parseKeyStudent(key)
   }
   if (msgtype === type.teachers || msgtype === type.assistants) {
-    sisCourseCode = _parseKeyTeacher(key)
+    return _parseKeyTeacher(key)
+  } else {
+    return Promise.reject(Error('_parseKey unkown type, ' + msgtype))
   }
-  if (!sisCourseCode) {
-    log.error('\nCourse code not parsable from Key. type, ' + msgtype + ' key, ' + key)
-    return Promise.reject(Error('Key parse error, type, ' + msgtype + ' key, ' + key))
-  }
-  return Promise.resolve(sisCourseCode)
 }
 
-function getEnrollmentsForCourse (canvasCourseId, msgtype) {
+function _getEnrollmentsForCourse (canvasCourseId, msgtype) {
   let enrollType = ''
   switch (msgtype) {
     case type.students:
@@ -147,10 +138,9 @@ function getEnrollmentsForCourse (canvasCourseId, msgtype) {
       enrollType = 'TaEnrollment'
       break
     default:
-      enrollType = '' // This will cause canvas API to return all the enrollments on the course
-      console.info('enrollType not defined, will get all the enrollmenttypes for this course')
+      log.warn('enrollment type not defined....')
+      return Promise.reject(Error('Invalid message type: ' + msgtype))
   }
-
   return canvasApi.getEnrollmentList(canvasCourseId, enrollType)
 }
 
@@ -169,7 +159,7 @@ function _process (msg) {
     .then(result => {
       let Result = JSON.parse(result)
       log.info(Result)
-      return getEnrollmentsForCourse(Result.id, msgtype)
+      return _getEnrollmentsForCourse(Result.id, msgtype)
     })
     .then(enrollmentsArray => {
       log.info('Enrolled array size recived from canvas: ' + enrollmentsArray.length)
