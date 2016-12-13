@@ -17,6 +17,7 @@
     "start": "cross-env NODE_ENV=development node app.js",
     "start-nodemon": "cross-env NODE_ENV=development node app.js",
     "create-users-file": "cross-env NODE_ENV=development node scripts/createUsersFile.js",
+    "create-courses-file": "cross-env NODE_ENV=development node scripts/createCoursesFile.js",
     "startDebug": "node --debug app.js",
     "debug": "cross-env NODE_ENV=development concurrently --kill-others \"npm run startDebug\" \"npm run nodeInspector\" \"npm run openDebugBrowser\""
   },
@@ -26,7 +27,7 @@
   ],
   "dependencies": {
     "blue-tape": "^1.0.0",
-    "canvas-api": "github:kth/canvas-api",
+    "canvas-api": "github:kth/canvas-api#v2.7.0",
     "colors": "^1.1.2",
     "express": "^4.14.0",
     "kth-node-configuration": "KTH/kth-node-configuration.git#v1.0.1",
