@@ -4,8 +4,8 @@ const parseString = Promise.promisify(require('xml2js').parseString)
 const {groupBy} = require('lodash')
 
 const constants = {
-  term:'2017:1',
-  period:'3'
+  term: '2017:1',
+  period: '3'
 }
 
 function get (url) {
@@ -45,7 +45,7 @@ function filterCoursesByCount (courseRounds, filterFn) {
   .filter(filterFn)
 }
 
-function extractRelevantData(courseRounds) {
+function extractRelevantData (courseRounds) {
   return courseRounds.courseRoundList.courseRound.map(round => round.$)
 }
 
