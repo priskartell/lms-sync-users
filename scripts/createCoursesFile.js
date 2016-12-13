@@ -1,7 +1,7 @@
 const rp = require('request-promise')
 const Promise = require('bluebird') // use bluebird to get a little more promise functions then the standard Promise AP
 const parseString = Promise.promisify(require('xml2js').parseString)
-const _ = require('lodash')
+const {groupBy} = require('lodash')
 
 const constants = {
   term:'2017:1',
@@ -38,23 +38,25 @@ function addPeriods (courseRounds) {
 }
 
 function filterCoursesByCount (courseRounds, filterFn) {
-  const courseRoundsGrouped = _.groupBy(courseRounds, courseRound => courseRound.courseCode)
+  const courseRoundsGrouped = groupBy(courseRounds, courseRound => courseRound.courseCode)
 
   return Object.getOwnPropertyNames(courseRoundsGrouped)
   .map(name => courseRoundsGrouped[name])
   .filter(filterFn)
 }
 
+function extractRelevantData(courseRounds) {
+  return courseRounds.courseRoundList.courseRound.map(round => round.$)
+}
+
 // Start executing
 
 get(`http://www.kth.se/api/kopps/v1/courseRounds/${constants.term}`)
 .then(parseString)
-.then(courseRounds => courseRounds.courseRoundList.courseRound)
-.then(courseRounds => courseRounds.map(round => round.$))
+.then(extractRelevantData)
 .then(courseRounds => filterCoursesByCount(courseRounds, courses => courses.length === 1))
 .then(addPeriods)
-// .then(arg => console.log('arg', JSON.stringify(arg[0])))
 .then(coursesWithPeriods => coursesWithPeriods.filter(({periods}) => periods && periods.find(({number}) => number === constants.period)))
 .then(coursesWithPeriods => coursesWithPeriods.map(courseWithPeriods => courseWithPeriods.round.courseCode))
-.then(arg => console.log(arg))
+.then(arg => console.log(JSON.stringify(arg)))
 .catch(e => console.error(e))
