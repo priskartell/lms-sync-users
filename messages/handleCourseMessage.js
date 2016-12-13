@@ -60,6 +60,10 @@ function _createCsvFile (msg, sisCourseCode, enrollmentsArray, timeStamp) {
   let csvData = header + csvString
   log.info('\nGoing to open file: ' + csvFileName + ' ' + msgFileName)
 
+  if (csvString === '') {
+    csvFileName = csvFileName + '.EMPTY'
+  }
+
   return cl.cloudStoreTextToFile(csvFileName, csvVol, csvData)
   .then(result => { log.info(result); return cl.cloudStoreTextToFile(msgFileName, msgVol, JSON.stringify(msg, null, 4)) })
   .then(() => cl.cloudgetFile(csvFileName, csvVol, csvDir))
@@ -139,7 +143,7 @@ function _getEnrollmentsForCourse (canvasCourseId, msgtype) {
       break
     default:
       log.warn('enrollment type not defined....')
-      return Promise.reject(Error('Invalid message type: ' + msgtype))
+      return Promise.reject(Error('_getEnrollmentsForCourse, Invalid message type: ' + msgtype))
   }
   return canvasApi.getEnrollmentList(canvasCourseId, enrollType)
 }
@@ -169,7 +173,14 @@ function _process (msg) {
       log.info('FileName: ', csvObject.csvFileName)
       return csvObject.csvFileName
     })
-    .then(fileName => canvasApi.sendCsvFile(fileName))
+    .then(fileName => {
+      if (fileName.split('.')[6] === 'EMPTY') {
+        log.info("CSV file is empty, will not be sent to canvas, skipping....")
+        return {status: 'EMPTYCSV',filename: fileName}
+      } else {
+        return canvasApi.sendCsvFile(fileName)
+      }
+    })
     .then(canvasReturnValue => {
       let documentId = sisCourseCode + '.' + timeStamp
       let document = {id: documentId, msg: msg, resp: canvasReturnValue}
