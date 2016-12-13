@@ -1,0 +1,6 @@
+# Travis CI
+language: node_js
+node_js:
+  - "6"
+before_script:
+  - cp config/localSettings.js.in config/localSettings.js

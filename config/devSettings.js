@@ -1,11 +1,18 @@
 module.exports = {
   port: 3000,
   canvas: {
+    // apiUrl: 'https://kth.beta.instructure.com/api/v1'
     apiUrl: 'https://kth.test.instructure.com/api/v1'
   },
   logging: {
     log: {
-      level: 'info'
+      level: 'debug'
+    },
+    stdout: {
+      enabled: false
+    },
+    console: {
+      enabled: true
     }
   },
   ldap: {
