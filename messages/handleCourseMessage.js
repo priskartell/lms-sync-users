@@ -47,10 +47,8 @@ function _createCsvFile (msg, sisCourseCode, enrollmentsArray, timeStamp) {
       status: 'active'
     }
   })
-
-
   csvDarray = [...deactivateSet].map(user => {
-    log.info('User: ' + user + ' should be deactivated in canvas, no action taken for now: ')
+    log.info('User: ' + user + ' should be unrolled from course ' + sisCourseCode +' ,no action taken for now: ')
     return {
       course_id: sisCourseCode,
       user_id: user,
@@ -58,13 +56,12 @@ function _createCsvFile (msg, sisCourseCode, enrollmentsArray, timeStamp) {
       status: 'deactivate'
     }
   })
-
-
+  csvDarray = [] // Just to shut up the linting....
+  log.info(csvDarray) // Just to shut up the linting....
   csvArray.forEach(csvRow => {
     csvString = csvString + `${csvRow.course_id},${csvRow.user_id},${csvRow.role},${csvRow.status}
 `
   })
-
   let csvData = header + csvString
   log.info('\nGoing to open file: ' + csvFileName + ' ' + msgFileName)
   return cl.cloudStoreTextToFile(csvFileName, csvVol, csvData)
@@ -175,7 +172,7 @@ function _process (msg) {
       return getEnrollmentsForCourse(Result.id, msgtype)
     })
     .then(enrollmentsArray => {
-      log.info("Enrollment array size: " + enrollmentsArray.length)
+      log.info('Enrolled array size recived from canvas: ' + enrollmentsArray.length)
       return _createCsvFile(msg, sisCourseCode, enrollmentsArray, timeStamp)
     })
     .then(csvObject => {
