@@ -1,28 +1,13 @@
 const rp = require('request-promise')
 const Promise = require('bluebird') // use bluebird to get a little more promise functions then the standard Promise AP
 const parseString = Promise.promisify(require('xml2js').parseString)
-const _ = require('lodash');
+const _ = require('lodash')
 
 const term = '2017:1'
-const period = '3'
+// const period = '3'
 
-function filterCoursesByPeriod(courseRounds){
-  // TODO: create a clone that has periods in each courseround
-  function findCourseRoundsByPeriod(courseInfos){
-    return courseInfos.map(courseInfo => courseInfo.courseRound.periods.find(({period}) => period.find(period=>period.$.number === period)))
-  }
-
-  // Should only be one course round per course
-  return Promise.map(courseRounds, ([round]) => get(`http://www.kth.se/api/kopps/v1/course/${round.courseCode}/round/${term}/${round.roundId}`))
-  .then(courseRoundInfos => Promise.map(courseRoundInfos, courseRoundInfo => parseString(courseRoundInfo)))
-  // .then(courseRoundInfos => courseRoundInfos.filter(info => info.courseRound.periods))
-  .then(findCourseRoundsByPeriod)
-  // .then(courseRoundInfos => courseRoundInfos.map(parseString))
-  .then(arg => console.log('arg', JSON.stringify( arg[0] )))
-}
-
-function addPeriods(courseRounds) {
-  function addInfoForCourseRound([round]) {
+function addPeriods (courseRounds) {
+  function addInfoForCourseRound ([round]) {
     return get(`http://www.kth.se/api/kopps/v1/course/${round.courseCode}/round/${term}/${round.roundId}`)
     .then(parseString)
     .then(roundInfo => {
@@ -34,16 +19,16 @@ function addPeriods(courseRounds) {
   return Promise.map(courseRounds, addInfoForCourseRound)
 }
 
-function filterCoursesByCount(courseRounds, filterFn){
-  const courseRoundsGrouped = _.groupBy(courseRounds, courseRound=>courseRound.courseCode)
+function filterCoursesByCount (courseRounds, filterFn) {
+  const courseRoundsGrouped = _.groupBy(courseRounds, courseRound => courseRound.courseCode)
 
   return Object.getOwnPropertyNames(courseRoundsGrouped)
   .map(name => courseRoundsGrouped[name])
   .filter(filterFn)
 }
 
-function get(url){
-  console.log(url);
+function get (url) {
+  console.log(url)
   return rp({
     url,
     method: 'GET',
@@ -60,7 +45,7 @@ get(`http://www.kth.se/api/kopps/v1/courseRounds/${term}`)
 .then(courseRounds => courseRounds.map(round => round.$))
 .then(courseRounds => filterCoursesByCount(courseRounds, courses => courses.length === 1))
 .then(addPeriods)
-.then(arg => console.log('arg', JSON.stringify( arg[0] )))
+.then(arg => console.log('arg', JSON.stringify(arg[0])))
 // .then(filterCoursesByPeriod)
 .catch(e => console.error(e))
 // .then(courseRounds => c)
