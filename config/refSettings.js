@@ -12,7 +12,7 @@ module.exports = {
     },
     console: {
       enabled: false
-    }    
+    }
   },
   ldap: {
     client: {
