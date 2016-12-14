@@ -14,7 +14,7 @@ const constants = {
   period: '3'
 }
 
-const fileName = `courses-${constants.term}-${constants.period}.csv`
+const fileName = `csv/courses-${constants.term}-${constants.period}.csv`
 
 try {
   fs.unlinkSync(fileName)
@@ -73,22 +73,22 @@ function buildCanvasCourseObjects (courseRounds) {
   .then(coursesAndCourseRounds => Promise.map(coursesAndCourseRounds, createCanvasCourseObject))
 }
 
-function createCSVContent (canvasCourseObjects) {
+function writeCsvFile (canvasCourseObjects) {
   const columns = [
     'course_id',
     'short_name',
     'long_name',
-    ' start_date',
+    'start_date',
     'account_id',
     'status']
 
-  function writeLine ({course, subAccountId}) {
+  function writeLine ({course, subAccount}) {
     const lineArr = [
       course.course.sis_course_id,
       course.course.name,
       course.course.name,
       course.course.start_at,
-      subAccountId,
+      subAccount.sis_account_id,
       'active']
 
     console.log('writing line', JSON.stringify(lineArr, null, 4))
@@ -108,9 +108,9 @@ get(`http://www.kth.se/api/kopps/v1/courseRounds/${constants.term}`)
 .then(addPeriods)
 .then(coursesWithPeriods => coursesWithPeriods.filter(({periods}) => periods && periods.find(({number}) => number === constants.period)))
 
-.then(coursesWithPeriods => [coursesWithPeriods[0]])
+// .then(coursesWithPeriods => [coursesWithPeriods[0]])
 
 .then(buildCanvasCourseObjects)
-.then(createCSVContent)
+.then(writeCsvFile)
 .then(arg => console.log(JSON.stringify(arg, null, 2)))
 .catch(e => console.error(e))

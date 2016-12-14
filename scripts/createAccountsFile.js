@@ -4,65 +4,13 @@ const fs = require('fs')
 
 const csvFile = require('../csvFile')
 
-const fileName = 'accounts.csv'
+const fileName = 'csv/accounts.csv'
 
 try {
   fs.unlinkSync(fileName)
 } catch (e) {
   console.log('couldnt delete file. It probably doesnt exist.', e)
 }
-
-
-/*
-{ id: 8,
-  name: 'STH',
-  workflow_state: 'active',
-  parent_account_id: 1,
-  root_account_id: 1,
-  default_storage_quota_mb: 2000,
-  default_user_storage_quota_mb: 50,
-  default_group_storage_quota_mb: 50,
-  default_time_zone: 'Europe/Stockholm',
-  sis_account_id: null,
-  sis_import_id: null,
-  integration_id: null } [ { id: 29,
-    name: 'Imported course rounds',
-    workflow_state: 'active',
-    parent_account_id: 8,
-    root_account_id: 1,
-    default_storage_quota_mb: 2000,
-    default_user_storage_quota_mb: 50,
-    default_group_storage_quota_mb: 50,
-    default_time_zone: 'Europe/Stockholm',
-    sis_account_id: null,
-    sis_import_id: null,
-    integration_id: null },
-  { id: 37,
-    name: 'Manually created course rounds',
-    workflow_state: 'active',
-    parent_account_id: 8,
-    root_account_id: 1,
-    default_storage_quota_mb: 2000,
-    default_user_storage_quota_mb: 50,
-    default_group_storage_quota_mb: 50,
-    default_time_zone: 'Europe/Stockholm',
-    sis_account_id: null,
-    sis_import_id: null,
-    integration_id: null },
-  { id: 45,
-    name: 'Sandboxes',
-    workflow_state: 'active',
-    parent_account_id: 8,
-    root_account_id: 1,
-    default_storage_quota_mb: 2000,
-    default_user_storage_quota_mb: 50,
-    default_group_storage_quota_mb: 50,
-    default_time_zone: 'Europe/Stockholm',
-    sis_account_id: null,
-    sis_import_id: null,
-    integration_id: null } ]
-*/
-
 
 const columns = [
   'account_id', // 	text 	Required field. A unique identifier used to reference accounts in the enrollments data. This identifier must not change for the account, and must be globally unique. In the user interface, this is called the SIS ID.
@@ -71,7 +19,7 @@ const columns = [
   'status']
 
 function writeLine(subAccount, subSubAccount) {
-  return csvFile.writeLine([`${subAccount.name}-${subSubAccount.name}`, subAccount.id,subSubAccount.name,'active'],fileName)
+  return csvFile.writeLine([`${subAccount.name}-${subSubAccount.name}`, subAccount.name,subSubAccount.name,'active'],fileName)
 }
 
 return csvFile.writeLine(columns, fileName)
