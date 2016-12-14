@@ -25,10 +25,18 @@ function _createCsvFile (msg, sisCourseCode, enrollmentsArray, timeStamp) {
   let canvasUserArray = []
   let csvArray = []
   let csvDarray = []
+
+  log.info('Number of users recived from canvas: ' + enrollmentsArray.length)
+  log.info('Number of users recieved from message: ' + msg.member.length)
+
   if (msg.member && msg.member.length > 0) {
     msgUsers = new Set(msg.member)
   }
   canvasUserArray = enrollmentsArray.map(canvasUser => canvasUser.sis_user_id)
+
+  canvasUserArray.forEach(item => log.info('Debug canvas userid: ' + item))
+  msg.member.forEach(item => log.info('debug msg userid: ' + item))
+
   if (canvasUserArray && canvasUserArray.length > 0) {
     canvasUsers = new Set(canvasUserArray)
   }
@@ -37,7 +45,7 @@ function _createCsvFile (msg, sisCourseCode, enrollmentsArray, timeStamp) {
   let counter = 0
   csvArray = [...activateSet].map(user => {
     counter += 1
-    log.info("["+ counter + "] " + 'User: ' + user + ' will be enrolled to course: ' + sisCourseCode)
+    log.info('[' + counter + '] ' + 'User: ' + user + ' will be enrolled to course: ' + sisCourseCode)
     return {
       course_id: sisCourseCode,
       user_id: user,
@@ -45,9 +53,10 @@ function _createCsvFile (msg, sisCourseCode, enrollmentsArray, timeStamp) {
       status: 'active'
     }
   })
+  counter = 0
   csvDarray = [...deactivateSet].map(user => {
     counter += 1
-    log.info("["+ counter + "] " +'User: ' + user + ' should be unrolled from course ' + sisCourseCode + ' ,no action taken for now: ')
+    log.info('[' + counter + '] ' + 'User: ' + user + ' should be unrolled from course ' + sisCourseCode + ' ,no action taken for now: ')
     return {
       course_id: sisCourseCode,
       user_id: user,
@@ -70,7 +79,7 @@ function _createCsvFile (msg, sisCourseCode, enrollmentsArray, timeStamp) {
   return cl.cloudStoreTextToFile(csvFileName, csvVol, csvData)
   .then(result => { log.info(result); return cl.cloudStoreTextToFile(msgFileName, msgVol, JSON.stringify(msg, null, 4)) })
   .then(() => cl.cloudgetFile(csvFileName, csvVol, csvDir))
-  .then(result => { log.info(result); return {csvContent: csvData, csvFileName: csvDir + result.name} })
+  .then(result => { log.info(result); let fileName = csvDir + result.name; return fileName })
   .catch(error => { log.error(error); return Promise.reject(error) })
 }
 
@@ -151,54 +160,83 @@ function _getEnrollmentsForCourse (canvasCourseId, msgtype) {
   return canvasApi.getEnrollmentList(canvasCourseId, enrollType)
 }
 
+function _sendCsvIfNotEmpty (fileName) {
+  if (fileName.split('.')[6] === 'EMPTY') {
+    log.info('CSV file is empty, will not be sent to canvas, skipping....')
+    return
+  } else {
+    return canvasApi.sendCsvFile(fileName)
+  }
+}
+
+function _followUpTicket (csvTicket) {
+  if (!csvTicket) {
+    return // No file was sent to canvas, file empty
+  }
+  let Result = JSON.parse(csvTicket)
+  log.debug(csvTicket)
+  return canvasApi.getCsvFileStatus(Result.id)
+}
+
+function _generateReport (csvReport, sisCourseCode, timeStamp, document) {
+    setTimeout(_createReport.bind(null, csvReport, sisCourseCode, timeStamp, document), 120000)
+  return Promise.resolve('Done')
+}
+
+function _createReport (csvReport, sisCourseCode, timeStamp, document) {
+  let documentId = sisCourseCode + '.' + timeStamp
+  if (!csvReport) {
+    document['csvTicket'] = "Empty"
+    document['csvReport'] = "Empty"
+  }
+  else {
+  let tmp = JSON.parse(document.csvTicket)
+  document['csvTicket'] = tmp
+  document['csvReport'] = JSON.parse(csvReport)
+  }
+  document['id'] = documentId
+  console.info(JSON.stringify(document, null, 4))
+  let collectionUrl = `dbs/${lmsDatabase}/colls/${lmsCollection}`
+  return cl.cloudCreateDocument(document, collectionUrl)
+}
+
+function _handleError (err, sisCourseCode) {
+  if (err.statusCode === 404) {
+    log.info('Course does not exist in canvas, skipping, '.red + sisCourseCode.red)
+    return Promise.resolve('Course does not exist in canvas')
+  } else {
+    return Promise.reject(Error(err))
+  }
+}
+
 function _process (msg) {
   let sisCourseCode = ''
   let timeStamp = Date.now()
   let msgtype = msg._desc.userType
   let key = msg.ug1Name
+  let document = {}
 
   return _parseKey(key, msgtype)
     .then(sisCode => {
       sisCourseCode = sisCode
       log.info(`In _process ${sisCourseCode}, processing for ${msgtype}`)
+      document['sisCourseCode'] = sisCourseCode
       return canvasApi.findCourse(sisCourseCode)
     })
     .then(result => {
       let Result = JSON.parse(result)
-      log.info(Result)
+      document['canvasCourse'] = result
       return _getEnrollmentsForCourse(Result.id, msgtype)
     })
     .then(enrollmentsArray => {
-      log.info('Number of users recived from canvas: ' + enrollmentsArray.length)
-      log.info('Number of users recieved from message: ' + msg.member.length)
+      document['usersInCanvas'] = enrollmentsArray.map(canvasUser => canvasUser.sis_user_id)
+      document['usersInmsg'] = msg.member
       return _createCsvFile(msg, sisCourseCode, enrollmentsArray, timeStamp)
     })
-    .then(csvObject => {
-      log.info('FileName: ', csvObject.csvFileName)
-      return csvObject.csvFileName
-    })
-    .then(fileName => {
-      if (fileName.split('.')[6] === 'EMPTY') {
-        log.info('CSV file is empty, will not be sent to canvas, skipping....')
-        return {status: 'EMPTYCSV', filename: fileName}
-      } else {
-        return canvasApi.sendCsvFile(fileName)
-      }
-    })
-    .then(canvasReturnValue => {
-      let documentId = sisCourseCode + '.' + timeStamp
-      let document = {id: documentId, msg: msg, resp: canvasReturnValue}
-      let collectionUrl = `dbs/${lmsDatabase}/colls/${lmsCollection}`
-      return cl.cloudCreateDocument(document, collectionUrl)
-    })
-    .catch(err => {
-      if (err.statusCode === 404) {
-        log.info('Course does not exist in canvas, skipping, '.red + sisCourseCode.red)
-        return Promise.resolve('Course does not exist in canvas')
-      } else {
-        return Promise.reject(Error(err))
-      }
-    })
+    .then(fileName => { document['fileName'] = fileName; return _sendCsvIfNotEmpty(fileName) })
+    .then(csvTicket =>{ document['csvTicket'] = csvTicket; return _followUpTicket(csvTicket)})
+    .then(csvReport => _generateReport(csvReport, sisCourseCode, timeStamp, document))
+    .catch(err => _handleError(err, sisCourseCode))
 }
 
 module.exports = function (msg, counter) {
