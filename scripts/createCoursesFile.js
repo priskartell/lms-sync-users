@@ -112,5 +112,5 @@ get(`http://www.kth.se/api/kopps/v1/courseRounds/${constants.term}`)
 
 .then(buildCanvasCourseObjects)
 .then(writeCsvFile)
-.then(arg => console.log(JSON.stringify(arg, null, 2)))
+// .then(arg => console.log(JSON.stringify(arg, null, 2)))
 .catch(e => console.error(e))

@@ -1,4 +1,2 @@
 account_id,parent_account_id,name,status
-ABE-Imported course rounds,ABE,Imported course rounds,active
-ABE-Manually created course rounds,ABE,Manually created course rounds,active
-ABE-Sandboxes,ABE,Sandboxes,active
+BIO-Imported course rounds,BIO,Imported course rounds,active
