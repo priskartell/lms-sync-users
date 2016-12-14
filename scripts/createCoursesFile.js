@@ -5,7 +5,7 @@ const {groupBy} = require('lodash')
 const config = require('../server/init/configuration')
 const canvasUtilities = require('kth-canvas-utilities')
 canvasUtilities.init(config.full.canvas.apiUrl, config.secure.canvas.apiKey)
-const {getCourseAndCourseRoundFromKopps,createCanvasCourseObject} = canvasUtilities
+const {getCourseAndCourseRoundFromKopps, createCanvasCourseObject} = canvasUtilities
 
 const constants = {
   term: '2017:1',
@@ -54,16 +54,13 @@ function extractRelevantData (courseRounds) {
 }
 
 function buildCanvasCourseObjects (courseRounds) {
-
-
   return Promise.map(courseRounds, ({round}) => {
-
     // Add a ':' between year and term
     const position = 4
     const startTerm = [round.startTerm.slice(0, position), ':', round.startTerm.slice(position)].join('')
-    return getCourseAndCourseRoundFromKopps({courseCode:round.courseCode, startTerm, round:round.roundId})
+    return getCourseAndCourseRoundFromKopps({courseCode: round.courseCode, startTerm, round: round.roundId})
   })
-  .then(coursesAndCourseRounds => Promise.map(coursesAndCourseRounds,createCanvasCourseObject))
+  .then(coursesAndCourseRounds => Promise.map(coursesAndCourseRounds, createCanvasCourseObject))
 }
 
 // Start executing
