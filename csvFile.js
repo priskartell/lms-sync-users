@@ -1,20 +1,23 @@
-const fs = require('fs')
+const Promise = require('bluebird')
+const fs = Promise.promisifyAll(require('fs'))
 const log = require('./server/init/logging')
 
 function escapeCsvData (str) {
-  if (str.includes(',') || str.includes('"')) {
+  if (str.includes('"')) {
     log.warn('oh no! bad data!', str)
   }
+
+  if (str.includes(',')) {
+    log.info('escaping ', str)
+    str = `"${str}"`
+  }
+
   return str
 }
 
 function writeLine (strArr, fileName) {
   const line = createLine(strArr)
-  fs.appendFile(fileName, line, err => {
-    if (err) {
-      throw err
-    }
-  })
+  return fs.appendFileAsync(fileName, line)
 }
 
 function createLine (strArr) {
