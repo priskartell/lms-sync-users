@@ -2,6 +2,10 @@ const rp = require('request-promise')
 const Promise = require('bluebird') // use bluebird to get a little more promise functions then the standard Promise AP
 const parseString = Promise.promisify(require('xml2js').parseString)
 const {groupBy} = require('lodash')
+const config = require('../server/init/configuration')
+const canvasUtilities = require('kth-canvas-utilities')
+canvasUtilities.init(config.full.canvas.apiUrl, config.secure.canvas.apiKey)
+const {getCourseAndCourseRoundFromKopps,createCanvasCourseObject} = canvasUtilities
 
 const constants = {
   term: '2017:1',
@@ -49,6 +53,19 @@ function extractRelevantData (courseRounds) {
   return courseRounds.courseRoundList.courseRound.map(round => round.$)
 }
 
+function buildCanvasCourseObjects (courseRounds) {
+
+
+  return Promise.map(courseRounds, ({round}) => {
+
+    // Add a ':' between year and term
+    const position = 4
+    const startTerm = [round.startTerm.slice(0, position), ':', round.startTerm.slice(position)].join('')
+    return getCourseAndCourseRoundFromKopps({courseCode:round.courseCode, startTerm, round:round.roundId})
+  })
+  .then(coursesAndCourseRounds => Promise.map(coursesAndCourseRounds,createCanvasCourseObject))
+}
+
 // Start executing
 
 get(`http://www.kth.se/api/kopps/v1/courseRounds/${constants.term}`)
@@ -57,6 +74,7 @@ get(`http://www.kth.se/api/kopps/v1/courseRounds/${constants.term}`)
 .then(courseRounds => filterCoursesByCount(courseRounds, courses => courses.length === 1))
 .then(addPeriods)
 .then(coursesWithPeriods => coursesWithPeriods.filter(({periods}) => periods && periods.find(({number}) => number === constants.period)))
-.then(coursesWithPeriods => coursesWithPeriods.map(courseWithPeriods => courseWithPeriods.round.courseCode))
-.then(arg => console.log(JSON.stringify(arg)))
+.then(buildCanvasCourseObjects)
+// .then(coursesWithPeriods => coursesWithPeriods.map(courseWithPeriods => courseWithPeriods.round.courseCode))
+.then(arg => console.log(JSON.stringify(arg[0])))
 .catch(e => console.error(e))
