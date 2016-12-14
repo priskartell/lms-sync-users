@@ -179,20 +179,19 @@ function _followUpTicket (csvTicket) {
 }
 
 function _generateReport (csvReport, sisCourseCode, timeStamp, document) {
-    setTimeout(_createReport.bind(null, csvReport, sisCourseCode, timeStamp, document), 120000)
+  setTimeout(_createReport.bind(null, csvReport, sisCourseCode, timeStamp, document), 120000)
   return Promise.resolve('Done')
 }
 
 function _createReport (csvReport, sisCourseCode, timeStamp, document) {
   let documentId = sisCourseCode + '.' + timeStamp
   if (!csvReport) {
-    document['csvTicket'] = "Empty"
-    document['csvReport'] = "Empty"
-  }
-  else {
-  let tmp = JSON.parse(document.csvTicket)
-  document['csvTicket'] = tmp
-  document['csvReport'] = JSON.parse(csvReport)
+    document['csvTicket'] = 'Empty'
+    document['csvReport'] = 'Empty'
+  } else {
+    let tmp = JSON.parse(document.csvTicket)
+    document['csvTicket'] = tmp
+    document['csvReport'] = JSON.parse(csvReport)
   }
   document['id'] = documentId
   console.info(JSON.stringify(document, null, 4))
@@ -225,7 +224,7 @@ function _process (msg) {
     })
     .then(result => {
       let Result = JSON.parse(result)
-      document['canvasCourse'] = result
+      document['canvasCourse'] = Result
       return _getEnrollmentsForCourse(Result.id, msgtype)
     })
     .then(enrollmentsArray => {
@@ -234,7 +233,7 @@ function _process (msg) {
       return _createCsvFile(msg, sisCourseCode, enrollmentsArray, timeStamp)
     })
     .then(fileName => { document['fileName'] = fileName; return _sendCsvIfNotEmpty(fileName) })
-    .then(csvTicket =>{ document['csvTicket'] = csvTicket; return _followUpTicket(csvTicket)})
+    .then(csvTicket => { document['csvTicket'] = csvTicket; return _followUpTicket(csvTicket) })
     .then(csvReport => _generateReport(csvReport, sisCourseCode, timeStamp, document))
     .catch(err => _handleError(err, sisCourseCode))
 }
