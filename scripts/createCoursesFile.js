@@ -74,32 +74,29 @@ function buildCanvasCourseObjects (courseRounds) {
 }
 
 function createCSVContent (canvasCourseObjects) {
-//   course_id 	text 	Required field. A unique identifier used to reference courses in the enrollments data. This identifier must not change for the account, and must be globally unique. In the user interface, this is called the SIS ID.
-// short_name 	text 	Required field. A short name for the course
-// long_name 	text 	Required field. A long name for the course. (This can be the same as the short name, but if both are available, it will provide a better user experience to provide both.)
-// account_id 	text 	The account identifier from accounts.csv, if none is specified the course will be attached to the root account
-// term_id 	text 	The term identifier from terms.csv, if no term_id is specified the default term for the account will be used
-// status 	enum 	Required field. active, deleted, completed
-// start_date 	date 	The course start date. The format should be in ISO 8601: YYYY-MM-DDTHH:MM:SSZ
-// end_date 	date 	The course end date. The format should be in ISO 8601: YYYY-MM-DDTHH:MM:SSZ
-// course_format 	enum 	on_campus, online, blended
+  const columns = [
+    'course_id',
+    'short_name',
+    'long_name',
+    ' start_date',
+    'account_id',
+    'status']
 
-/*
-"course": {
-      "course": {
-        "name": "Nonequilibrium Statistical Mechanics VT17",
-        "course_code": "SI2520",
-        "sis_course_id": "SI2520VT171",
-        "start_at": "2017-01-16T10:34:52.470Z"
-      }
-    },
-    "subAccountId": 28
+  function writeLine ({course, subAccountId}) {
+    const lineArr = [
+      course.course.sis_course_id,
+      course.course.name,
+      course.course.name,
+      course.course.start_at,
+      subAccountId,
+      'active']
 
-*/
-  const columns = ['course_id', 'short_name', 'long_name', ' start_date', 'account_id', 'status']
-  // console.log(JSON.stringify(canvasCourseObjects[0], null, 4))
+    console.log('writing line', JSON.stringify(lineArr, null, 4))
+    return csvFile.writeLine(lineArr, fileName)
+  }
+
   return csvFile.writeLine(columns, fileName)
-  .then(() => Promise.map(canvasCourseObjects, ({course, subAccountId}) => csvFile.writeLine([course.course.sis_course_id, course.course.name], fileName)))
+  .then(() => Promise.map(canvasCourseObjects, writeLine))
 }
 
 // Start executing
