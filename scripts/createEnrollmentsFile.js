@@ -45,33 +45,35 @@ const clientAsync = Promise.promisifyAll(client)
 // const attributes = ['ugKthid', 'ugUsername', 'mail', 'email_address', 'name', 'ugEmailAddressHR']
 // const role = 'teachers'
 
-function getUsersForCourse ({course, subAccount, courseRound, shortName}) {
-  return Promise.resolve()
-  .then(() => clientAsync.searchAsync('OU=UG,DC=ug,DC=kth,DC=se', {
+function getUsersForCourse ({course, courseRound}) {
+  return clientAsync.searchAsync('OU=UG,DC=ug,DC=kth,DC=se', {
     scope: 'sub',
     filter: '(&(objectClass=group)(CN=edu.courses.AF.AF2301.20162.2.teachers))',
     timeLimit: 11,
     paged: true
-  }))
+  })
   .then(res => new Promise((resolve, reject) => {
     res.on('searchEntry', resolve)
     res.on('end', resolve)
     res.on('error', reject)
-  })
-  )
+  }))
   .then(({object}) => {
     return {
       course,
-      subAccount,
       courseRound,
-      shortName,
       members: object.member}
   })
+}
+
+function getUsersForDN ({course, courseRound, members}) {
+  console.log({course, courseRound, members})
+  console.log('TODO: GET THE USERS FROM LDAP!')
+  return Promise.resolve()
 }
 
 module.exports = function (arrayOfCourseInfo) {
   return clientAsync.bindAsync(config.secure.ldap.bind.username, config.secure.ldap.bind.password)
   .then(() => Promise.map(arrayOfCourseInfo, getUsersForCourse))
-  .then(members => console.log('members', JSON.stringify(members)))
+  .then(coursesWithMembers => Promise.map(coursesWithMembers, getUsersForDN))
   .finally(() => clientAsync.unbindAsync())
 }
