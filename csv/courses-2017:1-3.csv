@@ -1,2 +1,734 @@
 course_id,short_name,long_name,start_date,account_id,status
-MJ2244VT171,MJ2244,"MJ2244 Airbreathing Propulsion, Intermediate Course I VT17 2017:1-1",ITM - Imported course rounds,active
+MJ2244VT171,MJ2244,"MJ2244 2017:1-1 Airbreathing Propulsion, Intermediate Course I VT17",2017-01-16T09:48:13.000Z,ITM - Imported course rounds,active
+MJ1432VT171,MJ1432,MJ1432 2017:1-1 Practical Energy Related Project VT17,2017-01-16T09:48:13.004Z,ITM - Imported course rounds,active
+MJ145XVT171,MJ145X,"MJ145X 2017:1-1 Examensarbete i hållbar energiteknik, grundnivå VT17",2017-01-16T09:48:13.004Z,ITM - Imported course rounds,active
+SH2008VT171,SH2008,SH2008 2017:1-1 Introductory Modern Physics VT17,2017-01-16T09:48:13.005Z,SCI - Imported course rounds,active
+HF0023VT171,HF0023,HF0023 2017:1-1 Kemi för basår I VT17,2017-01-16T09:48:13.005Z,STH - Imported course rounds,active
+HF0021VT171,HF0021,HF0021 2017:1-1 Matematik för basår I VT17,2017-01-16T09:48:13.005Z,STH - Imported course rounds,active
+HF0022VT171,HF0022,HF0022 2017:1-1 Fysik för basår I VT17,2017-01-16T09:48:13.005Z,STH - Imported course rounds,active
+HS107VVT171,HS107V,HS107V 2017:1-1 Bygglov i praktiken VT17,2017-03-27T08:48:13.005Z,ABE - Imported course rounds,active
+EI270XVT171,EI270X,"EI270X 2017:1-1 Degree Project in Electrotechnical Theory and Design, Second Cycle VT17",2017-01-16T09:48:13.006Z,EES - Imported course rounds,active
+EI254XVT171,EI254X,"EI254X 2017:1-1 Examensarbete inom elektroteknisk modellering, avancerad nivå VT17",2017-01-16T09:48:13.006Z,EES - Imported course rounds,active
+HE1011VT171,HE1011,HE1011 2017:1-1 Reglersystem VT17,2017-01-16T09:48:13.006Z,ITM - Imported course rounds,active
+HE1024VT171,HE1024,HE1024 2017:1-1 Realtidssystem VT17,2017-01-16T09:48:13.006Z,ITM - Imported course rounds,active
+HU1903VT171,HU1903,HU1903 2017:1-1 Management VT17,2017-01-16T09:48:13.007Z,ITM - Imported course rounds,active
+SD2461VT171,SD2461,SD2461 2017:1-1 Individual Project Work Lightweight Structures VT17,2017-01-16T09:48:13.007Z,SCI - Imported course rounds,active
+SD261XVT171,SD261X,"SD261X 2017:1-1 Degree Project in Aerodynamics, Second Cycle VT17",2017-01-16T09:48:13.007Z,SCI - Imported course rounds,active
+SD1120VT171,SD1120,SD1120 2017:1-1 Ljud och vibrationer VT17,2017-01-16T09:48:13.007Z,SCI - Imported course rounds,active
+SE1025VT171,SE1025,SE1025 2017:1-1 FEM för ingenjörstillämpningar VT17,2017-01-16T09:48:13.008Z,SCI - Imported course rounds,active
+SD2620VT171,SD2620,SD2620 2017:1-1 Advanced Topics in Aeronautics VT17,2017-01-16T09:48:13.008Z,SCI - Imported course rounds,active
+SD270XVT171,SD270X,"SD270X 2017:1-1 Degree Project in Naval Systems, Second Cycle VT17",2017-01-16T09:48:13.008Z,SCI - Imported course rounds,active
+AI1802VT171,AI1802,AI1802 2017:1-1 Projektledning och BIM inom samhällsbyggandet VT17,2017-01-16T09:48:13.008Z,ABE - Imported course rounds,active
+EP2200VT171,EP2200,EP2200 2017:1-1 Queuing Theory and Teletraffic Systems VT17,2017-01-16T09:48:13.008Z,EES - Imported course rounds,active
+ME2090VT171,ME2090,"ME2090 2017:1-1 Finansiering, företagsvärdering VT17",2017-01-16T09:48:13.008Z,ITM - Imported course rounds,active
+ID2208VT171,ID2208,ID2208 2017:1-1 Programming Web-Services VT17,2017-01-16T09:48:13.008Z,ICT - Imported course rounds,active
+HE1033VT171,HE1033,HE1033 2017:1-1 Kommunikationsnät VT17,2017-01-16T09:48:13.008Z,STH - Imported course rounds,active
+HE1032VT171,HE1032,HE1032 2017:1-1 Elkraftteknik I VT17,2017-01-16T09:48:13.009Z,STH - Imported course rounds,active
+SD2801VT171,SD2801,SD2801 2017:1-1 Aircraft Aerodynamics VT17,2017-01-16T09:48:13.009Z,SCI - Imported course rounds,active
+MF226XVT171,MF226X,"MF226X 2017:1-1 Examensarbete inom integrerad produktutveckling, avancerad nivå VT17",2017-01-16T09:48:13.009Z,ITM - Imported course rounds,active
+MF228XVT171,MF228X,"MF228X 2017:1-1 Examensarbete inom produktinnovation, avancerad nivå VT17",2017-01-16T09:48:13.009Z,ITM - Imported course rounds,active
+MF223XVT171,MF223X,"MF223X 2017:1-1 Examensarbete inom maskinkonstruktion, avancerad nivå VT17",2017-01-16T09:48:13.009Z,ITM - Imported course rounds,active
+ML1136VT171,ML1136,"ML1136 2017:1-1 Logistik, mindre kurs VT17",2017-01-16T09:48:13.009Z,ITM - Imported course rounds,active
+ML1115VT171,ML1115,"ML1115 2017:1-1 Juridik för ingenjörer, mindre kurs VT17",2017-01-16T09:48:13.009Z,ITM - Imported course rounds,active
+DH2632VT171,DH2632,"DH2632 2017:1-1 Human-Computer Interaction, Research Seminars VT17",2017-01-16T09:48:13.010Z,CSC - Imported course rounds,active
+SK1103VT171,SK1103,SK1103 2017:1-1 Klassisk fysik för CL VT17,2017-01-16T09:48:13.010Z,SCI - Imported course rounds,active
+SF1546VT171,SF1546,"SF1546 2017:1-1 Numeriska metoder, grundkurs VT17",2017-01-16T09:48:13.010Z,SCI - Imported course rounds,active
+AI2145VT171,AI2145,AI2145 2017:1-1 Entreprenörskap och management VT17,2017-01-16T09:48:13.010Z,ABE - Imported course rounds,active
+BB103XVT171,BB103X,"BB103X 2017:1-1 Examensarbete inom bioteknik, grundnivå VT17",2017-01-16T09:48:13.010Z,BIO - Imported course rounds,active
+BB2160VT171,BB2160,BB2160 2017:1-1 Structure Biology VT17,2017-01-16T09:48:13.011Z,BIO - Imported course rounds,active
+EH111XVT171,EH111X,"EH111X 2017:1-1 Examensarbete inom elektroteknik, grundnivå VT17",2017-01-16T09:48:13.011Z,EES - Imported course rounds,active
+ME2604VT171,ME2604,ME2604 2017:1-1 Advanced Industrial Marketing VT17,2017-01-16T09:48:13.011Z,ITM - Imported course rounds,active
+EH231XVT171,EH231X,"EH231X 2017:1-1 Degree Project in Industrial Control Systems, Second Cycle VT17",2017-01-16T09:48:13.011Z,EES - Imported course rounds,active
+SF1625VT171,SF1625,SF1625 2017:1-1 Envariabelanalys VT17,2017-01-16T09:48:13.011Z,SCI - Imported course rounds,active
+EH241XVT171,EH241X,"EH241X 2017:1-1 Degree Project in Industrial Information and Control Systems, Second Cycle VT17",2017-01-16T09:48:13.011Z,EES - Imported course rounds,active
+MF1039VT171,MF1039,"MF1039 2017:1-1 Design och produktframtagning, komponenter VT17",2017-01-16T09:48:13.011Z,ITM - Imported course rounds,active
+MG100XVT171,MG100X,"MG100X 2017:1-1 Examensarbete inom industriell produktion, grundnivå VT17",2017-01-16T09:48:13.011Z,ITM - Imported course rounds,active
+ME2042VT171,ME2042,ME2042 2017:1-1 Förhandlingsteknik VT17,2017-01-16T09:48:13.012Z,ITM - Imported course rounds,active
+ME2082VT171,ME2082,ME2082 2017:1-1 Minor Thesis Project within Entrepreneurship VT17,2017-01-16T09:48:13.012Z,ITM - Imported course rounds,active
+ME2085VT171,ME2085,ME2085 2017:1-1 Transformation in Energy Systems and Industries VT17,2017-01-16T09:48:13.013Z,ITM - Imported course rounds,active
+SH2705VT171,SH2705,SH2705 2017:1-1 Kompakt reaktorsimulator- övningar i reaktorkinetik och reaktordynamik VT17,2017-01-16T09:48:13.013Z,SCI - Imported course rounds,active
+MG203XVT171,MG203X,"MG203X 2017:1-1 Degree Project in Production Engineering Management, Second Cycle VT17",2017-01-16T09:48:13.013Z,ITM - Imported course rounds,active
+MG213XVT171,MG213X,"MG213X 2017:1-1 Degree Project in Production Engineering and Management, Second Cycle VT17",2017-01-16T09:48:13.013Z,ITM - Imported course rounds,active
+DT2212VT171,DT2212,DT2212 2017:1-1 Music Acoustics VT17,2017-01-16T09:48:13.013Z,CSC - Imported course rounds,active
+MF1064VT171,MF1064,MF1064 2017:1-1 Modellering och simulering i design och produktframtagning VT17,2017-01-16T09:48:13.013Z,ITM - Imported course rounds,active
+A52ARXVT171,A52ARX,"A52ARX 2017:1-1 Degree Project in Architecture, Second Cycle VT17",2017-01-16T09:48:13.014Z,ABE - Imported course rounds,active
+ME2825VT171,ME2825,ME2825 2017:1-1 Finance for Start-ups VT17,2017-01-16T09:48:13.014Z,ITM - Imported course rounds,active
+DM2529VT171,DM2529,DM2529 2017:1-1 Digital Images for Publication VT17,2017-01-16T09:48:13.014Z,CSC - Imported course rounds,active
+DD2402VT171,DD2402,DD2402 2017:1-1 Advanced Individual Course in Computational Biology VT17,2017-01-23T09:48:13.014Z,CSC - Imported course rounds,active
+ME1306VT171,ME1306,ME1306 2017:1-1 Industriell projektledning för I VT17,2017-01-16T09:48:13.014Z,ITM - Imported course rounds,active
+SG1109VT171,SG1109,SG1109 2017:1-1 Mekanik VT17,2017-01-16T09:48:13.014Z,SCI - Imported course rounds,active
+KH1221VT171,KH1221,KH1221 2017:1-1 Tillämpad fysikalisk kemi VT17,2017-01-16T09:48:13.014Z,CHE - Imported course rounds,active
+MF2092VT171,MF2092,MF2092 2017:1-1 Rapid Prototyping VT17,2017-01-16T09:48:13.015Z,ITM - Imported course rounds,active
+ME2312VT171,ME2312,ME2312 2017:1-1 Advanced Studies in Industrial Economics and Management VT17,2017-01-16T09:48:13.015Z,ITM - Imported course rounds,active
+DM2904VT171,DM2904,DM2904 2017:1-1 Individual Course in Media Technology VT17,2017-01-16T09:48:13.015Z,CSC - Imported course rounds,active
+IK2507VT171,IK2507,IK2507 2017:1-1 Wireless Communication Systems VT17,2017-01-16T09:48:13.015Z,ICT - Imported course rounds,active
+ML1212VT171,ML1212,ML1212 2017:1-1 Datorbaserade ingenjörsverktyg 2 VT17,2017-01-16T09:48:13.015Z,ITM - Imported course rounds,active
+ME2711VT171,ME2711,ME2711 2017:1-1 Economics of Innovation VT17,2017-01-16T09:48:13.015Z,ITM - Imported course rounds,active
+MJ273XVT171,MJ273X,"MJ273X 2017:1-1 Degree Project in Industrial Ecology, Second Cycle VT17",2017-01-16T09:48:13.015Z,ABE - Imported course rounds,active
+SF2566VT171,SF2566,SF2566 2017:1-1 Advanced Individual Course in Scientific Computing VT17,2017-01-16T09:48:13.016Z,SCI - Imported course rounds,active
+IL2219VT171,IL2219,IL2219 2017:1-1 Radio Electronics VT17,2017-01-16T09:48:13.016Z,ICT - Imported course rounds,active
+IL2238VT171,IL2238,IL2238 2017:1-1 Fundamentals of Integrated Electronics VT17,2017-01-16T09:48:13.016Z,ICT - Imported course rounds,active
+EF111XVT171,EF111X,"EF111X 2017:1-1 Examensarbete inom elektroteknik, grundnivå VT17",2017-01-16T09:48:13.016Z,EES - Imported course rounds,active
+MF1062VT171,MF1062,MF1062 2017:1-1 Design och produktframtagning VT17,2017-01-16T09:48:13.016Z,ITM - Imported course rounds,active
+EP2520VT171,EP2520,EP2520 2017:1-1 Building Networked Systems Security VT17,2017-01-16T09:48:13.017Z,EES - Imported course rounds,active
+EQ2460VT171,EQ2460,EQ2460 2017:1-1 Seminars in Wireless Systems VT17,2017-01-16T09:48:13.017Z,EES - Imported course rounds,active
+AD2862VT171,AD2862,AD2862 2017:1-1 Sustainable Urban Planning and Design Studio 1.2- Situations VT17,2017-01-16T09:48:13.017Z,ABE - Imported course rounds,active
+EQ276XVT171,EQ276X,"EQ276X 2017:1-1 Degree Project in Communication Theory, Second Cycle VT17",2017-01-16T09:48:13.017Z,EES - Imported course rounds,active
+SK2360VT171,SK2360,SK2360 2017:1-1 Laser Metrology and Optical Metrology VT17,2017-01-16T09:48:13.017Z,SCI - Imported course rounds,active
+SK184NVT171,SK184N,SK184N 2017:1-1 Environmental Physics VT17,2017-01-16T09:48:13.017Z,SCI - Imported course rounds,active
+SK2320VT171,SK2320,SK2320 2017:1-1 Problem Solving in Optics VT17,2017-01-16T09:48:13.017Z,SCI - Imported course rounds,active
+SK2321VT171,SK2321,"SK2321 2017:1-1 Problem Solving in Optics, Continuation Course 1 VT17",2017-01-16T09:48:13.017Z,SCI - Imported course rounds,active
+SK2322VT171,SK2322,"SK2322 2017:1-1 Problem Solving in Optics, Continuation Course 2 VT17",2017-01-16T09:48:13.018Z,SCI - Imported course rounds,active
+SK200XVT171,SK200X,"SK200X 2017:1-1 Degree Project in Applied Physics, Second Cycle VT17",2017-01-16T09:48:13.018Z,SCI - Imported course rounds,active
+SK202XVT171,SK202X,"SK202X 2017:1-1 Degree Project in Applied Physics, Second Cycle VT17",2017-01-16T09:48:13.019Z,SCI - Imported course rounds,active
+SK2001VT171,SK2001,SK2001 2017:1-1 Projektarbete i tillämpad fysik VT17,2017-01-16T09:48:13.019Z,SCI - Imported course rounds,active
+AG2128VT171,AG2128,AG2128 2017:1-1 Urban Development and Planning VT17,2017-01-16T09:48:13.019Z,ABE - Imported course rounds,active
+SF1634VT171,SF1634,SF1634 2017:1-1 Differentialekvationer II VT17,2017-01-16T09:48:13.019Z,SCI - Imported course rounds,active
+SE1055VT171,SE1055,"SE1055 2017:1-1 Hållfasthetslära, grundkurs med energimetoder VT17",2017-01-16T09:48:13.019Z,SCI - Imported course rounds,active
+HS107XVT171,HS107X,"HS107X 2017:1-1 Examensarbete inom byggteknik, grundnivå VT17",2017-03-20T09:48:13.019Z,ABE - Imported course rounds,active
+MF217XVT171,MF217X,"MF217X 2017:1-1 Examensarbete inom teknisk design, avancerad nivå VT17",2017-01-16T09:48:13.019Z,ITM - Imported course rounds,active
+KE1170VT171,KE1170,KE1170 2017:1-1 Transportprocesser VT17,2017-01-16T09:48:13.019Z,CHE - Imported course rounds,active
+SF1524VT171,SF1524,SF1524 2017:1-1 Grundläggande numeriska metoder och programmering VT17,2017-01-16T09:48:13.019Z,SCI - Imported course rounds,active
+SF299XVT171,SF299X,"SF299X 2017:1-1 Degree Project in Mathematical Statistics, Second Cycle VT17",2017-01-16T09:48:13.020Z,SCI - Imported course rounds,active
+DH1620VT171,DH1620,"DH1620 2017:1-1 Människa-datorinteraktion, inledande kurs VT17",2017-01-16T09:48:13.020Z,CSC - Imported course rounds,active
+ME2084VT171,ME2084,ME2084 2017:1-1 Verksamhetsanalys och yrkesroller VT17,2017-01-16T09:48:13.020Z,ITM - Imported course rounds,active
+KD1070VT171,KD1070,KD1070 2017:1-1 Molekylär struktur VT17,2017-01-16T09:48:13.020Z,CHE - Imported course rounds,active
+KD1230VT171,KD1230,"KD1230 2017:1-1 Organisk kemi, grundläggande koncept och praktik VT17",2017-01-16T09:48:13.020Z,CHE - Imported course rounds,active
+AI1526VT171,AI1526,AI1526 2017:1-1 Projektledning och BIM inom samhällsbyggandet VT17,2017-01-16T09:48:13.020Z,ABE - Imported course rounds,active
+ED2210VT171,ED2210,ED2210 2017:1-1 Electromagnetic Processes in Dispersive Media VT17,2017-01-16T09:48:13.020Z,EES - Imported course rounds,active
+KD1260VT171,KD1260,KD1260 2017:1-1 Materialens kemi VT17,2017-01-16T09:48:13.020Z,CHE - Imported course rounds,active
+EQ2710VT171,EQ2710,EQ2710 2017:1-1 Individual Project in Communication Theory VT17,2017-01-16T09:48:13.021Z,EES - Imported course rounds,active
+MF218XVT171,MF218X,"MF218X 2017:1-1 Degree Project in Product Innovation Management, Second Cycle VT17",2017-01-16T09:48:13.021Z,ITM - Imported course rounds,active
+HL1014VT171,HL1014,HL1014 2017:1-1 Medicinteknisk verksamhet VT17,2017-01-16T09:48:13.021Z,STH - Imported course rounds,active
+BB2330VT171,BB2330,BB2330 2017:1-1 Plant Biotechnology VT17,2017-01-16T09:48:13.021Z,BIO - Imported course rounds,active
+MF219XVT171,MF219X,"MF219X 2017:1-1 Degree Project in Embedded Control Systems, Second Cycle VT17",2017-01-16T09:48:13.021Z,ITM - Imported course rounds,active
+LT1022VT171,LT1022,"LT1022 2017:1-1 Vetenskap, Teknik och Lärande VT17",2017-01-16T09:48:13.021Z,ECE - Imported course rounds,active
+LS1415VT171,LS1415,LS1415 2017:1-1 English for Academic Studies (online) VT17,2017-01-16T09:48:13.021Z,ECE - Imported course rounds,active
+AG2126VT171,AG2126,AG2126 2017:1-1 Theory of Science and Research Methodology for Planning and Design VT17,2017-01-16T09:48:13.021Z,ABE - Imported course rounds,active
+LL112VVT171,LL112V,LL112V 2017:1-1 Teknik för lärare i årskurs F-6 VT17,2017-01-16T09:48:13.021Z,ECE - Imported course rounds,active
+AE2507VT171,AE2507,AE2507 2017:1-1 Strategic Environmental Assessment VT17,2017-01-16T09:48:13.022Z,ABE - Imported course rounds,active
+SK2350VT171,SK2350,SK2350 2017:1-1 Optical Measurement Techniques VT17,2017-01-16T09:48:13.022Z,SCI - Imported course rounds,active
+MJ2380VT172,MJ2380,MJ2380 2017:1-2 Introduction to Energy Systems Analysis and Applications VT17,2017-01-16T09:48:13.022Z,ITM - Imported course rounds,active
+DM2583VT171,DM2583,DM2583 2017:1-1 Big Data in Media Technology VT17,2017-01-16T09:48:13.022Z,CSC - Imported course rounds,active
+MJ233XVT171,MJ233X,"MJ233X 2017:1-1 Examensarbete inom kraft- och värmeteknologi, avancerad nivå VT17",2017-01-16T09:48:13.022Z,ITM - Imported course rounds,active
+MJ235XVT171,MJ235X,"MJ235X 2017:1-1 Examensarbete inom kylteknik, avancerad nivå VT17",2017-01-16T09:48:13.022Z,ITM - Imported course rounds,active
+MJ237XVT171,MJ237X,"MJ237X 2017:1-1 Examensarbete inom värmetransporter, avancerad nivå VT17",2017-01-16T09:48:13.022Z,ITM - Imported course rounds,active
+MH215XVT171,MH215X,"MH215X 2017:1-1 Degree Project in Mechanical Metallurgy, Second Cycle VT17",2017-01-16T09:48:13.022Z,ITM - Imported course rounds,active
+MH220XVT171,MH220X,"MH220X 2017:1-1 Degree Project in Computational Thermodynamics, Second Cycle VT17",2017-01-16T09:48:13.022Z,ITM - Imported course rounds,active
+MF1020VT171,MF1020,MF1020 2017:1-1 Industriell design Prop 2 VT17,2017-01-16T09:48:13.022Z,ITM - Imported course rounds,active
+DA221XVT171,DA221X,"DA221X 2017:1-1 Degree Project in Computer Science and Communication, Second Cycle VT17",2017-01-16T09:48:13.023Z,CSC - Imported course rounds,active
+IM2601VT171,IM2601,IM2601 2017:1-1 Fasta tillståndets fysik VT17,2017-01-16T09:48:13.023Z,ICT - Imported course rounds,active
+DD151XVT171,DD151X,"DD151X 2017:1-1 Examensarbete i teknik: Datateknik, kommunikation och industriell ekonomi, grundnivå VT17",2017-01-16T09:48:13.023Z,CSC - Imported course rounds,active
+SF2523VT171,SF2523,SF2523 2017:1-1 Topics in Scientific Computings VT17,2017-01-16T09:48:13.023Z,SCI - Imported course rounds,active
+LS1424VT171,LS1424,LS1424 2017:1-1 Tyska B1 för ingenjörer VT17,2017-01-16T09:48:13.023Z,ECE - Imported course rounds,active
+LS2426VT171,LS2426,LS2426 2017:1-1 Tyska B2 för ingenjörer VT17,2017-01-16T09:48:13.023Z,ECE - Imported course rounds,active
+LS1486VT171,LS1486,LS1486 2017:1-1 Japanska B1 för ingenjörer VT17,2017-01-16T09:48:13.023Z,ECE - Imported course rounds,active
+DT2215VT171,DT2215,DT2215 2017:1-1 Advanced Individual Course in Music Communication VT17,2017-01-16T09:48:13.023Z,CSC - Imported course rounds,active
+SE2129VT171,SE2129,SE2129 2017:1-1 Fracture Mechanics and Fatigue VT17,2017-01-16T09:48:13.023Z,SCI - Imported course rounds,active
+SE2123VT171,SE2123,SE2123 2017:1-1 Testing Techniques in Solid Mechanics VT17,2017-01-16T09:48:13.023Z,SCI - Imported course rounds,active
+SE2119VT171,SE2119,"SE2119 2017:1-1 Finite Element Method, Project Course VT17",2017-01-16T09:48:13.024Z,SCI - Imported course rounds,active
+HE1039VT171,HE1039,HE1039 2017:1-1 Reglerteknik VT17,2017-01-16T09:48:13.024Z,STH - Imported course rounds,active
+SF2724VT171,SF2724,SF2724 2017:1-1 Topics in Mathematics IV VT17,2017-01-16T09:48:13.024Z,SCI - Imported course rounds,active
+SD2905VT171,SD2905,SD2905 2017:1-1 Human Spaceflight VT17,2017-01-16T09:48:13.024Z,SCI - Imported course rounds,active
+SD2805VT171,SD2805,SD2805 2017:1-1 Flight Mechanics VT17,2017-01-16T09:48:13.025Z,SCI - Imported course rounds,active
+SD2432VT171,SD2432,SD2432 2017:1-1 Lightweight Design VT17,2017-01-16T09:48:13.030Z,SCI - Imported course rounds,active
+IV1201VT171,IV1201,IV1201 2017:1-1 Arkitektur och design av globala applikationer VT17,2017-01-16T09:48:13.030Z,ICT - Imported course rounds,active
+MF2007VT171,MF2007,MF2007 2017:1-1 Dynamics and Motion Control VT17,2017-01-16T09:48:13.030Z,ITM - Imported course rounds,active
+MH230XVT171,MH230X,"MH230X 2017:1-1 Degree Project in Applied Materials Technology, Second Cycle VT17",2017-01-16T09:48:13.030Z,ITM - Imported course rounds,active
+DM2720VT171,DM2720,DM2720 2017:1-1 Sustainable ICT in Practice VT17,2017-01-16T09:48:13.030Z,CSC - Imported course rounds,active
+KH1121VT171,KH1121,KH1121 2017:1-1 Organisk kemi VT17,2017-01-16T09:48:13.030Z,CHE - Imported course rounds,active
+DD1368VT171,DD1368,DD1368 2017:1-1 Database Technology VT17,2017-01-16T09:48:13.030Z,CSC - Imported course rounds,active
+DD1392VT171,DD1392,DD1392 2017:1-1 Mjukvarukonstruktion VT17,2017-01-16T09:48:13.030Z,CSC - Imported course rounds,active
+MG1002VT171,MG1002,MG1002 2017:1-1 Automation Technology VT17,2017-01-16T09:48:13.030Z,ITM - Imported course rounds,active
+MG2202VT171,MG2202,MG2202 2017:1-1 Quality Control VT17,2017-01-16T09:48:13.030Z,ITM - Imported course rounds,active
+ED226XVT171,ED226X,"ED226X 2017:1-1 Degree Project in Fusion Plasma Physics, Second Cycle VT17",2017-01-16T09:48:13.031Z,EES - Imported course rounds,active
+EQ175XVT171,EQ175X,"EQ175X 2017:1-1 Degree Project in Signal Processing, First Cycle VT17",2017-01-16T09:48:13.031Z,EES - Imported course rounds,active
+SG2212VT171,SG2212,SG2212 2017:1-1 Computational Fluid Dynamics VT17,2017-01-16T09:48:13.031Z,SCI - Imported course rounds,active
+SF2521VT171,SF2521,SF2521 2017:1-1 Numerical Solutions of Differential Equations VT17,2017-01-16T09:48:13.031Z,SCI - Imported course rounds,active
+IS1300VT171,IS1300,IS1300 2017:1-1 Inbyggda system VT17,2017-01-16T09:48:13.031Z,ICT - Imported course rounds,active
+HE1027VT171,HE1027,HE1027 2017:1-1 Ellära VT17,2017-01-16T09:48:13.031Z,STH - Imported course rounds,active
+ID1217VT171,ID1217,ID1217 2017:1-1 Concurrent Programming VT17,2017-01-16T09:48:13.031Z,ICT - Imported course rounds,active
+IK1611VT171,IK1611,IK1611 2017:1-1 Dimensioning of Communication Systems VT17,2017-01-16T09:48:13.031Z,ICT - Imported course rounds,active
+DA226XVT171,DA226X,"DA226X 2017:1-1 Degree Project in Computer Science and Communication, Second Cycle VT17",2017-01-16T09:48:13.031Z,CSC - Imported course rounds,active
+HE1019VT171,HE1019,HE1019 2017:1-1 EMC-elektronik VT17,2017-01-16T09:48:13.031Z,STH - Imported course rounds,active
+IK1501VT171,IK1501,IK1501 2017:1-1 Communication Systems VT17,2017-01-16T09:48:13.031Z,ICT - Imported course rounds,active
+HL103XVT171,HL103X,"HL103X 2017:1-1 Examensarbete inom medicinsk teknik, grundnivå VT17",2017-01-16T09:48:13.031Z,STH - Imported course rounds,active
+DH2628VT171,DH2628,DH2628 2017:1-1 Interaction Design Methods VT17,2017-01-16T09:48:13.032Z,CSC - Imported course rounds,active
+EI2510VT171,EI2510,EI2510 2017:1-1 Project in Electromagnetic Engineering VT17,2017-01-16T09:48:13.032Z,EES - Imported course rounds,active
+SK2401VT171,SK2401,SK2401 2017:1-1 Electro Optics VT17,2017-01-16T09:48:13.032Z,SCI - Imported course rounds,active
+SF259XVT171,SF259X,"SF259X 2017:1-1 Examensarbete inom beräkningsteknik, avancerad nivå VT17",2017-01-16T09:48:13.032Z,SCI - Imported course rounds,active
+MF122XVT171,MF122X,"MF122X 2017:1-1 Examensarbete inom teknisk design, grundnivå VT17",2017-01-16T09:48:13.032Z,ITM - Imported course rounds,active
+SH2704VT171,SH2704,SH2704 2017:1-1 Monte Carlo metoder och simuleringar i kärnteknik VT17,2017-01-16T09:48:13.032Z,SCI - Imported course rounds,active
+ME2083VT171,ME2083,"ME2083 2017:1-1 Hydropower- Technology, Economy, Sustainability VT17",2017-01-16T09:48:13.032Z,ITM - Imported course rounds,active
+ME2088VT171,ME2088,ME2088 2017:1-1 Brand Portfolio Management VT17,2017-01-16T09:48:13.032Z,ITM - Imported course rounds,active
+MF213XVT171,MF213X,"MF213X 2017:1-1 Degree Project in Machine Design, Second Cycle VT17",2017-01-16T09:48:13.032Z,ITM - Imported course rounds,active
+SI1130VT171,SI1130,SI1130 2017:1-1 Kartesiska tensorer VT17,2017-01-16T09:48:13.032Z,SCI - Imported course rounds,active
+IS1350VT171,IS1350,IS1350 2017:1-1 Operativsystem VT17,2017-01-16T09:48:13.032Z,ICT - Imported course rounds,active
+MF216XVT171,MF216X,"MF216X 2017:1-1 Degree Project in Integrated Product Development, Second Cycle VT17",2017-01-16T09:48:13.033Z,ITM - Imported course rounds,active
+MF215XVT171,MF215X,"MF215X 2017:1-1 Degree Project in Internal Combustion Engineering, Second Cycle VT17",2017-01-16T09:48:13.033Z,ITM - Imported course rounds,active
+MF229XVT171,MF229X,"MF229X 2017:1-1 Degree Project in Machine Design, Second Cycle VT17",2017-01-16T09:48:13.033Z,ITM - Imported course rounds,active
+AF1711VT171,AF1711,"AF1711 2017:1-1 Byggteknik 2, byggfysik och materiallära VT17",2017-01-16T09:48:13.033Z,ABE - Imported course rounds,active
+EJ111XVT171,EJ111X,"EJ111X 2017:1-1 Examensarbete inom elektroteknik, grundnivå VT17",2017-01-16T09:48:13.033Z,EES - Imported course rounds,active
+EJ212XVT171,EJ212X,"EJ212X 2017:1-1 Examensarbete inom elektrisk energiomvandling, avancerad nivå VT17",2017-01-16T09:48:13.033Z,EES - Imported course rounds,active
+II1351VT171,II1351,II1351 2017:1-1 Valbar specialisering VT17,2017-01-16T09:48:13.033Z,ICT - Imported course rounds,active
+HM1016VT171,HM1016,"HM1016 2017:1-1 Produktion, fortsättningskurs 1 VT17",2017-01-16T09:48:13.033Z,ITM - Imported course rounds,active
+ML1210VT171,ML1210,ML1210 2017:1-1 Design och produktutveckling 1 VT17,2017-01-16T09:48:13.033Z,ITM - Imported course rounds,active
+SD221XVT171,SD221X,"SD221X 2017:1-1 Degree Project in Vehicle Engineering, Second Cycle VT17",2017-01-16T09:48:13.033Z,SCI - Imported course rounds,active
+SD230XVT171,SD230X,"SD230X 2017:1-1 Degree Project in Railway Technology, Second Cycle VT17",2017-01-16T09:48:13.033Z,SCI - Imported course rounds,active
+SG212XVT171,SG212X,"SG212X 2017:1-1 Examensarbete inom mekanik, avancerad nivå VT17",2017-01-16T09:48:13.033Z,SCI - Imported course rounds,active
+EP1100VT171,EP1100,EP1100 2017:1-1 Datakommunikation och datornät VT17,2017-01-16T09:48:13.034Z,EES - Imported course rounds,active
+SD2460VT171,SD2460,SD2460 2017:1-1 Individual Project Work Lightweight Structures VT17,2017-01-16T09:48:13.034Z,SCI - Imported course rounds,active
+MJ240XVT171,MJ240X,"MJ240X 2017:1-1 Examensarbete inom energiteknik, avancerad nivå VT17",2017-01-16T09:48:13.034Z,ITM - Imported course rounds,active
+MJ2416VT171,MJ2416,MJ2416 2017:1-1 Microeconomics and Energy Markets VT17,2017-01-16T09:48:13.034Z,ITM - Imported course rounds,active
+MJ2418VT171,MJ2418,MJ2418 2017:1-1 Sustainable Energy and Environment VT17,2017-01-16T09:48:13.034Z,ITM - Imported course rounds,active
+MJ2430VT171,MJ2430,MJ2430 2017:1-1 Thermal Turbomachinery VT17,2017-01-16T09:48:13.034Z,ITM - Imported course rounds,active
+SD2920VT171,SD2920,"SD2920 2017:1-1 System Integration for Space Technology, Part 1 VT17",2017-01-16T09:48:13.034Z,SCI - Imported course rounds,active
+SH2203VT171,SH2203,SH2203 2017:1-1 Experimental Particle Physics VT17,2017-01-16T09:48:13.034Z,SCI - Imported course rounds,active
+HE1028VT171,HE1028,HE1028 2017:1-1 Mikrodatorteknik VT17,2017-01-16T09:48:13.034Z,STH - Imported course rounds,active
+MJ2410VT172,MJ2410,MJ2410 2017:1-2 Energy Management VT17,2017-01-16T09:48:13.034Z,ITM - Imported course rounds,active
+A11IYAVT171,A11IYA,A11IYA 2017:1-1 Introduktion till Arkitektyrket VT17,2017-01-23T09:48:13.034Z,ABE - Imported course rounds,active
+A11P3BVT171,A11P3B,"A11P3B 2017:1-1 Arkitekturprojekt 1:3 Boende, arbete, klimat VT17",2017-01-23T09:48:13.034Z,ABE - Imported course rounds,active
+BB201XVT171,BB201X,"BB201X 2017:1-1 Degree Project in Biotechnology, Second Cycle VT17",2017-01-16T09:48:13.035Z,BIO - Imported course rounds,active
+SG1133VT171,SG1133,SG1133 2017:1-1 Mekanik I VT17,2017-01-16T09:48:13.035Z,SCI - Imported course rounds,active
+AI252XVT171,AI252X,"AI252X 2017:1-1 Degree Project in Real Estate Development and Land Law, Second Cycle VT17",2017-01-16T09:48:13.035Z,ABE - Imported course rounds,active
+SD2104VT171,SD2104,SD2104 2017:1-1 Individual Project Work on Sound and Vibrationer VT17,2017-01-16T09:48:13.035Z,SCI - Imported course rounds,active
+MH1025VT171,MH1025,MH1025 2017:1-1 Profilering inom Materialdesign VT17,2017-01-16T09:48:13.035Z,ITM - Imported course rounds,active
+SD2105VT171,SD2105,SD2105 2017:1-1 Individual Project Work on Sound and Vibrationer VT17,2017-01-16T09:48:13.035Z,SCI - Imported course rounds,active
+SD220XVT171,SD220X,"SD220X 2017:1-1 Degree Project in Vehicle Engineering, Second Cycle VT17",2017-01-16T09:48:13.035Z,SCI - Imported course rounds,active
+SD271XVT171,SD271X,"SD271X 2017:1-1 Degree Project in Naval Architecture, Second Cycle VT17",2017-01-16T09:48:13.035Z,SCI - Imported course rounds,active
+SD2711VT171,SD2711,SD2711 2017:1-1 Small Craft Design VT17,2017-01-16T09:48:13.038Z,SCI - Imported course rounds,active
+SD231XVT171,SD231X,"SD231X 2017:1-1 Degree Project in Rail Vehicle Engineering, Second Cycle VT17",2017-01-16T09:48:13.038Z,SCI - Imported course rounds,active
+SD2820VT171,SD2820,SD2820 2017:1-1 Project in Aerospace Engineering VT17,2017-01-16T09:48:13.039Z,SCI - Imported course rounds,active
+EL111XVT171,EL111X,"EL111X 2017:1-1 Degree Project in Electrical Engineering, First Cycle VT17",2017-01-16T09:48:13.039Z,EES - Imported course rounds,active
+EL205XVT171,EL205X,"EL205X 2017:1-1 Examensarbete inom reglerteknik, avancerad nivå VT17",2017-01-16T09:48:13.039Z,EES - Imported course rounds,active
+SD280XVT171,SD280X,"SD280X 2017:1-1 Degree Project in Aeronautical Engineering, Second Cycle VT17",2017-01-16T09:48:13.039Z,SCI - Imported course rounds,active
+SH1003VT171,SH1003,SH1003 2017:1-1 Introductory Astronomy for Engineers VT17,2017-01-16T09:48:13.039Z,SCI - Imported course rounds,active
+SI2355VT171,SI2355,SI2355 2017:1-1 Special Topics in Theoretical Physics VT17,2017-01-16T09:48:13.039Z,SCI - Imported course rounds,active
+LS1409VT171,LS1409,LS1409 2017:1-1 English B1 - Essential Grammar and Vocabulary VT17,2017-01-16T09:48:13.039Z,ECE - Imported course rounds,active
+LS2439VT171,LS2439,LS2439 2017:1-1 English for Writing and Presenting a Degree Project in Science and Engineering VT17,2017-01-16T09:48:13.039Z,ECE - Imported course rounds,active
+SF278XVT171,SF278X,"SF278X 2017:1-1 Degree Project in Mathematics, Second Cycle VT17",2017-01-16T09:48:13.039Z,SCI - Imported course rounds,active
+LS1465VT171,LS1465,LS1465 2017:1-1 Rhetoric - Speaking and Writing for Impact VT17,2017-01-16T09:48:13.039Z,ECE - Imported course rounds,active
+ME2054VT171,ME2054,ME2054 2017:1-1 Purchasing & Supply Chain Management VT17,2017-01-16T09:48:13.040Z,ITM - Imported course rounds,active
+ME2063VT171,ME2063,ME2063 2017:1-1 Team Leadership and Human Resource Management VT17,2017-01-16T09:48:13.040Z,ITM - Imported course rounds,active
+ID2203VT171,ID2203,"ID2203 2017:1-1 Distributed Systems, Advanced Course VT17",2017-01-16T09:48:13.040Z,ICT - Imported course rounds,active
+HU1800VT171,HU1800,HU1800 2017:1-1 Extern redovisning VT17,2017-01-16T09:48:13.040Z,STH - Imported course rounds,active
+EL2450VT171,EL2450,EL2450 2017:1-1 Hybrid and Embedded Control Systems VT17,2017-01-16T09:48:13.040Z,EES - Imported course rounds,active
+HH1801VT171,HH1801,HH1801 2017:1-1 Kalkylering och entreprenörskap VT17,2017-01-16T09:48:13.040Z,STH - Imported course rounds,active
+DM2556VT171,DM2556,DM2556 2017:1-1 Intercultural communication VT17,2017-01-16T09:48:13.040Z,CSC - Imported course rounds,active
+SF2812VT171,SF2812,SF2812 2017:1-1 Applied Linear Optimization VT17,2017-01-16T09:48:13.040Z,SCI - Imported course rounds,active
+SF2842VT171,SF2842,SF2842 2017:1-1 Geometric Control Theory VT17,2017-01-16T09:48:13.040Z,SCI - Imported course rounds,active
+EQ111XVT171,EQ111X,"EQ111X 2017:1-1 Examensarbete inom elektroteknik, grundnivå VT17",2017-01-16T09:48:13.040Z,EES - Imported course rounds,active
+DH2625VT171,DH2625,DH2625 2017:1-1 IT-design for the Disabled VT17,2017-01-16T09:48:13.040Z,CSC - Imported course rounds,active
+DD2431VT171,DD2431,DD2431 2017:1-1 Machine Learning VT17,2017-01-16T09:48:13.041Z,CSC - Imported course rounds,active
+EQ174XVT171,EQ174X,"EQ174X 2017:1-1 Degree Project in Communication Theory, First Cycle VT17",2017-01-16T09:48:13.041Z,EES - Imported course rounds,active
+SH1012VT171,SH1012,SH1012 2017:1-1 Modern fysik VT17,2017-01-16T09:48:13.041Z,SCI - Imported course rounds,active
+EQ2450VT171,EQ2450,"EQ2450 2017:1-1 Seminars in Signals, Sensors and Systems VT17",2017-01-16T09:48:13.041Z,EES - Imported course rounds,active
+LS1448VT171,LS1448,LS1448 2017:1-1 Spanska B1 för ingenjörer VT17,2017-01-16T09:48:13.041Z,ECE - Imported course rounds,active
+EI2440VT171,EI2440,EI2440 2017:1-1 Electrotechnical Design VT17,2017-01-16T09:48:13.041Z,EES - Imported course rounds,active
+LS1484VT171,LS1484,LS1484 2017:1-1 Japanska A2 för ingenjörer VT17,2017-01-16T09:48:13.041Z,ECE - Imported course rounds,active
+LS1490VT171,LS1490,LS1490 2017:1-1 Kinakunskap och grundläggande kinesiska för ingenjörer VT17,2017-01-16T09:48:13.041Z,ECE - Imported course rounds,active
+LS1492VT171,LS1492,LS1492 2017:1-1 Kinesiska A1 för ingenjörer VT17,2017-01-16T09:48:13.041Z,ECE - Imported course rounds,active
+SD281XVT171,SD281X,"SD281X 2017:1-1 Degree Project in Aeronautics, Second Cycle VT17",2017-01-16T09:48:13.041Z,SCI - Imported course rounds,active
+ID2010VT171,ID2010,ID2010 2017:1-1 Programming of Interactive Systems VT17,2017-01-16T09:48:13.041Z,ICT - Imported course rounds,active
+HL1204VT171,HL1204,"HL1204 2017:1-1 Termodynamik, grundkurs VT17",2017-01-16T09:48:13.042Z,STH - Imported course rounds,active
+SF100XVT171,SF100X,"SF100X 2017:1-1 Examensarbete inom tillämpad matematik och industriell ekonomi, grundnivå VT17",2017-01-16T09:48:13.042Z,SCI - Imported course rounds,active
+MH1024VT171,MH1024,MH1024 2017:1-1 Materiallära metalliska material VT17,2017-01-16T09:48:13.042Z,ITM - Imported course rounds,active
+AK207XVT171,AK207X,"AK207X 2017:1-1 Examensarbete inom risk och säkerhet, avancerad nivå VT17",2017-01-16T09:48:13.042Z,ABE - Imported course rounds,active
+KH1353VT171,KH1353,"KH1353 2017:1-1 Ledarskap, grupp- och organisationsutveckling för ingenjörer VT17",2017-01-16T09:48:13.042Z,CHE - Imported course rounds,active
+SD2702VT171,SD2702,SD2702 2017:1-1 Naval Design VT17,2017-01-16T09:48:13.042Z,SCI - Imported course rounds,active
+LS1496VT171,LS1496,LS1496 2017:1-1 Kinesiska B1 för ingenjörer VT17,2017-01-16T09:48:13.042Z,ECE - Imported course rounds,active
+LS1434VT171,LS1434,LS1434 2017:1-1 Franska B1 för ingenjörer VT17,2017-01-23T09:48:13.042Z,ECE - Imported course rounds,active
+ME2818VT171,ME2818,ME2818 2017:1-1 Design Thinking VT17,2017-01-16T09:48:13.042Z,ITM - Imported course rounds,active
+LS2436VT171,LS2436,LS2436 2017:1-1 Franska B2 för ingenjörer VT17,2017-01-23T09:48:13.042Z,ECE - Imported course rounds,active
+MJ242XVT171,MJ242X,"MJ242X 2017:1-1 Examensarbete inom uthålliga byggnader, avancerad nivå VT17",2017-01-16T09:48:13.042Z,ITM - Imported course rounds,active
+MJ243XVT171,MJ243X,"MJ243X 2017:1-1 Examensarbete inom uthålliga byggnader, avancerad nivå VT17",2017-01-16T09:48:13.042Z,ITM - Imported course rounds,active
+IK1330VT171,IK1330,IK1330 2017:1-1 Wireless Systems VT17,2017-01-16T09:48:13.043Z,ICT - Imported course rounds,active
+MJ241XVT171,MJ241X,"MJ241X 2017:1-1 Examensarbete inom energiteknik, avancerad nivå VT17",2017-01-16T09:48:13.043Z,ITM - Imported course rounds,active
+MJ244XVT171,MJ244X,"MJ244X 2017:1-1 Examensarbete inom energi- och klimatstudier, avancerad nivå VT17",2017-01-16T09:48:13.043Z,ITM - Imported course rounds,active
+DH2624VT171,DH2624,DH2624 2017:1-1 Människa-datorinteraktion med didaktisk inriktning VT17,2017-01-16T09:48:13.043Z,CSC - Imported course rounds,active
+IH2654VT171,IH2654,IH2654 2017:1-1 Nanoelectronics VT17,2017-01-16T09:48:13.043Z,ICT - Imported course rounds,active
+MF1044VT171,MF1044,MF1044 2017:1-1 Maskinkomponenter VT17,2017-01-16T09:48:13.043Z,ITM - Imported course rounds,active
+KH1252VT171,KH1252,KH1252 2017:1-1 Företagsekonomi VT17,2017-01-16T09:48:13.043Z,CHE - Imported course rounds,active
+DH2321VT171,DH2321,DH2321 2017:1-1 Information Visualization VT17,2017-01-16T09:48:13.043Z,CSC - Imported course rounds,active
+SD2414VT171,SD2414,SD2414 2017:1-1 Fibre Composites - Materials and Manufacturing VT17,2017-01-16T09:48:13.043Z,SCI - Imported course rounds,active
+SD2723VT171,SD2723,SD2723 2017:1-1 Marine Hydromechanics VT17,2017-01-16T09:48:13.043Z,SCI - Imported course rounds,active
+SG1112VT171,SG1112,SG1112 2017:1-1 Mekanik I VT17,2017-01-16T09:48:13.043Z,SCI - Imported course rounds,active
+MJ211XVT171,MJ211X,"MJ211X 2017:1-1 Degree Project in Thermal Engineering, Second Cycle VT17",2017-01-16T09:48:13.043Z,ITM - Imported course rounds,active
+EG2210VT171,EG2210,EG2210 2017:1-1 Electricity Market Analysis VT17,2017-01-16T09:48:13.044Z,EES - Imported course rounds,active
+EG2110VT171,EG2110,EG2110 2017:1-1 Power System Stability and Control VT17,2017-01-16T09:48:13.044Z,EES - Imported course rounds,active
+AI2151VT171,AI2151,"AI2151 2017:1-1 Industrial Development and Entrepreneurship, Advanced Course VT17",2017-01-16T09:48:13.044Z,ABE - Imported course rounds,active
+DM129XVT171,DM129X,"DM129X 2017:1-1 Examensarbete inom medieteknik, grundnivå VT17",2017-01-16T09:48:13.044Z,CSC - Imported course rounds,active
+DA222XVT171,DA222X,"DA222X 2017:1-1 Degree Project in Computer Science and Communication, Second Cycle VT17",2017-01-16T09:48:13.044Z,CSC - Imported course rounds,active
+SH2605VT171,SH2605,SH2605 2017:1-1 Strålskadefysik i materia VT17,2017-01-16T09:48:13.044Z,SCI - Imported course rounds,active
+DD143XVT171,DD143X,"DD143X 2017:1-1 Examensarbete inom datalogi, grundnivå VT17",2017-01-23T09:48:13.044Z,CSC - Imported course rounds,active
+SH2702VT171,SH2702,SH2702 2017:1-1 Reaktorteknologi VT17,2017-01-16T09:48:13.044Z,SCI - Imported course rounds,active
+SG213XVT171,SG213X,"SG213X 2017:1-1 Degree Project in Fluid Mechanics, Second Cycle VT17",2017-01-16T09:48:13.044Z,SCI - Imported course rounds,active
+SH1013VT171,SH1013,SH1013 2017:1-1 Modern fysik VT17,2017-01-16T09:48:13.044Z,SCI - Imported course rounds,active
+SF1632VT171,SF1632,SF1632 2017:1-1 Kompletteringskurs i differentialekvationer och transformer VT17,2017-01-16T09:48:13.044Z,SCI - Imported course rounds,active
+DD2438VT171,DD2438,DD2438 2017:1-1 Artificial Intelligence and Multi Agent Systems VT17,2017-01-16T09:48:13.045Z,CSC - Imported course rounds,active
+DT2112VT171,DT2112,DT2112 2017:1-1 Speech Technology VT17,2017-01-16T09:48:13.045Z,CSC - Imported course rounds,active
+SF2568VT171,SF2568,SF2568 2017:1-1 Parallel Computations for Large- Scale Problems VT17,2017-01-16T09:48:13.045Z,SCI - Imported course rounds,active
+EP242XVT171,EP242X,"EP242X 2017:1-1 Examensarbete inom kommunikationsnät, avancerad nivå VT17",2017-01-16T09:48:13.045Z,EES - Imported course rounds,active
+MJ2412VT172,MJ2412,"MJ2412 2017:1-2 Renewable Energy Technology, Advanced Course VT17",2017-01-16T09:48:13.045Z,ITM - Imported course rounds,active
+MF1016VT171,MF1016,MF1016 2017:1-1 Elektroteknik VT17,2017-01-16T09:48:13.045Z,ITM - Imported course rounds,active
+MJ2423VT171,MJ2423,MJ2423 2017:1-1 Applied Refrigeration and Heat Pump Technology VT17,2017-01-16T09:48:13.045Z,ITM - Imported course rounds,active
+AD1SA2VT171,AD1SA2,AD1SA2 2017:1-1 Orienteringskurs i samhällsbyggnad och arkitektur II VT17,2017-01-16T09:48:13.045Z,ABE - Imported course rounds,active
+ME2073VT171,ME2073,ME2073 2017:1-1 Business Development Lab of Entrepreneurship Engineers VT17,2017-01-16T09:48:13.045Z,ITM - Imported course rounds,active
+EH253XVT171,EH253X,"EH253X 2017:1-1 Degree Project in Industrial Information and Control Systems, Second Cycle VT17",2017-01-16T09:48:13.045Z,EES - Imported course rounds,active
+SI2335VT171,SI2335,SI2335 2017:1-1 Simulation Physics VT17,2017-01-16T09:48:13.045Z,SCI - Imported course rounds,active
+SG1217VT171,SG1217,"SG1217 2017:1-1 Strömningsmekanik, grundkurs VT17",2017-01-16T09:48:13.045Z,SCI - Imported course rounds,active
+ME1312VT171,ME1312,ME1312 2017:1-1 Kunskapsbildning: att förstå gränssnittet mellan teknik och humaniora VT17,2017-01-16T09:48:13.045Z,ITM - Imported course rounds,active
+SF291XVT171,SF291X,"SF291X 2017:1-1 Degree Project in Financial Mathematics, Second Cycle VT17",2017-01-16T09:48:13.046Z,SCI - Imported course rounds,active
+SF290XVT171,SF290X,"SF290X 2017:1-1 Degree Project in Mathematical Statistics, Second Cycle VT17",2017-01-16T09:48:13.046Z,SCI - Imported course rounds,active
+EF226XVT171,EF226X,"EF226X 2017:1-1 Degree Project in Space Physics, Second Cycle VT17",2017-01-16T09:48:13.046Z,EES - Imported course rounds,active
+EG230XVT171,EG230X,"EG230X 2017:1-1 Degree Project in Electric Power Systems, Second Cycle VT17",2017-01-16T09:48:13.046Z,EES - Imported course rounds,active
+EG2205VT171,EG2205,EG2205 2017:1-1 Drift och planering av elproduktion VT17,2017-01-16T09:48:13.046Z,EES - Imported course rounds,active
+MH100XVT171,MH100X,"MH100X 2017:1-1 Examensarbete inom material och processdesign, grundnivå VT17",2017-01-16T09:48:13.046Z,ITM - Imported course rounds,active
+MH1023VT171,MH1023,"MH1023 2017:1-1 Praktiskt jämställdhets- och mångfaldsarbete i vetenskapliga, tekniska och industriella miljöer VT17",2017-01-16T09:48:13.046Z,ITM - Imported course rounds,active
+SF279XVT171,SF279X,"SF279X 2017:1-1 Degree Project in Mathematics, Second Cycle VT17",2017-01-16T09:48:13.046Z,SCI - Imported course rounds,active
+MF123XVT171,MF123X,"MF123X 2017:1-1 Examensarbete inom Mekatronik, grundnivå VT17",2017-01-16T09:48:13.046Z,ITM - Imported course rounds,active
+MF130XVT171,MF130X,"MF130X 2017:1-1 Examensarbete inom maskinkonstruktion, grundnivå VT17",2017-01-16T09:48:13.046Z,ITM - Imported course rounds,active
+ML2113VT171,ML2113,ML2113 2017:1-1 Styrning av försörjningskedjor VT17,2017-01-16T09:48:13.047Z,ITM - Imported course rounds,active
+DA225XVT171,DA225X,"DA225X 2017:1-1 Degree Project in Computer Science and Communication, Second Cycle VT17",2017-01-16T09:48:13.047Z,CSC - Imported course rounds,active
+DD152XVT171,DD152X,"DD152X 2017:1-1 Examensarbete i datateknik, kommunikation och industriell ekonomi, grundnivå VT17",2017-01-16T09:48:13.047Z,CSC - Imported course rounds,active
+HM2000VT171,HM2000,HM2000 2017:1-1 Logistikens rättsliga omvärld VT17,2017-01-16T09:48:13.047Z,ITM - Imported course rounds,active
+MF131XVT171,MF131X,"MF131X 2017:1-1 Examensarbete inom integrerad produktutveckling, grundnivå VT17",2017-01-16T09:48:13.047Z,ITM - Imported course rounds,active
+MF132XVT171,MF132X,"MF132X 2017:1-1 Examensarbete inom teknisk design, grundnivå VT17",2017-01-16T09:48:13.047Z,ITM - Imported course rounds,active
+MF133XVT171,MF133X,"MF133X 2017:1-1 Examensarbete inom mekatronik, grundnivå VT17",2017-01-16T09:48:13.047Z,ITM - Imported course rounds,active
+MF2020VT171,MF2020,MF2020 2017:1-1 Project Work VT17,2017-01-16T09:48:13.047Z,ITM - Imported course rounds,active
+MF2065VT171,MF2065,"MF2065 2017:1-1 Innovations for the Emerging City, Openlab Multidisciplinary Project Course VT17",2017-01-16T09:48:13.047Z,ITM - Imported course rounds,active
+SH2774VT171,SH2774,SH2774 2017:1-1 Numerical Methods in Nuclear Engineering VT17,2017-01-16T09:48:13.047Z,SCI - Imported course rounds,active
+MF204XVT171,MF204X,"MF204X 2017:1-1 Degree Project in Mechatronics, Second Cycle VT17",2017-01-16T09:48:13.047Z,ITM - Imported course rounds,active
+MF214XVT171,MF214X,"MF214X 2017:1-1 Degree Project in Mechatronics, Second Cycle VT17",2017-01-16T09:48:13.047Z,ITM - Imported course rounds,active
+SD2150VT171,SD2150,"SD2150 2017:1-1 Experimental Structure Dynamics, Project Course VT17",2017-01-16T09:48:13.047Z,SCI - Imported course rounds,active
+SD2155VT171,SD2155,SD2155 2017:1-1 Flow Acoustics VT17,2017-01-16T09:48:13.048Z,SCI - Imported course rounds,active
+SF298XVT171,SF298X,"SF298X 2017:1-1 Degree Project in Financial Mathematics, Second Cycle VT17",2017-01-16T09:48:13.048Z,SCI - Imported course rounds,active
+MJ2381VT172,MJ2381,MJ2381 2017:1-2 Introduction to Energy Systems Analysis and Applications - Minor Course VT17,2017-01-16T09:48:13.048Z,ITM - Imported course rounds,active
+MJ2484VT171,MJ2484,MJ2484 2017:1-1 Advanced Mechanics and Finite Element Methods VT17,2017-01-16T09:48:13.048Z,ITM - Imported course rounds,active
+HF0024VT171,HF0024,HF0024 2017:1-1 Matematik för basår II VT17,2017-01-16T09:48:13.048Z,STH - Imported course rounds,active
+EF2228VT171,EF2228,EF2228 2017:1-1 Projekt i rymdteknik VT17,2017-01-16T09:48:13.048Z,EES - Imported course rounds,active
+DD142XVT171,DD142X,"DD142X 2017:1-1 Examensarbete inom datalogi, grundnivå VT17",2017-01-23T09:48:13.048Z,CSC - Imported course rounds,active
+MJ216XVT171,MJ216X,"MJ216X 2017:1-1 Degree Project in Applied Thermodynamics, Second Cycle VT17",2017-01-16T09:48:13.048Z,ITM - Imported course rounds,active
+MJ2441VT171,MJ2441,MJ2441 2017:1-1 Design av solcell och hybridsystem VT17,2017-01-16T09:48:13.048Z,ITM - Imported course rounds,active
+MJ2442VT171,MJ2442,MJ2442 2017:1-1 Solvärmesystem VT17,2017-01-16T09:48:13.048Z,ITM - Imported course rounds,active
+AK1213VT171,AK1213,"AK1213 2017:1-1 Swedish Society, Culture and Industry in Historical Perspective VT17",2017-01-16T09:48:13.048Z,ABE - Imported course rounds,active
+HL1202VT171,HL1202,HL1202 2017:1-1 Medicinska bildgivande system VT17,2017-01-16T09:48:13.048Z,STH - Imported course rounds,active
+AL2110VT171,AL2110,AL2110 2017:1-1 Sustainable Food Production and Consumption VT17,2017-01-16T09:48:13.049Z,ABE - Imported course rounds,active
+MJ154XVT171,MJ154X,"MJ154X 2017:1-1 Examensarbete i teknik och hållbar utveckling, grundnivå VT17",2017-01-16T09:48:13.049Z,ABE - Imported course rounds,active
+MF2024VT171,MF2024,MF2024 2017:1-1 Robust and Probabilistic Design VT17,2017-01-16T09:48:13.049Z,ITM - Imported course rounds,active
+MF2060VT171,MF2060,"MF2060 2017:1-1 Industriell design högre kurs, del 1 VT17",2017-01-16T09:48:13.049Z,ITM - Imported course rounds,active
+DT2300VT171,DT2300,DT2300 2017:1-1 Sound in Interaction VT17,2017-01-16T09:48:13.049Z,CSC - Imported course rounds,active
+SF250XVT171,SF250X,"SF250X 2017:1-1 Degree Project in Scientific Computing, Second Cycle VT17",2017-01-16T09:48:13.049Z,SCI - Imported course rounds,active
+EK211XVT171,EK211X,"EK211X 2017:1-1 Degree Project in Electrical Measurements, Second Cycle VT17",2017-01-16T09:48:13.049Z,EES - Imported course rounds,active
+EK213XVT171,EK213X,"EK213X 2017:1-1 Examensarbete inom mikrosystemteknik, avancerad nivå VT17",2017-01-16T09:48:13.049Z,EES - Imported course rounds,active
+EQ2400VT171,EQ2400,EQ2400 2017:1-1 Adaptive Signal Processing VT17,2017-01-16T09:48:13.049Z,EES - Imported course rounds,active
+EQ272XVT171,EQ272X,"EQ272X 2017:1-1 Degree Project in Signal Processing, Second Cycle VT17",2017-01-16T09:48:13.049Z,EES - Imported course rounds,active
+KF200XVT171,KF200X,"KF200X 2017:1-1 Examensarbete inom Fiber och Polymerteknologi, avancerad nivå VT17",2017-01-16T09:48:13.049Z,CHE - Imported course rounds,active
+A52O2AVT171,A52O2A,"A52O2A 2017:1-1 Orientation; History, Theory and Technology of Architecture 5:2 VT17",2017-01-16T09:48:13.049Z,ABE - Imported course rounds,active
+A52SEVVT171,A52SEV,"A52SEV 2017:1-1 Seminar Course, Advanced Level 5VT VT17",2017-02-06T09:48:13.050Z,ABE - Imported course rounds,active
+AK221XVT171,AK221X,"AK221X 2017:1-1 Examensarbete inom teknikhistoria, avancerad nivå VT17",2017-01-16T09:48:13.050Z,ABE - Imported course rounds,active
+LT100XVT171,LT100X,"LT100X 2017:1-1 Examensarbete för ämneslärare med inriktning mot teknik, årskurs 7-9, grundnivå VT17",2017-03-27T08:48:13.050Z,ECE - Imported course rounds,active
+DD1347VT171,DD1347,DD1347 2017:1-1 Projektuppgift i datalogi VT17,2017-01-16T09:48:13.050Z,CSC - Imported course rounds,active
+EI2410VT171,EI2410,EI2410 2017:1-1 Field Theory for Guided Waves VT17,2017-01-16T09:48:13.050Z,EES - Imported course rounds,active
+MJ2443VT171,MJ2443,"MJ2443 2017:1-1 Heating, Cooling and Indoor Climate VT17",2017-01-16T09:48:13.050Z,ITM - Imported course rounds,active
+MJ146XVT171,MJ146X,"MJ146X 2017:1-1 Examensarbete inom hållbar energiteknik, grundnivå VT17",2017-01-16T09:48:13.050Z,ITM - Imported course rounds,active
+HN2003VT171,HN2003,HN2003 2017:1-1 Belastningsergonomi VT17,2017-02-06T09:48:13.050Z,STH - Imported course rounds,active
+SI2390VT171,SI2390,SI2390 2017:1-1 Relativistic Quantum Physics VT17,2017-01-16T09:48:13.050Z,SCI - Imported course rounds,active
+SF2970VT171,SF2970,SF2970 2017:1-1 Martingales and Stochastic Integrals VT17,2017-01-16T09:48:13.050Z,SCI - Imported course rounds,active
+MF2073VT171,MF2073,MF2073 2017:1-1 Research Methodology in Organisation and Management VT17,2017-01-16T09:48:13.051Z,ITM - Imported course rounds,active
+DD1354VT171,DD1354,DD1354 2017:1-1 Modeller och simulering VT17,2017-01-16T09:48:13.051Z,CSC - Imported course rounds,active
+MF207XVT171,MF207X,"MF207X 2017:1-1 Degree Project in Integrated Product Development, Second Cycle VT17",2017-01-16T09:48:13.051Z,ITM - Imported course rounds,active
+MF2090VT171,MF2090,"MF2090 2017:1-1 Internal Combustion Engines, Project Work VT17",2017-01-16T09:48:13.051Z,ITM - Imported course rounds,active
+MF212XVT171,MF212X,"MF212X 2017:1-1 Degree Project in Embedded Control Systems, Second Cycle VT17",2017-01-16T09:48:13.051Z,ITM - Imported course rounds,active
+EK212XVT171,EK212X,"EK212X 2017:1-1 Degree Project in Electrical Measurements, Second Cycle VT17",2017-01-16T09:48:13.051Z,EES - Imported course rounds,active
+KF2310VT171,KF2310,KF2310 2017:1-1 Internship module: Internship Continuous Assessment VT17,2017-01-16T09:48:13.051Z,CHE - Imported course rounds,active
+SK2710VT171,SK2710,SK2710 2017:1-1 Spin Electronics VT17,2017-01-16T09:48:13.051Z,SCI - Imported course rounds,active
+EJ2230VT171,EJ2230,EJ2230 2017:1-1 Control in Electrical Energy Conversion VT17,2017-03-20T09:48:13.051Z,EES - Imported course rounds,active
+AG243XVT171,AG243X,"AG243X 2017:1-1 Degree Project in Geoinformatics, Second Cycle VT17",2017-01-16T09:48:13.051Z,ABE - Imported course rounds,active
+AG293XVT171,AG293X,"AG293X 2017:1-1 Degree Project in Geodesy, Second Cycle VT17",2017-01-16T09:48:13.051Z,ABE - Imported course rounds,active
+HF0025VT171,HF0025,HF0025 2017:1-1 Fysik för basår II VT17,2017-01-16T09:48:13.051Z,STH - Imported course rounds,active
+AH203XVT171,AH203X,"AH203X 2017:1-1 Degree Project in Transport Science, Second Cycle VT17",2017-01-16T09:48:13.052Z,ABE - Imported course rounds,active
+A42O2AVT171,A42O2A,"A42O2A 2017:1-1 Orientation; History, Theory and Technology of Architecture 4:2 VT17",2017-01-16T09:48:13.052Z,ABE - Imported course rounds,active
+AI206XVT171,AI206X,"AI206X 2017:1-1 Degree Project in Building and Real Estate Economics, Second Cycle VT17",2017-01-16T09:48:13.052Z,ABE - Imported course rounds,active
+AK2038VT171,AK2038,AK2038 2017:1-1 Theory and Methodology of Science with Applications (Social Science) VT17,2017-01-16T09:48:13.052Z,ABE - Imported course rounds,active
+AI281XVT171,AI281X,"AI281X 2017:1-1 Degree Project in Architectural Design and Construction Project Management, Second Cycle VT17",2017-01-16T09:48:13.052Z,ABE - Imported course rounds,active
+EH1010VT171,EH1010,EH1010 2017:1-1 Elektroprojekt VT17,2017-01-16T09:48:13.052Z,EES - Imported course rounds,active
+MJ153XVT171,MJ153X,"MJ153X 2017:1-1 Examensarbete i energi och miljö, grundnivå VT17",2017-01-16T09:48:13.052Z,ABE - Imported course rounds,active
+AH1908VT171,AH1908,"AH1908 2017:1-1 Anläggning 2. Byggande, drift och underhåll av vägar och järnvägar VT17",2017-01-16T09:48:13.053Z,ABE - Imported course rounds,active
+HS1018VT171,HS1018,HS1018 2017:1-1 Vattenresursteknik med GIS VT17,2017-01-16T09:48:13.053Z,ABE - Imported course rounds,active
+MH1028VT171,MH1028,MH1028 2017:1-1 Termodynamisk modellering för materialdesign VT17,2017-01-16T09:48:13.053Z,ITM - Imported course rounds,active
+HS1024VT171,HS1024,HS1024 2017:1-1 Projektering av ett infraprojekt VT17,2017-01-16T09:48:13.053Z,ABE - Imported course rounds,active
+A42C14VT171,A42C14,"A42C14 2017:1-1 Studio Project, Advanced Level VT17",2017-01-30T09:48:13.053Z,ABE - Imported course rounds,active
+MJ2141VT171,MJ2141,"MJ2141 2017:1-1 Energisystem, modeller och scenarier VT17",2017-01-16T09:48:13.053Z,ITM - Imported course rounds,active
+HN204XVT171,HN204X,"HN204X 2017:1-1 Examensarbete inom ergonomi, avancerad nivå VT17",2017-01-16T09:48:13.053Z,STH - Imported course rounds,active
+SE202XVT171,SE202X,"SE202X 2017:1-1 Degree Project in Solid Mechanics, Second Cycle VT17",2017-01-16T09:48:13.054Z,SCI - Imported course rounds,active
+MF105XVT171,MF105X,"MF105X 2017:1-1 Examensarbete inom produktframtagning och industriell ekonomi, grundnivå VT17",2017-01-16T09:48:13.054Z,ITM - Imported course rounds,active
+MF120XVT171,MF120X,"MF120X 2017:1-1 Examensarbete inom maskinkonstruktion, grundnivå VT17",2017-01-16T09:48:13.054Z,ITM - Imported course rounds,active
+AF243XVT171,AF243X,"AF243X 2017:1-1 Degree Project in Building Technology, Second Cycle VT17",2017-01-16T09:48:13.054Z,ABE - Imported course rounds,active
+AF293XVT171,AF293X,"AF293X 2017:1-1 Degree Project in Highway Engineering, Second Cycle VT17",2017-01-16T09:48:13.054Z,ABE - Imported course rounds,active
+AF253XVT171,AF253X,"AF253X 2017:1-1 Degree Project in Building Service and Energy System, Second Cycle VT17",2017-01-16T09:48:13.054Z,ABE - Imported course rounds,active
+AF223XVT171,AF223X,"AF223X 2017:1-1 Degree Project in Structural Engineering and Bridges, Second Cycle VT17",2017-01-16T09:48:13.054Z,ABE - Imported course rounds,active
+AF213XVT171,AF213X,"AF213X 2017:1-1 Degree Project in Concrete Structures, Second Cycle VT17",2017-01-16T09:48:13.054Z,ABE - Imported course rounds,active
+AF2511VT171,AF2511,"AF2511 2017:1-1 Building Service Technologies and Systems, Applied Course VT17",2017-01-16T09:48:13.054Z,ABE - Imported course rounds,active
+AK2032VT171,AK2032,AK2032 2017:1-1 Theory and Methodology of Science (Social Science) VT17,2017-01-16T09:48:13.054Z,ABE - Imported course rounds,active
+EQ275XVT171,EQ275X,"EQ275X 2017:1-1 Degree Project in Communication Theory, Second Cycle VT17",2017-01-16T09:48:13.054Z,EES - Imported course rounds,active
+KE1060VT171,KE1060,KE1060 2017:1-1 Material- och energibalanser VT17,2017-01-16T09:48:13.054Z,CHE - Imported course rounds,active
+SI2610VT171,SI2610,SI2610 2017:1-1 Many Particle Physics VT17,2017-01-16T09:48:13.055Z,SCI - Imported course rounds,active
+AK203XVT171,AK203X,"AK203X 2017:1-1 Examensarbete inom filosofi, avancerad nivå VT17",2017-01-16T09:48:13.055Z,ABE - Imported course rounds,active
+MG2020VT171,MG2020,MG2020 2017:1-1 Modularisation of Products VT17,2017-01-16T09:48:13.055Z,ITM - Imported course rounds,active
+KH0024VT171,KH0024,KH0024 2017:1-1 Matematik för basår II VT17,2017-01-16T09:48:13.055Z,CHE - Imported course rounds,active
+EP241XVT171,EP241X,"EP241X 2017:1-1 Degree Project in Communication Networks, Second Cycle VT17",2017-01-16T09:48:13.055Z,EES - Imported course rounds,active
+HL102XVT171,HL102X,"HL102X 2017:1-1 Examensarbete inom medicinsk teknik, grundnivå VT17",2017-01-16T09:48:13.055Z,STH - Imported course rounds,active
+AL231XVT171,AL231X,"AL231X 2017:1-1 Degree Project in Environmental Engineering, Second Cycle VT17",2017-01-16T09:48:13.055Z,ABE - Imported course rounds,active
+SA119XVT171,SA119X,"SA119X 2017:1-1 Examensarbete inom materialvetenskap, grundnivå VT17",2017-01-16T09:48:13.055Z,SCI - Imported course rounds,active
+SA114XVT171,SA114X,"SA114X 2017:1-1 Examensarbete inom teknisk fysik, grundnivå VT17",2017-01-16T09:48:13.055Z,SCI - Imported course rounds,active
+SA113XVT171,SA113X,"SA113X 2017:1-1 Examensarbete inom simuleringsteknik och virtuell design, grundnivå VT17",2017-01-16T09:48:13.055Z,SCI - Imported course rounds,active
+SA118XVT171,SA118X,"SA118X 2017:1-1 Examensarbete inom maskinteknik, grundnivå VT17",2017-01-16T09:48:13.055Z,SCI - Imported course rounds,active
+AF1715VT171,AF1715,"AF1715 2017:1-1 Arkitektur, skissprocessen VT17",2017-01-16T09:48:13.055Z,ABE - Imported course rounds,active
+AF2720VT171,AF2720,"AF2720 2017:1-1 BIM2, projektering, installation och samordning VT17",2017-01-16T09:48:13.056Z,ABE - Imported course rounds,active
+HS1013VT171,HS1013,HS1013 2017:1-1 Installationsteknik och energi VT17,2017-01-16T09:48:13.056Z,ABE - Imported course rounds,active
+HS1019VT171,HS1019,HS1019 2017:1-1 Planering av ett byggprojekt VT17,2017-01-16T09:48:13.056Z,ABE - Imported course rounds,active
+AL227XVT171,AL227X,"AL227X 2017:1-1 Degree Project in Industrial Ecology, Second Cycle VT17",2017-01-16T09:48:13.056Z,ABE - Imported course rounds,active
+MJ239XVT171,MJ239X,"MJ239X 2017:1-1 Examensarbete inom tillämpad termodynamik, avancerad nivå VT17",2017-01-16T09:48:13.056Z,ITM - Imported course rounds,active
+SK2550VT171,SK2550,SK2550 2017:1-1 X-ray Physics and Applications VT17,2017-01-16T09:48:13.056Z,SCI - Imported course rounds,active
+SF2930VT171,SF2930,SF2930 2017:1-1 Regression Analysis VT17,2017-01-16T09:48:13.056Z,SCI - Imported course rounds,active
+MF2058VT171,MF2058,"MF2058 2017:1-1 Mechatronics, Advanced Course Spring Semester VT17",2017-01-16T09:48:13.058Z,ITM - Imported course rounds,active
+SI201XVT171,SI201X,"SI201X 2017:1-1 Degree Project in Theoretical Physics, Second Cycle VT17",2017-01-16T09:48:13.060Z,SCI - Imported course rounds,active
+MM4000VT171,MM4000,MM4000 2017:1-1 Utvalda teman i matematik för lärare VT17,2017-01-16T09:48:13.061Z,UF - Imported course rounds,active
+MT1011VT171,MT1011,MT1011 2017:1-1 Sannolikhetslära och statistik för lärare VT17,2017-01-16T09:48:13.061Z,UF - Imported course rounds,active
+EI2490VT171,EI2490,EI2490 2017:1-1 Seminariekurs i elektroteknisk konstruktion och högspänningsteknik VT17,2017-01-16T09:48:13.061Z,EES - Imported course rounds,active
+MJ2417VT171,MJ2417,MJ2417 2017:1-1 New Perspectives on Material Science and Technology VT17,2017-01-16T09:48:13.061Z,ITM - Imported course rounds,active
+LS1494VT171,LS1494,LS1494 2017:1-1 Kinesiska A2 för ingenjörer VT17,2017-01-16T09:48:13.061Z,ECE - Imported course rounds,active
+MG212XVT171,MG212X,"MG212X 2017:1-1 Examensarbete inom industriell produktion, avancerad nivå VT17",2017-01-16T09:48:13.062Z,ITM - Imported course rounds,active
+MG115XVT171,MG115X,"MG115X 2017:1-1 Examensarbete inom produktframtagning och industriell ekonomi, grundnivå VT17",2017-01-16T09:48:13.062Z,ITM - Imported course rounds,active
+EH251XVT171,EH251X,"EH251X 2017:1-1 Degree Project in Industrial Information and Control Systems, Second Cycle VT17",2017-01-16T09:48:13.062Z,EES - Imported course rounds,active
+EH257XVT171,EH257X,"EH257X 2017:1-1 Degree Project in Industrial Information and Control Systems, Second Cycle VT17",2017-01-16T09:48:13.062Z,EES - Imported course rounds,active
+EH259XVT171,EH259X,"EH259X 2017:1-1 Degree Project in Industrial Information and Control Systems, Second Cycle VT17",2017-01-16T09:48:13.062Z,EES - Imported course rounds,active
+SG1117VT171,SG1117,SG1117 2017:1-1 Teknisk mekanik VT17,2017-01-16T09:48:13.062Z,SCI - Imported course rounds,active
+AG2413VT171,AG2413,AG2413 2017:1-1 Digital Image Processing and Applications VT17,2017-01-16T09:48:13.062Z,ABE - Imported course rounds,active
+SF2567VT171,SF2567,SF2567 2017:1-1 Project Course in Scientific Computing VT17,2017-01-16T09:48:13.062Z,SCI - Imported course rounds,active
+MF205XVT171,MF205X,"MF205X 2017:1-1 Degree Project in Internal Combustion Engineering, Second Cycle VT17",2017-01-16T09:48:13.062Z,ITM - Imported course rounds,active
+AG1323VT171,AG1323,AG1323 2017:1-1 GIS for the Built Environment VT17,2017-01-16T09:48:13.062Z,ABE - Imported course rounds,active
+AG1817VT171,AG1817,AG1817 2017:1-1 Map Projections and Reference Systems VT17,2017-01-16T09:48:13.062Z,ABE - Imported course rounds,active
+AH222XVT171,AH222X,"AH222X 2017:1-1 Degree Project in Systems Analysis and Economics, Second Cycle VT17",2017-01-16T09:48:13.063Z,ABE - Imported course rounds,active
+AI1172VT171,AI1172,AI1172 2017:1-1 Fastighetsförmedling i juridiken VT17,2017-01-16T09:48:13.063Z,ABE - Imported course rounds,active
+AI1173VT171,AI1173,AI1173 2017:1-1 Fastighetsförmedling i praktiken VT17,2017-01-16T09:48:13.063Z,ABE - Imported course rounds,active
+AI1524VT171,AI1524,AI1524 2017:1-1 Markexploatering VT17,2017-01-16T09:48:13.063Z,ABE - Imported course rounds,active
+AI1523VT171,AI1523,AI1523 2017:1-1 Markåtkomst och ersättning VT17,2017-01-16T09:48:13.063Z,ABE - Imported course rounds,active
+HI1029VT171,HI1029,HI1029 2017:1-1 Algoritmer och datastrukturer VT17,2017-01-16T09:48:13.063Z,STH - Imported course rounds,active
+DA224XVT171,DA224X,"DA224X 2017:1-1 Degree Project in Computer Science and Communication, Second Cycle VT17",2017-01-16T09:48:13.063Z,CSC - Imported course rounds,active
+SD1710VT171,SD1710,SD1710 2017:1-1 Introduction to Naval Architecture VT17,2017-01-16T09:48:13.063Z,SCI - Imported course rounds,active
+MJ1146VT171,MJ1146,MJ1146 2017:1-1 Energisystemteknik VT17,2017-01-16T09:48:13.063Z,ITM - Imported course rounds,active
+MJ214XVT171,MJ214X,"MJ214X 2017:1-1 Degree Project in Refrigerating Engineering, Second Cycle VT17",2017-01-16T09:48:13.063Z,ITM - Imported course rounds,active
+DD1320VT171,DD1320,DD1320 2017:1-1 Tillämpad datalogi VT17,2017-01-16T09:48:13.063Z,CSC - Imported course rounds,active
+EI1120VT171,EI1120,EI1120 2017:1-1 Elkretsanalys för energi och miljö VT17,2017-01-16T09:48:13.063Z,EES - Imported course rounds,active
+EI1222VT171,EI1222,"EI1222 2017:1-1 Teoretisk elektroteknik, fortsättningskurs VT17",2017-01-16T09:48:13.064Z,EES - Imported course rounds,active
+EI111XVT171,EI111X,"EI111X 2017:1-1 Examensarbete inom elektroteknik, grundnivå VT17",2017-01-16T09:48:13.064Z,EES - Imported course rounds,active
+HL1203VT171,HL1203,HL1203 2017:1-1 Medicinsk mätteknik VT17,2017-01-16T09:48:13.064Z,STH - Imported course rounds,active
+MF121XVT171,MF121X,"MF121X 2017:1-1 Examensarbete inom integrerad produktutveckling, grundnivå VT17",2017-01-16T09:48:13.064Z,ITM - Imported course rounds,active
+MF2022VT171,MF2022,MF2022 2017:1-1 Eco Design Project VT17,2017-01-16T09:48:13.064Z,ITM - Imported course rounds,active
+AF233XVT171,AF233X,"AF233X 2017:1-1 Degree Project in Building Materials, Second Cycle VT17",2017-01-16T09:48:13.064Z,ABE - Imported course rounds,active
+AF263XVT171,AF263X,"AF263X 2017:1-1 Degree Project in Soil and Rock Mechanics, Second Cycle VT17",2017-01-16T09:48:13.064Z,ABE - Imported course rounds,active
+MF2034VT171,MF2034,MF2034 2017:1-1 Integrated Product Development VT17,2017-01-16T09:48:13.064Z,ITM - Imported course rounds,active
+MF2085VT171,MF2085,MF2085 2017:1-1 Innovation- and Product Development Processes VT17,2017-01-16T09:48:13.064Z,ITM - Imported course rounds,active
+LS1562VT171,LS1562,LS1562 2017:1-1 Svenska för högre studier och arbetsliv VT17,2017-01-16T09:48:13.064Z,ECE - Imported course rounds,active
+SD2103VT171,SD2103,SD2103 2017:1-1 Individual Project Work on Sound and Vibrationer VT17,2017-01-16T09:48:13.064Z,SCI - Imported course rounds,active
+SD241XVT171,SD241X,"SD241X 2017:1-1 Degree Project in Lightweight Structures, Second Cycle VT17",2017-01-16T09:48:13.064Z,SCI - Imported course rounds,active
+HM105LVT171,HM105L,"HM105L 2017:1-1 Material- och produktionsteknik, grundkurs VT17",2017-02-27T09:48:13.064Z,ITM - Imported course rounds,active
+EF225XVT171,EF225X,"EF225X 2017:1-1 Degree Project in Plasma Physics, Second Cycle VT17",2017-01-16T09:48:13.065Z,EES - Imported course rounds,active
+SD2463VT171,SD2463,SD2463 2017:1-1 Individual Project Work Lightweight Structures VT17,2017-01-16T09:48:13.065Z,SCI - Imported course rounds,active
+HL2008VT171,HL2008,HL2008 2017:1-1 Simulation Methods in Medical Engineering VT17,2017-01-16T09:48:13.065Z,STH - Imported course rounds,active
+HL2027VT171,HL2027,HL2027 2017:1-1 3D Image Reconstruction and Analysis in Medicine VT17,2017-01-16T09:48:13.065Z,STH - Imported course rounds,active
+MJ2426VT172,MJ2426,MJ2426 2017:1-2 Applied Heat and Power Technology VT17,2017-01-16T09:48:13.065Z,ITM - Imported course rounds,active
+HL2019VT171,HL2019,HL2019 2017:1-1 Ionising Radiation Imaging VT17,2017-01-16T09:48:13.065Z,STH - Imported course rounds,active
+MJ2424VT172,MJ2424,MJ2424 2017:1-2 Computational Methods in Energy Technology VT17,2017-01-16T09:48:13.065Z,ITM - Imported course rounds,active
+SE1003VT171,SE1003,SE1003 2017:1-1 Fördjupningsarbete i hållfasthetsteknik VT17,2017-01-16T09:48:13.065Z,SCI - Imported course rounds,active
+EP111XVT171,EP111X,"EP111X 2017:1-1 Degree Project in Electrical Engineering, First Cycle VT17",2017-01-16T09:48:13.065Z,EES - Imported course rounds,active
+DD1315VT171,DD1315,DD1315 2017:1-1 Programmeringsteknik och Matlab VT17,2017-01-16T09:48:13.065Z,CSC - Imported course rounds,active
+MF2086VT171,MF2086,MF2086 2017:1-1 Research Methodology in Management and Organization VT17,2017-01-16T09:48:13.065Z,ITM - Imported course rounds,active
+EI252XVT171,EI252X,"EI252X 2017:1-1 Examensarbete inom teoretisk elektroteknik, avancerad nivå VT17",2017-01-16T09:48:13.065Z,EES - Imported course rounds,active
+EI2610VT171,EI2610,EI2610 2017:1-1 Industrial Innovation Project VT17,2017-01-16T09:48:13.065Z,EES - Imported course rounds,active
+SA115XVT171,SA115X,"SA115X 2017:1-1 Examensarbete inom farkostteknik, grundnivå VT17",2017-01-16T09:48:13.065Z,SCI - Imported course rounds,active
+KD2290VT171,KD2290,KD2290 2017:1-1 Reactor Chemistry VT17,2017-01-16T09:48:13.066Z,CHE - Imported course rounds,active
+KD2340VT171,KD2340,KD2340 2017:1-1 Molecular Thermodynamics VT17,2017-01-16T09:48:13.066Z,CHE - Imported course rounds,active
+MF227XVT171,MF227X,"MF227X 2017:1-1 Examensarbete inom teknisk design, avancerad nivå VT17",2017-01-16T09:48:13.066Z,ITM - Imported course rounds,active
+EJ210XVT171,EJ210X,"EJ210X 2017:1-1 Degree Project in Electrical Machines and Drives, Second Cycle VT17",2017-01-16T09:48:13.066Z,EES - Imported course rounds,active
+EJ211XVT171,EJ211X,"EJ211X 2017:1-1 Degree Project in Power Electronics, Second Cycle VT17",2017-01-16T09:48:13.066Z,EES - Imported course rounds,active
+EJ2420VT171,EJ2420,EJ2420 2017:1-1 Seminars in Electrical Machines and Power Electronics VT17,2017-01-16T09:48:13.066Z,EES - Imported course rounds,active
+A42SEVVT171,A42SEV,"A42SEV 2017:1-1 Seminar Course, Advanced Level 4VT VT17",2017-02-06T09:48:13.066Z,ABE - Imported course rounds,active
+EF227XVT171,EF227X,"EF227X 2017:1-1 Degree Project in Space Technology, Second Cycle VT17",2017-01-16T09:48:13.066Z,EES - Imported course rounds,active
+A42D14VT171,A42D14,"A42D14 2017:1-1 Studio Project, Advanced Level VT17",2017-03-27T08:48:13.066Z,ABE - Imported course rounds,active
+LS1443VT171,LS1443,LS1443 2017:1-1 Spanska A2 för ingenjörer VT17,2017-01-16T09:48:13.066Z,ECE - Imported course rounds,active
+KF2180VT171,KF2180,KF2180 2017:1-1 Biopolymers VT17,2017-01-16T09:48:13.066Z,CHE - Imported course rounds,active
+LS2449VT171,LS2449,LS2449 2017:1-1 Spanska B2 för ingenjörer VT17,2017-01-16T09:48:13.066Z,ECE - Imported course rounds,active
+KF2300VT171,KF2300,KF2300 2017:1-1 Internship module: Internship Program Report VT17,2017-01-16T09:48:13.066Z,CHE - Imported course rounds,active
+KF2320VT171,KF2320,KF2320 2017:1-1 Internship module: Start-up Business Case VT17,2017-01-16T09:48:13.067Z,CHE - Imported course rounds,active
+KF2450VT171,KF2450,KF2450 2017:1-1 Fibre Technology - Natural and Synthetic Fibres VT17,2017-01-16T09:48:13.067Z,CHE - Imported course rounds,active
+HL205XVT171,HL205X,"HL205X 2017:1-1 Degree Project in Medical Engineering, Second Cycle VT17",2017-01-16T09:48:13.067Z,STH - Imported course rounds,active
+HL207XVT171,HL207X,"HL207X 2017:1-1 Degree Project in Technology and Health, Second Cycle VT17",2017-01-16T09:48:13.067Z,STH - Imported course rounds,active
+LS1482VT171,LS1482,LS1482 2017:1-1 Japanska A1 för ingenjörer VT17,2017-01-16T09:48:13.067Z,ECE - Imported course rounds,active
+LS1433VT171,LS1433,LS1433 2017:1-1 Franska A2 för ingenjörer VT17,2017-01-23T09:48:13.067Z,ECE - Imported course rounds,active
+MG2100VT171,MG2100,MG2100 2017:1-1 Scientific Methodology for Production Engineering VT17,2017-01-16T09:48:13.067Z,ITM - Imported course rounds,active
+SE201XVT171,SE201X,"SE201X 2017:1-1 Degree Project in Solid Mechanics, Second Cycle VT17",2017-01-16T09:48:13.067Z,SCI - Imported course rounds,active
+HI1036VT171,HI1036,"HI1036 2017:1-1 Mjukvarukonstruktion, projektkurs VT17",2017-01-16T09:48:13.067Z,STH - Imported course rounds,active
+DA223XVT171,DA223X,"DA223X 2017:1-1 Degree Project in Computer Science and Communication, Second Cycle VT17",2017-01-16T09:48:13.067Z,CSC - Imported course rounds,active
+MF1010VT171,MF1010,MF1010 2017:1-1 Projektarbete i maskinkonstruktion VT17,2017-01-16T09:48:13.067Z,ITM - Imported course rounds,active
+MF2026VT171,MF2026,MF2026 2017:1-1 Project Work in Product Development VT17,2017-01-16T09:48:13.067Z,ITM - Imported course rounds,active
+MF210XVT171,MF210X,"MF210X 2017:1-1 Degree Project in Industrial Design, Second Cycle VT17",2017-01-16T09:48:13.068Z,ITM - Imported course rounds,active
+MF211XVT171,MF211X,"MF211X 2017:1-1 Degree Project in Product Innovation Management, Second Cycle VT17",2017-01-16T09:48:13.068Z,ITM - Imported course rounds,active
+LS1464VT171,LS1464,LS1464 2017:1-1 Retorik - konsten att övertyga VT17,2017-01-23T09:48:13.068Z,ECE - Imported course rounds,active
+IH2655VT171,IH2655,IH2655 2017:1-1 Design and Characterisation of Nano- and Microdevices VT17,2017-01-16T09:48:13.068Z,ICT - Imported course rounds,active
+AK222XVT171,AK222X,"AK222X 2017:1-1 Degree Project in History of Science, Technology and Environment, Second Cycle VT17",2017-01-16T09:48:13.068Z,ABE - Imported course rounds,active
+AK121XVT171,AK121X,"AK121X 2017:1-1 Examensarbete i historiska studier, grundnivå VT17",2017-01-16T09:48:13.068Z,ABE - Imported course rounds,active
+MJ1112VT171,MJ1112,MJ1112 2017:1-1 Tillämpad termodynamik VT17,2017-01-16T09:48:13.068Z,ITM - Imported course rounds,active
+MJ215XVT171,MJ215X,"MJ215X 2017:1-1 Degree Project in Heat Transfer, Second Cycle VT17",2017-01-16T09:48:13.068Z,ITM - Imported course rounds,active
+MJ218XVT171,MJ218X,"MJ218X 2017:1-1 Degree Project in Energy Technology, Second Cycle VT17",2017-01-16T09:48:13.068Z,ITM - Imported course rounds,active
+MJ219XVT171,MJ219X,"MJ219X 2017:1-1 Degree Project in Sustainable Buildings, Second Cycle VT17",2017-01-16T09:48:13.068Z,ITM - Imported course rounds,active
+MJ220XVT171,MJ220X,"MJ220X 2017:1-1 Degree Project in Energy and Climate Studies, Second Cycle VT17",2017-01-16T09:48:13.068Z,ITM - Imported course rounds,active
+DD1332VT171,DD1332,DD1332 2017:1-1 Objektorienterad programmering VT17,2017-01-16T09:48:13.068Z,CSC - Imported course rounds,active
+DM2710VT171,DM2710,DM2710 2017:1-1 Designing Technology for Learning and Behavior Change VT17,2017-01-16T09:48:13.068Z,CSC - Imported course rounds,active
+EL201XVT171,EL201X,"EL201X 2017:1-1 Degree Project in Automatic Control, Second Cycle VT17",2017-01-16T09:48:13.069Z,EES - Imported course rounds,active
+BB1030VT172,BB1030,BB1030 2017:1-2 Mikrobiologi VT17,2017-01-16T09:48:13.069Z,BIO - Imported course rounds,active
+BB1220VT171,BB1220,BB1220 2017:1-1 Projekt i bioteknik VT17,2017-01-16T09:48:13.069Z,BIO - Imported course rounds,active
+AG1812VT171,AG1812,AG1812 2017:1-1 Miljöekonomi VT17,2017-01-16T09:48:13.069Z,ABE - Imported course rounds,active
+ME2719VT171,ME2719,ME2719 2017:1-1 Entrepreneurship and Innovation VT17,2017-01-16T09:48:13.069Z,ITM - Imported course rounds,active
+MF134XVT171,MF134X,"MF134X 2017:1-1 Examensarbete inom produktframtagning och industriell ekonomi, grundnivå VT17",2017-01-16T09:48:13.069Z,ITM - Imported course rounds,active
+MF206XVT171,MF206X,"MF206X 2017:1-1 Degree Project in Machine Design, Second Cycle VT17",2017-01-16T09:48:13.069Z,ITM - Imported course rounds,active
+MF2080VT171,MF2080,"MF2080 2017:1-1 Challenges for the Emerging City, Interdiciplinary Project Course A:1 (OpenLab Project Course) VT17",2017-01-16T09:48:13.069Z,ITM - Imported course rounds,active
+HS1023VT171,HS1023,HS1023 2017:1-1 Projektering av ett husprojekt VT17,2017-01-16T09:48:13.069Z,ABE - Imported course rounds,active
+SI2911VT171,SI2911,SI2911 2017:1-1 Projektarbete II VT17,2017-01-16T09:48:13.069Z,SCI - Imported course rounds,active
+SH203XVT171,SH203X,"SH203X 2017:1-1 Degree Project in Physics, Second Cycle VT17",2017-01-16T09:48:13.069Z,SCI - Imported course rounds,active
+DD1389VT171,DD1389,DD1389 2017:1-1 Internetprogrammering VT17,2017-01-16T09:48:13.069Z,CSC - Imported course rounds,active
+A31T2AVT171,A31T2A,"A31T2A 2017:1-1 Arkitekturteknik 3:2: Byggnad, stad, process VT17",2017-02-27T09:48:13.070Z,ABE - Imported course rounds,active
+A31P2DVT171,A31P2D,A31P2D 2017:1-1 Projekt 3:2 Stadsrum och landskap VT17,2017-01-16T09:48:13.070Z,ABE - Imported course rounds,active
+A31KAXVT171,A31KAX,"A31KAX 2017:1-1 Examensarbete inom arkitektur, grundnivå VT17",2017-02-20T09:48:13.070Z,ABE - Imported course rounds,active
+SK1120VT172,SK1120,SK1120 2017:1-2 Vågrörelselära VT17,2017-01-16T09:48:13.070Z,SCI - Imported course rounds,active
+AL230XVT171,AL230X,"AL230X 2017:1-1 Degree Project in Environmental Engineering and Sustainable Infrastructure, Second Cycle VT17",2017-01-16T09:48:13.070Z,ABE - Imported course rounds,active
+AF283XVT171,AF283X,"AF283X 2017:1-1 Degree Project in Hydraulic Engineering, Second Cycle VT17",2017-01-16T09:48:13.070Z,ABE - Imported course rounds,active
+AF2401VT171,AF2401,"AF2401 2017:1-1 Building Technology, Advanced Course VT17",2017-01-16T09:48:13.070Z,ABE - Imported course rounds,active
+AF2213VT171,AF2213,AF2213 2017:1-1 Steel and Timber Structures VT17,2017-01-16T09:48:13.070Z,ABE - Imported course rounds,active
+MH2049VT171,MH2049,MH2049 2017:1-1 Advanced Course in Process Science VT17,2017-01-16T09:48:13.070Z,ITM - Imported course rounds,active
+MH2048VT171,MH2048,MH2048 2017:1-1 Advanced Course in Materials Design VT17,2017-01-16T09:48:13.070Z,ITM - Imported course rounds,active
+MH2000VT171,MH2000,MH2000 2017:1-1 Experimental Methods VT17,2017-01-16T09:48:13.070Z,ITM - Imported course rounds,active
+A31H2AVT171,A31H2A,A31H2A 2017:1-1 Arkitekturens historia och teori 3:2: uppsats på grundläggande nivå VT17,2017-02-13T09:48:13.070Z,ABE - Imported course rounds,active
+MF225XVT171,MF225X,"MF225X 2017:1-1 Examensarbete inom förbränningsmotorteknik, avancerad nivå VT17",2017-01-16T09:48:13.071Z,ITM - Imported course rounds,active
+AG1421VT171,AG1421,AG1421 2017:1-1 Fastighetsinformationsteknik VT17,2017-01-16T09:48:13.071Z,ABE - Imported course rounds,active
+EH252XVT171,EH252X,"EH252X 2017:1-1 Degree Project in Industrial Information and Control Systems, Second Cycle VT17",2017-01-16T09:48:13.071Z,EES - Imported course rounds,active
+EH258XVT171,EH258X,"EH258X 2017:1-1 Degree Project in Industrial Information and Control Systems, Second Cycle VT17",2017-01-16T09:48:13.071Z,EES - Imported course rounds,active
+AF2201VT171,AF2201,AF2201 2017:1-1 Bridge Design VT17,2017-01-16T09:48:13.071Z,ABE - Imported course rounds,active
+AF2602VT171,AF2602,AF2602 2017:1-1 Rock Mechanics VT17,2017-01-16T09:48:13.071Z,ABE - Imported course rounds,active
+KD1290VT171,KD1290,KD1290 2017:1-1 Kemisk analys VT17,2017-01-16T09:48:13.071Z,CHE - Imported course rounds,active
+KE2040VT171,KE2040,KE2040 2017:1-1 Chemical Reaction Engineering VT17,2017-01-16T09:48:13.071Z,CHE - Imported course rounds,active
+SD210XVT171,SD210X,"SD210X 2017:1-1 Degree Project in Technical Acoustics, Second Cycle VT17",2017-01-16T09:48:13.071Z,SCI - Imported course rounds,active
+LS1414VT171,LS1414,LS1414 2017:1-1 English for Academic Studies VT17,2017-02-06T09:48:13.071Z,ECE - Imported course rounds,active
+SD2930VT171,SD2930,SD2930 2017:1-1 Project in Aerospace Engineering VT17,2017-01-16T09:48:13.071Z,SCI - Imported course rounds,active
+HE1038VT171,HE1038,HE1038 2017:1-1 Styr- och reglerteknik VT17,2017-01-16T09:48:13.071Z,STH - Imported course rounds,active
+HI2002VT171,HI2002,HI2002 2017:1-1 Routing i IP-nät VT17,2017-01-16T09:48:13.071Z,STH - Imported course rounds,active
+HI1023VT171,HI1023,"HI1023 2017:1-1 Nätverkssäkerhet, grundkurs VT17",2017-01-16T09:48:13.072Z,STH - Imported course rounds,active
+MJ222XVT171,MJ222X,"MJ222X 2017:1-1 Thesis Project in Management and Engineering of Energy and Environment (ME3), Second Cycle VT17",2017-01-16T09:48:13.072Z,ITM - Imported course rounds,active
+AI2102VT171,AI2102,AI2102 2017:1-1 Real Estate Market Analysis and Development VT17,2017-01-16T09:48:13.072Z,ABE - Imported course rounds,active
+AG212XVT171,AG212X,"AG212X 2017:1-1 Degree Project in Urban and Regional Planning, Second Cycle VT17",2017-01-16T09:48:13.072Z,ABE - Imported course rounds,active
+AD2EXUVT171,AD2EXU,"AD2EXU 2017:1-1 Degree Project in Urban Planning and Design, Second Cycle VT17",2017-01-16T09:48:13.072Z,ABE - Imported course rounds,active
+EQ2845VT171,EQ2845,EQ2845 2017:1-1 Information Theory and Source Coding VT17,2017-01-16T09:48:13.072Z,EES - Imported course rounds,active
+AL250XVT171,AL250X,"AL250X 2017:1-1 Degree Project in Strategies for Sustainable Development, Second Cycle VT17",2017-01-16T09:48:13.072Z,ABE - Imported course rounds,active
+MJ2476VT171,MJ2476,MJ2476 2017:1-1 Strategies in the Global Climate Agenda VT17,2017-01-16T09:48:13.072Z,ITM - Imported course rounds,active
+AF272VVT171,AF272V,"AF272V 2017:1-1 BIM2, projektering, installation och samordning VT17",2017-01-16T09:48:13.072Z,ABE - Imported course rounds,active
+AG2188VT171,AG2188,AG2188 2017:1-1 International Placemaking Studio- Rethinking the Public Realm VT17,2017-01-16T09:48:13.072Z,ABE - Imported course rounds,active
+AG2184VT171,AG2184,AG2184 2017:1-1 New Urban Sociology and Environmental Psychology for Urban Design VT17,2017-01-16T09:48:13.072Z,ABE - Imported course rounds,active
+SH204XVT171,SH204X,"SH204X 2017:1-1 Degree Project in Physics, Second Cycle VT17",2017-01-16T09:48:13.073Z,SCI - Imported course rounds,active
+EJ2311VT171,EJ2311,EJ2311 2017:1-1 Modulation of Power Electronic Converters VT17,2017-01-16T09:48:13.073Z,EES - Imported course rounds,active
+AI2809VT171,AI2809,AI2809 2017:1-1 Construction Management VT17,2017-01-16T09:48:13.073Z,ABE - Imported course rounds,active
+AI2508VT171,AI2508,AI2508 2017:1-1 Markåtkomst och ersättning VT17,2017-01-16T09:48:13.073Z,ABE - Imported course rounds,active
+AI2154VT171,AI2154,AI2154 2017:1-1 Advanced Valuation and Analysis VT17,2017-01-16T09:48:13.073Z,ABE - Imported course rounds,active
+A31EXAVT171,A31EXA,"A31EXA 2017:1-1 Examensarbete inom arkitektur, grundnivå VT17",2017-02-20T09:48:13.073Z,ABE - Imported course rounds,active
+SK2510VT171,SK2510,SK2510 2017:1-1 Cellular Biophysics I VT17,2017-01-16T09:48:13.073Z,SCI - Imported course rounds,active
+AL2190VT171,AL2190,AL2190 2017:1-1 Ecological Economics VT17,2017-01-16T09:48:13.073Z,ABE - Imported course rounds,active
+HS105XVT171,HS105X,"HS105X 2017:1-1 Examensarbete inom konstruktionsteknik, grundnivå VT17",2017-03-20T09:48:13.073Z,ABE - Imported course rounds,active
+ME2067VT171,ME2067,ME2067 2017:1-1 Industrial Transformation and Technical Changes (ITTEC) VT17,2017-01-16T09:48:13.073Z,ITM - Imported course rounds,active
+HS2009VT171,HS2009,HS2009 2017:1-1 Light and Space-Indoor VT17,2017-01-16T09:48:13.073Z,ABE - Imported course rounds,active
+A21P2BVT171,A21P2B,"A21P2B 2017:1-1 Arkitekturprojekt 2:2 - Tectonics, Ornament, Transformation VT17",2017-01-23T09:48:13.073Z,ABE - Imported course rounds,active
+A21P3CVT171,A21P3C,"A21P3C 2017:1-1 Arkitekturprojekt 2:3 Material, rum, detalj VT17",2017-03-13T09:48:13.073Z,ABE - Imported course rounds,active
+EQ2700VT171,EQ2700,EQ2700 2017:1-1 Individual Project in Signal Processing VT17,2017-01-16T09:48:13.074Z,EES - Imported course rounds,active
+EQ274XVT171,EQ274X,"EQ274X 2017:1-1 Degree Project in Signal Processing, Second Cycle VT17",2017-01-16T09:48:13.074Z,EES - Imported course rounds,active
+AI1134VT171,AI1134,AI1134 2017:1-1 Kapitalmarknader och finansiella instrument VT17,2017-01-16T09:48:13.074Z,ABE - Imported course rounds,active
+AI1141VT171,AI1141,AI1141 2017:1-1 Kreditbedömning VT17,2017-01-16T09:48:13.074Z,ABE - Imported course rounds,active
+MJ2485VT171,MJ2485,MJ2485 2017:1-1 Introduction to Unsteady aerodynamics VT17,2017-01-16T09:48:13.074Z,ITM - Imported course rounds,active
+MJ2486VT171,MJ2486,MJ2486 2017:1-1 Aeromechanics Project Course - Part 2 VT17,2017-01-16T09:48:13.074Z,ITM - Imported course rounds,active
+MJ2492VT171,MJ2492,MJ2492 2017:1-1 Advanced Renewable Energy Systems Technology VT17,2017-01-16T09:48:13.074Z,ITM - Imported course rounds,active
+MF1026VT171,MF1026,MF1026 2017:1-1 Modellbaserad produktutveckling I VT17,2017-01-16T09:48:13.074Z,ITM - Imported course rounds,active
+EI253XVT171,EI253X,"EI253X 2017:1-1 Examensarbete inom högspänningsteknik, avancerad nivå VT17",2017-01-16T09:48:13.074Z,EES - Imported course rounds,active
+EI255XVT171,EI255X,"EI255X 2017:1-1 Examensarbete inom tillförlitlighetsanalys för elkraftsystem, avancerad nivå VT17",2017-01-16T09:48:13.074Z,EES - Imported course rounds,active
+MJ2246VT171,MJ2246,MJ2246 2017:1-1 Rocket Propulsion VT17,2017-01-16T09:48:13.074Z,ITM - Imported course rounds,active
+MJ2472VT172,MJ2472,MJ2472 2017:1-2 Energy Planning and Applications VT17,2017-01-16T09:48:13.074Z,ITM - Imported course rounds,active
+MJ210XVT171,MJ210X,"MJ210X 2017:1-1 Degree Project in Energy Systems Analysis, Second Cycle VT17",2017-01-16T09:48:13.075Z,ITM - Imported course rounds,active
+MJ234XVT171,MJ234X,"MJ234X 2017:1-1 Examensarbete inom kylteknik, avancerad nivå VT17",2017-01-16T09:48:13.075Z,ITM - Imported course rounds,active
+MJ236XVT171,MJ236X,"MJ236X 2017:1-1 Examensarbete inom värmetransporter, avancerad nivå VT17",2017-01-16T09:48:13.075Z,ITM - Imported course rounds,active
+SI1141VT171,SI1141,"SI1141 2017:1-1 Fysikens matematiska metoder, kurs I VT17",2017-01-16T09:48:13.075Z,SCI - Imported course rounds,active
+A52A13VT171,A52A13,"A52A13 2017:1-1 Studio Project, Advanced Level VT17",2017-01-30T09:48:13.075Z,ABE - Imported course rounds,active
+AE2610VT171,AE2610,AE2610 2017:1-1 Applied Hydrology VT17,2017-01-16T09:48:13.075Z,ABE - Imported course rounds,active
+MJ232XVT171,MJ232X,"MJ232X 2017:1-1 Examensarbete inom kraft- och värmeteknologi, avancerad nivå VT17",2017-01-16T09:48:13.075Z,ITM - Imported course rounds,active
+AG2414VT171,AG2414,AG2414 2017:1-1 Spatial Analysis VT17,2017-01-16T09:48:13.075Z,ABE - Imported course rounds,active
+MJ2437VT171,MJ2437,MJ2437 2017:1-1 Modeling of Energy Systems - Energy Utilization VT17,2017-01-16T09:48:13.075Z,ITM - Imported course rounds,active
+SK2400VT171,SK2400,SK2400 2017:1-1 Quantum Electronics with Electro Optics VT17,2017-01-16T09:48:13.075Z,SCI - Imported course rounds,active
+SD240XVT171,SD240X,"SD240X 2017:1-1 Degree Project in Lightweight Structures, Second Cycle VT17",2017-01-16T09:48:13.075Z,SCI - Imported course rounds,active
+SD2465VT171,SD2465,"SD2465 2017:1-1 Indivual Project Work, Lightweight Structures VT17",2017-01-16T09:48:13.075Z,SCI - Imported course rounds,active
+SD2464VT171,SD2464,SD2464 2017:1-1 Individual Project Work Lightweight Structures VT17,2017-01-16T09:48:13.075Z,SCI - Imported course rounds,active
+AF1005VT172,AF1005,"AF1005 2017:1-2 Byggkonstruktionslära, grundkurs VT17",2017-01-16T09:48:13.076Z,ABE - Imported course rounds,active
+AI1148VT171,AI1148,AI1148 2017:1-1 Fastighetsvärdering för samhällsbyggnad VT17,2017-01-16T09:48:13.076Z,ABE - Imported course rounds,active
+AI1518VT171,AI1518,AI1518 2017:1-1 Fastighetsutveckling och regelsystem VT17,2017-01-16T09:48:13.076Z,ABE - Imported course rounds,active
+AE2304VT171,AE2304,AE2304 2017:1-1 Water and Wastewater Handling VT17,2017-01-16T09:48:13.076Z,ABE - Imported course rounds,active
+MF1025VT171,MF1025,MF1025 2017:1-1 Modellbaserad produktutveckling II VT17,2017-01-16T09:48:13.076Z,ITM - Imported course rounds,active
+KH1222VT171,KH1222,KH1222 2017:1-1 Tillämpad kemi VT17,2017-01-16T09:48:13.076Z,CHE - Imported course rounds,active
+DM2905VT171,DM2905,DM2905 2017:1-1 Individual Course in Media Technology VT17,2017-01-16T09:48:13.076Z,CSC - Imported course rounds,active
+SD291XVT171,SD291X,"SD291X 2017:1-1 Degree Project in Space Technology, Second Cycle VT17",2017-01-16T09:48:13.076Z,SCI - Imported course rounds,active
+LS1423VT171,LS1423,LS1423 2017:1-1 Tyska A2 för ingenjörer VT17,2017-01-16T09:48:13.076Z,ECE - Imported course rounds,active
+LS1440VT171,LS1440,LS1440 2017:1-1 Spanska A1 för ingenjörer VT17,2017-01-16T09:48:13.076Z,ECE - Imported course rounds,active
+MJ238XVT171,MJ238X,"MJ238X 2017:1-1 Examensarbete inom tillämpad termodynamik, avancerad nivå VT17",2017-01-16T09:48:13.076Z,ITM - Imported course rounds,active
+AL130XVT171,AL130X,"AL130X 2017:1-1 Examensarbete inom samhällsbyggnad, grundnivå VT17",2017-01-16T09:48:13.076Z,ABE - Imported course rounds,active
+MF2076VT171,MF2076,MF2076 2017:1-1 Machine Design Advanced Course Part I VT17,2017-01-16T09:48:13.077Z,ITM - Imported course rounds,active
+MF2011VT171,MF2011,MF2011 2017:1-1 Systems Engineering VT17,2017-01-16T09:48:13.077Z,ITM - Imported course rounds,active
+MG2103VT171,MG2103,MG2103 2017:1-1 Industrial Process Engineering VT17,2017-01-16T09:48:13.077Z,ITM - Imported course rounds,active
+ED225XVT171,ED225X,"ED225X 2017:1-1 Degree Project in Fusion Plasma Physics, Second Cycle VT17",2017-01-16T09:48:13.077Z,EES - Imported course rounds,active
+EQ2320VT171,EQ2320,EQ2320 2017:1-1 Speech Signal Processing VT17,2017-01-16T09:48:13.077Z,EES - Imported course rounds,active
+EQ2410VT171,EQ2410,EQ2410 2017:1-1 Advanced Digital Communications VT17,2017-01-16T09:48:13.078Z,EES - Imported course rounds,active
+ME2093VT171,ME2093,ME2093 2017:1-1 Technological and Industrial Change VT17,2017-01-16T09:48:13.078Z,ITM - Imported course rounds,active
+AK1205VT171,AK1205,"AK1205 2017:1-1 Science Goes Fiction: Science Fiction, Film and Technological Futures in a Historical Perspective VT17",2017-01-16T09:48:13.078Z,ABE - Imported course rounds,active
+MG105XVT171,MG105X,"MG105X 2017:1-1 Examensarbete inom produktframtagning och industriell ekonomi, grundnivå VT17",2017-01-16T09:48:13.078Z,ITM - Imported course rounds,active
+DH2642VT171,DH2642,DH2642 2017:1-1 Interaction Programming and the Dynamic Web VT17,2017-01-16T09:48:13.078Z,CSC - Imported course rounds,active
+MG202XVT171,MG202X,"MG202X 2017:1-1 Examensarbete inom industriell produktion, avancerad nivå VT17",2017-01-16T09:48:13.078Z,ITM - Imported course rounds,active
+HS1730VT171,HS1730,HS1730 2017:1-1 Byggfysik med byggmateriallära VT17,2017-01-16T09:48:13.078Z,ABE - Imported course rounds,active
+AF1742VT171,AF1742,AF1742 2017:1-1 Byggekonomi och kvalitet VT17,2017-01-16T09:48:13.079Z,ABE - Imported course rounds,active
+AF1718VT171,AF1718,AF1718 2017:1-1 Installationsteknik 1 inom bygg - anläggning VT17,2017-01-16T09:48:13.079Z,ABE - Imported course rounds,active
+AF1724VT171,AF1724,AF1724 2017:1-1 Anläggningsteknik 1 VT17,2017-01-16T09:48:13.079Z,ABE - Imported course rounds,active
+SF1662VT171,SF1662,SF1662 2017:1-1 Diskret matematik VT17,2017-01-16T09:48:13.079Z,SCI - Imported course rounds,active
+SF1674VT171,SF1674,SF1674 2017:1-1 Flervariabelanalys VT17,2017-01-16T09:48:13.079Z,SCI - Imported course rounds,active
+HS1734VT171,HS1734,"HS1734 2017:1-1 Projektering, konstruktion och design VT17",2017-01-16T09:48:13.079Z,ABE - Imported course rounds,active
+HS1008VT171,HS1008,HS1008 2017:1-1 Konstruktionsteknik VT17,2017-01-16T09:48:13.079Z,ABE - Imported course rounds,active
+AF1730VT171,AF1730,AF1730 2017:1-1 Building Information Modeling VT17,2017-01-16T09:48:13.079Z,ABE - Imported course rounds,active
+SF2722VT171,SF2722,SF2722 2017:1-1 Differential Geometry VT17,2017-01-16T09:48:13.079Z,SCI - Imported course rounds,active
+BB104XVT171,BB104X,"BB104X 2017:1-1 Examensarbete inom bioteknik och management, grundnivå VT17",2017-01-16T09:48:13.079Z,BIO - Imported course rounds,active
+AK123XVT171,AK123X,"AK123X 2017:1-1 Degree Project in History of Science, Technology and Environment, First Cycle VT17",2017-01-16T09:48:13.079Z,ABE - Imported course rounds,active
+KH0025VT171,KH0025,KH0025 2017:1-1 Fysik för basår II VT17,2017-01-16T09:48:13.079Z,CHE - Imported course rounds,active
+KA103XVT171,KA103X,"KA103X 2017:1-1 Examensarbete inom Teknisk kemi, grundnivå VT17",2017-01-16T09:48:13.079Z,CHE - Imported course rounds,active
+SF288XVT171,SF288X,"SF288X 2017:1-1 Degree Project in Optimization and Systems Theory, Second Cycle VT17",2017-01-16T09:48:13.079Z,SCI - Imported course rounds,active
+MH250XVT171,MH250X,"MH250X 2017:1-1 Degree Project in Applied Process Metallurgy, Second Cycle VT17",2017-01-16T09:48:13.080Z,ITM - Imported course rounds,active
+SI200XVT171,SI200X,"SI200X 2017:1-1 Degree Project in Theoretical Physics, Second Cycle VT17",2017-01-16T09:48:13.080Z,SCI - Imported course rounds,active
+SA117XVT171,SA117X,"SA117X 2017:1-1 Degree Project in Physics, First Level VT17",2017-01-16T09:48:13.080Z,SCI - Imported course rounds,active
+SF280XVT171,SF280X,"SF280X 2017:1-1 Degree Project in Optimization and Systems Theory, Second Cycle VT17",2017-01-16T09:48:13.080Z,SCI - Imported course rounds,active
+MH205XVT171,MH205X,"MH205X 2017:1-1 Degree Project in Metal Working, Second Cycle VT17",2017-01-16T09:48:13.080Z,ITM - Imported course rounds,active
+LS1466VT171,LS1466,LS1466 2017:1-1 Varumärkesbyggande för tekniska innovationer VT17,2017-01-16T09:48:13.080Z,ECE - Imported course rounds,active
+ED111XVT171,ED111X,"ED111X 2017:1-1 Examensarbete inom elektroteknik, grundnivå VT17",2017-01-16T09:48:13.080Z,EES - Imported course rounds,active
+LL222UVT171,LL222U,LL222U 2017:1-1 Teknik för lärare i gymnasieskolan. Ingår i Lärarlyftet II/Uppdrag.../ VT17,2017-01-16T09:48:13.080Z,ECE - Imported course rounds,active
+SF281XVT171,SF281X,"SF281X 2017:1-1 Degree Project in Systems Engineering, Second Cycle VT17",2017-01-16T09:48:13.080Z,SCI - Imported course rounds,active
+MH200XVT171,MH200X,"MH200X 2017:1-1 Degree Project in Materials and Process Design, Second Cycle VT17",2017-01-16T09:48:13.080Z,ITM - Imported course rounds,active
+MH210XVT171,MH210X,"MH210X 2017:1-1 Degree Project in Physical Metallurgy, Second Cycle VT17",2017-01-16T09:48:13.080Z,ITM - Imported course rounds,active
+MH260XVT171,MH260X,"MH260X 2017:1-1 Degree Project in Energy and Furnace Technology, Second Cycle VT17",2017-01-16T09:48:13.080Z,ITM - Imported course rounds,active
+EP243XVT171,EP243X,"EP243X 2017:1-1 Degree Project in Communication Networks, Second Cycle VT17",2017-01-16T09:48:13.081Z,EES - Imported course rounds,active
+LS140NVT171,LS140N,LS140N 2017:1-1 Svenska A1 för ingenjörer VT17,2017-01-16T09:48:13.081Z,ECE - Imported course rounds,active
+SG202XVT171,SG202X,"SG202X 2017:1-1 Degree Project in Mechanics, Second Cycle VT17",2017-01-16T09:48:13.081Z,SCI - Imported course rounds,active
+MH202XVT171,MH202X,"MH202X 2017:1-1 Degree Project in Materials and Process Design, Second Cycle VT17",2017-01-16T09:48:13.081Z,ITM - Imported course rounds,active
+LT1006VT171,LT1006,LT1006 2017:1-1 Industriella system- tekniska och didaktiska aspekter VT17,2017-01-16T09:48:13.081Z,ECE - Imported course rounds,active
+HN203XVT171,HN203X,"HN203X 2017:1-1 Examensarbete inom teknik, hälsa och arbetsmiljöutveckling, avancerad nivå VT17",2017-01-16T09:48:13.081Z,STH - Imported course rounds,active
+MJ2501VT171,MJ2501,MJ2501 2017:1-1 Solar Energy Systems for Buildings and Cities VT17,2017-01-16T09:48:13.081Z,ITM - Imported course rounds,active
+MH240XVT171,MH240X,"MH240X 2017:1-1 Degree Project in Applied Material Physics, Second Cycle VT17",2017-01-16T09:48:13.081Z,ITM - Imported course rounds,active
+MH255XVT171,MH255X,"MH255X 2017:1-1 Degree Project in Micro Modelling in Process Science, Second Cycle VT17",2017-01-16T09:48:13.081Z,ITM - Imported course rounds,active
+MH201XVT171,MH201X,"MH201X 2017:1-1 Examensarbete inom material och processdesign, avancerad nivå VT17",2017-01-16T09:48:13.081Z,ITM - Imported course rounds,active
+LL219UVT171,LL219U,"LL219U 2017:1-1 Teknik för lärare åk 7-9, 45 hp (1-45 hp). Ingår i lärarlyftet II VT17",2017-01-16T09:48:13.081Z,ECE - Imported course rounds,active
+EK111XVT171,EK111X,"EK111X 2017:1-1 Examensarbete inom elektroteknik, grundnivå VT17",2017-01-16T09:48:13.081Z,EES - Imported course rounds,active
+ME2310VT171,ME2310,ME2310 2017:1-1 Biotechnology - Business - Leadership VT17,2017-01-16T09:48:13.081Z,ITM - Imported course rounds,active
+LH215VVT171,LH215V,LH215V 2017:1-1 Learning for Sustainable Development VT17,2017-01-23T09:48:13.081Z,ECE - Imported course rounds,active
+SG203XVT171,SG203X,"SG203X 2017:1-1 Degree Project in Fluid Mechanics, Second Cycle VT17",2017-01-16T09:48:13.082Z,SCI - Imported course rounds,active
+DH2320VT171,DH2320,DH2320 2017:1-1 Introduction to Visualization and Computer Graphics VT17,2017-01-16T09:48:13.082Z,CSC - Imported course rounds,active
+EG111XVT171,EG111X,"EG111X 2017:1-1 Examensarbete inom elektroteknik, grundnivå VT17",2017-01-16T09:48:13.082Z,EES - Imported course rounds,active
+SG2010VT171,SG2010,SG2010 2017:1-1 Project Course in Engineering Mechanics VT17,2017-01-16T09:48:13.082Z,SCI - Imported course rounds,active
+AD236VVT171,AD236V,AD236V 2017:1-1 Architecture and Gender: Introduction VT17,2017-01-23T09:48:13.082Z,ABE - Imported course rounds,active
+A52EXAVT171,A52EXA,"A52EXA 2017:1-1 Degree Project in Architecture, Second Cycle VT17",2017-01-16T09:48:13.082Z,ABE - Imported course rounds,active
+DM128XVT171,DM128X,"DM128X 2017:1-1 Examensarbete inom medieteknik, grundnivå VT17",2017-01-16T09:48:13.082Z,CSC - Imported course rounds,active
+SF289XVT171,SF289X,"SF289X 2017:1-1 Degree Project in Systems Engineering, Second Cycle VT17",2017-01-16T09:48:13.082Z,SCI - Imported course rounds,active
+LT1024VT171,LT1024,LT1024 2017:1-1 Sociala relationer och ledarskap VT17,2017-02-20T09:48:13.082Z,ECE - Imported course rounds,active
+MJ2500VT171,MJ2500,MJ2500 2017:1-1 Large Scale Solar Power VT17,2017-01-16T09:48:13.082Z,ITM - Imported course rounds,active
+HL2025VT171,HL2025,HL2025 2017:1-1 Structural Biology and Cell Biology VT17,2017-01-16T09:48:13.082Z,STH - Imported course rounds,active
+LH219VVT171,LH219V,LH219V 2017:1-1 Supervision and Assessment of Degree Project Work in First and Second Cycle VT17,2017-03-13T09:48:13.082Z,ECE - Imported course rounds,active
+AM204UVT171,AM204U,AM204U 2017:1-1 Komplexitet och konflikter i stadens byggande VT17,2017-01-16T09:48:13.082Z,ABE - Imported course rounds,active
+SK2002VT171,SK2002,SK2002 2017:1-1 Project Work in Applied Physics VT17,2017-01-16T09:48:13.083Z,SCI - Imported course rounds,active
+EF232XVT171,EF232X,"EF232X 2017:1-1 Degree Project in Space Physics, Second Cycle VT17",2017-01-16T09:48:13.083Z,EES - Imported course rounds,active
+MJ249XVT171,MJ249X,"MJ249X 2017:1-1 Degree Project in Energy Systems Analysis, Second Cycle VT17",2017-01-16T09:48:13.083Z,ITM - Imported course rounds,active
+IF227XVT171,IF227X,"IF227X 2017:1-1 Degree Project in Engineering Physics, Second Cycle VT17",2017-01-16T09:48:13.083Z,ICT - Imported course rounds,active
+IL122XVT171,IL122X,"IL122X 2017:1-1 Examensarbete inom elektronik och datorteknik, grundnivå VT17",2017-01-16T09:48:13.083Z,ICT - Imported course rounds,active
+LH229VVT171,LH229V,"LH229V 2017:1-1 Creating Online and Blended Courses, Project Course VT17",2017-02-13T09:48:13.083Z,ECE - Imported course rounds,active
+SF2972VT171,SF2972,SF2972 2017:1-1 Game Theory VT17,2017-01-16T09:48:13.083Z,SCI - Imported course rounds,active
+IF225XVT171,IF225X,"IF225X 2017:1-1 Degree Project in Micro Electronics, Second Cycle VT17",2017-01-16T09:48:13.083Z,ICT - Imported course rounds,active
+II123XVT171,II123X,"II123X 2017:1-1 Degree Project in Information and Communication Technology, First Cycle VT17",2017-01-16T09:48:13.083Z,ICT - Imported course rounds,active
+IL142XVT171,IL142X,"IL142X 2017:1-1 Examensarbete inom elektronik och datorteknik, grundnivå VT17",2017-01-16T09:48:13.083Z,ICT - Imported course rounds,active
+IL226XVT171,IL226X,"IL226X 2017:1-1 Degree Project in Electrical Engineering, Second Cycle VT17",2017-01-16T09:48:13.083Z,ICT - Imported course rounds,active
+IL249XVT171,IL249X,"IL249X 2017:1-1 Degree Project in Electrical Engineering, Second Cycle VT17",2017-01-16T09:48:13.083Z,ICT - Imported course rounds,active
+II226XVT171,II226X,"II226X 2017:1-1 Degree Project in Computer Science and Engineering, Second Cycle VT17",2017-01-16T09:48:13.084Z,ICT - Imported course rounds,active
+IL227XVT171,IL227X,"IL227X 2017:1-1 Degree Project in Electrical Engineering, Second Cycle VT17",2017-01-16T09:48:13.084Z,ICT - Imported course rounds,active
+EN2911VT171,EN2911,EN2911 2017:1-1 Individual Project in Electric Power and Energy systems I VT17,2017-01-16T09:48:13.084Z,EES - Imported course rounds,active
+II147XVT171,II147X,"II147X 2017:1-1 Examensarbete inom informations- och kommunikationsteknik, grundnivå VT17",2017-01-16T09:48:13.084Z,ICT - Imported course rounds,active
+ML1113VT171,ML1113,ML1113 2017:1-1 Verksamhetsstyrning med tillämpad statistik VT17,2017-01-16T09:48:13.084Z,ITM - Imported course rounds,active
+ML1302VT171,ML1302,ML1302 2017:1-1 Datorbaserade ingenjörsverktyg VT17,2017-01-16T09:48:13.084Z,ITM - Imported course rounds,active
+SH2302VT171,SH2302,SH2302 2017:1-1 Nuclear Physics VT17,2017-01-16T09:48:13.084Z,SCI - Imported course rounds,active
+ML1101VT171,ML1101,"ML1101 2017:1-1 Mekanik, allmän kurs VT17",2017-01-16T09:48:13.084Z,ITM - Imported course rounds,active
+IF249XVT171,IF249X,"IF249X 2017:1-1 Degree Project in Engineering Physics, Second cycle VT17",2017-01-16T09:48:13.084Z,ICT - Imported course rounds,active
+MH101XVT171,MH101X,"MH101X 2017:1-1 Examensarbete inom material och processdesign, grundnivå VT17",2017-01-16T09:48:13.084Z,ITM - Imported course rounds,active
+AL126XVT171,AL126X,"AL126X 2017:1-1 Examensarbete inom teknik och hållbar utveckling, grundnivå VT17",2017-01-16T09:48:13.084Z,ABE - Imported course rounds,active
+MH1026VT171,MH1026,MH1026 2017:1-1 Materialfysik VT17,2017-01-16T09:48:13.084Z,ITM - Imported course rounds,active
+MG1028VT171,MG1028,MG1028 2017:1-1 Grundläggande 3D CAD VT17,2017-01-16T09:48:13.085Z,ITM - Imported course rounds,active
+MH1019VT171,MH1019,MH1019 2017:1-1 Påbyggnadskurs i metaller VT17,2017-01-16T09:48:13.085Z,ITM - Imported course rounds,active
+AH1022VT171,AH1022,"AH1022 2017:1-1 Trafik- och vägteknik, grundkurs VT17",2017-01-16T09:48:13.085Z,ABE - Imported course rounds,active
+DD2464VT171,DD2464,"DD2464 2017:1-1 Bigger Advanced, Individual Course in Computer Science VT17",2017-01-16T09:48:13.085Z,CSC - Imported course rounds,active
+DD1395VT171,DD1395,DD1395 2017:1-1 Fördjupande uppsats i datalogi VT17,2017-01-16T09:48:13.085Z,CSC - Imported course rounds,active
+DD2465VT171,DD2465,"DD2465 2017:1-1 Advanced, Individual Course in Computer Science VT17",2017-01-16T09:48:13.085Z,CSC - Imported course rounds,active
+MG2135VT171,MG2135,MG2135 2017:1-1 PLM - Product Lifecycle Management VT17,2017-01-16T09:48:13.085Z,ITM - Imported course rounds,active
+DH2466VT171,DH2466,"DH2466 2017:1-1 Advanced, Individual Course in Human-Computer Interaction VT17",2017-01-16T09:48:13.085Z,CSC - Imported course rounds,active
+MJ248XVT171,MJ248X,"MJ248X 2017:1-1 Degree Project in Energy Systems Analysis, Second Cycle VT17",2017-01-16T09:48:13.085Z,ITM - Imported course rounds,active
+DD2463VT171,DD2463,DD2463 2017:1-1 Advanced Individual Course in Computer Science VT17,2017-01-16T09:48:13.085Z,CSC - Imported course rounds,active
+KD2910VT171,KD2910,KD2910 2017:1-1 Project in Chemistry VT17,2017-01-16T09:48:13.085Z,CHE - Imported course rounds,active
+AG2141VT171,AG2141,AG2141 2017:1-1 Urban Infrastructure VT17,2017-01-16T09:48:13.085Z,ABE - Imported course rounds,active
+AF102XVT171,AF102X,"AF102X 2017:1-1 Examensarbete inom samhällsbyggnad, grundnivå VT17",2017-01-16T09:48:13.085Z,ABE - Imported course rounds,active
+IF226XVT171,IF226X,"IF226X 2017:1-1 Degree Project in Engineering Physics, Second Cycle VT17",2017-01-16T09:48:13.086Z,ICT - Imported course rounds,active
+IF245XVT171,IF245X,"IF245X 2017:1-1 Degree Project in Micro Electronics, Second Cycle VT17",2017-01-16T09:48:13.086Z,ICT - Imported course rounds,active
+IF246XVT171,IF246X,"IF246X 2017:1-1 Degree Project in Engineering Physics, Second Cycle VT17",2017-01-16T09:48:13.086Z,ICT - Imported course rounds,active
+II142XVT171,II142X,"II142X 2017:1-1 Examensarbete inom datateknik, grundnivå VT17",2017-01-16T09:48:13.086Z,ICT - Imported course rounds,active
+II143XVT171,II143X,"II143X 2017:1-1 Degree Project in Information and  Communication Technology, First Cycle VT17",2017-01-16T09:48:13.086Z,ICT - Imported course rounds,active
+II225XVT171,II225X,"II225X 2017:1-1 Degree Project in Information and Communication Technology, Second Cycle VT17",2017-01-16T09:48:13.086Z,ICT - Imported course rounds,active
+II245XVT171,II245X,"II245X 2017:1-1 Degree Project in Information and Communication Technology, Second Cycle VT17",2017-01-16T09:48:13.086Z,ICT - Imported course rounds,active
+II246XVT171,II246X,"II246X 2017:1-1 Degree Project in Computer Science and Engineering, Second Cycle VT17",2017-01-16T09:48:13.086Z,ICT - Imported course rounds,active
+SH2005VT171,SH2005,"SH2005 2017:1-1 Project Work in Physics, Smaller Course VT17",2017-01-16T09:48:13.086Z,SCI - Imported course rounds,active
+AF212XVT171,AF212X,"AF212X 2017:1-1 Degree Project in Concrete Structures, Second Cycle VT17",2017-01-16T09:48:13.086Z,ABE - Imported course rounds,active
+IL247XVT171,IL247X,"IL247X 2017:1-1 Degree Project in Electrical Engineering, Second Cycle VT17",2017-01-16T09:48:13.086Z,ICT - Imported course rounds,active
+II122XVT171,II122X,"II122X 2017:1-1 Examensarbete inom datateknik, grundnivå VT17",2017-01-16T09:48:13.086Z,ICT - Imported course rounds,active
+AH2301VT171,AH2301,AH2301 2017:1-1 Transport Policy and Evaluation VT17,2017-01-16T09:48:13.086Z,ABE - Imported course rounds,active
+AH2031VT171,AH2031,AH2031 2017:1-1 Järnväg signalteknik - projektering VT17,2017-01-16T09:48:13.086Z,ABE - Imported course rounds,active
+IL246XVT171,IL246X,"IL246X 2017:1-1 Degree Project in Electrical Engineering, Second Cycle VT17",2017-01-16T09:48:13.087Z,ICT - Imported course rounds,active
+IL248XVT171,IL248X,"IL248X 2017:1-1 Degree Project in Information and Communication Technology, Second Cycle VT17",2017-01-16T09:48:13.087Z,ICT - Imported course rounds,active
+IF247XVT171,IF247X,"IF247X 2017:1-1 Degree Project in Engineering Physics, Second Cycle VT17",2017-01-16T09:48:13.087Z,ICT - Imported course rounds,active
+II227XVT171,II227X,"II227X 2017:1-1 Degree Procet in Computer Science and Engineering, Second Cycle VT17",2017-01-16T09:48:13.087Z,ICT - Imported course rounds,active
+II247XVT171,II247X,"II247X 2017:1-1 Degree Project in Computer Science and Engineering, Second Cycle VT17",2017-01-16T09:48:13.087Z,ICT - Imported course rounds,active
+II249XVT171,II249X,"II249X 2017:1-1 Degree Project in Computer Science and Engineering, Second Cycle VT17",2017-01-16T09:48:13.087Z,ICT - Imported course rounds,active
+IL228XVT171,IL228X,"IL228X 2017:1-1 Degree Project in Information and Communication Technology, Second Cycle VT17",2017-01-16T09:48:13.087Z,ICT - Imported course rounds,active
+IT225XVT171,IT225X,"IT225X 2017:1-1 Degree Project in Micro Electronics, Second Cycle VT17",2017-01-16T09:48:13.087Z,ICT - Imported course rounds,active
+IT245XVT171,IT245X,"IT245X 2017:1-1 Degree Project in Micro Electronics, Second Cycle VT17",2017-01-16T09:48:13.087Z,ICT - Imported course rounds,active
+BB2480VT171,BB2480,BB2480 2017:1-1 Energy and Environment VT17,2017-01-16T09:48:13.087Z,BIO - Imported course rounds,active
+LT2013VT171,LT2013,LT2013 2017:1-1 Verksamhetsförlagd utbildning 2 VT17,2017-01-16T09:48:13.087Z,ECE - Imported course rounds,active
+BB200XVT171,BB200X,"BB200X 2017:1-1 Examensarbete inom bioteknik, avancerad nivå VT17",2017-01-16T09:48:13.087Z,BIO - Imported course rounds,active
+AH204XVT171,AH204X,"AH204X 2017:1-1 Degree Project in Railway and Rail Traffic, Second Cycle VT17",2017-01-16T09:48:13.087Z,ABE - Imported course rounds,active
+MJ2645VT171,MJ2645,MJ2645 2017:1-1 Project in Industrial Ecology VT17,2017-01-16T09:48:13.087Z,ABE - Imported course rounds,active
+MJ1530VT171,MJ1530,"MJ1530 2017:1-1 Fysik, Kemi, Energi och Miljö VT17",2017-01-16T09:48:13.088Z,ABE - Imported course rounds,active
+MF224XVT171,MF224X,"MF224X 2017:1-1 Examensarbete inom mekatronik, avancerad nivå VT17",2017-01-16T09:48:13.088Z,ITM - Imported course rounds,active
+EF233XVT171,EF233X,"EF233X 2017:1-1 Examensarbete inom rymdteknik, avancerad nivå VT17",2017-01-16T09:48:13.088Z,EES - Imported course rounds,active
+SA104XVT171,SA104X,"SA104X 2017:1-1 Examensarbete inom teknisk fysik, grundnivå VT17",2017-01-16T09:48:13.088Z,SCI - Imported course rounds,active
+KE200XVT171,KE200X,"KE200X 2017:1-1 Degree Project in Chemical Engineering, Second Cycle VT17",2017-01-16T09:48:13.088Z,CHE - Imported course rounds,active
+EF112XVT171,EF112X,"EF112X 2017:1-1 Examensarbete inom elektroteknik, grundnivå VT17",2017-01-16T09:48:13.088Z,EES - Imported course rounds,active
+MG110XVT171,MG110X,"MG110X 2017:1-1 Examensarbete inom industriell produktion, grundnivå VT17",2017-01-16T09:48:13.088Z,ITM - Imported course rounds,active
+EI130XVT171,EI130X,"EI130X 2017:1-1 Examensarbete inom elektroteknik, grundnivå VT17",2017-01-16T09:48:13.088Z,EES - Imported course rounds,active
+AL125XVT171,AL125X,"AL125X 2017:1-1 Examensarbete inom Energi och Miljö, grundnivå VT17",2017-01-16T09:48:13.088Z,ABE - Imported course rounds,active
+KD1280VT171,KD1280,KD1280 2017:1-1 Kemisk analys VT17,2017-01-16T09:48:13.088Z,CHE - Imported course rounds,active
+BB1010VT171,BB1010,BB1010 2017:1-1 Inledande bioteknik VT17,2017-01-16T09:48:13.088Z,BIO - Imported course rounds,active
+ML1205VT171,ML1205,ML1205 2017:1-1 Produktionsanpassad produktutveckling VT17,2017-01-16T09:48:13.088Z,ITM - Imported course rounds,active
+EL115XVT171,EL115X,"EL115X 2017:1-1 Degree Project in Electrical Engineering, First Cycle VT17",2017-01-16T09:48:13.089Z,EES - Imported course rounds,active
+EP112XVT171,EP112X,"EP112X 2017:1-1 Examensarbete inom elektroteknik, grundnivå VT17",2017-01-16T09:48:13.089Z,EES - Imported course rounds,active
+KD1510VT171,KD1510,KD1510 2017:1-1 Kemisk jämviktslära VT17,2017-01-16T09:48:13.089Z,CHE - Imported course rounds,active
+EK112XVT171,EK112X,"EK112X 2017:1-1 Examensarbete inom elektroteknik, grundnivå VT17",2017-01-16T09:48:13.089Z,EES - Imported course rounds,active
+SI2520VT171,SI2520,SI2520 2017:1-1 Nonequilibrium Statistical Mechanics VT17,2017-01-16T09:48:13.089Z,SCI - Imported course rounds,active
