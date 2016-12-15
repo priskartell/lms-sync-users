@@ -8,7 +8,7 @@ canvasUtilities.init(config.full.canvas.apiUrl, config.secure.canvas.apiKey)
 const {getCourseAndCourseRoundFromKopps, createCanvasCourseObject} = canvasUtilities
 const csvFile = require('../csvFile')
 const fs = require('fs')
-const createEnrollmentsFile = require('./createEnrollmentsFile');
+const createEnrollmentsFile = require('./createEnrollmentsFile')
 
 const constants = {
   term: '2017:1',
@@ -93,7 +93,7 @@ function writeCsvFile (canvasCourseObjects) {
       'active']
 
     return csvFile.writeLine(lineArr, fileName)
-    .then(()=>{
+    .then(() => {
       return {course, subAccount, courseRound, shortName}
     })
   }
