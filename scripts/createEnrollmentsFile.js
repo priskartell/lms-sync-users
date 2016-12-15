@@ -60,7 +60,7 @@ module.exports = function (arrayOfCourseInfo) {
       const query = 'OU=UG,DC=ug,DC=kth,DC=se'
       clientAsync.searchAsync(query, opts)
       .then(res => {
-        res.on('searchEntry', function ({object}) {
+        res.on('searchEntry',  ({object})=> {
           console.log('entry', object)
         })
         res.on('end', resolve)
