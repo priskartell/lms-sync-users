@@ -43,12 +43,31 @@ const client = ldap.createClient({
 })
 const clientAsync = Promise.promisifyAll(client)
 
+const attributes = ['ugKthid', 'ugUsername', 'mail', 'email_address', 'name', 'ugEmailAddressHR']
+const role = 'teachers'
+const opts = {
+  filter: `ugAffiliation=employee`,
+  scope: 'sub',
+  paged: true,
+  sizeLimit: 1000,
+  attributes
+}
+
 module.exports = function (arrayOfCourseInfo) {
-  console.log('todo: query ldap', JSON.stringify(arrayOfCourseInfo, null, 2))
   return clientAsync.bindAsync(config.secure.ldap.bind.username, config.secure.ldap.bind.password)
   .then(() => Promise.map(arrayOfCourseInfo, ({course, subAccount, courseRound, shortName}) => {
-    console.log('todo do something...')
-    return Promise.resolve()
+    return new Promise((resolve, reject) => {
+      const query = 'OU=UG,DC=ug,DC=kth,DC=se'
+      clientAsync.searchAsync(query, opts)
+      .then(res => {
+        res.on('searchEntry', function ({object}) {
+          console.log('entry', object)
+        })
+        res.on('end', resolve)
+        res.on('error', reject)
+      }
+      )
+    })
   }))
-  .then(() => clientAsync.unbindAsync())
+  .finally(() => clientAsync.unbindAsync())
 }
