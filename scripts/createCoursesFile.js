@@ -23,7 +23,7 @@ try {
 }
 
 function get (url) {
-  console.log(url)
+  // console.log(url)
   return rp({
     url,
     method: 'GET',
@@ -74,6 +74,7 @@ function buildCanvasCourseObjects (courseRounds) {
 }
 
 function writeCsvFile (canvasCourseObjects) {
+  console.log(JSON.stringify(canvasCourseObjects, null, 4))
   const columns = [
     'course_id',
     'short_name',
@@ -82,16 +83,15 @@ function writeCsvFile (canvasCourseObjects) {
     'account_id',
     'status']
 
-  function writeLine ({course, subAccount}) {
+  function writeLine ({course, subAccount, courseRound,shortName}) {
     const lineArr = [
       course.course.sis_course_id,
-      course.course.name,
-      course.course.name,
+      course.course.course_code,
+      `${course.course.course_code} ${shortName || ''} ${constants.term}-${courseRound.roundId} ${course.course.name}`,
       course.course.start_at,
       subAccount.sis_account_id,
       'active']
 
-    console.log('writing line', JSON.stringify(lineArr, null, 4))
     return csvFile.writeLine(lineArr, fileName)
   }
 
