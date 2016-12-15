@@ -45,10 +45,10 @@ const clientAsync = Promise.promisifyAll(client)
 
 module.exports = function (arrayOfCourseInfo) {
   console.log('todo: query ldap', JSON.stringify(arrayOfCourseInfo, null, 2))
-  return client.bindAsync(config.secure.ldap.bind.username, config.secure.ldap.bind.password)
+  return clientAsync.bindAsync(config.secure.ldap.bind.username, config.secure.ldap.bind.password)
   .then(() => Promise.map(arrayOfCourseInfo, ({course, subAccount, courseRound, shortName}) => {
     console.log('todo do something...')
     return Promise.resolve()
   }))
-  .then(() => client.unbindAsync())
+  .then(() => clientAsync.unbindAsync())
 }
