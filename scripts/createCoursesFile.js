@@ -82,7 +82,7 @@ function writeCsvFile (canvasCourseObjects) {
     'account_id',
     'status']
 
-  function writeLine ({course:courseWrapper, subAccount, courseRound}) {
+  function writeLine ({course: courseWrapper, subAccount, courseRound}) {
     const {course} = courseWrapper
 
     const lineArr = [
