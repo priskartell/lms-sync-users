@@ -106,7 +106,7 @@ get(`http://www.kth.se/api/kopps/v1/courseRounds/${constants.term}`)
 .then(addPeriods)
 .then(coursesWithPeriods => coursesWithPeriods.filter(({periods}) => periods && periods.find(({number}) => number === constants.period)))
 
-.then(coursesWithPeriods => [coursesWithPeriods[0]])
+// .then(coursesWithPeriods => [coursesWithPeriods[0]])
 .then(buildCanvasCourseObjects)
 .then(writeCsvFile)
 .catch(e => console.error(e))
