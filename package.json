@@ -30,6 +30,7 @@
     "blue-tape": "^1.0.0",
     "canvas-api": "github:kth/canvas-api",
     "colors": "^1.1.2",
+    "documentdb": "^1.10.0",
     "express": "^4.14.0",
     "kth-node-configuration": "KTH/kth-node-configuration.git#v1.0.1",
     "kth-node-log": "KTH/kth-node-log.git#v1.0.0",

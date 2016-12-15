@@ -38,6 +38,7 @@ module.exports = {
       queueName: '',
       StorageConnectionString: '',
       databaseConnectionString '',
+      databaseKey: '',
       databaseName: '',
       collectionName: '',
       csvBlobName: '',
