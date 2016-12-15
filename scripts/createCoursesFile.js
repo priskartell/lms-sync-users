@@ -8,6 +8,7 @@ canvasUtilities.init(config.full.canvas.apiUrl, config.secure.canvas.apiKey)
 const {getCourseAndCourseRoundFromKopps, createCanvasCourseObject} = canvasUtilities
 const csvFile = require('../csvFile')
 const fs = require('fs')
+const createEnrollmentsFile = require('./createEnrollmentsFile');
 
 const constants = {
   term: '2017:1',
@@ -74,7 +75,6 @@ function buildCanvasCourseObjects (courseRounds) {
 }
 
 function writeCsvFile (canvasCourseObjects) {
-  console.log(JSON.stringify(canvasCourseObjects, null, 4))
   const columns = [
     'course_id',
     'short_name',
@@ -87,12 +87,15 @@ function writeCsvFile (canvasCourseObjects) {
     const lineArr = [
       course.course.sis_course_id,
       course.course.course_code,
-      `${course.course.course_code} ${shortName || ''} ${constants.term}-${courseRound.roundId} ${course.course.name}`,
+      `${course.course.course_code} ${shortName || ''} ${course.course.name}`,
       course.course.start_at,
       subAccount.sis_account_id,
       'active']
 
     return csvFile.writeLine(lineArr, fileName)
+    .then(()=>{
+      return {course, subAccount, courseRound, shortName}
+    })
   }
 
   return csvFile.writeLine(columns, fileName)
@@ -105,12 +108,10 @@ get(`http://www.kth.se/api/kopps/v1/courseRounds/${constants.term}`)
 .then(parseString)
 .then(extractRelevantData)
 .then(courseRounds => filterCoursesByCount(courseRounds, courses => courses.length === 1))
+.then(c => [c[0]])
 .then(addPeriods)
 .then(coursesWithPeriods => coursesWithPeriods.filter(({periods}) => periods && periods.find(({number}) => number === constants.period)))
-
-// .then(coursesWithPeriods => [coursesWithPeriods[0]])
-
 .then(buildCanvasCourseObjects)
 .then(writeCsvFile)
-// .then(arg => console.log(JSON.stringify(arg, null, 2)))
+.then(createEnrollmentsFile)
 .catch(e => console.error(e))
