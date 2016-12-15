@@ -120,13 +120,6 @@ function _process (msg) {
     })
     .then(result => {
       log.info(JSON.parse(result, null, 4))
-      // Here to drag out list of enrollments from canvas and compare it
-      // with the content of the message based on user type
-      // This is necessary to understand what the message content really mean,
-      // if the message is activate or deactivation enrollments
-      // Investigate if there is a chance if the message both contains
-      // activation and deactivation, for now pressumed unlikekly
-      // return canvasApi.getEnrollmentList(sisCourseCode)})
       return _createCsvFile(msg, sisCourseCode, timeStamp)
     })
     .then(csvObject => {
