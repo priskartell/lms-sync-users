@@ -10,18 +10,12 @@
  const pabs = Promise.promisifyAll(azure.createBlobService()) // PromiseAzureBlobService
 
  const HttpStatusCodes = { NOTFOUND: 404 }
- const dbClient = new DocumentClient(config.secure.azure.databaseEndPoint, {'masterKey': config.secure.azure.databaseKey})
- const azureDbClient = Promise.promisifyAll(dbClient)
+
 
  function _connectoToAzure () {
    const csvVol = config.secure.azure.csvBlobName
    const msgVol = config.secure.azure.msgBlobName
-   const lmsDatabase = config.secure.azure.databaseName
-   const lmsCollection = config.secure.azure.collectionName
-   return cloudGetDatabase(lmsDatabase)
- .then(() => cloudGetCollection(lmsDatabase, lmsCollection))
- .then(() => log.info('Connected to database: ' + lmsDatabase + ' , Collection: ' + lmsCollection + ' successfully:'))
- .then(() => cloudCreateContainer(csvVol))
+ return cloudCreateContainer(csvVol)
  .then(() => log.info('Created: ' + csvVol))
  .then(() => cloudCreateContainer(msgVol))
  .then(() => log.info('Created: ' + msgVol))
@@ -44,98 +38,6 @@
      log.error('checkParameterName: parameterName not valid: ')
      return Promise.reject(Error('checkParameterName: parameterName not valid:'))
    }
- }
-
- function cloudGetDatabase (databaseName) {
-   return checkParameterName(databaseName)
-   .then(() => {
-     let databaseUrl = `dbs/${databaseName}`
-     return azureDbClient.readDatabaseAsync(databaseUrl)
-   })
- .catch(error => {
-   if (error.code === HttpStatusCodes.NOTFOUND) {
-     return azureDbClient.createDatabaseAsync({id: databaseName})
-   } else {
-     Promise.reject(error)
-   }
- })
- }
-
- function cloudGetCollection (dbName, collName) {
-   return checkParameterName(dbName, collName)
- .then(() => {
-   let collectionUrl = `dbs/${dbName}/colls/${collName}`
-   log.info('Reading collection: ' + collectionUrl)
-   return azureDbClient.readCollectionAsync(collectionUrl)
- })
- .catch(error => {
-   if (error.code === HttpStatusCodes.NOTFOUND) {
-     let databaseUrl = `dbs/${dbName}`
-     let config = {id: collName}
-     return azureDbClient.createCollectionAsync(databaseUrl, config, {offerThroughput: 400})
-   } else {
-     Promise.reject(error)
-   }
- })
- }
-
-// let collectionUrl = `dbs/${databaseId}/colls/${collectionId}`
- function cloudQueryCollection (query, collectionUrl) {
-   log.info(`Querying collection through index: ${collectionUrl}`)
-   return checkParameterName(query, collectionUrl)
-     .then(() => azureDbClient.queryDocumentsAsync(collectionUrl, query))
-     .then(results => {
-       let rArray = results.toArray(results)
-       for (let queryResult of rArray) {
-         let resultString = JSON.stringify(queryResult)
-         log.info(`\tQuery returned ${resultString}`)
-       }
-       return rArray
-     })
- }
-
- function cloudDeleteDatabase (database) {
-   return checkParameterName(database)
-    .then(() => {
-      let databaseUrl = `dbs/${database}`
-      log.info(`Cleaning up by deleting database ${databaseUrl}`)
-      return azureDbClient.deleteDatabase(databaseUrl)
-    })
- }
-
- function cloudGetDocument (document, collectionUrl) {
-   return checkParameterName(document, collectionUrl)
-    .then(() => {
-      let documentUrl = `${collectionUrl}/docs/${document.id}`
-      log.info(`Getting document:${document.id}`)
-      return azureDbClient.readDocumentAsync(documentUrl)
-    })
- }
-
- function cloudCreateDocument (document, collectionUrl) {
-   return checkParameterName(document, collectionUrl)
-  .then(() => {
-    log.info(`Creating document: ${document.id}`)
-    return azureDbClient.createDocumentAsync(collectionUrl, document)
-  })
- }
-
- function cloudReplaceDocument (document, collectionUrl) {
-   return checkParameterName(document)
-    .then(() => {
-      let documentUrl = `${collectionUrl}/docs/${document.id}`
-      log.info(`Replacing document: ${document.id}`)
-      return azureDbClient.replaceDocumentAsync(documentUrl, document)
-    })
- }
-
- function cloudDeleteDocument (document, collectionUrl) {
-   return checkParameterName(document, collectionUrl)
-    .then(() => {
-      let documentUrl = `${collectionUrl}/docs/${document.id}`
-      log.info(`Deleting document: ${document.id}`)
-      return azureDbClient.deleteDocument(documentUrl)
-    })
  }
 
  function cloudCreateContainer (containerName) {
@@ -252,13 +154,5 @@
    cloudDeleteFilesBeforeDate,
    cloudCreateContainer,
    cloudStoreTextToExistingFile,
-   cloudGetFilesBeforeDate,
-   cloudGetDatabase,
-   cloudGetCollection,
-   cloudQueryCollection,
-   cloudGetDocument,
-   cloudCreateDocument,
-   cloudReplaceDocument,
-   cloudDeleteDocument,
-   cloudDeleteDatabase
+   cloudGetFilesBeforeDate
  }

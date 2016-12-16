@@ -11,8 +11,7 @@ require('colors')
 const csvVol = config.secure.azure.csvBlobName
 const msgVol = config.secure.azure.msgBlobName
 const csvDir = config.secure.localFile.csvDir
-const lmsDatabase = config.secure.azure.databaseName
-const lmsCollection = config.secure.azure.collectionName
+
 
 function _createCsvFile (msg, sisCourseCode, timeStamp) {
   let header = 'course_id,user_id,role,status\n'
@@ -130,8 +129,8 @@ function _process (msg) {
     .then(canvasReturnValue => {
       let documentId = sisCourseCode + '.' + timeStamp
       let document = {id: documentId, msg: msg, resp: canvasReturnValue}
-      let collectionUrl = `dbs/${lmsDatabase}/colls/${lmsCollection}`
-      return cl.cloudCreateDocument(document, collectionUrl)
+      log.info(document)
+      return
     })
     .catch(err => {
       if (err.statusCode === 404) {
