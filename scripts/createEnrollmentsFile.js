@@ -42,14 +42,14 @@ const client = ldap.createClient({
   url: config.secure.ldap.client.url
 })
 const clientAsync = Promise.promisifyAll(client)
-const attributes = ['ugKthid', 'ugUsername', 'mail', 'email_address', 'name', 'ugEmailAddressHR']
-// const role = 'teachers'
+const attributes = ['ugKthid', 'name']
 
 function getUsersForCourse ({course, courseRound}) {
+  console.log('TODO: course initiaals');
   return Promise.map(['teachers', 'assistants', 'courseresponsible'], type => {
     return clientAsync.searchAsync('OU=UG,DC=ug,DC=kth,DC=se', {
       scope: 'sub',
-      filter: `(&(objectClass=group)(CN=edu.courses.AF.AF2301.20162.2.${type}))`,
+      filter: `(&(objectClass=group)(CN=edu.courses.MJ.${courseRound.courseCode}.${courseRound.startTerm}.${courseRound.roundId}.${type}))`,
       timeLimit: 11,
       paged: true
     })
@@ -98,7 +98,7 @@ function getUsersForMembers (members) {
     res.on('error', reject)
   }))
   })
-  // .then(userArray => [].concat.apply([], userArray))
+  .then(userArray => [].concat.apply([], userArray))
   // .then(users => console.log('users', JSON.stringify( users )))
 }
 
