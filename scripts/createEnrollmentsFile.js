@@ -51,11 +51,12 @@ function getUsersForMembers (members) {
 }
 
 function writeUsersForCourse ([sisCourseId, courseCode, name]) {
-  function writeUser (user, role) {
-    return csvFile.writeLine([sisCourseId, user.ugKthid, role, 'active'], fileName)
-  }
 
   console.log('writing users for course', courseCode)
+
+  function writeUsers (users, role) {
+    return Promise.map(users, user => csvFile.writeLine([sisCourseId, user.ugKthid, role, 'active'], fileName))
+  }
 
   return Promise.map(['teachers', 'assistants', 'courseresponsible'], type => {
     const courseInitials = courseCode.substring(0, 2)
@@ -84,9 +85,9 @@ function writeUsersForCourse ([sisCourseId, courseCode, name]) {
   })
     .then(arrayOfMembers => Promise.map(arrayOfMembers, getUsersForMembers))
     .then(([teachers, assistants, courseresponsible]) => Promise.all([
-      Promise.map(teachers, user => writeUser(user, 'teacher')),
-      Promise.map(courseresponsible, user => writeUser(user, 'Course Responsible')),
-      Promise.map(assistants, user => writeUser(user, 'ta'))
+      writeUsers(teachers, 'teacher'),
+      writeUsers(courseresponsible, 'Course Responsible'),
+      writeUsers(assistants, 'ta')
     ])
     )
 }
