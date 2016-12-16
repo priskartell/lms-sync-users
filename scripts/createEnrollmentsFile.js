@@ -37,14 +37,27 @@
 */
 const Promise = require('bluebird')
 const ldap = require('ldapjs')
+const fs = Promise.promisifyAll(require('fs'))
+
 const config = require('../server/init/configuration')
 const client = ldap.createClient({
   url: config.secure.ldap.client.url
 })
 const clientAsync = Promise.promisifyAll(client)
 const attributes = ['ugKthid', 'name']
+const csvFile = require('../csvFile')
 
-function getUsersForCourse ({course, courseRound}) {
+let fileName
+
+const columns = [
+  'course_id',
+  'short_name',
+  'long_name',
+  'start_date',
+  'account_id',
+  'status']
+
+function writeUsersForCourse ({course, courseRound, constants}) {
   console.log('get users for the course', courseRound.courseCode)
   return Promise.map(['teachers', 'assistants', 'courseresponsible'], type => {
     const courseInitials = courseRound.courseCode.substring(0, 2)
@@ -69,10 +82,11 @@ function getUsersForCourse ({course, courseRound}) {
   })
   })
   .then(arrayOfMembers => Promise.map(arrayOfMembers, getUsersForMembers))
-  .then(([teachers, assistants, courseresponsible]) => {
-    console.log(`got ${teachers.length} teachers, ${assistants.length} assistants and ${courseresponsible.length} courseresponsible for course ${courseRound.courseCode}`);
-    return {course, courseRound, users: {teachers, assistants, courseresponsible}}
-  })
+  .then(() => console.log('TODO: write a line!'))
+  // .then(([teachers, assistants, courseresponsible]) => {
+  //   // console.log(`got ${teachers.length} teachers, ${assistants.length} assistants and ${courseresponsible.length} courseresponsible for course ${courseRound.courseCode}`);
+  //   return {sisCourseId: course.course.sis_course_id, users: {teachers, assistants, courseresponsible}}
+  // })
 }
 
 function getUsersForMembers (members) {
@@ -100,9 +114,12 @@ function getUsersForMembers (members) {
   .then(userArray => [].concat.apply([], userArray))
 }
 
-module.exports = function (arrayOfCourseInfo) {
-  return clientAsync.bindAsync(config.secure.ldap.bind.username, config.secure.ldap.bind.password)
-  .then(() => Promise.map(arrayOfCourseInfo, getUsersForCourse))
-  .then(courses => console.log('courses', JSON.stringify(courses)))
+module.exports = function (arrayOfCourseInfo, constants) {
+  fileName = `csv/enrollments-${constants.term}-${constants.period}.csv`
+  return fs.unlinkAsync(fileName)
+  .catch(e => console.log('couldnt delete file. It probably doesnt exist.', e.message))
+  .then(() => clientAsync.bindAsync(config.secure.ldap.bind.username, config.secure.ldap.bind.password))
+  .then(() => csvFile.writeLine(columns, fileName))
+  .then(() => Promise.map(arrayOfCourseInfo, writeUsersForCourse))
   .finally(() => clientAsync.unbindAsync())
 }

@@ -1,3 +1,4 @@
+
 const rp = require('request-promise')
 const Promise = require('bluebird') // use bluebird to get a little more promise functions then the standard Promise AP
 const parseString = Promise.promisify(require('xml2js').parseString)
@@ -18,7 +19,6 @@ const constants = {
 const fileName = `csv/courses-${constants.term}-${constants.period}.csv`
 
 try {
-  fs.unlinkSync(fileName)
 } catch (e) {
   console.log('couldnt delete file. It probably doesnt exist.', e)
 }
@@ -108,10 +108,10 @@ get(`http://www.kth.se/api/kopps/v1/courseRounds/${constants.term}`)
 .then(parseString)
 .then(extractRelevantData)
 .then(courseRounds => filterCoursesByCount(courseRounds, courses => courses.length === 1))
-// .then(c => [c[0]])
+// .then(c => c.splice(0,3))
 .then(addPeriods)
 .then(coursesWithPeriods => coursesWithPeriods.filter(({periods}) => periods && periods.find(({number}) => number === constants.period)))
 .then(buildCanvasCourseObjects)
 .then(writeCsvFile)
-.then(createEnrollmentsFile)
+.then((arrayOfCourseInfo)=>createEnrollmentsFile(arrayOfCourseInfo, constants))
 .catch(e => console.error(e))
