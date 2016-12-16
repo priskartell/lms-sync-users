@@ -19,10 +19,10 @@ const fileName = `csv/enrollments-${constants.term}-${constants.period}.csv`
 const coursesFileName = `csv/courses-${constants.term}-${constants.period}.csv`
 
 const columns = [
-  'course_id', //	text 	Required field if section_id is missing. The course identifier from courses.csv
-  'user_id', //	text 	Required field. The User identifier from users.csv
-  'role', // 	text 	Required field if role_id missing. student, teacher, ta, observer, designer, or a custom role defined by the account
-  'status' //	Required field. active, deleted, completed, inactive
+  'course_id',
+  'user_id',
+  'role',
+  'status'
 ]
 
 function getUsersForMembers (members) {
@@ -50,11 +50,12 @@ function getUsersForMembers (members) {
   .then(userArray => [].concat.apply([], userArray))
 }
 
-function writeUsersForCourse ([sis_course_id, courseCode, name, start_date, account_id]) {
+function writeUsersForCourse ([sisCourseId, courseCode, name]) {
+  console.log('writing users for course', courseCode)
   return Promise.map(['teachers', 'assistants', 'courseresponsible'], type => {
     const courseInitials = courseCode.substring(0, 2)
     const startTerm = constants.term.replace(':', '')
-    const roundId = sis_course_id.substring(sis_course_id.length - 1, sis_course_id.length)
+    const roundId = sisCourseId.substring(sisCourseId.length - 1, sisCourseId.length)
 
     return clientAsync.searchAsync('OU=UG,DC=ug,DC=kth,DC=se', {
       scope: 'sub',
@@ -78,9 +79,9 @@ function writeUsersForCourse ([sis_course_id, courseCode, name, start_date, acco
   })
     .then(arrayOfMembers => Promise.map(arrayOfMembers, getUsersForMembers))
     .then(([teachers, assistants, courseresponsible]) => Promise.all([
-      Promise.map(teachers, user => csvFile.writeLine([sis_course_id, user.ugKthid, 'teacher', 'active'], fileName)),
-      Promise.map(courseresponsible, user => csvFile.writeLine([sis_course_id, user.ugKthid, 'Course Responsible', 'active'], fileName)),
-      Promise.map(courseresponsible, user => csvFile.writeLine([sis_course_id, user.ugKthid, 'ta', 'active'], fileName)),
+      Promise.map(teachers, user => csvFile.writeLine([sisCourseId, user.ugKthid, 'teacher', 'active'], fileName)),
+      Promise.map(courseresponsible, user => csvFile.writeLine([sisCourseId, user.ugKthid, 'Course Responsible', 'active'], fileName)),
+      Promise.map(courseresponsible, user => csvFile.writeLine([sisCourseId, user.ugKthid, 'ta', 'active'], fileName))
     ])
     )
 }
