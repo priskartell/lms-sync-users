@@ -12,7 +12,6 @@ const csvVol = config.secure.azure.csvBlobName
 const msgVol = config.secure.azure.msgBlobName
 const csvDir = config.secure.localFile.csvDir
 
-
 function _createCsvFile (msg, sisCourseCode, timeStamp) {
   let header = 'course_id,user_id,role,status\n'
   let msgtype = msg._desc.userType

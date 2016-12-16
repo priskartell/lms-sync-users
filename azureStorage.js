@@ -5,17 +5,13 @@
  const config = require('./server/init/configuration')
  process.env['AZURE_STORAGE_CONNECTION_STRING'] = config.secure.azure.StorageConnectionString
  const Promise = require('bluebird')
- const DocumentClient = require('documentdb').DocumentClient
  const mkdir = Promise.promisify(require('fs').mkdir)
  const pabs = Promise.promisifyAll(azure.createBlobService()) // PromiseAzureBlobService
-
- const HttpStatusCodes = { NOTFOUND: 404 }
-
 
  function _connectoToAzure () {
    const csvVol = config.secure.azure.csvBlobName
    const msgVol = config.secure.azure.msgBlobName
- return cloudCreateContainer(csvVol)
+   return cloudCreateContainer(csvVol)
  .then(() => log.info('Created: ' + csvVol))
  .then(() => cloudCreateContainer(msgVol))
  .then(() => log.info('Created: ' + msgVol))
