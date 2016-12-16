@@ -77,17 +77,12 @@ function writeUsersForCourse ([sis_course_id, courseCode, name, start_date, acco
     })
   })
     .then(arrayOfMembers => Promise.map(arrayOfMembers, getUsersForMembers))
-    .then(([teachers, assistants, courseresponsible]) => {
-      console.log(JSON.stringify(teachers, null, 4))
-      //  {
-    //     "dn": "CN=Nenad Glodic (glodic),OU=EMPLOYEES,OU=USERS,OU=UG,DC=ug,DC=kth,DC=se",
-    //     "controls": [],
-    //     "name": "Nenad Glodic (glodic)",
-    //     "ugKthid": "u15nm7pe"
-    // }
-      return Promise.map(teachers, user => csvFile.writeLine([sis_course_id, user.ugKthid, 'teacher', 'active'], fileName))
-      // console.log(`got ${teachers.length} teachers, ${assistants.length} assistants and ${courseresponsible.length} courseresponsible for course ${courseCode}`)
-    })
+    .then(([teachers, assistants, courseresponsible]) => Promise.all([
+      Promise.map(teachers, user => csvFile.writeLine([sis_course_id, user.ugKthid, 'teacher', 'active'], fileName)),
+      Promise.map(courseresponsible, user => csvFile.writeLine([sis_course_id, user.ugKthid, 'Course Responsible', 'active'], fileName)),
+      Promise.map(courseresponsible, user => csvFile.writeLine([sis_course_id, user.ugKthid, 'ta', 'active'], fileName)),
+    ])
+    )
 }
 
 fs.unlinkAsync(fileName)
