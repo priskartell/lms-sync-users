@@ -18,6 +18,7 @@ const constants = {
 const fileName = `csv/courses-${constants.term}-${constants.period}.csv`
 
 try {
+  fs.unlinkSync(fileName)
 } catch (e) {
   console.log('couldnt delete file. It probably doesnt exist.', e)
 }
