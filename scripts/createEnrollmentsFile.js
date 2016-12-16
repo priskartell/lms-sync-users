@@ -45,9 +45,9 @@ const clientAsync = Promise.promisifyAll(client)
 const attributes = ['ugKthid', 'name']
 
 function getUsersForCourse ({course, courseRound}) {
-  console.log('TODO: course initiaals');
+  console.log('TODO: course initiaals')
   return Promise.map(['teachers', 'assistants', 'courseresponsible'], type => {
-    const courseInitials = courseRound.courseCode.substring(0,2)
+    const courseInitials = courseRound.courseCode.substring(0, 2)
     return clientAsync.searchAsync('OU=UG,DC=ug,DC=kth,DC=se', {
       scope: 'sub',
       filter: `(&(objectClass=group)(CN=edu.courses.${courseInitials}.${courseRound.courseCode}.${courseRound.startTerm}.${courseRound.roundId}.${type}))`,
@@ -55,7 +55,7 @@ function getUsersForCourse ({course, courseRound}) {
       paged: true
     })
   .then(res => new Promise((resolve, reject) => {
-    res.on('searchEntry', ({object})=>resolve(object.member))
+    res.on('searchEntry', ({object}) => resolve(object.member))
     res.on('end', resolve)
     res.on('error', reject)
   }))
@@ -68,19 +68,19 @@ function getUsersForCourse ({course, courseRound}) {
     }
   })
   })
-  .then(arrayOfMembers =>Promise.map(arrayOfMembers, getUsersForMembers))
-  .then(([teachers, assistants, courseresponsible])=>{
-      return {teachers, assistants, courseresponsible}
+  .then(arrayOfMembers => Promise.map(arrayOfMembers, getUsersForMembers))
+  .then(([teachers, assistants, courseresponsible]) => {
+    return {teachers, assistants, courseresponsible}
   })
-  .then(users => console.log('users', JSON.stringify( users )))
+  .then(users => console.log('users', JSON.stringify(users)))
 }
 
 function getUsersForMembers (members) {
   return Promise.map(members, member => {
-    console.log('get users for member:',member)
+    console.log('get users for member:', member)
     return clientAsync.searchAsync('OU=UG,DC=ug,DC=kth,DC=se', {
       scope: 'sub',
-                                //CN=Nenad Glodic (glodic),OU=EMPLOYEES,OU=USERS,OU=UG,DC=ug,DC=kth,DC=se
+                                // CN=Nenad Glodic (glodic),OU=EMPLOYEES,OU=USERS,OU=UG,DC=ug,DC=kth,DC=se
       filter: `(distinguishedName=${member})`,
       timeLimit: 10,
       paging: true,
