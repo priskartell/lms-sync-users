@@ -45,7 +45,7 @@ const clientAsync = Promise.promisifyAll(client)
 const attributes = ['ugKthid', 'name']
 
 function getUsersForCourse ({course, courseRound}) {
-  console.log('TODO: course initiaals')
+  console.log('get users for the course', courseRound.courseCode)
   return Promise.map(['teachers', 'assistants', 'courseresponsible'], type => {
     const courseInitials = courseRound.courseCode.substring(0, 2)
     return clientAsync.searchAsync('OU=UG,DC=ug,DC=kth,DC=se', {
@@ -56,7 +56,7 @@ function getUsersForCourse ({course, courseRound}) {
     })
   .then(res => new Promise((resolve, reject) => {
     res.on('searchEntry', ({object}) => resolve(object.member))
-    res.on('end', resolve)
+    res.on('end', ({object}) => resolve(object && object.member))
     res.on('error', reject)
   }))
   .then(member => {
@@ -70,14 +70,14 @@ function getUsersForCourse ({course, courseRound}) {
   })
   .then(arrayOfMembers => Promise.map(arrayOfMembers, getUsersForMembers))
   .then(([teachers, assistants, courseresponsible]) => {
-    return {teachers, assistants, courseresponsible}
+    console.log(`got ${teachers.length} teachers, ${assistants.length} assistants and ${courseresponsible.length} courseresponsible for course ${courseRound.courseCode}`);
+    return {course, courseRound, users: {teachers, assistants, courseresponsible}}
   })
-  .then(users => console.log('users', JSON.stringify(users)))
 }
 
 function getUsersForMembers (members) {
   return Promise.map(members, member => {
-    console.log('get users for member:', member)
+    // console.log('get users for member:', member)
     return clientAsync.searchAsync('OU=UG,DC=ug,DC=kth,DC=se', {
       scope: 'sub',
                                 // CN=Nenad Glodic (glodic),OU=EMPLOYEES,OU=USERS,OU=UG,DC=ug,DC=kth,DC=se
@@ -103,5 +103,6 @@ function getUsersForMembers (members) {
 module.exports = function (arrayOfCourseInfo) {
   return clientAsync.bindAsync(config.secure.ldap.bind.username, config.secure.ldap.bind.password)
   .then(() => Promise.map(arrayOfCourseInfo, getUsersForCourse))
+  .then(courses => console.log('courses', JSON.stringify(courses)))
   .finally(() => clientAsync.unbindAsync())
 }
