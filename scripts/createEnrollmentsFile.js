@@ -51,7 +51,12 @@ function getUsersForMembers (members) {
 }
 
 function writeUsersForCourse ([sisCourseId, courseCode, name]) {
+  function writeUser (user, role) {
+    return csvFile.writeLine([sisCourseId, user.ugKthid, role, 'active'], fileName)
+  }
+
   console.log('writing users for course', courseCode)
+  
   return Promise.map(['teachers', 'assistants', 'courseresponsible'], type => {
     const courseInitials = courseCode.substring(0, 2)
     const startTerm = constants.term.replace(':', '')
@@ -79,9 +84,9 @@ function writeUsersForCourse ([sisCourseId, courseCode, name]) {
   })
     .then(arrayOfMembers => Promise.map(arrayOfMembers, getUsersForMembers))
     .then(([teachers, assistants, courseresponsible]) => Promise.all([
-      Promise.map(teachers, user => csvFile.writeLine([sisCourseId, user.ugKthid, 'teacher', 'active'], fileName)),
-      Promise.map(courseresponsible, user => csvFile.writeLine([sisCourseId, user.ugKthid, 'Course Responsible', 'active'], fileName)),
-      Promise.map(courseresponsible, user => csvFile.writeLine([sisCourseId, user.ugKthid, 'ta', 'active'], fileName))
+      Promise.map(teachers, user => writeUser(user, 'teacher')),
+      Promise.map(courseresponsible, user => writeUser(user, 'Course Responsible')),
+      Promise.map(assistants, user => writeUser(user, 'ta'))
     ])
     )
 }
