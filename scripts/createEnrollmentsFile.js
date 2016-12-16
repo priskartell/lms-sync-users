@@ -42,38 +42,68 @@ const client = ldap.createClient({
   url: config.secure.ldap.client.url
 })
 const clientAsync = Promise.promisifyAll(client)
-// const attributes = ['ugKthid', 'ugUsername', 'mail', 'email_address', 'name', 'ugEmailAddressHR']
+const attributes = ['ugKthid', 'ugUsername', 'mail', 'email_address', 'name', 'ugEmailAddressHR']
 // const role = 'teachers'
 
 function getUsersForCourse ({course, courseRound}) {
-  return clientAsync.searchAsync('OU=UG,DC=ug,DC=kth,DC=se', {
-    scope: 'sub',
-    filter: '(&(objectClass=group)(CN=edu.courses.AF.AF2301.20162.2.teachers))',
-    timeLimit: 11,
-    paged: true
-  })
+  return Promise.map(['teachers', 'assistants', 'courseresponsible'], type => {
+    return clientAsync.searchAsync('OU=UG,DC=ug,DC=kth,DC=se', {
+      scope: 'sub',
+      filter: `(&(objectClass=group)(CN=edu.courses.AF.AF2301.20162.2.${type}))`,
+      timeLimit: 11,
+      paged: true
+    })
   .then(res => new Promise((resolve, reject) => {
-    res.on('searchEntry', resolve)
+    res.on('searchEntry', ({object})=>resolve(object.member))
     res.on('end', resolve)
     res.on('error', reject)
   }))
-  .then(({object}) => {
-    return {
-      course,
-      courseRound,
-      members: object.member}
+  .then(member => {
+    // Always use arrays as result
+    if (typeof member === 'string') {
+      return [member]
+    } else {
+      return member || []
+    }
+  })
+  // .then(([teachers, assistants, courseresponsible]) => {
+  //   return {teachers, assistants, courseresponsible}
+  // })
+  })
+  .then(arrayOfMembers =>Promise.map(arrayOfMembers, getUsersForMembers))
+  .then(([teachers, assistants, courseresponsible])=>{
+      return {teachers, assistants, courseresponsible}
   })
 }
 
-function getUsersForDN ({course, courseRound, members}) {
-  console.log({course, courseRound, members})
-  console.log('TODO: GET THE USERS FROM LDAP!')
-  return Promise.resolve()
+function getUsersForMembers (members) {
+  return Promise.map(members, member => {
+    console.log('get users for member:',member)
+    return clientAsync.searchAsync('OU=UG,DC=ug,DC=kth,DC=se', {
+      scope: 'sub',
+      filter: '(distinguishedName=CN=Maren Mensing (mensing),OU=STUDENTS,OU=USERS,OU=UG,DC=ug,DC=kth,DC=se)',
+      timeLimit: 10,
+      paging: true,
+      attributes,
+      paged: {
+        pageSize: 1000,
+        pagePause: false
+      }
+    })
+  .then(res => new Promise((resolve, reject) => {
+    const users = []
+    res.on('searchEntry', ({object}) => users.push(object))
+    res.on('end', () => resolve(users))
+    res.on('error', reject)
+  }))
+  })
+  // .then(userArray => [].concat.apply([], userArray))
+  // .then(users => console.log('users', JSON.stringify( users )))
 }
 
 module.exports = function (arrayOfCourseInfo) {
   return clientAsync.bindAsync(config.secure.ldap.bind.username, config.secure.ldap.bind.password)
   .then(() => Promise.map(arrayOfCourseInfo, getUsersForCourse))
-  .then(coursesWithMembers => Promise.map(coursesWithMembers, getUsersForDN))
+  // .then(arg => console.log('arg', JSON.stringify(arg, null, 2)))
   .finally(() => clientAsync.unbindAsync())
 }
