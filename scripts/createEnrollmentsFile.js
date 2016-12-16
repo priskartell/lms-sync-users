@@ -74,6 +74,7 @@ function getUsersForCourse ({course, courseRound}) {
   .then(([teachers, assistants, courseresponsible])=>{
       return {teachers, assistants, courseresponsible}
   })
+  .then(users => console.log('users', JSON.stringify( users )))
 }
 
 function getUsersForMembers (members) {
