@@ -16,6 +16,9 @@ const constants = {
   period: '3'
 }
 
+createEnrollmentsFile.term = constants.term
+createEnrollmentsFile.period = constants.period
+
 const fileName = `csv/courses-${constants.term}-${constants.period}.csv`
 
 try {
@@ -108,10 +111,10 @@ get(`http://www.kth.se/api/kopps/v1/courseRounds/${constants.term}`)
 .then(parseString)
 .then(extractRelevantData)
 .then(courseRounds => filterCoursesByCount(courseRounds, courses => courses.length === 1))
-// .then(c => c.splice(0,3))
+.then(c => c.splice(0,3))
 .then(addPeriods)
 .then(coursesWithPeriods => coursesWithPeriods.filter(({periods}) => periods && periods.find(({number}) => number === constants.period)))
 .then(buildCanvasCourseObjects)
 .then(writeCsvFile)
-.then((arrayOfCourseInfo)=>createEnrollmentsFile(arrayOfCourseInfo, constants))
+.then(createEnrollmentsFile.createFile)
 .catch(e => console.error(e))

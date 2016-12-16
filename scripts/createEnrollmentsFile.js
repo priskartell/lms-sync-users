@@ -113,13 +113,19 @@ function getUsersForMembers (members) {
   })
   .then(userArray => [].concat.apply([], userArray))
 }
-
-module.exports = function (arrayOfCourseInfo, constants) {
-  fileName = `csv/enrollments-${constants.term}-${constants.period}.csv`
-  return fs.unlinkAsync(fileName)
-  .catch(e => console.log('couldnt delete file. It probably doesnt exist.', e.message))
-  .then(() => clientAsync.bindAsync(config.secure.ldap.bind.username, config.secure.ldap.bind.password))
-  .then(() => csvFile.writeLine(columns, fileName))
-  .then(() => Promise.map(arrayOfCourseInfo, writeUsersForCourse))
-  .finally(() => clientAsync.unbindAsync())
+let constants = {}
+module.exports = {
+  createFile (arrayOfCourseInfo) {
+    fileName = `csv/enrollments-${constants.term}-${constants.period}.csv`
+    return fs.unlinkAsync(fileName)
+    .catch(e => console.log('couldnt delete file. It probably doesnt exist.', e.message))
+    .then(() => clientAsync.bindAsync(config.secure.ldap.bind.username, config.secure.ldap.bind.password))
+    .then(() => csvFile.writeLine(columns, fileName))
+    .then(() => Promise.map(arrayOfCourseInfo, writeUsersForCourse))
+    .finally(() => clientAsync.unbindAsync())
+  }, set term (val) {
+    constants.term = val
+  }, set period (val) {
+    constants.period = val
+  }
 }
