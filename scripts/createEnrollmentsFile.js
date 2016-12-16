@@ -56,7 +56,7 @@ function writeUsersForCourse ([sisCourseId, courseCode, name]) {
   }
 
   console.log('writing users for course', courseCode)
-  
+
   return Promise.map(['teachers', 'assistants', 'courseresponsible'], type => {
     const courseInitials = courseCode.substring(0, 2)
     const startTerm = constants.term.replace(':', '')
@@ -99,5 +99,6 @@ fs.unlinkAsync(fileName)
     .then(fileContentStr => fileContentStr.split('\n'))
     .then(lines => lines.splice(1, lines.length - 2)) // first line is columns, last is new empty line
     .then(lines => lines.map(line => line.split(','))) // split into values per column
-    .then(linesArrays => Promise.map(linesArrays, writeUsersForCourse))
+    .then(linesArrays => Promise.mapSeries(linesArrays, writeUsersForCourse))
+    .catch(e => console.error(e))
     .finally(() => clientAsync.unbindAsync())
