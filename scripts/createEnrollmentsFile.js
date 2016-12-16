@@ -123,9 +123,5 @@ module.exports = {
     .then(() => csvFile.writeLine(columns, fileName))
     .then(() => Promise.map(arrayOfCourseInfo, writeUsersForCourse))
     .finally(() => clientAsync.unbindAsync())
-  }, set term (val) {
-    constants.term = val
-  }, set period (val) {
-    constants.period = val
   }
 }

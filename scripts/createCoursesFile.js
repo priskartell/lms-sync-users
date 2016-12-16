@@ -9,15 +9,11 @@ canvasUtilities.init(config.full.canvas.apiUrl, config.secure.canvas.apiKey)
 const {getCourseAndCourseRoundFromKopps, createCanvasCourseObject} = canvasUtilities
 const csvFile = require('../csvFile')
 const fs = require('fs')
-const createEnrollmentsFile = require('./createEnrollmentsFile')
 
 const constants = {
   term: '2017:1',
   period: '3'
 }
-
-createEnrollmentsFile.term = constants.term
-createEnrollmentsFile.period = constants.period
 
 const fileName = `csv/courses-${constants.term}-${constants.period}.csv`
 
@@ -111,10 +107,9 @@ get(`http://www.kth.se/api/kopps/v1/courseRounds/${constants.term}`)
 .then(parseString)
 .then(extractRelevantData)
 .then(courseRounds => filterCoursesByCount(courseRounds, courses => courses.length === 1))
-.then(c => c.splice(0,3))
 .then(addPeriods)
 .then(coursesWithPeriods => coursesWithPeriods.filter(({periods}) => periods && periods.find(({number}) => number === constants.period)))
 .then(buildCanvasCourseObjects)
 .then(writeCsvFile)
-.then(createEnrollmentsFile.createFile)
 .catch(e => console.error(e))
+console.log('TODO: add && npm run createEnrollmentsFile')
