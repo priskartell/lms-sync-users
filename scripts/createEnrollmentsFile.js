@@ -47,9 +47,10 @@ const attributes = ['ugKthid', 'name']
 function getUsersForCourse ({course, courseRound}) {
   console.log('TODO: course initiaals');
   return Promise.map(['teachers', 'assistants', 'courseresponsible'], type => {
+    const courseInitials = courseRound.courseCode.substring(0,2)
     return clientAsync.searchAsync('OU=UG,DC=ug,DC=kth,DC=se', {
       scope: 'sub',
-      filter: `(&(objectClass=group)(CN=edu.courses.MJ.${courseRound.courseCode}.${courseRound.startTerm}.${courseRound.roundId}.${type}))`,
+      filter: `(&(objectClass=group)(CN=edu.courses.${courseInitials}.${courseRound.courseCode}.${courseRound.startTerm}.${courseRound.roundId}.${type}))`,
       timeLimit: 11,
       paged: true
     })
@@ -66,9 +67,6 @@ function getUsersForCourse ({course, courseRound}) {
       return member || []
     }
   })
-  // .then(([teachers, assistants, courseresponsible]) => {
-  //   return {teachers, assistants, courseresponsible}
-  // })
   })
   .then(arrayOfMembers =>Promise.map(arrayOfMembers, getUsersForMembers))
   .then(([teachers, assistants, courseresponsible])=>{
@@ -82,7 +80,8 @@ function getUsersForMembers (members) {
     console.log('get users for member:',member)
     return clientAsync.searchAsync('OU=UG,DC=ug,DC=kth,DC=se', {
       scope: 'sub',
-      filter: '(distinguishedName=CN=Maren Mensing (mensing),OU=STUDENTS,OU=USERS,OU=UG,DC=ug,DC=kth,DC=se)',
+                                //CN=Nenad Glodic (glodic),OU=EMPLOYEES,OU=USERS,OU=UG,DC=ug,DC=kth,DC=se
+      filter: `(distinguishedName=${member})`,
       timeLimit: 10,
       paging: true,
       attributes,
@@ -99,12 +98,10 @@ function getUsersForMembers (members) {
   }))
   })
   .then(userArray => [].concat.apply([], userArray))
-  // .then(users => console.log('users', JSON.stringify( users )))
 }
 
 module.exports = function (arrayOfCourseInfo) {
   return clientAsync.bindAsync(config.secure.ldap.bind.username, config.secure.ldap.bind.password)
   .then(() => Promise.map(arrayOfCourseInfo, getUsersForCourse))
-  // .then(arg => console.log('arg', JSON.stringify(arg, null, 2)))
   .finally(() => clientAsync.unbindAsync())
 }
