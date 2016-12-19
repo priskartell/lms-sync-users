@@ -20,7 +20,6 @@
     "create-csv-files": "npm run create-users-file && npm run create-courses-files",
     "create-courses-files": "export TERMIN=2017:1 && export PERIOD=3 && cross-env NODE_ENV=development node scripts/createCoursesFile.js && npm run create-enrollments-file",
     "create-enrollments-file": "cross-env NODE_ENV=development node scripts/createEnrollmentsFile.js",
-    "create-accounts-file": "cross-env NODE_ENV=development node scripts/createAccountsFile.js",
     "startDebug": "node --debug app.js",
     "debug": "cross-env NODE_ENV=development concurrently --kill-others \"npm run startDebug\" \"npm run nodeInspector\" \"npm run openDebugBrowser\""
   },
