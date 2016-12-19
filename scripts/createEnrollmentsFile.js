@@ -50,8 +50,36 @@ function getUsersForMembers (members) {
   .then(userArray => [].concat.apply([], userArray))
 }
 
-function writeUsersForCourse ([sisCourseId, courseCode, name]) {
+function searchGroup (filter) {
+  return clientAsync.searchAsync('OU=UG,DC=ug,DC=kth,DC=se', {
+    scope: 'sub',
+    filter,
+    timeLimit: 11,
+    paged: true
+  })
+  .then(res => new Promise((resolve, reject) => {
+    res.on('searchEntry', ({object}) => resolve(object.member)) // We will get one result for the group where querying for
+    res.on('end', ({object}) => resolve(object && object.member))
+    res.on('error', reject)
+  }))
+  .then(member => {
+    // Always use arrays as result
+    if (typeof member === 'string') {
+      return [member]
+    } else {
+      return member || []
+    }
+  })
+}
 
+function addExaminators ([teachersMembers, assistantsMembers, courseresponsibleMembers], courseCode) {
+  const courseInitials = courseCode.substring(0, 2)
+  return searchGroup(`(&(objectClass=group)(CN=edu.courses.${courseInitials}.${courseCode}.examiner))`).then(examinatorMembers => {
+    return [teachersMembers, assistantsMembers, courseresponsibleMembers, examinatorMembers]
+  })
+}
+
+function writeUsersForCourse ([sisCourseId, courseCode, name]) {
   console.log('writing users for course', courseCode)
 
   function writeUsers (users, role) {
@@ -63,43 +91,32 @@ function writeUsersForCourse ([sisCourseId, courseCode, name]) {
     const startTerm = constants.term.replace(':', '')
     const roundId = sisCourseId.substring(sisCourseId.length - 1, sisCourseId.length)
 
-    return clientAsync.searchAsync('OU=UG,DC=ug,DC=kth,DC=se', {
-      scope: 'sub',
-      filter: `(&(objectClass=group)(CN=edu.courses.${courseInitials}.${courseCode}.${startTerm}.${roundId}.${type}))`,
-      timeLimit: 11,
-      paged: true
-    })
-    .then(res => new Promise((resolve, reject) => {
-      res.on('searchEntry', ({object}) => resolve(object.member))
-      res.on('end', ({object}) => resolve(object && object.member))
-      res.on('error', reject)
-    }))
-    .then(member => {
-      // Always use arrays as result
-      if (typeof member === 'string') {
-        return [member]
-      } else {
-        return member || []
-      }
-    })
+    return searchGroup(`(&(objectClass=group)(CN=edu.courses.${courseInitials}.${courseCode}.${startTerm}.${roundId}.${type}))`)
   })
+    .then(arrayOfMembers => addExaminators(arrayOfMembers, courseCode))
     .then(arrayOfMembers => Promise.map(arrayOfMembers, getUsersForMembers))
-    .then(([teachers, assistants, courseresponsible]) => Promise.all([
+    .then(([teachers, assistants, courseresponsible, examinators]) => Promise.all([
       writeUsers(teachers, 'teacher'),
       writeUsers(courseresponsible, 'Course Responsible'),
-      writeUsers(assistants, 'ta')
+      writeUsers(assistants, 'ta'),
+      writeUsers(examinators, 'Examiner')
     ])
     )
 }
 
-fs.unlinkAsync(fileName)
+function getAllCoursesAsLinesArrays () {
+  return fs.readFileAsync(coursesFileName, 'utf8')
+  .then(fileContentStr => fileContentStr.split('\n')) // one string per line
+  .then(lines => lines.splice(1, lines.length - 2)) // first line is columns, last is new empty line. Ignore them
+  .then(lines => lines.map(line => line.split(','))) // split into values per column
+}
+
+// Run the script
+fs.unlinkAsync(fileName) // Delete the old file
     .catch(e => console.log('couldnt delete file. It probably doesnt exist.', e.message))
-    .then(() => clientAsync.bindAsync(config.secure.ldap.bind.username, config.secure.ldap.bind.password))
-    .then(() => csvFile.writeLine(columns, fileName))
-    .then(() => fs.readFileAsync(coursesFileName, 'utf8'))
-    .then(fileContentStr => fileContentStr.split('\n'))
-    .then(lines => lines.splice(1, lines.length - 2)) // first line is columns, last is new empty line
-    .then(lines => lines.map(line => line.split(','))) // split into values per column
-    .then(linesArrays => Promise.mapSeries(linesArrays, writeUsersForCourse))
+    .then(() => clientAsync.bindAsync(config.secure.ldap.bind.username, config.secure.ldap.bind.password)) // bind to ldap
+    .then(() => csvFile.writeLine(columns, fileName)) // create the new file with headers
+    .then(getAllCoursesAsLinesArrays)
+    .then(linesArrays => Promise.mapSeries(linesArrays, writeUsersForCourse)) // write all users for each course to the file
     .catch(e => console.error(e))
     .finally(() => clientAsync.unbindAsync())
