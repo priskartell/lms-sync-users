@@ -57,7 +57,7 @@ function bindLdapClient () {
 // Run the script
 
 deleteFile()
-.then(()=> writeLine(headers, fileName))
+.then(() => writeLine(headers, fileName))
 .then(bindLdapClient)
 .then(() => Promise.all([
   appendUsers('employee'),
