@@ -8,7 +8,7 @@ const canvasUtilities = require('kth-canvas-utilities')
 canvasUtilities.init(config.full.canvas.apiUrl, config.secure.canvas.apiKey)
 const {getCourseAndCourseRoundFromKopps, createCanvasCourseObject} = canvasUtilities
 const csvFile = require('../csvFile')
-const fs = require('fs')
+const fs = Promise.promisifyAll(require('fs'))
 
 const constants = {
   term: '2017:1',
@@ -16,12 +16,6 @@ const constants = {
 }
 
 const fileName = `csv/courses-${constants.term}-${constants.period}.csv`
-
-try {
-  fs.unlinkSync(fileName)
-} catch (e) {
-  console.log('couldnt delete file. It probably doesnt exist.', e)
-}
 
 function get (url) {
   // console.log(url)
@@ -98,13 +92,19 @@ function writeCsvFile (canvasCourseObjects) {
     })
   }
 
-  return csvFile.writeLine(columns, fileName)
+  return fs.mkdirAsync('csv')
+  .then(()=>csvFile.writeLine(columns, fileName))
   .then(() => Promise.map(canvasCourseObjects, writeLine))
 }
 
-// Start executing
+function deleteFile () {
+  return fs.unlinkAsync(fileName)
+      .catch(e => console.log("couldn't delete file. It probably doesn't exist. This is fine, let's continue"))
+}
 
-get(`http://www.kth.se/api/kopps/v1/courseRounds/${constants.term}`)
+// Start executing
+deleteFile()
+.then(() => get(`http://www.kth.se/api/kopps/v1/courseRounds/${constants.term}`))
 .then(parseString)
 .then(extractRelevantData)
 .then(courseRounds => filterCoursesByCount(courseRounds, courses => courses.length === 1))
