@@ -57,7 +57,7 @@ function bindLdapClient () {
 // Run the script
 
 deleteFile()
-.then(()=> fs.mkdirAsync('csv')
+.then(() => fs.mkdirAsync('csv')
 .catch(e => console.log('couldnt create csv folder. This is probably fine, just continue')))
 .then(() => writeLine(headers, fileName))
 .then(bindLdapClient)
