@@ -3,10 +3,10 @@
  const log = require('./server/init/logging')
  const fs = require('fs')
  const config = require('./server/init/configuration')
- process.env['AZURE_STORAGE_CONNECTION_STRING'] = config.secure.azure.StorageConnectionString
+ //process.env['AZURE_STORAGE_CONNECTION_STRING'] = config.secure.azure.StorageConnectionString
  const Promise = require('bluebird')
  const mkdir = Promise.promisify(require('fs').mkdir)
- const pabs = Promise.promisifyAll(azure.createBlobService()) // PromiseAzureBlobService
+ const pabs = Promise.promisifyAll(azure.createBlobService(config.secure.azure.StorageConnectionString)) // PromiseAzureBlobService
 
  function _connectoToAzure () {
    const csvVol = config.secure.azure.csvBlobName
