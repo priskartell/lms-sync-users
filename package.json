@@ -17,7 +17,9 @@
     "start": "cross-env NODE_ENV=development node app.js",
     "start-nodemon": "cross-env NODE_ENV=development node app.js",
     "create-users-file": "cross-env NODE_ENV=development node scripts/createUsersFile.js",
-    "startDebug": "node --debug app.js",
+    "startDebug": "node --debug-brk app.js",
+    "inspect": "node --debug app.js",
+    "cleanLocalFiles": "rm -rf ./CSV ./MSG ./REPLAY ./AZURETEST",
     "debug": "cross-env NODE_ENV=development concurrently --kill-others \"npm run startDebug\" \"npm run nodeInspector\" \"npm run openDebugBrowser\""
   },
   "pre-push": [
