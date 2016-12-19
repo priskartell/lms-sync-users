@@ -93,7 +93,7 @@ function writeCsvFile (canvasCourseObjects) {
   }
 
   return fs.mkdirAsync('csv')
-  .then(()=>csvFile.writeLine(columns, fileName))
+  .then(() => csvFile.writeLine(columns, fileName))
   .then(() => Promise.map(canvasCourseObjects, writeLine))
 }
 
