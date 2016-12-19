@@ -62,5 +62,6 @@ deleteFile()
 .then(() => Promise.all([
   appendUsers('employee'),
   appendUsers('student')]))
-.then(result => ldapClient.unbind())
 .then(() => console.log('Done with creating the file', fileName))
+.catch(e => console.error(e))
+.finally(() => ldapClient.unbindAsync())
