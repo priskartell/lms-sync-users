@@ -2,7 +2,7 @@ const ldap = require('ldapjs')
 const config = require('../server/init/configuration')
 const fs = require('fs')
 const {writeLine} = require('../csvFile')
-const fileName = 'allUsers.csv'
+const fileName = 'csv/allUsers.csv'
 const headers = ['user_id', 'login_id', 'full_name', 'status']
 const attributes = ['ugKthid', 'ugUsername', 'mail', 'email_address', 'name', 'ugEmailAddressHR']
 const Promise = require('bluebird')
@@ -57,6 +57,8 @@ function bindLdapClient () {
 // Run the script
 
 deleteFile()
+.then(()=> fs.mkdirAsync('csv')
+.catch(e => console.log('couldnt create csv folder. This is probably fine, just continue')))
 .then(() => writeLine(headers, fileName))
 .then(bindLdapClient)
 .then(() => Promise.all([
