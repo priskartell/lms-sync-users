@@ -5,19 +5,11 @@ const {writeLine} = require('../csvFile')
 const fileName = 'allUsers.csv'
 const headers = ['user_id', 'login_id', 'full_name', 'status']
 const attributes = ['ugKthid', 'ugUsername', 'mail', 'email_address', 'name', 'ugEmailAddressHR']
+const Promise = require('bluebird')
 
-try {
-  fs.unlinkSync(fileName)
-} catch (e) {
-  console.log('couldnt delete file. It probably doesnt exist.')
-}
-
-const client = ldap.createClient({
+const ldapClient = Promise.promisifyAll(ldap.createClient({
   url: config.secure.ldap.client.url
-})
-
-writeLine(headers, fileName)
-
+}))
 function appendUsers (type) {
   return new Promise((resolve, reject) => {
     let counter = 0
@@ -30,7 +22,7 @@ function appendUsers (type) {
       attributes
     }
 
-    client.search('OU=UG,DC=ug,DC=kth,DC=se', opts, function (err, res) {
+    ldapClient.search('OU=UG,DC=ug,DC=kth,DC=se', opts, function (err, res) {
       if (err) {
         throw err
       }
@@ -53,14 +45,22 @@ function appendUsers (type) {
   })
 }
 
-client.bind(config.secure.ldap.bind.username, config.secure.ldap.bind.password, function (err) {
-  if (err) {
-    throw err
-  }
+function deleteFile () {
+  return fs.unlinkAsync(fileName)
+      .catch(e => console.log("couldn't delete file. It probably doesn't exist. This is fine, let's continue"))
+}
 
-  Promise.all([
-    appendUsers('employee'),
-    appendUsers('student')])
-    .then(result => client.unbind())
-    .then(() => console.log('Done with creating the file', fileName))
-})
+function bindLdapClient () {
+  return ldapClient.bindAsync(config.secure.ldap.bind.username, config.secure.ldap.bind.password)
+}
+
+// Run the script
+
+deleteFile()
+.then(()=> writeLine(headers, fileName))
+.then(bindLdapClient)
+.then(() => Promise.all([
+  appendUsers('employee'),
+  appendUsers('student')]))
+.then(result => ldapClient.unbind())
+.then(() => console.log('Done with creating the file', fileName))
