@@ -10,12 +10,12 @@ const {getCourseAndCourseRoundFromKopps, createCanvasCourseObject} = canvasUtili
 const csvFile = require('../csvFile')
 const fs = Promise.promisifyAll(require('fs'))
 
-const constants = {
-  term: '2017:1',
-  period: '3'
-}
+const termin = process.env.TERMIN
+const period = process.env.PERIOD
 
-const fileName = `csv/courses-${constants.term}-${constants.period}.csv`
+console.log('creating csv file using settings', termin, period)
+
+const fileName = `csv/courses-${termin}-${period}.csv`
 
 function get (url) {
   // console.log(url)
@@ -35,7 +35,7 @@ function get (url) {
 */
 function addPeriods (courseRounds) {
   function addInfoForCourseRound ([round]) {
-    return get(`http://www.kth.se/api/kopps/v1/course/${round.courseCode}/round/${constants.term}/${round.roundId}`)
+    return get(`http://www.kth.se/api/kopps/v1/course/${round.courseCode}/round/${termin}/${round.roundId}`)
     .then(parseString)
     .then(roundInfo => {
       const periods = roundInfo.courseRound.periods && roundInfo.courseRound.periods[0].period.map(period => period.$)
@@ -93,6 +93,7 @@ function writeCsvFile (canvasCourseObjects) {
   }
 
   return fs.mkdirAsync('csv')
+  .catch(e => console.log('couldnt create csv folder. This is probably fine, just continue'))
   .then(() => csvFile.writeLine(columns, fileName))
   .then(() => Promise.map(canvasCourseObjects, writeLine))
 }
@@ -104,12 +105,12 @@ function deleteFile () {
 
 // Start executing
 deleteFile()
-.then(() => get(`http://www.kth.se/api/kopps/v1/courseRounds/${constants.term}`))
+.then(() => get(`http://www.kth.se/api/kopps/v1/courseRounds/${termin}`))
 .then(parseString)
 .then(extractRelevantData)
 .then(courseRounds => filterCoursesByCount(courseRounds, courses => courses.length === 1))
 .then(addPeriods)
-.then(coursesWithPeriods => coursesWithPeriods.filter(({periods}) => periods && periods.find(({number}) => number === constants.period)))
+.then(coursesWithPeriods => coursesWithPeriods.filter(({periods}) => periods && periods.find(({number}) => number === period)))
 .then(buildCanvasCourseObjects)
 .then(writeCsvFile)
 .catch(e => console.error(e))

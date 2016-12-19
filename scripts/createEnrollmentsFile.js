@@ -5,13 +5,12 @@ const config = require('../server/init/configuration')
 const csvFile = require('../csvFile')
 require('colors')
 
-const constants = {
-  term: '2017:1',
-  period: '3'
-}
+const termin = process.env.TERMIN
+const period = process.env.PERIOD
+
 const attributes = ['ugKthid', 'name']
-const fileName = `csv/enrollments-${constants.term}-${constants.period}.csv`
-const coursesFileName = `csv/courses-${constants.term}-${constants.period}.csv`
+const fileName = `csv/enrollments-${termin}-${period}.csv`
+const coursesFileName = `csv/courses-${termin}-${period}.csv`
 const columns = [
   'course_id',
   'user_id',
@@ -99,7 +98,7 @@ function writeUsersForCourse ([sisCourseId, courseCode, name]) {
 
   return Promise.map(['teachers', 'assistants', 'courseresponsible'], type => {
     const courseInitials = courseCode.substring(0, 2)
-    const startTerm = constants.term.replace(':', '')
+    const startTerm = termin.replace(':', '')
     const roundId = sisCourseId.substring(sisCourseId.length - 1, sisCourseId.length)
 
     return searchGroup(`(&(objectClass=group)(CN=edu.courses.${courseInitials}.${courseCode}.${startTerm}.${roundId}.${type}))`)
