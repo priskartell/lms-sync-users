@@ -2,7 +2,9 @@
 const config = require('./server/init/configuration')
 const app = require('kth-node-server')
 const processWatcher = require('./watch')
+const azure = require('./azureStorage')
 
+azure.cloudConnect()
 processWatcher.watch()
 app.start()
 const consumeMessages = require('./messages/consumeMessages')

@@ -8,7 +8,7 @@
  const mkdir = Promise.promisify(require('fs').mkdir)
  const pabs = Promise.promisifyAll(azure.createBlobService(config.secure.azure.StorageConnectionString)) // PromiseAzureBlobService
 
- function _connectoToAzure () {
+ function cloudConnect() {
    const csvVol = config.secure.azure.csvBlobName
    const msgVol = config.secure.azure.msgBlobName
    return cloudCreateContainer(csvVol)
@@ -18,7 +18,7 @@
  .catch(error => Error(error))
  }
 
- _connectoToAzure()
+
 
  function checkParameterName (...p) {
    let result = true
@@ -150,5 +150,6 @@
    cloudDeleteFilesBeforeDate,
    cloudCreateContainer,
    cloudStoreTextToExistingFile,
-   cloudGetFilesBeforeDate
+   cloudGetFilesBeforeDate,
+   cloudConnect
  }
