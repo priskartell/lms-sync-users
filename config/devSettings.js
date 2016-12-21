@@ -8,7 +8,12 @@ module.exports = {
     log: {
       level: 'debug'
     },
-    stdout: {enabled: false}
+    stdout: {
+      enabled: false
+    },
+    console: {
+      enabled: true
+    }
   },
   ldap: {
     client: {

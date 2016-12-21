@@ -21,6 +21,7 @@
     "create-courses-files": "export TERMIN=2017:1 && export PERIOD=3 && cross-env NODE_ENV=development node scripts/createCoursesFile.js && npm run create-enrollments-file",
     "create-enrollments-file": "cross-env NODE_ENV=development node scripts/createEnrollmentsFile.js",
     "startDebug": "node --debug app.js",
+    "cleanLocalFiles": "rm -rf ./CSV ./MSG ./REPLAY ./AZURETEST",
     "debug": "cross-env NODE_ENV=development concurrently --kill-others \"npm run startDebug\" \"npm run nodeInspector\" \"npm run openDebugBrowser\""
   },
   "pre-push": [
@@ -29,19 +30,17 @@
   ],
   "dependencies": {
     "blue-tape": "^1.0.0",
-    "canvas-api": "github:kth/canvas-api#v2.7.0",
+    "canvas-api": "github:kth/canvas-api",
     "colors": "^1.1.2",
     "express": "^4.14.0",
-    "kth-canvas-utilities": "github:kth/kth-canvas-utilities",
     "kth-node-configuration": "KTH/kth-node-configuration.git#v1.0.1",
-    "kth-node-log": "KTH/kth-node-log.git#v1.0.0",
+    "kth-node-log": "KTH/kth-node-log.git#v1.0.1",
     "kth-node-server": "KTH/kth-node-server.git",
     "ldapjs": "^1.0.1",
-    "lodash": "^4.17.2",
+    "memwatch-next": "^0.3.0",
     "message-type": "github:kth/node-message-type",
     "node-queue-adapter": "github:kth/node-queue-adapter",
-    "request-promise": "^4.1.0",
-    "xml2js": "^0.4.17"
+    "request-promise": "^4.1.0"
   },
   "devDependencies": {
     "concurrently": "^2.2.0",
