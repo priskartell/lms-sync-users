@@ -1,6 +1,6 @@
 'use strict'
 
-const handleCourseMessage = require('./handleCourseMessage')
+// const handleCourseMessage = require('./handleCourseMessage')
 const handleUserMessage = require('./handleUserMessage')
 const {type} = require('message-type')
 const log = require('../server/init/logging')

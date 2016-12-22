@@ -22,9 +22,10 @@ module.exports = {
       maxConnections: 10,
       idleTimeout: 300000,
       checkInterval: 10000,
-      'reconnect': true
+      reconnect: true
     }
-  }, azure: {
+  },
+  azure: {
     queueName: 'ug-canvas',
     csvBlobName: 'lms-csv-prod',
     msgBlobName: 'lms-msg-ref'
