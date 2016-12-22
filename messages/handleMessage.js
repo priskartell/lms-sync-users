@@ -7,7 +7,6 @@ const log = require('../server/init/logging')
 
 module.exports = function (msg) {
   log.info({'metric.handleMessage': 1})
-  log.info('----------------- New message ---------------------')
   if (msg._desc.type === type.course) {
     log.info('This is a message about a course. Skip it.')
     return Promise.resolve(msg)
