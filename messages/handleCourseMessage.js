@@ -8,9 +8,9 @@ const config = require('../server/init/configuration')
 const log = require('../server/init/logging')
 require('colors')
 
-const csvVol = config.secure.azure.csvBlobName
-const msgVol = config.secure.azure.msgBlobName
-const csvDir = config.secure.localFile.csvDir
+const csvVol = config.full.azure.csvBlobName
+const msgVol = config.full.azure.msgBlobName
+const csvDir = config.full.localFile.csvDir
 
 function _createCsvFile (msg, sisCourseCode, timeStamp) {
   let header = 'course_id,user_id,role,status\n'

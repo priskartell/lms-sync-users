@@ -24,5 +24,12 @@ module.exports = {
       checkInterval: 10000,
       'reconnect': true
     }
+  }, azure: {
+    queueName: 'ug-canvas',
+    csvBlobName: 'lms-csv-prod',
+    msgBlobName: 'lms-msg-ref'
+  },
+  localFile: {
+    csvDir: '/tmp/'
   }
 }

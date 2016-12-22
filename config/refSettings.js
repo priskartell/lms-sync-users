@@ -14,6 +14,11 @@ module.exports = {
       enabled: false
     }
   },
+  azure: {
+    queueName: 'ug-canvas-ref',
+    csvBlobName: 'reflmscsv',
+    msgBlobName: 'reflmsmsg'
+  },
   ldap: {
     client: {
       url: 'ldaps://ldap.ug.kth.se',
@@ -22,7 +27,10 @@ module.exports = {
       maxConnections: 10,
       idleTimeout: 300000,
       checkInterval: 10000,
-      'reconnect': true
+      reconnect: true
     }
+  },
+  localFile: {
+    csvDir: '/tmp/'
   }
 }
