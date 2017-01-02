@@ -58,7 +58,7 @@ function _parseKeyStudent (key) {
     let yearIn = 7
     let ladokIn = 9
     course = myArray[courseInOne] + myArray[courseInTwo]
-    termin = myArray[terminIn] === 1 ? 'VT' : 'HT'
+    termin = myArray[terminIn] === "1" ? 'VT' : 'HT'
     year = myArray[yearIn]
     ladok = myArray[ladokIn]
     let sisCourseCode = course + termin + year + ladok
@@ -82,7 +82,7 @@ function _parseKeyTeacher (key) {
   let myArray = myRe.exec(key)
   if (myArray != null) {
     course = myArray[courseIn]
-    termin = myArray[terminIn] === 1 ? 'VT' : 'HT'
+    termin = myArray[terminIn] === "1" ? 'VT' : 'HT'
     year = myArray[yearIn]
     ladok = myArray[ladokIn]
     let sisCourseCode = course + termin + year + ladok
