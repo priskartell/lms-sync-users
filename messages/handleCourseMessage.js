@@ -117,7 +117,7 @@ function _process (msg) {
       return canvasApi.findCourse(sisCourseCode)
     })
     .then(result => {
-      log.info(result)
+      log.info(`Result from find course: ${result}`)
       return _createCsvFile(msg, sisCourseCode, timeStamp)
     })
     .then(csvObject => {
