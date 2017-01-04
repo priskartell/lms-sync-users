@@ -5,7 +5,8 @@ module.exports = {
   },
   logging: {
     log: {
-      level: 'debug'
+      level: 'debug',
+      src: true
     },
     stdout: {
       enabled: true

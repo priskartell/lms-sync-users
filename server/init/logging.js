@@ -13,7 +13,8 @@ let logConfiguration = {
   env: environment,
   level: configuration.log.level,
   console: configuration.console,
-  stdout: configuration.stdout
+  stdout: configuration.stdout,
+  src: configuration.log.src
 }
 
 log.init(logConfiguration)

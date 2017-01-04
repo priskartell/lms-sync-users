@@ -6,7 +6,8 @@ module.exports = {
   },
   logging: {
     log: {
-      level: 'info'
+      level: 'info',
+      src: true
     },
     stdout: {
       enabled: false
