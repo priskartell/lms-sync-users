@@ -68,7 +68,7 @@ function _parseKeyStudent (key) {
 }
 
 function _parseKeyTeacher (key) {
-   // edu.courses.AE.AE2302.20162.1.teachers edu.courses.DD.DD1310.20162.1.assistants
+   // edu.courses.AE.AE2302.20162.1.teachers edu.courses.DD.DD1310.20162.1.assistants edu.courses.DD.DD1310.20162.1.courseresponsibles
   let course = null
   let termin = null
   let year = null
@@ -96,7 +96,7 @@ function _parseKey (key, msgtype) {
   if (msgtype === type.students) {
     sisCourseCode = _parseKeyStudent(key)
   }
-  if (msgtype === type.teachers || msgtype === type.assistants) {
+  if (msgtype === type.teachers || msgtype === type.assistants || msgtype === type.courseresponsibles) {
     sisCourseCode = _parseKeyTeacher(key)
   }
   if (!sisCourseCode) {
@@ -144,10 +144,10 @@ function _process (msg) {
 module.exports = function (msg, counter) {
   log.info('\nProcessing for msg..... ' + msg.ug1Name)
   var msgtype = msg._desc.userType
-  if (msg._desc && (msgtype === type.students || msgtype === type.teachers || msgtype === type.assistants)) {
+  if (msg._desc && (msgtype === type.students || msgtype === type.teachers || msgtype === type.assistants || msgtype === type.courseresponsibles)) {
     return _process(msg)
   } else {
-    log.error('\nThis is something else than students, teacher, assistant, we can probably wait with this until the students is handled', JSON.stringify(msg, null, 4))
+    log.error('\nThis is something else than students, teacher, assistant, courseresponsibles we can probably wait with this until the students is handled', JSON.stringify(msg, null, 4))
     return Promise.resolve('Unknown flag: ' + msgtype)
   }
 }
