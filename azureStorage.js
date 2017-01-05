@@ -3,7 +3,7 @@
  const log = require('./server/init/logging')
  const fs = require('fs')
  const config = require('./server/init/configuration')
- 
+
  const Promise = require('bluebird')
  const mkdir = Promise.promisify(require('fs').mkdir)
 
@@ -28,8 +28,7 @@
    if (result) {
      return Promise.resolve(result)
    } else {
-     log.error('checkParameterName: parameterName not valid: ')
-     return Promise.reject(Error('checkParameterName: parameterName not valid:'))
+     throw new Error('checkParameterName: parameterName not valid: ')
    }
  }
 
