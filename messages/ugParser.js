@@ -1,0 +1,54 @@
+'use strict'
+
+function parseKeyTeacher (key) {
+   // edu.courses.AE.AE2302.20162.1.teachers edu.courses.DD.DD1310.20162.1.assistants
+  let course = null
+  let termin = null
+  let year = null
+  let ladok = null
+  let courseIn = 2
+  let terminIn = 5
+  let yearIn = 4
+  let ladokIn = 6
+
+  let myRe = /^edu.courses.(\w+).(\w+).(\d\d)(\d\d)(\d).(\d).(\w+)$/g
+  let myArray = myRe.exec(key)
+  if (myArray != null) {
+    course = myArray[courseIn]
+    termin = myArray[terminIn] === '1' ? 'VT' : 'HT'
+    year = myArray[yearIn]
+    ladok = myArray[ladokIn]
+    let sisCourseCode = course + termin + year + ladok
+    return sisCourseCode
+  }
+  return
+}
+
+function parseKeyStudent (key) {
+  // ladok2.kurser.DM.2517.registrerade_20162.1
+  let course = null
+  let termin = null
+  let year = null
+  let ladok = null
+  let myRe = /^(\w+).(\w+).(\w+).(\w+).(\w+)_(\d\d)(\d\d)(\d).(\d+)/g
+  let myArray = myRe.exec(key)
+  if (myArray != null) {
+    let courseInOne = 3
+    let courseInTwo = 4
+    let terminIn = 8
+    let yearIn = 7
+    let ladokIn = 9
+    course = myArray[courseInOne] + myArray[courseInTwo]
+    termin = myArray[terminIn] === '1' ? 'VT' : 'HT'
+    year = myArray[yearIn]
+    ladok = myArray[ladokIn]
+    let sisCourseCode = course + termin + year + ladok
+    return sisCourseCode
+  }
+  return
+}
+
+module.exports = {
+    'parseKeyTeacher': parseKeyTeacher,
+    'parseKeyStudent': parseKeyStudent,
+}
