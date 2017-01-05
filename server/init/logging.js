@@ -17,5 +17,7 @@ let logConfiguration = {
   src: configuration.log.src
 }
 
+console.log(JSON.stringify(logConfiguration, null, 2))
+
 log.init(logConfiguration)
 module.exports = log
