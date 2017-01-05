@@ -2,6 +2,7 @@
 
 function parseKeyTeacher (key) {
    // edu.courses.AE.AE2302.20162.1.teachers edu.courses.DD.DD1310.20162.1.assistants
+   // edu.courses.DD.DD1310.20162.1.courseresponsible
   let course = null
   let termin = null
   let year = null
