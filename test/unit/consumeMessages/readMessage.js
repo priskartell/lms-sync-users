@@ -9,6 +9,5 @@ test.skip('should abort promise chain if no message is read', t => {
   consumeMessages.__set__('queue', queue)
 
   consumeMessages.__get__('readMessage')()
-
   t.equal(1, 0)
 })
