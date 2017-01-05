@@ -6,7 +6,8 @@ module.exports = {
   },
   logging: {
     log: {
-      level: 'debug'
+      level: 'info',
+      src: true
     },
     stdout: {
       enabled: false
@@ -14,6 +15,11 @@ module.exports = {
     console: {
       enabled: true
     }
+  },
+  azure: {
+    queueName: 'lms-canvas-dev',
+    csvBlobName: 'reflmscsv',
+    msgBlobName: 'reflmsmsg'
   },
   ldap: {
     client: {
@@ -25,5 +31,8 @@ module.exports = {
       checkInterval: 10000,
       'reconnect': true
     }
+  },
+  localFile: {
+    csvDir: '/tmp/'
   }
 }

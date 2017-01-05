@@ -8,9 +8,9 @@ const config = require('../server/init/configuration')
 const log = require('../server/init/logging')
 require('colors')
 
-const csvVol = config.secure.azure.csvBlobName
-const msgVol = config.secure.azure.msgBlobName
-const csvDir = config.secure.localFile.csvDir
+const csvVol = config.full.azure.csvBlobName
+const msgVol = config.full.azure.msgBlobName
+const csvDir = config.full.localFile.csvDir
 
 function _createCsvFile (msg, sisCourseCode, timeStamp) {
   let header = 'course_id,user_id,role,status\n'
@@ -58,7 +58,7 @@ function _parseKeyStudent (key) {
     let yearIn = 7
     let ladokIn = 9
     course = myArray[courseInOne] + myArray[courseInTwo]
-    termin = myArray[terminIn] === 1 ? 'VT' : 'HT'
+    termin = myArray[terminIn] === '1' ? 'VT' : 'HT'
     year = myArray[yearIn]
     ladok = myArray[ladokIn]
     let sisCourseCode = course + termin + year + ladok
@@ -69,6 +69,7 @@ function _parseKeyStudent (key) {
 
 function _parseKeyTeacher (key) {
    // edu.courses.AE.AE2302.20162.1.teachers edu.courses.DD.DD1310.20162.1.assistants
+   // edu.courses.DD.DD1310.20162.1.courseresponsible
   let course = null
   let termin = null
   let year = null
@@ -82,7 +83,7 @@ function _parseKeyTeacher (key) {
   let myArray = myRe.exec(key)
   if (myArray != null) {
     course = myArray[courseIn]
-    termin = myArray[terminIn] === 1 ? 'VT' : 'HT'
+    termin = myArray[terminIn] === '1' ? 'VT' : 'HT'
     year = myArray[yearIn]
     ladok = myArray[ladokIn]
     let sisCourseCode = course + termin + year + ladok
@@ -96,7 +97,7 @@ function _parseKey (key, msgtype) {
   if (msgtype === type.students) {
     sisCourseCode = _parseKeyStudent(key)
   }
-  if (msgtype === type.teachers || msgtype === type.assistants) {
+  if (msgtype === type.teachers || msgtype === type.assistants || msgtype === type.courseresponsibles) {
     sisCourseCode = _parseKeyTeacher(key)
   }
   if (!sisCourseCode) {
@@ -117,7 +118,7 @@ function _process (msg) {
       return canvasApi.findCourse(sisCourseCode)
     })
     .then(result => {
-      log.info(result)
+      log.info(`Result from find course: ${result}`)
       return _createCsvFile(msg, sisCourseCode, timeStamp)
     })
     .then(csvObject => {
@@ -142,12 +143,12 @@ function _process (msg) {
 }
 
 module.exports = function (msg, counter) {
-  log.info('\nProcessing for msg..... ' + msg.ug1Name)
+  log.info('Processing for msg..... ' + msg.ug1Name)
   var msgtype = msg._desc.userType
-  if (msg._desc && (msgtype === type.students || msgtype === type.teachers || msgtype === type.assistants)) {
+  if (msg._desc && (msgtype === type.students || msgtype === type.teachers || msgtype === type.assistants || msgtype === type.courseresponsibles)) {
     return _process(msg)
   } else {
-    log.error('\nThis is something else than students, teacher, assistant, we can probably wait with this until the students is handled', JSON.stringify(msg, null, 4))
+    log.error('This is something else than students, teacher, assistant, courseresponsibles we can probably wait with this until the students is handled', JSON.stringify(msg, null, 4))
     return Promise.resolve('Unknown flag: ' + msgtype)
   }
 }
