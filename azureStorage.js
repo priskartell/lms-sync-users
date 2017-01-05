@@ -9,8 +9,8 @@
  const pabs = Promise.promisifyAll(azure.createBlobService(config.secure.azure.StorageConnectionString)) // PromiseAzureBlobService
 
  function cloudConnect () {
-   const csvVol = config.secure.azure.csvBlobName
-   const msgVol = config.secure.azure.msgBlobName
+   const csvVol = config.full.azure.csvBlobName
+   const msgVol = config.full.azure.msgBlobName
    return cloudCreateContainer(csvVol)
  .then(() => log.info('Created: ' + csvVol))
  .then(() => cloudCreateContainer(msgVol))

@@ -40,8 +40,9 @@ function parseBody (msg) {
 function readMessage () {
   isReading = true
   let message
+
   return queue
-    .readMessageFromQueue(config.secure.azure.queueName || config.full.azure.queueName)
+    .readMessageFromQueue(config.full.azure.queueName)
     .then(msg => {
       message = msg
       log.debug('message received from queue', msg)
