@@ -6,7 +6,7 @@
   "main": "app.js",
   "private": true,
   "scripts": {
-    "test": "exit 0",
+    "test": "cross-env NODE_ENV=development tape \"test/unit/**/*.js\" | tap-spec",
     "coverage": "cross-env NODE_ENV=development istanbul cover tape -- \"messages/*.js\" -- \"server/unit/**/*.js\" -- \"test/unit/**/*.js\"",
     "verify": "npm test && npm run codecheck",
     "codecheck": "standard",
