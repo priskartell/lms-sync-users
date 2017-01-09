@@ -3,7 +3,7 @@
  const log = require('./server/init/logging')
  const fs = require('fs')
  const config = require('./server/init/configuration')
- 
+
  const Promise = require('bluebird')
  const mkdir = Promise.promisify(require('fs').mkdir)
 
