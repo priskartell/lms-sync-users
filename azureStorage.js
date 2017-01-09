@@ -8,13 +8,9 @@
  const mkdir = Promise.promisify(require('fs').mkdir)
 
  function cloudConnect () {
-     const csvVol = config.full.azure.csvBlobName
-     const msgVol = config.full.azure.msgBlobName
+   const csvVol = config.full.azure.csvBlobName
+   log.info('Creating: ' + csvVol)
    return cloudCreateContainer(csvVol)
- .then(() => log.info('Created: ' + csvVol))
- .then(() => cloudCreateContainer(msgVol))
- .then(() => log.info('Created: ' + msgVol))
- .catch(error => Error(error))
  }
 
  function checkParameterName (...p) {
@@ -33,11 +29,9 @@
  }
 
  function cloudCreateContainer (containerName) {
+   console.log('containerName',containerName)
    return checkParameterName(containerName)
-
-  .then(() => {
-    console.log('azure.blobService.createContainerIfNotExistsAsync',azure.blobService.createContainerIfNotExistsAsync)
-    return azure.blobService.createContainerIfNotExistsAsync(containerName)})
+  .then(() => azure.blobService.createContainerIfNotExistsAsync(containerName) )
  }
 
  function cloudStoreFile (fileName, containerName) {

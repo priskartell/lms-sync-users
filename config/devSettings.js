@@ -17,9 +17,8 @@ module.exports = {
     }
   },
   azure: {
-    queueName: 'lms-canvas-dev',
-    csvBlobName: 'reflmscsv',
-    msgBlobName: 'reflmsmsg'
+    queueName: 'lms-emil',
+    csvBlobName: 'dev-lms-csv'
   },
   ldap: {
     client: {
