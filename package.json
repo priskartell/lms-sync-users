@@ -30,7 +30,7 @@
   ],
   "dependencies": {
     "blue-tape": "^1.0.0",
-    "canvas-api": "github:kth/canvas-api#v2.9.0",
+    "canvas-api": "github:kth/canvas-api#v2.9.1",
     "colors": "^1.1.2",
     "express": "^4.14.0",
     "kth-node-configuration": "KTH/kth-node-configuration.git#v1.0.1",
