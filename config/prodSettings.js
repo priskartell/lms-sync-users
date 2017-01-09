@@ -5,7 +5,7 @@ module.exports = {
   },
   logging: {
     log: {
-      level: 'info',
+      level: 'debug',
       src: false
     },
     stdout: {
@@ -29,7 +29,7 @@ module.exports = {
   azure: {
     queueName: 'ug-canvas',
     csvBlobName: 'lms-csv-prod',
-    msgBlobName: 'lms-msg-ref'
+    msgBlobName: 'lms-msg-prod'
   },
   localFile: {
     csvDir: '/tmp/'
