@@ -53,7 +53,7 @@ function readMessage () {
     .then(addDescription)
     .then(handleMessage)
     .then(() => queue.deleteMessageFromQueue(message))
-    .then(()=> message)
+    .then(() => message)
     .catch(e => {
       if (e.message !== 'abort_chain') {
         log.error(e)
