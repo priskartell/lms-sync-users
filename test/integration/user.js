@@ -3,17 +3,18 @@ const {deleteEveryUserInCanvas, simulateQueueMessage} = require('./utils')
 const canvasApi = require('../../canvasApi')
 const config = require('../../server/init/configuration')
 const consumeMessages = require('../../messages/consumeMessages')
-
+const queue = require('node-queue-adapter')(config.secure.azure.queueConnectionString)
+const Promise = require('bluebird')
 console.log('TODO: SHOULD start docker image before tests run!')
 // docker run --name canvas-docker -p 3000:3000 lbjay/canvas-docker
 
 // Overwrite to use an empty queue
-// config.full.azure.queueName = 'lms-sync-integration-tests'
+config.full.azure.queueName = 'lms-sync-integration-tests'
 
-test.only('should create a user in canvas', t => {
+test.only('should create a message on the queue and then read the same message', t => {
   t.plan(1)
-  // TODO: specify queue message!
-  consumeMessages.readMessage()
-  .then(()=> canvasApi.getUser('kth_id_integration_test'))
-  .then(user => t.ok(user))
+  const message = {1:2}
+  queue.sendQueueMessage(config.full.azure.queueName, message)
+  .then(()=>consumeMessages.readMessage())
+  .then(res=> t.assert(res.body, message))
 })

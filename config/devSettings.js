@@ -6,7 +6,7 @@ module.exports = {
   },
   logging: {
     log: {
-      level: 'info',
+      level: 'debug',
       src: true
     },
     stdout: {
@@ -17,7 +17,7 @@ module.exports = {
     }
   },
   azure: {
-    queueName: 'lms-canvas-dev',
+    queueName: 'lms-emil',
     csvBlobName: 'reflmscsv',
     msgBlobName: 'reflmsmsg'
   },
