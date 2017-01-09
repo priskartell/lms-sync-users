@@ -1,5 +1,5 @@
 module.exports = {
-  port: 3000,
+  port: 3001,
   canvas: {
     // apiUrl: 'https://kth.beta.instructure.com/api/v1'
     apiUrl: 'https://kth.test.instructure.com/api/v1'

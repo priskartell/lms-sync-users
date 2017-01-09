@@ -37,6 +37,7 @@ function parseBody (msg) {
     abort()
   })
 }
+
 function readMessage () {
   isReading = true
   let message
@@ -72,5 +73,5 @@ function readMessageUnlessReading () {
 }
 
 module.exports = {
-  start
+  start, readMessage
 }
