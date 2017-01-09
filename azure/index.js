@@ -5,7 +5,7 @@ const Promise = require('bluebird')
 
 let blobService
 module.exports = {
-  get blobService(){
+  get blobService () {
     log.info('getting blobService')
     if (!blobService) {
       log.info('Initializing blobService')

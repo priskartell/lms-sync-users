@@ -29,9 +29,9 @@
  }
 
  function cloudCreateContainer (containerName) {
-   console.log('containerName',containerName)
+   console.log('containerName', containerName)
    return checkParameterName(containerName)
-  .then(() => azure.blobService.createContainerIfNotExistsAsync(containerName) )
+  .then(() => azure.blobService.createContainerIfNotExistsAsync(containerName))
  }
 
  function cloudStoreFile (fileName, containerName) {
