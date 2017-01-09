@@ -56,6 +56,8 @@ function readMessage () {
     .catch(e => {
       if (e.message !== 'abort_chain') {
         log.error(e)
+      }else{
+        log.info('abort_chain...')
       }
     })
     .finally(() => {
