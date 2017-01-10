@@ -28,8 +28,7 @@ module.exports = {
   },
   azure: {
     queueName: 'ug-canvas',
-    csvBlobName: 'lms-csv-prod',
-    msgBlobName: 'lms-msg-ref'
+    csvBlobName: 'lms-csv-prod'
   },
   localFile: {
     csvDir: '/tmp/'

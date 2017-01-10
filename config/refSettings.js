@@ -17,8 +17,7 @@ module.exports = {
   },
   azure: {
     queueName: 'ug-canvas-ref',
-    csvBlobName: 'reflmscsv',
-    msgBlobName: 'reflmsmsg'
+    csvBlobName: 'reflmscsv'
   },
   ldap: {
     client: {
