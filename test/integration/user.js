@@ -26,13 +26,13 @@ test('should create a message on the queue and then read the same message', t =>
 
 test.only('should create a new user in canvas', t => {
   t.plan(1)
-  const kthid = 'emil1234567'
+  const kthid = 'emil1234'
   const message = {
     kthid,
     'ugClass': 'user',
     'deleted': false,
     'affiliation': ['student'],
-    'username': 'some_non_existing2',
+    'username': kthid,
     'family_name': 'Stenberg',
     'given_name': 'Emil Stenberg',
     'primary_email': 'esandin@gmail.com'}

@@ -39,6 +39,7 @@ function addPeriods (courseRounds) {
     .then(parseString)
     .then(roundInfo => {
       const periods = roundInfo.courseRound.periods && roundInfo.courseRound.periods[0].period.map(period => period.$)
+      
       return {round, periods}
     })
   }
