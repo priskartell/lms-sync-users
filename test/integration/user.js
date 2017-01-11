@@ -48,15 +48,15 @@ test.only('should update a user in canvas', t => {
     'given_name': 'Emil Stenberg',
     'primary_email': 'esandin@gmail.com'}
 
-    const message2 = {
-      kthid,
-      'ugClass': 'user',
-      'deleted': false,
-      'affiliation': ['student'],
-      username,
-      'family_name': 'Stenberg',
-      'given_name': 'Emil Stenberg Uppdaterad',
-      'primary_email': 'esandin@gmail.com'}
+  const message2 = {
+    kthid,
+    'ugClass': 'user',
+    'deleted': false,
+    'affiliation': ['student'],
+    username,
+    'family_name': 'Stenberg',
+    'given_name': 'Emil Stenberg Uppdaterad',
+    'primary_email': 'esandin@gmail.com'}
 
   queue.createQueueIfNotExists(config.full.azure.queueName)
   .then(() => queue.sendQueueMessage(config.full.azure.queueName, message))
@@ -64,6 +64,6 @@ test.only('should update a user in canvas', t => {
   .then(() => consumeMessages.readMessage())
   .then(() => consumeMessages.readMessage())
   .then(() => canvasApi.getUser(kthid))
-  .then(user => t.equal( user.short_name, 'Emil Stenberg Uppdaterad Stenberg' ))
+  .then(user => t.equal(user.short_name, 'Emil Stenberg Uppdaterad Stenberg'))
   .then(() => queue.deleteQueue(config.full.azure.queueName))
 })
