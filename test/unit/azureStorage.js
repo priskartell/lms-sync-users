@@ -1,8 +1,7 @@
 const test = require('tape')
 
-const proxyquire = require('proxyquire').noCallThru()
 test('should require without connecting to azure', t => {
-  const azureStorage = proxyquire('../../azureStorage.js', {'azure': {createBlobService: () => Promise.resolve()}})
+  const azureStorage = require('../../azureStorage.js')
   t.plan(1)
   t.ok(azureStorage)
 })
