@@ -18,21 +18,12 @@ module.exports = {
   secure: {
     ldap: {
       client: {
-        url: getEnv('LDAP_URI', 'ldaps://ldap.ug.kth.se'),
-        timeout: 300000,
-        connectTimeout: 3000,
-        maxConnections: 10,
-        idleTimeout: 300000,
-        checkInterval: 10000,
-        'reconnect': true
+        url: getEnv('LDAP_URI', 'ldaps://ldap.ug.kth.se')
       },
       bind: {
-        // username: 'system.canvas@ug.kth.se',
-        // password: ''
         username: getEnv('LDAP_USERNAME', 'system.canvas@ug.kth.se'),
         password: getEnv('LDAP_PASSWORD')
-      },
-      base: getEnv('LDAP_BASE', 'OU=UG,DC=ug,DC=kth,DC=se')
+      }
     },
     canvas: {
       apiKey: getEnv('CANVAS_API_KEY')
