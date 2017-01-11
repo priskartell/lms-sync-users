@@ -3,17 +3,13 @@ FROM kthse/kth-nodejs-api:2.0-alpine
 MAINTAINER KTH Webb "cortina.developers@kth.se"
 
 RUN mkdir -p /npm && \
-    mkdir -p /application && \
-    apk add  --no-cache alpine-sdk gcc make && \
-    node --version
-
-
-
+    mkdir -p /application
 
 # We do this to avoid npm install when we're only changing code
 WORKDIR /npm
 COPY ["package.json", "package.json"]
-RUN npm install --production --no-optional --loglevel verbose
+
+RUN npm install --production --no-optional
 
 # Add the code and copy over the node_modules-catalog
 WORKDIR /application
@@ -39,6 +35,6 @@ COPY ["scripts", "scripts"]
 
 ENV NODE_PATH /application
 
-EXPOSE 3000
+EXPOSE 3001
 
 ENTRYPOINT ["node", "app.js"]
