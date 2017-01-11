@@ -1,35 +1,43 @@
-FROM kthse/kth-nodejs-web:1.4
+FROM kthse/kth-nodejs-api:2.0-alpine
 
-# Maintainer
-MAINTAINER Webmaster "webmaster@kth.se"
+MAINTAINER KTH Webb "cortina.developers@kth.se"
 
-LABEL name="KTH Node Base Image"
-LABEL vendor="KTH Royal Institute of Technology"
-LABEL license="The MIT License (MIT)"
+RUN mkdir -p /npm && \
+    mkdir -p /application && \
+    apk add  --no-cache alpine-sdk gcc make && \
+    node --version
 
-RUN mkdir -p /npm
-RUN mkdir -p /application
+
+
 
 # We do this to avoid npm install when we're only changing code
 WORKDIR /npm
-
 COPY ["package.json", "package.json"]
+RUN npm install --production --no-optional --loglevel verbose
 
-RUN npm install
-
-# Add the code and copy over the node_modules
-
+# Add the code and copy over the node_modules-catalog
 WORKDIR /application
-COPY [".", "."]
+RUN cp -a /npm/node_modules /application && \
+    rm -rf /npm
 
-RUN cp -a /npm/node_modules /application
-RUN cp -a /application/config/secretSettings.js /application/config/localSettings.js
+# Copy config files
+COPY ["config", "config"]
+COPY ["config/secretSettings.js", "config/localSettings.js"]
+
+# Source files in root
+COPY ["app.js", "app.js"]
+COPY ["azureStorage.js", "azureStorage.js"]
+COPY ["azureTest.js", "azureTest.js"]
+COPY ["canvasApi.js", "canvasApi.js"]
+COPY ["csvFile.js", "csvFile.js"]
+
+# Source files directories
+COPY ["azure", "azure"]
+COPY ["server", "server"]
+COPY ["messages", "messages"]
+COPY ["scripts", "scripts"]
 
 ENV NODE_PATH /application
-
-RUN npm run vendorProd
-RUN npm run webpackProd
-RUN npm run postinstall
 
 EXPOSE 3000
 
