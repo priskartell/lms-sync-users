@@ -8,13 +8,9 @@
  const mkdir = Promise.promisify(require('fs').mkdir)
 
  function cloudConnect () {
-   const csvVol = config.secure.azure.csvBlobName
-   const msgVol = config.secure.azure.msgBlobName
+   const csvVol = config.full.azure.csvBlobName
+   log.info('Creating: ' + csvVol)
    return cloudCreateContainer(csvVol)
- .then(() => log.info('Created: ' + csvVol))
- .then(() => cloudCreateContainer(msgVol))
- .then(() => log.info('Created: ' + msgVol))
- .catch(error => Error(error))
  }
 
  function checkParameterName (...p) {
@@ -28,12 +24,12 @@
    if (result) {
      return Promise.resolve(result)
    } else {
-     log.error('checkParameterName: parameterName not valid: ')
-     return Promise.reject(Error('checkParameterName: parameterName not valid:'))
+     throw new Error('checkParameterName: parameterName not valid: ')
    }
  }
 
  function cloudCreateContainer (containerName) {
+   console.log('containerName', containerName)
    return checkParameterName(containerName)
   .then(() => azure.blobService.createContainerIfNotExistsAsync(containerName))
  }

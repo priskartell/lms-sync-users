@@ -1,12 +1,12 @@
 module.exports = {
-  port: 3001,
+  port: 3000,
   canvas: {
     // apiUrl: 'https://kth.beta.instructure.com/api/v1'
     apiUrl: 'https://kth.test.instructure.com/api/v1'
   },
   logging: {
     log: {
-      level: 'debug',
+      level: 'info',
       src: true
     },
     stdout: {
@@ -18,8 +18,7 @@ module.exports = {
   },
   azure: {
     queueName: 'lms-emil',
-    csvBlobName: 'reflmscsv',
-    msgBlobName: 'reflmsmsg'
+    csvBlobName: 'dev-lms-csv'
   },
   ldap: {
     client: {
