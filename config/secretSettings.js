@@ -18,7 +18,7 @@ module.exports = {
   secure: {
     ldap: {
       client: {
-        url: getEnv('LDAP_URI', 'ldaps://ldap.ug.kth.se'),
+        url: getEnv('LDAP_URI', 'ldaps://ldap.ug.kth.se')
       },
       bind: {
         username: getEnv('LDAP_USERNAME', 'system.canvas@ug.kth.se'),
