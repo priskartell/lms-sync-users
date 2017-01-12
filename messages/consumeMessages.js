@@ -1,7 +1,6 @@
 'use strict'
 const Promise = require('bluebird')
 const config = require('../server/init/configuration')
-console.log('config.secure.azure.queueConnectionString', config.secure.azure.queueConnectionString)
 const queue = require('node-queue-adapter')(config.secure.azure.queueConnectionString)
 const log = require('../server/init/logging')
 const {addDescription} = require('message-type')
