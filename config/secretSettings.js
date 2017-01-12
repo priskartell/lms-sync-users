@@ -1,6 +1,6 @@
 'use strict'
 
-const getEnv = require('kth-node-configuration').getEnv
+const {getEnv} = require('kth-node-configuration')
 
 /**
  * This configuration file holds all secret information that is used in the local environment.
@@ -13,15 +13,16 @@ const getEnv = require('kth-node-configuration').getEnv
  * This file is checked in to git, but the localSettings.js file each developer
  * should create based on this template is not.
  */
+console.log(getEnv('AZURE_QUEUE_CONNECTION_STRING'), getEnv)
 
 module.exports = {
   secure: {
     ldap: {
       client: {
-        url: getEnv('LDAP_URI', 'ldaps://ldap.ug.kth.se')
+        url: getEnv('LDAP_URI')
       },
       bind: {
-        username: getEnv('LDAP_USERNAME', 'system.canvas@ug.kth.se'),
+        username: getEnv('LDAP_USERNAME'),
         password: getEnv('LDAP_PASSWORD')
       }
     },
@@ -29,8 +30,8 @@ module.exports = {
       apiKey: getEnv('CANVAS_API_KEY')
     },
     azure: {
-      queueConnectionString: getEnv('AZURE_QUEUE_CONNECTION_STRING', 'Endpoint=sb://kth-integral.servicebus.windows.net/;SharedAccessKeyName=canvas-consumer;SharedAccessKey='),
-      queueName: getEnv('AZURE_QUEUE_NAME')
+      queueConnectionString: getEnv('AZURE_QUEUE_CONNECTION_STRING'),
+      StorageConnectionString: getEnv('AZURE_STORAGE_CONNECTION_STRING')
     }
   }
 }

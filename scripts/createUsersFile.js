@@ -45,6 +45,41 @@ function appendUsers (type) {
   })
 }
 
+function appendUsersForEduCourses () {
+  return new Promise((resolve, reject) => {
+    let counter = 0
+
+    const opts = {
+      filter: `ugAffiliation=${type}`,
+      scope: 'sub',
+      paged: true,
+      sizeLimit: 1000,
+      attributes
+    }
+
+    ldapClient.search('OU=UG,DC=ug,DC=kth,DC=se', opts, function (err, res) {
+      if (err) {
+        throw err
+      }
+      res.on('searchEntry', function (entry) {
+        counter++
+        console.log(entry.object)
+        console.log('.')
+        const o = entry.object
+        const userName = `${o.ugUsername}@kth.se`
+        writeLine([o.ugKthid, userName, o.name, 'active'], fileName)
+      })
+      res.on('error', function (err) {
+        console.error('error: ' + err.message)
+      })
+      res.on('end', function (result) {
+        console.log('Done with ', type, counter)
+        resolve()
+      })
+    })
+  })
+}
+
 function deleteFile () {
   return fs.unlinkAsync(fileName)
       .catch(e => console.log("couldn't delete file. It probably doesn't exist. This is fine, let's continue"))
@@ -61,9 +96,11 @@ deleteFile()
 .catch(e => console.log('couldnt create csv folder. This is probably fine, just continue')))
 .then(() => writeLine(headers, fileName))
 .then(bindLdapClient)
-.then(() => Promise.all([
-  appendUsers('employee'),
-  appendUsers('student')]))
+.then(appendUsersForEduCourses)
+// .then(() => Promise.all([
+//   appendUsers('employee'),
+//   appendUsers('student')]))
+//
 .then(() => console.log('Done with creating the file', fileName))
 .catch(e => console.error(e))
 .finally(() => ldapClient.unbindAsync())
