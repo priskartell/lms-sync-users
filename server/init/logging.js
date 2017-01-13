@@ -17,5 +17,5 @@ let logConfiguration = {
   src: configuration.log.src
 }
 
-log.init(logConfiguration)
-module.exports = log
+const logger = log.init(logConfiguration)
+module.exports = logger

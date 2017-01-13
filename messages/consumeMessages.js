@@ -37,6 +37,7 @@ function parseBody (msg) {
     abort()
   })
 }
+
 function readMessage () {
   isReading = true
   let message
@@ -53,6 +54,7 @@ function readMessage () {
     .then(addDescription)
     .then(handleMessage)
     .then(() => queue.deleteMessageFromQueue(message))
+    .then(() => message)
     .catch(e => {
       if (e.message !== 'abort_chain') {
         log.error(e)
@@ -73,5 +75,5 @@ function readMessageUnlessReading () {
 }
 
 module.exports = {
-  start
+  start, readMessage
 }

@@ -1,21 +1,16 @@
  'use strict'
- const azure = require('azure')
+ const azure = require('./azure')
  const log = require('./server/init/logging')
  const fs = require('fs')
  const config = require('./server/init/configuration')
- // process.env['AZURE_STORAGE_CONNECTION_STRING'] = config.secure.azure.StorageConnectionString
+
  const Promise = require('bluebird')
  const mkdir = Promise.promisify(require('fs').mkdir)
- const pabs = Promise.promisifyAll(azure.createBlobService(config.secure.azure.StorageConnectionString)) // PromiseAzureBlobService
 
  function cloudConnect () {
    const csvVol = config.full.azure.csvBlobName
-   const msgVol = config.full.azure.msgBlobName
+   log.info('Creating: ' + csvVol)
    return cloudCreateContainer(csvVol)
- .then(() => log.info('Created: ' + csvVol))
- .then(() => cloudCreateContainer(msgVol))
- .then(() => log.info('Created: ' + msgVol))
- .catch(error => Error(error))
  }
 
  function checkParameterName (...p) {
@@ -29,34 +24,34 @@
    if (result) {
      return Promise.resolve(result)
    } else {
-     log.error('checkParameterName: parameterName not valid: ')
-     return Promise.reject(Error('checkParameterName: parameterName not valid:'))
+     throw new Error('checkParameterName: parameterName not valid: ')
    }
  }
 
  function cloudCreateContainer (containerName) {
+   console.log('containerName', containerName)
    return checkParameterName(containerName)
-  .then(() => pabs.createContainerIfNotExistsAsync(containerName))
+  .then(() => azure.blobService.createContainerIfNotExistsAsync(containerName))
  }
 
  function cloudStoreFile (fileName, containerName) {
    return checkParameterName(fileName, containerName)
-  .then(() => pabs.createBlockBlobFromLocalFileAsync(containerName, fileName, fileName))
+  .then(() => azure.blobService.createBlockBlobFromLocalFileAsync(containerName, fileName, fileName))
  }
 
  function cloudStoreTextToExistingFile (fileName, containerName, txt) {
    return checkParameterName(fileName, containerName, txt)
-  .then(() => pabs.appendFromTextAsync(containerName, fileName, txt))
+  .then(() => azure.blobService.appendFromTextAsync(containerName, fileName, txt))
  }
 
  function cloudStoreTextToFile (fileName, containerName, txt) {
    return checkParameterName(fileName, containerName, txt)
-  .then(() => pabs.createAppendBlobFromTextAsync(containerName, fileName, txt))
+  .then(() => azure.blobService.createAppendBlobFromTextAsync(containerName, fileName, txt))
  }
 
  function cloudListFile (containerName) {
    return checkParameterName(containerName)
-  .then(() => pabs.listBlobsSegmentedAsync(containerName, null))
+  .then(() => azure.blobService.listBlobsSegmentedAsync(containerName, null))
   .then(result => {
     let transLogListCsv = ''
     let transArrayText = JSON.stringify(result.entries)
@@ -125,17 +120,17 @@
      }
    })
   .then(() => checkParameterName(fileName, containerName))
-  .then(() => pabs.getBlobToStreamAsync(containerName, fileName, fs.createWriteStream(pathToStore + fileName)))
+  .then(() => azure.blobService.getBlobToStreamAsync(containerName, fileName, fs.createWriteStream(pathToStore + fileName)))
  }
 
  function cloudgetStream (fileName, containerName, localStream) {
    return checkParameterName(fileName, containerName, localStream)
-  .then(() => pabs.getBlobToStreamAsync(containerName, fileName, localStream))
+  .then(() => azure.blobService.getBlobToStreamAsync(containerName, fileName, localStream))
  }
 
  function cloudDelFile (fileName, containerName) {
    return checkParameterName(fileName, containerName)
-  .then(() => pabs.deleteBlobAsync(containerName, fileName))
+  .then(() => azure.blobService.deleteBlobAsync(containerName, fileName))
  }
 
  module.exports = {
