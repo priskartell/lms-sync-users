@@ -30,7 +30,7 @@ test('affiliation: member should be in scope', t => {
   t.ok(result)
 })
 
-test('affiliation: other should not be in scope', t => {
+test('affiliation: other should NOT be in scope', t => {
   const msg = {
     affiliation:['other']
   }
