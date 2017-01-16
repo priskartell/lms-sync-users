@@ -10,7 +10,6 @@ const ugParser = require('./ugParser')
 require('colors')
 
 const csvVol = config.full.azure.csvBlobName
-const msgVol = config.full.azure.msgBlobName
 const csvDir = config.full.localFile.csvDir
 
 function _createCsvFile (msg, sisCourseCode, timeStamp) {
