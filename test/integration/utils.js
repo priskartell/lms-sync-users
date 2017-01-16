@@ -1,14 +1,27 @@
-const canvasApi = require('../../canvasApi')
-const INTEGRATION_TEST_TERM = 'Integration_test_term'
+const config = require('../../server/init/configuration')
+const Promise = require('bluebird')
 
-function createTestTerm () {}
+const consumeMessages = require('../../messages/consumeMessages')
 
+function handleMessages (...messages) {
+  config.full.azure.queueName = 'lms-sync-integration-tests-' + Math.random().toString(36)
+
+  function sendAndReadMessage (message) {
+    return queue.sendQueueMessage(config.full.azure.queueName, message)
+    .then(() => consumeMessages.readMessage())
+  }
+
+  let result
+  return queue.createQueueIfNotExists(config.full.azure.queueName)
+  .then(() => Promise.mapSeries(messages, sendAndReadMessage))
+  .then(messagesResults => {
+    result = messagesResults
+  })
+  .finally(() => queue.deleteQueue(config.full.azure.queueName))
+  .then(()=> result)
+}
+
+const queue = require('node-queue-adapter')(config.secure.azure.queueConnectionString)
 module.exports = {
-  simulateQueueMessage () {
-    return
-  },
-
-  deleteEveryUserInCanvas () {
-    return createTestTerm()
-    .then(() => canvasApi.sendCsvFile('test/integration/files/no_users.csv', 1, {batch_mode: 1, batch_mode_term_id: INTEGRATION_TEST_TERM}))
-  }}
+  handleMessages
+}
