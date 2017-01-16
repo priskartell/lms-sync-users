@@ -6,7 +6,7 @@ const log = require('../server/init/logging')
 
 function isInScope (msg) {
   var affArray = msg.affiliation
-  const result = affArray && (affArray.includes('employee') || affArray.includes('student'))
+  const result = affArray && (affArray.includes('employee') || affArray.includes('student') || affArray.includes('member'))
   if (!result) {
     log.info('\nUser is not an employee and not a student, out of the affilication scope. User ' + msg.username + ' ' + msg.kthid + ' with affiliation ' + msg.affiliation)
   }
