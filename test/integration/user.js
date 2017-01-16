@@ -1,10 +1,11 @@
 var test = require('tape')
 const {handleMessages} = require('././utils')
 const canvasApi = require('../../canvasApi')
+const randomstring = require('randomstring')
 
 test('should create a new user in canvas', t => {
   t.plan(1)
-  const kthid = 'emil1234'
+  const kthid = randomstring.generate(8)
   const username = `${kthid}_abc`
   const message = {
     kthid,
@@ -23,7 +24,7 @@ test('should create a new user in canvas', t => {
 
 test.only('should create a new user of affiliation:member in canvas', t => {
   t.plan(1)
-  const kthid = 'emil1234'
+  const kthid = randomstring.generate(8)
   const username = `${kthid}_abc`
   const message = {
     kthid,
