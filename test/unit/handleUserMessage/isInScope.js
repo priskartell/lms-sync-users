@@ -5,7 +5,7 @@ const isInScope = handleUserMessage.__get__('isInScope')
 
 test('affiliation: student should be in scope', t => {
   const msg = {
-    affiliation:['student']
+    affiliation: ['student']
   }
   t.plan(1)
   const result = isInScope(msg)
@@ -14,7 +14,7 @@ test('affiliation: student should be in scope', t => {
 
 test('affiliation: employee should be in scope', t => {
   const msg = {
-    affiliation:['employee']
+    affiliation: ['employee']
   }
   t.plan(1)
   const result = isInScope(msg)
@@ -23,7 +23,7 @@ test('affiliation: employee should be in scope', t => {
 
 test('affiliation: member should be in scope', t => {
   const msg = {
-    affiliation:['member']
+    affiliation: ['member']
   }
   t.plan(1)
   const result = isInScope(msg)
@@ -32,7 +32,7 @@ test('affiliation: member should be in scope', t => {
 
 test('affiliation: other should NOT be in scope', t => {
   const msg = {
-    affiliation:['other']
+    affiliation: ['other']
   }
   t.plan(1)
   const result = isInScope(msg)

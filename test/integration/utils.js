@@ -18,7 +18,7 @@ function handleMessages (...messages) {
     result = messagesResults
   })
   .finally(() => queue.deleteQueue(config.full.azure.queueName))
-  .then(()=> result)
+  .then(() => result)
 }
 
 const queue = require('node-queue-adapter')(config.secure.azure.queueConnectionString)
