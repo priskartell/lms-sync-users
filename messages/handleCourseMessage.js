@@ -38,7 +38,6 @@ function _createCsvFile (msg, sisCourseCode, timeStamp) {
   let csvData = header + csvString
   log.info('\nGoing to open file: ' + csvFileName + ' ' + msgFileName)
   return cl.cloudStoreTextToFile(csvFileName, csvVol, csvData)
-  .then(result => { log.info(result); return cl.cloudStoreTextToFile(msgFileName, msgVol, JSON.stringify(msg, null, 4)) })
   .then(() => cl.cloudgetFile(csvFileName, csvVol, csvDir))
   .then(result => { log.info(result); return {csvContent: csvData, csvFileName: csvDir + result.name} })
   .catch(error => { log.error(error); return Promise.reject(error) })
