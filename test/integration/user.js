@@ -22,7 +22,7 @@ test('should create a new user in canvas', t => {
   .then(user => t.ok(user))
 })
 
-test.only('should create a new user of affiliation:member in canvas', t => {
+test('should create a new user of affiliation:member in canvas', t => {
   t.plan(1)
   const kthid = randomstring.generate(8)
   const username = `${kthid}_abc`
