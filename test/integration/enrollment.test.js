@@ -22,10 +22,10 @@ test('should enroll an assistant in an existing course in canvas', t => {
 
   // First create a fresch course in canvas
   canvasApi.createCourse({course}, 14) // Courses that starts with an 'A' is handled by account 14
-  .then(res => {canvasCourse = res})
+  .then(res => { canvasCourse = res })
   .then(() => handleMessages(message))
   .then(([{resp}]) => canvasApi.pollUntilSisComplete(resp.id))
-  .then(()=> canvasApi.getEnrollments(canvasCourse.id))
+  .then(() => canvasApi.getEnrollments(canvasCourse.id))
   .then(([enrolledUser]) => {
     t.ok(enrolledUser.sis_user_id === userKthId)
   })
