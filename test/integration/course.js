@@ -3,7 +3,7 @@ const {handleMessages} = require('././utils')
 const canvasApi = require('../../canvasApi')
 const randomstring = require('randomstring')
 
-test.only('should enroll an assistant in an existing course in canvas', t => {
+test('should enroll an assistant in an existing course in canvas', t => {
   t.plan(1)
   let canvasCourse
 
@@ -27,7 +27,7 @@ test.only('should enroll an assistant in an existing course in canvas', t => {
   }
 
   // First create a fresch course in canvas
-  canvasApi.createCourse({course}, 14) // Courses that starts with an 'A' is handled by this account
+  canvasApi.createCourse({course}, 14) // Courses that starts with an 'A' is handled by account 14
   .then(res => {
     canvasCourse = res
     console.log('canvasCourse', canvasCourse)
@@ -35,5 +35,7 @@ test.only('should enroll an assistant in an existing course in canvas', t => {
   .then(() => handleMessages(message))
   .then(([{resp}]) => canvasApi.pollUntilSisComplete(resp.id))
   .then(()=> canvasApi.getEnrollments(canvasCourse.id))
-  .then(enrollments => t.equal(enrollments, ['u1znmoik']))
+  .then(([enrolledUser]) => {
+    t.ok(enrolledUser.sis_user_id === 'u1znmoik')
+  })
 })
