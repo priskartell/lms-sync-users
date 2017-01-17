@@ -8,7 +8,7 @@ test('should enroll an assistant in an existing course in canvas', t => {
   let canvasCourse
 
   const courseCode = 'A' + randomstring.generate(5)
-
+  const userKthId = 'u1znmoik'
   const message = {
     'kthid': 'u2kub9j5',
     'ugClass': 'group',
@@ -16,7 +16,7 @@ test('should enroll an assistant in an existing course in canvas', t => {
     'ug1Name': `edu.courses.SF.${courseCode}.20171.1.assistants`,
     'name_en': 'Teacher assistants for SF1625 Spring 17 1',
     'name_sv': 'Lärarassistenter på SF1625 VT17 1',
-    'member': ['u1znmoik']}
+    'member': [userKthId]}
 
   const course = {
     'name': 'Emil testar',
@@ -27,14 +27,11 @@ test('should enroll an assistant in an existing course in canvas', t => {
 
   // First create a fresch course in canvas
   canvasApi.createCourse({course}, 14) // Courses that starts with an 'A' is handled by account 14
-  .then(res => {
-    canvasCourse = res
-    console.log('canvasCourse', canvasCourse)
-  })
+  .then(res => { canvasCourse = res })
   .then(() => handleMessages(message))
   .then(([{resp}]) => canvasApi.pollUntilSisComplete(resp.id))
   .then(() => canvasApi.getEnrollments(canvasCourse.id))
   .then(([enrolledUser]) => {
-    t.ok(enrolledUser.sis_user_id === 'u1znmoik')
+    t.ok(enrolledUser.sis_user_id === userKthId)
   })
 })
