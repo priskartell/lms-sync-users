@@ -75,12 +75,12 @@ function _process (msg) {
       log.info('FileName: ', csvObject.csvFileName)
       return csvObject.csvFileName
     })
-    .then(fileName => canvasApi.sendCsvFile(fileName))
+    .then(fileName => canvasApi.sendCsvFile(fileName, true))
     .then(canvasReturnValue => {
       let documentId = sisCourseCode + '.' + timeStamp
       let document = {id: documentId, msg: msg, resp: canvasReturnValue}
       log.info(document)
-      return
+      return document
     })
     .catch(err => {
       if (err.statusCode === 404) {
