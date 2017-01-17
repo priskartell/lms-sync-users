@@ -40,7 +40,7 @@ function parseBody (msg) {
 
 function readMessage () {
   isReading = true
-  let message
+  let message, result
   return queue
     .readMessageFromQueue(config.secure.azure.queueName || config.full.azure.queueName)
     .then(msg => {
@@ -52,8 +52,11 @@ function readMessage () {
     .then(parseBody)
     .then(addDescription)
     .then(handleMessage)
+    .then(_result => {
+      result = _result
+    })
     .then(() => queue.deleteMessageFromQueue(message))
-    .then(() => message)
+    .then(() => result)
     .catch(e => {
       if (e.message !== 'abort_chain') {
         log.error(e)

@@ -5,7 +5,7 @@ const randomstring = require('randomstring')
 
 test.only('should enroll an assistant in an existing course in canvas', t => {
   t.plan(1)
-
+  let canvasCourse
   const message = {
     'kthid': 'u2kub9j5',
     'ugClass': 'group',
@@ -26,8 +26,13 @@ test.only('should enroll an assistant in an existing course in canvas', t => {
 
   // First create a fresch course in canvas
   canvasApi.createCourse({course}, 14) // Courses that starts with an 'A' is handled by this account
+  .then(res => {
+    console.log('canvasCourse', canvasCourse)
+    canvasCourse = res
+  })
   .then(() => handleMessages(message))
+  // .then(result => console.log('result', JSON.stringify( result )))
   .then(([{resp}]) => canvasApi.pollUntilSisComplete(resp.id))
-  .then(result => console.log('Now every csv file is complete in canvas', result))
-  .then(user => t.ok(user))
+  .then(()=> canvasApi.getEnrollments(res.id))
+  .then(enrollments => t.equal(enrollments, ['u1znmoik']))
 })
