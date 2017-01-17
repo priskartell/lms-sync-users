@@ -27,12 +27,11 @@ test.only('should enroll an assistant in an existing course in canvas', t => {
   // First create a fresch course in canvas
   canvasApi.createCourse({course}, 14) // Courses that starts with an 'A' is handled by this account
   .then(res => {
-    console.log('canvasCourse', canvasCourse)
     canvasCourse = res
+    console.log('canvasCourse', canvasCourse)
   })
   .then(() => handleMessages(message))
-  // .then(result => console.log('result', JSON.stringify( result )))
   .then(([{resp}]) => canvasApi.pollUntilSisComplete(resp.id))
-  .then(()=> canvasApi.getEnrollments(res.id))
+  .then(()=> canvasApi.getEnrollments(canvasCourse.id))
   .then(enrollments => t.equal(enrollments, ['u1znmoik']))
 })
