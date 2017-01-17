@@ -18,7 +18,6 @@ test('should enroll an assistant in an existing course in canvas', t => {
     'name_sv': 'Lärarassistenter på SF1625 VT17 1',
     'member': ['u1znmoik']}
 
-
   const course = {
     'name': 'Emil testar',
     'course_code': courseCode,
@@ -34,7 +33,7 @@ test('should enroll an assistant in an existing course in canvas', t => {
   })
   .then(() => handleMessages(message))
   .then(([{resp}]) => canvasApi.pollUntilSisComplete(resp.id))
-  .then(()=> canvasApi.getEnrollments(canvasCourse.id))
+  .then(() => canvasApi.getEnrollments(canvasCourse.id))
   .then(([enrolledUser]) => {
     t.ok(enrolledUser.sis_user_id === 'u1znmoik')
   })
