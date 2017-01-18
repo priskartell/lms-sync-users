@@ -9,6 +9,8 @@ const log = require('../server/init/logging')
 const ugParser = require('./ugParser')
 require('colors')
 
+// just a comment
+
 const csvVol = config.full.azure.csvBlobName
 const csvDir = config.full.localFile.csvDir
 
