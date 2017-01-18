@@ -100,7 +100,7 @@ function writeCsvFile (canvasCourseObjects) {
 
     return csvFile.writeLine(lineArr, fileName)
     .then(() => {
-      return {course, subAccount, courseRound, shortName}
+      return {course, sisAccountId, courseRound, shortName}
     })
   }
 
