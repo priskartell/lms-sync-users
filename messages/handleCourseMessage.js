@@ -1,4 +1,4 @@
-'use strict'
+ 'use strict'
 
 const {type} = require('message-type')
 const canvasApi = require('../canvasApi')
@@ -67,8 +67,16 @@ function _process (msg) {
       log.info(`In _process ${sisCourseCode}, processing for ${msg._desc.userType}`)
       return canvasApi.findCourse(sisCourseCode)
     })
+    .catch(err => {
+      if (err.statusCode === 404) {
+        log.info('Course does not exist in canvas, skipping, '.red + sisCourseCode.red)
+        return Promise.resolve('Course does not exist in canvas')
+      } else {
+        return Promise.reject(Error(err))
+      }
+    })
     .then(result => {
-      log.info(`Result from find course: ${result}`)
+      log.info('Result from find course',result)
       return _createCsvFile(msg, sisCourseCode, timeStamp)
     })
     .then(csvObject => {
@@ -81,14 +89,6 @@ function _process (msg) {
       let document = {id: documentId, msg: msg, resp: canvasReturnValue}
       log.info(document)
       return document
-    })
-    .catch(err => {
-      if (err.statusCode === 404) {
-        log.info('Course does not exist in canvas, skipping, '.red + sisCourseCode.red)
-        return Promise.resolve('Course does not exist in canvas')
-      } else {
-        return Promise.reject(Error(err))
-      }
     })
 }
 
