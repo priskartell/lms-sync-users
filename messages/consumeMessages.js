@@ -37,7 +37,6 @@ function parseBody (msg) {
     abort()
   })
 }
-
 function readMessage () {
   isReading = true
   let message, result

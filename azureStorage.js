@@ -1,16 +1,21 @@
  'use strict'
- const azure = require('./azure')
+ const azure = require('azure')
  const log = require('./server/init/logging')
  const fs = require('fs')
  const config = require('./server/init/configuration')
-
+ // process.env['AZURE_STORAGE_CONNECTION_STRING'] = config.secure.azure.StorageConnectionString
  const Promise = require('bluebird')
  const mkdir = Promise.promisify(require('fs').mkdir)
+ const pabs = Promise.promisifyAll(azure.createBlobService(config.secure.azure.StorageConnectionString)) // PromiseAzureBlobService
 
  function cloudConnect () {
    const csvVol = config.full.azure.csvBlobName
    log.info('Creating: ' + csvVol)
    return cloudCreateContainer(csvVol)
+ .then(() => log.info('Created: ' + csvVol))
+ .then(() => cloudCreateContainer(msgVol))
+ .then(() => log.info('Created: ' + msgVol))
+ .catch(error => Error(error))
  }
 
  function checkParameterName (...p) {
