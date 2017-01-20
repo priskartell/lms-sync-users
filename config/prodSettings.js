@@ -5,7 +5,8 @@ module.exports = {
   },
   logging: {
     log: {
-      level: 'info'
+      level: 'info',
+      src: false
     },
     stdout: {
       enabled: true
@@ -22,7 +23,14 @@ module.exports = {
       maxConnections: 10,
       idleTimeout: 300000,
       checkInterval: 10000,
-      'reconnect': true
+      reconnect: true
     }
+  },
+  azure: {
+    queueName: 'ug-canvas',
+    csvBlobName: 'lms-csv-prod'
+  },
+  localFile: {
+    csvDir: '/tmp/'
   }
 }

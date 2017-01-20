@@ -1,11 +1,12 @@
 module.exports = {
   port: 3000,
   canvas: {
-    apiUrl: 'https://kth.test.instructure.com/api/v1'
+    apiUrl: 'https://kth.beta.instructure.com/api/v1'
   },
   logging: {
     log: {
-      level: 'info'
+      level: 'debug',
+      src: true
     },
     stdout: {
       enabled: true
@@ -13,6 +14,10 @@ module.exports = {
     console: {
       enabled: false
     }
+  },
+  azure: {
+    queueName: 'ug-canvas-ref',
+    csvBlobName: 'reflmscsv'
   },
   ldap: {
     client: {
@@ -22,7 +27,10 @@ module.exports = {
       maxConnections: 10,
       idleTimeout: 300000,
       checkInterval: 10000,
-      'reconnect': true
+      reconnect: true
     }
+  },
+  localFile: {
+    csvDir: '/tmp/'
   }
 }

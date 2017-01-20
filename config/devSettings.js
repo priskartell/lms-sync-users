@@ -1,12 +1,13 @@
 module.exports = {
-  port: 3000,
+  port: 3002,
   canvas: {
-    // apiUrl: 'https://kth.beta.instructure.com/api/v1'
-    apiUrl: 'https://kth.test.instructure.com/api/v1'
+    apiUrl: 'https://kth.beta.instructure.com/api/v1'
+    // apiUrl: 'https://kth.test.instructure.com/api/v1'
   },
   logging: {
     log: {
-      level: 'debug'
+      level: 'info',
+      src: true
     },
     stdout: {
       enabled: false
@@ -14,6 +15,10 @@ module.exports = {
     console: {
       enabled: true
     }
+  },
+  azure: {
+    queueName: 'lms-emil',
+    csvBlobName: 'dev-lms-csv'
   },
   ldap: {
     client: {
@@ -25,5 +30,8 @@ module.exports = {
       checkInterval: 10000,
       'reconnect': true
     }
+  },
+  localFile: {
+    csvDir: '/tmp/'
   }
 }
