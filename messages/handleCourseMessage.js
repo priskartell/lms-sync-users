@@ -42,7 +42,14 @@
   .catch(error => { log.error(error); return Promise.reject(error) })
  }
 
- function _parseKey (key, msgtype) {
+ function _parseKey (msg) {
+   const {key, msgtype} = msg
+
+   if(msg._desc.userType === type.omregistrerade){
+     console.log('TODO: GET THE SIS COURSE ID FROM CANVAS ')
+     return Promise.resolve('KD1070VT171')
+   }
+
    let sisCourseCode = 0
    if (msgtype === type.students) {
      sisCourseCode = ugParser.parseKeyStudent(key)
@@ -61,7 +68,7 @@
    let sisCourseCode = ''
    let timeStamp = Date.now()
 
-   return _parseKey(msg.ug1Name, msg._desc.userType)
+   return _parseKey(msg)
     .then(sisCode => {
       sisCourseCode = sisCode
       log.info(`In _process ${sisCourseCode}, processing for ${msg._desc.userType}`)
@@ -95,7 +102,7 @@
  module.exports = function (msg, counter) {
    log.info('Processing for msg..... ' + msg.ug1Name)
    var msgtype = msg._desc.userType
-   if (msg._desc && (msgtype === type.students || msgtype === type.teachers || msgtype === type.assistants || msgtype === type.courseresponsibles)) {
+   if (msg._desc && (msgtype === type.students || msgtype === type.omregistrerade ||  msgtype === type.teachers || msgtype === type.assistants || msgtype === type.courseresponsibles)) {
      return _process(msg)
    } else {
      log.error('This is something else than students, teacher, assistant, courseresponsibles we can probably wait with this until the students is handled', JSON.stringify(msg, null, 4))

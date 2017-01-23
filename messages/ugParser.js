@@ -50,6 +50,6 @@ function parseKeyStudent (key) {
 }
 
 module.exports = {
-  'parseKeyTeacher': parseKeyTeacher,
-  'parseKeyStudent': parseKeyStudent
+  parseKeyTeacher,
+  parseKeyStudent
 }
