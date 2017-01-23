@@ -90,7 +90,6 @@
       log.info(document)
       return document
     })
-
  }
 
  module.exports = function (msg, counter) {
