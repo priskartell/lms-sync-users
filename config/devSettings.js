@@ -17,7 +17,7 @@ module.exports = {
     }
   },
   azure: {
-    queueName: 'lms-emil',
+    queueName: 'lms-elena',
     csvBlobName: 'dev-lms-csv'
   },
   ldap: {
