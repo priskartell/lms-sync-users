@@ -1,13 +1,19 @@
 var test = require('tape')
-const rewire = require('rewire')
+require('rewire-global')
 const sinon = require('sinon')
-const handleCourseMessages = rewire('../../../messages/handleCourseMessage')
+const handleCourseMessages = require('../../../messages/handleCourseMessage')
 
-test.skip('should skip the handling of the csv file if the course doesnt exist in canvas', t => {
+test.only('should skip the message when the course doesnt exist in canvas', t => {
+  t.plan(1)
   const canvasApi = require('../../../canvasApi')
+  canvasApi.findCourse = sinon.stub().returns(Promise.reject({statusCode:404}))
+  const createCsvFile = sinon.stub()
+  handleCourseMessages.__set__('_createCsvFile', createCsvFile)
+  const message = {} // Any message is fine since canvas api is stubbed
 
-  canvasApi.findCourse = sinon.stub().returns()
-  handleCourseMessages._process()
-  t.ok(canvasApi.findCourse())
-  t.end()
+  handleCourseMessages(message)
+  .then(()=>{
+      t.notOk(createCsvFile.called)
+      t.end()
+  })
 })

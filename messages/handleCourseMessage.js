@@ -1,5 +1,5 @@
  'use strict'
-
+console.log('Here!')
  const {type} = require('message-type')
  const canvasApi = require('../canvasApi')
  const Promise = require('bluebird')
@@ -57,27 +57,22 @@
    return Promise.resolve(sisCourseCode)
  }
 
- function _process (msg) {
-   let sisCourseCode = ''
+ function process (msg) {
    let timeStamp = Date.now()
 
-   return _parseKey(msg.ug1Name, msg._desc.userType)
-    .then(sisCode => {
-      sisCourseCode = sisCode
-      log.info(`In _process ${sisCourseCode}, processing for ${msg._desc.userType}`)
-      return canvasApi.findCourse(sisCourseCode)
-    })
+   return canvasApi.findCourse(msg.sisCourseCode)
     .catch(err => {
+      console.log("catch")
       if (err.statusCode === 404) {
-        log.info('Course does not exist in canvas, skipping, '.red + sisCourseCode.red)
-        return Promise.resolve('Course does not exist in canvas')
+        log.info('Course does not exist in canvas, skipping, '.red + msg.sisCourseCode)
+        return Promise.reject('Course does not exist in canvas')
       } else {
         return Promise.reject(Error(err))
       }
     })
     .then(result => {
       log.info('Result from find course', result)
-      return _createCsvFile(msg, sisCourseCode, timeStamp)
+      return _createCsvFile(msg, msg.sisCourseCode, timeStamp)
     })
     .then(csvObject => {
       log.info('FileName: ', csvObject.csvFileName)
@@ -85,20 +80,11 @@
     })
     .then(fileName => canvasApi.sendCsvFile(fileName, true))
     .then(canvasReturnValue => {
-      let documentId = sisCourseCode + '.' + timeStamp
+      let documentId = msg.sisCourseCode + '.' + timeStamp
       let document = {id: documentId, msg: msg, resp: canvasReturnValue}
       log.info(document)
       return document
     })
  }
 
- module.exports = function (msg, counter) {
-   log.info('Processing for msg..... ' + msg.ug1Name)
-   var msgtype = msg._desc.userType
-   if (msg._desc && (msgtype === type.students || msgtype === type.teachers || msgtype === type.assistants || msgtype === type.courseresponsibles)) {
-     return _process(msg)
-   } else {
-     log.error('This is something else than students, teacher, assistant, courseresponsibles we can probably wait with this until the students is handled', JSON.stringify(msg, null, 4))
-     return Promise.resolve('Unknown flag: ' + msgtype)
-   }
- }
+ module.exports = process
