@@ -45,7 +45,7 @@
  function _parseKey (msg) {
    const {key, msgtype} = msg
 
-   if(msg._desc.userType === type.omregistrerade){
+   if (msg._desc.userType === type.omregistrerade) {
      console.log('TODO: GET THE SIS COURSE ID FROM CANVAS ')
      return Promise.resolve('KD1070VT171')
    }
@@ -102,7 +102,7 @@
  module.exports = function (msg, counter) {
    log.info('Processing for msg..... ' + msg.ug1Name)
    var msgtype = msg._desc.userType
-   if (msg._desc && (msgtype === type.students || msgtype === type.omregistrerade ||  msgtype === type.teachers || msgtype === type.assistants || msgtype === type.courseresponsibles)) {
+   if (msg._desc && (msgtype === type.students || msgtype === type.omregistrerade || msgtype === type.teachers || msgtype === type.assistants || msgtype === type.courseresponsibles)) {
      return _process(msg)
    } else {
      log.error('This is something else than students, teacher, assistant, courseresponsibles we can probably wait with this until the students is handled', JSON.stringify(msg, null, 4))
