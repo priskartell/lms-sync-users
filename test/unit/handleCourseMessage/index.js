@@ -1,13 +1,13 @@
 var test = require('tape')
-require('rewire-global').enable()
+const rewire = require('rewire')
 const sinon = require('sinon')
+const handleCourseMessages = rewire('../../../messages/handleCourseMessage')
 
-test('should be able to mock functions on canvasApi', t => {
-  const CanvasApi = require('canvas-api')
+test.skip('should skip the handling of the csv file if the course doesnt exist in canvas', t => {
   const canvasApi = require('../../../canvasApi')
 
-  CanvasApi.prototype.findCourse = sinon.stub().returns(true)
-
+  canvasApi.findCourse = sinon.stub().returns()
+  handleCourseMessages._process()
   t.ok(canvasApi.findCourse())
   t.end()
 })
