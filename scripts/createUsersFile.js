@@ -63,6 +63,7 @@ deleteFile()
 .then(bindLdapClient)
 .then(() => Promise.all([
   appendUsers('employee'),
+  appendUsers('member'),
   appendUsers('student')]))
 .then(() => console.log('Done with creating the file', fileName))
 .catch(e => console.error(e))

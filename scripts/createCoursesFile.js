@@ -1,4 +1,4 @@
-
+writeCsvFile
 const rp = require('request-promise')
 const Promise = require('bluebird') // use bluebird to get a little more promise functions then the standard Promise AP
 const parseString = Promise.promisify(require('xml2js').parseString)
@@ -6,7 +6,7 @@ const {groupBy} = require('lodash')
 const config = require('../server/init/configuration')
 const canvasUtilities = require('kth-canvas-utilities')
 canvasUtilities.init(config.full.canvas.apiUrl, config.secure.canvas.apiKey)
-const {getCourseAndCourseRoundFromKopps, createCanvasCourseObject} = canvasUtilities
+const {getCourseAndCourseRoundFromKopps, createSimpleCanvasCourseObject} = canvasUtilities
 const csvFile = require('../csvFile')
 const fs = Promise.promisifyAll(require('fs'))
 
@@ -66,10 +66,21 @@ function buildCanvasCourseObjects (courseRounds) {
     const startTerm = [round.startTerm.slice(0, position), ':', round.startTerm.slice(position)].join('')
     return getCourseAndCourseRoundFromKopps({courseCode: round.courseCode, startTerm, round: round.roundId})
   })
-  .then(coursesAndCourseRounds => Promise.map(coursesAndCourseRounds, createCanvasCourseObject))
+  .then(coursesAndCourseRounds => Promise.map(coursesAndCourseRounds, createSimpleCanvasCourseObject))
 }
 
 function writeCsvFile (canvasCourseObjects) {
+  /* {"course":{
+   * "course":{
+   * "name":"VT17-1 Practical Energy Related Project",
+   * "course_code":"MJ1432",
+   * "sis_course_id":"MJ1432VT171",
+   * "start_at":"2017-01-16T12:57:02.897Z"}},
+   * "sisAccountId":"ITM - Imported course rounds",
+   * "courseRound":{"courseCode":"MJ1432","startTerm":"20171","roundId":"1","startWeek":"2017-03","endWeek":"2017-23",
+   * "xmlns":"http://www.kth.se/student/kurser"}}
+   * */
+
   const columns = [
     'course_id',
     'short_name',
@@ -78,25 +89,25 @@ function writeCsvFile (canvasCourseObjects) {
     'account_id',
     'status']
 
-  function writeLine ({course, subAccount, courseRound, shortName}) {
+  function _writeLine ({course, sisAccountId, courseRound, shortName}) {
     const lineArr = [
       course.course.sis_course_id,
       course.course.course_code,
       `${course.course.course_code} ${shortName || ''} ${course.course.name}`,
       course.course.start_at,
-      subAccount.sis_account_id,
+      sisAccountId,
       'active']
 
     return csvFile.writeLine(lineArr, fileName)
     .then(() => {
-      return {course, subAccount, courseRound, shortName}
+      return {course, sisAccountId, courseRound, shortName}
     })
   }
 
   return fs.mkdirAsync('csv')
   .catch(e => console.log('couldnt create csv folder. This is probably fine, just continue'))
   .then(() => csvFile.writeLine(columns, fileName))
-  .then(() => Promise.map(canvasCourseObjects, writeLine))
+  .then(() => Promise.map(canvasCourseObjects, _writeLine))
 }
 
 function deleteFile () {
