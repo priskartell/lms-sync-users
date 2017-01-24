@@ -7,7 +7,7 @@
  const config = require('../server/init/configuration')
  const log = require('../server/init/logging')
  const ugParser = require('./ugParser')
- const calcSisForOmregistrerade = require('./calcSisForOmregistrerade');
+ const calcSisForOmregistrerade = require('./calcSisForOmregistrerade')
  require('colors')
 
  const csvVol = config.full.azure.csvBlobName
@@ -68,6 +68,7 @@
  function _process (msg) {
    let sisCourseCode = ''
    let timeStamp = Date.now()
+   
    return _parseKey(msg)
     .then(sisCode => {
       sisCourseCode = sisCode
