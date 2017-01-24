@@ -43,7 +43,7 @@ test.only('should enroll a re-registered student in an existing course in canvas
     ugClass: 'group',
     ug1Name: `ladok2.kurser.${courseCode0}.${courseCode1}.omregistrerade_20171`,
     member: [userKthId]}
-
+  console.log(message)
   const course = {
     name: 'Emil testar',
     'course_code': courseCode0 + courseCode1,
