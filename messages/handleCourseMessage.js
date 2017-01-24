@@ -68,8 +68,14 @@
  function _process (msg) {
    let sisCourseCode = ''
    let timeStamp = Date.now()
-   
-   return _parseKey(msg)
+   let sisCourseCodeFunction
+   if (msg._desc.userType === type.omregistrerade) {
+     sisCourseCodeFunction = calcSisForOmregistrerade
+   } else {
+     sisCourseCodeFunction = _parseKey
+   }
+
+   return sisCourseCodeFunction(msg)
     .then(sisCode => {
       sisCourseCode = sisCode
       log.info(`In _process ${sisCourseCode}, processing for ${msg._desc.userType}`)

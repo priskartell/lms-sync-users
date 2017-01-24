@@ -32,7 +32,7 @@ test('should call _parseKey if msg type is OMREG', t => {
   process(
     {
       _desc: {
-        userType: type.omregistrerade}
+        userType: type.students}
     }).catch(arg => {
       // This is really ugly and just a temporary test/implementation until handleCourseMessages is refactored
       t.ok(_parseKey.called)
