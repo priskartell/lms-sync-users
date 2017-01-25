@@ -25,7 +25,7 @@ test('Parse student group name for a fall round', t => {
   t.end()
 })
 
-test.only('Parse omreg group name for a fall round', t => {
+test('Parse omreg group name for a fall round', t => {
   t.deepEqual(ugParser.parseKeyReRegistered('ladok2.kurser.KD.1070.omregistrerade_20171'),
   {courseCode: 'KD1070',
   shortYear: 17,
