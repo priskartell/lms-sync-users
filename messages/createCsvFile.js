@@ -16,5 +16,4 @@ module.exports = function createCsvFile (msg, sisCourseCode, csvDir, csvVol) {
     log.info(result)
     return {csvContent: csvData, csvFileName: csvDir + result.name}
   })
-  .catch(error => { log.error(error); return Promise.reject(error) })
 }
