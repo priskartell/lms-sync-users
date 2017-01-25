@@ -1,5 +1,5 @@
 const test = require('tape')
-test.only('should do something', t => {
+test('should do something', t => {
   const calcSisForOmregistrerade = require('../../messages/calcSisForOmregistrerade')
   const result = calcSisForOmregistrerade({ug1Name: 'ladok2.kurser.KD.1070.omregistrerade_20171'})
   t.deepEqual(result, [
