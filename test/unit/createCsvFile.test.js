@@ -1,11 +1,10 @@
 const test = require('tape')
 require('rewire-global')
 
-function stubAzureStorage(createCsvFile){
+function stubAzureStorage (createCsvFile) {
   const azureStorage = createCsvFile.__get__('azureStorage')
-  azureStorage.cloudStoreTextToFile = ()=>Promise.resolve()
-  azureStorage.cloudgetFile = ()=>Promise.resolve({name:'a cloud file name'})
-
+  azureStorage.cloudStoreTextToFile = () => Promise.resolve()
+  azureStorage.cloudgetFile = () => Promise.resolve({name: 'a cloud file name'})
 }
 
 test('should only create the header when message has no members', t => {
@@ -14,7 +13,7 @@ test('should only create the header when message has no members', t => {
   stubAzureStorage(createCsvFile)
   const message = {
     _desc: {
-      userType: 'students',
+      userType: 'students'
     },
     member: []
   }
@@ -35,7 +34,7 @@ test('should create the header and one more line when message has one member', t
 
   const message = {
     _desc: {
-      userType: 'students',
+      userType: 'students'
     },
     member: ['abc123']
   }
