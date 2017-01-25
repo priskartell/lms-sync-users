@@ -13,28 +13,30 @@
  const csvDir = config.full.localFile.csvDir
 
  function _parseKey (msg) {
-   const {key, msgtype} = msg
+   console.log('msg', msg)
+   const {ug1Name, _desc} = msg
+   const {userType} = _desc
 
-   let sisCourseCode = 0
-   if (msgtype === type.students) {
-     sisCourseCode = ugParser.parseKeyStudent(key)
+   if (userType === type.students) {
+     return Promise.resolve(ugParser.parseKeyStudent(ug1Name))
    }
-   if (msgtype === type.teachers || msgtype === type.assistants || msgtype === type.courseresponsibles) {
-     sisCourseCode = ugParser.parseKeyTeacher(key)
+
+   if (userType === type.teachers || userType === type.assistants || userType === type.courseresponsibles) {
+     return Promise.resolve(ugParser.parseKeyTeacher(ug1Name))
    }
-   if (!sisCourseCode) {
-     log.error('\nCourse code not parsable from Key. type, ' + msgtype + ' key, ' + key)
-     return Promise.reject(Error('Key parse error, type, ' + msgtype + ' key, ' + key))
-   }
-   return Promise.resolve(sisCourseCode)
+
+   log.error('Course code not parsable from Key. type, ',userType + ' ug1Name, ' + ug1Name)
+   return Promise.reject(Error('Key parse error, type, ' + userType + ' ug1Name, ' + ug1Name))
  }
 
  function _process (msg) {
    let sisCourseCode = ''
    let sisCourseCodeFunction
    if (msg._desc.userType === type.omregistrerade) {
+     log.info('using calcSisForOmregistrerade')
      sisCourseCodeFunction = calcSisForOmregistrerade
    } else {
+     log.info('using _parseKey')
      sisCourseCodeFunction = _parseKey
    }
 

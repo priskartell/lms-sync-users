@@ -3,6 +3,7 @@ const log = require('../server/init/logging')
 const azureStorage = require('../azureStorage')
 
 module.exports = function createCsvFile (msg, sisCourseCodes, csvDir, csvVol) {
+  // Make sure that sisCourseCodes is an array, which makes the rest of this function simpler
   if (!Array.isArray(sisCourseCodes)) {
     sisCourseCodes = [sisCourseCodes]
   }
@@ -11,8 +12,9 @@ module.exports = function createCsvFile (msg, sisCourseCodes, csvDir, csvVol) {
   let csvFileName = `enrollments.${msgtype}.${sisCourseCodes[0]}.${Date.now()}.csv`
   let header = createLine(['course_id', 'user_id', 'role', 'status'])
 
+  // create one line per sisCourseId, per user. One user can be enrolled to multiple courses, for instance if this is re-registered students
   function oneLinePerSisCourseId (userId) {
-    return sisCourseCodes.map(sisCourseCode => createLine([sisCourseCode, userId, msgtype, 'active'])).join('')
+    return sisCourseCodes.map(sisCourseId => createLine([sisCourseId, userId, msgtype, 'active'])).join('')
   }
 
   const body = msg.member.map(oneLinePerSisCourseId)
