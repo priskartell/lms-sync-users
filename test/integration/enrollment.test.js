@@ -3,7 +3,7 @@ const {handleMessages} = require('././utils')
 const canvasApi = require('../../canvasApi')
 const randomstring = require('randomstring')
 
-test.only('should enroll an assistant in an existing course in canvas', t => {
+test('should enroll an assistant in an existing course in canvas', t => {
   t.plan(1)
   let canvasCourse
 
@@ -31,7 +31,7 @@ test.only('should enroll an assistant in an existing course in canvas', t => {
   })
 })
 
-test('should enroll a re-registered student in an existing course in canvas', t => {
+test.only('should enroll a re-registered student in an existing course in canvas', t => {
   t.plan(1)
   let canvasCourse
 
