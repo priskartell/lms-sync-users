@@ -1,7 +1,11 @@
 const ugParser = require('./ugParser')
-module.exports = function(msg){
-  const {courseCode,shortYear, term} = ugParser.parseKeyReRegistered(msg.ug1Name)
-  return 1
+module.exports = function (msg) {
+  const {courseCode, shortYear, term} = ugParser.parseKeyReRegistered(msg.ug1Name)
+  const result = []
+  for (var i = 0; i <= 9; i++) {
+    result.push(`${courseCode}${term}${shortYear}${i}`)
+  }
+  return result
 }
 
 // const message = {
