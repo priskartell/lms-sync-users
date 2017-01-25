@@ -25,7 +25,7 @@
      return Promise.resolve(ugParser.parseKeyTeacher(ug1Name))
    }
 
-   log.error('Course code not parsable from Key. type, ',userType + ' ug1Name, ' + ug1Name)
+   log.error('Course code not parsable from Key. type, ', userType + ' ug1Name, ' + ug1Name)
    return Promise.reject(Error('Key parse error, type, ' + userType + ' ug1Name, ' + ug1Name))
  }
 

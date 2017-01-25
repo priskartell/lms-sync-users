@@ -27,7 +27,7 @@ test('should enroll an assistant in an existing course in canvas', t => {
   .then(([{resp}]) => canvasApi.pollUntilSisComplete(resp.id))
   .then(() => canvasApi.getEnrollments(canvasCourse.id))
   .then(([enrolledUser]) => {
-    t.equal(enrolledUser.sis_user_id,userKthId)
+    t.equal(enrolledUser.sis_user_id, userKthId)
   })
 })
 
