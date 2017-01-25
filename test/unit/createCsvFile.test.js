@@ -43,22 +43,21 @@ ${sisCourseCode},abc123,students,active
 })
 
 test('should create the file with one line per sisCourseCode when sisCourseCode is an array', t => {
-    t.plan(1)
+  t.plan(1)
 
-    const message = {
-      _desc: {
-        userType: 'students'
-      },
-      member: ['abc123']
-    }
+  const message = {
+    _desc: {
+      userType: 'students'
+    },
+    member: ['abc123']
+  }
 
-    createCsvFile(message, ['SF1626VT171', 'SF1626VT172'], '/tmp/', 'dev-lms-csv').then(({csvContent}) => {
+  createCsvFile(message, ['SF1626VT171', 'SF1626VT172'], '/tmp/', 'dev-lms-csv').then(({csvContent}) => {
       // TODO: should this really return the name from azure?
-      const expectedCsvContent = `course_id,user_id,role,status
+    const expectedCsvContent = `course_id,user_id,role,status
 SF1626VT171,abc123,students,active
 SF1626VT172,abc123,students,active
 `
-      t.deepEqual(csvContent, expectedCsvContent)
-    })
-
+    t.deepEqual(csvContent, expectedCsvContent)
+  })
 })
