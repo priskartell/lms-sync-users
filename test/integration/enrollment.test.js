@@ -27,12 +27,12 @@ test('should enroll an assistant in an existing course in canvas', t => {
   .then(([{resp}]) => canvasApi.pollUntilSisComplete(resp.id))
   .then(() => canvasApi.getEnrollments(canvasCourse.id))
   .then(([enrolledUser]) => {
-    t.ok(enrolledUser.sis_user_id === userKthId)
+    t.equal(enrolledUser.sis_user_id,userKthId)
   })
 })
 
 test.only('should enroll a re-registered student in an existing course in canvas', t => {
-  t.plan(1)
+  t.plan(2)
   let canvasCourse
 
   const courseCode0 = 'A' + randomstring.generate(1)
@@ -57,6 +57,7 @@ test.only('should enroll a re-registered student in an existing course in canvas
   .then(([{resp}]) => canvasApi.pollUntilSisComplete(resp.id))
   .then(() => canvasApi.getEnrollments(canvasCourse.id))
   .then(([enrolledUser]) => {
-    t.ok(enrolledUser.sis_user_id === userKthId)
+    t.ok(enrolledUser)
+    t.equal(enrolledUser.sis_user_id, userKthId)
   })
 })
