@@ -1,5 +1,7 @@
 const ugParser = require('./ugParser')
-
+module.exports = function(){
+  return 1
+}
 
 // const message = {
 //   ugClass: 'group',

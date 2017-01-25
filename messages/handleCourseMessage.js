@@ -46,11 +46,6 @@
  function _parseKey (msg) {
    const {key, msgtype} = msg
 
-   if (msg._desc.userType === type.omregistrerade) {
-     console.log('TODO: GET THE SIS COURSE ID FROM CANVAS ')
-     return Promise.resolve('KD1070VT171')
-   }
-
    let sisCourseCode = 0
    if (msgtype === type.students) {
      sisCourseCode = ugParser.parseKeyStudent(key)
