@@ -1,5 +1,6 @@
-// const ugParser = require('./ugParser')
-module.exports = function(){
+const ugParser = require('./ugParser')
+module.exports = function(msg){
+  const {courseCode,shortYear, term} = ugParser.parseKeyReRegistered(msg.ug1Name)
   return 1
 }
 
