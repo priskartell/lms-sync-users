@@ -7,7 +7,7 @@
  const ugParser = require('./ugParser')
  const calcSisForOmregistrerade = require('./calcSisForOmregistrerade')
  const createCsvFile = require('./createCsvFile')
- 
+
  const csvVol = config.full.azure.csvBlobName
  const csvDir = config.full.localFile.csvDir
 
