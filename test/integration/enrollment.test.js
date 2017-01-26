@@ -5,6 +5,7 @@ const randomstring = require('randomstring')
 
 function processMessage (message, course) {
   // First create a fresch course in canvas
+  let canvasCourse
   return canvasApi.createCourse({course}, 14) // Courses that starts with an 'A' is handled by account 14
   .then(res => { canvasCourse = res })
   .then(() => handleMessages(message))
@@ -15,7 +16,6 @@ function processMessage (message, course) {
 
 test('should enroll an assistant in an existing course in canvas', t => {
   t.plan(1)
-  let canvasCourse
 
   const courseCode = 'A' + randomstring.generate(5)
   const userKthId = 'u1znmoik'
@@ -62,7 +62,6 @@ test('should enroll a re-registered student in an existing course in canvas', t 
 
 test('should enroll a student in an existing course in canvas', t => {
   t.plan(2)
-  let canvasCourse
 
   const courseCode0 = 'A' + randomstring.generate(1)
   const courseCode1 = randomstring.generate(4)
