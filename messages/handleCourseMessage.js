@@ -13,6 +13,7 @@
  const csvDir = config.full.localFile.csvDir
 
  function _parseKey (msg) {
+   console.log('msg', msg)
    const {ug1Name, _desc} = msg
    const {userType} = _desc
 
@@ -29,6 +30,7 @@
  }
 
  function _process (msg) {
+   let sisCourseCode
    let sisCourseCodeFunction
    if (msg._desc.userType === type.omregistrerade) {
      log.info('using calcSisForOmregistrerade')
@@ -39,6 +41,7 @@
    }
 
    return sisCourseCodeFunction(msg)
+    .then(_sisCourseCode => { sisCourseCode = _sisCourseCode })
     .then(() => createCsvFile(msg, sisCourseCode, csvDir, csvVol))
     .then(csvObject => {
       log.info('FileName: ', csvObject.csvFileName)
