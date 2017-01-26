@@ -30,7 +30,6 @@
  }
 
  function _process (msg) {
-   let sisCourseCode
    let sisCourseCodeFunction
    if (msg._desc.userType === type.omregistrerade) {
      log.info('using calcSisForOmregistrerade')
@@ -41,13 +40,8 @@
    }
 
    return sisCourseCodeFunction(msg)
-    .then(_sisCourseCode => { sisCourseCode = _sisCourseCode })
-    .then(() => createCsvFile(msg, sisCourseCode, csvDir, csvVol))
-    .then(csvObject => {
-      log.info('FileName: ', csvObject.csvFileName)
-      return csvObject.csvFileName
-    })
-    .then(fileName => canvasApi.sendCsvFile(fileName, true))
+    .then(sisCourseCode => createCsvFile(msg, sisCourseCode, csvDir, csvVol))
+    .then(({csvFileName}) => canvasApi.sendCsvFile(csvFileName, true))
     .then(canvasReturnValue => {
       let document = {msg: msg, resp: canvasReturnValue}
       log.info(document)
