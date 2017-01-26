@@ -12,8 +12,7 @@
  const csvVol = config.full.azure.csvBlobName
  const csvDir = config.full.localFile.csvDir
 
- function _parseKey (msg) {
-   const {ug1Name, _desc} = msg
+ function _parseKey ({ug1Name, _desc}) {
    const {userType} = _desc
 
    if (userType === type.students) {
