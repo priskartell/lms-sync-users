@@ -60,7 +60,7 @@ test('should enroll a re-registered student in an existing course in canvas', t 
   })
 })
 
-test.only('should enroll a student in an existing course in canvas', t => {
+test('should enroll a student in an existing course in canvas', t => {
   t.plan(2)
   let canvasCourse
 
