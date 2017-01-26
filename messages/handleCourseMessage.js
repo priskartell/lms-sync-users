@@ -2,13 +2,12 @@
 
  const {type} = require('message-type')
  const canvasApi = require('../canvasApi')
- const Promise = require('bluebird')
  const config = require('../server/init/configuration')
  const log = require('../server/init/logging')
  const ugParser = require('./ugParser')
  const calcSisForOmregistrerade = require('./calcSisForOmregistrerade')
- require('colors')
  const createCsvFile = require('./createCsvFile')
+ 
  const csvVol = config.full.azure.csvBlobName
  const csvDir = config.full.localFile.csvDir
 
