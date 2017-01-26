@@ -14,13 +14,22 @@ test('Parse teacher group name for a fall round', t => {
 })
 
 test('Parse student group name for a spring round', t => {
-  let ugName = 'ladok2.kurser.DM.2517.registrerade_20171.3'
-  t.equal(ugParser.parseKeyStudent(ugName), 'DM2517VT173')
+  t.equal(ugParser.parseKeyStudent('ladok2.kurser.DM.2517.registrerade_20171.3'),
+  'DM2517VT173')
   t.end()
 })
 
 test('Parse student group name for a fall round', t => {
-  let ugName = 'ladok2.kurser.DM.2517.registrerade_20162.1'
-  t.equal(ugParser.parseKeyStudent(ugName), 'DM2517HT161')
+  t.equal(ugParser.parseKeyStudent('ladok2.kurser.DM.2517.registrerade_20162.1'),
+  'DM2517HT161')
+  t.end()
+})
+
+test('Parse omreg group name for a fall round', t => {
+  t.deepEqual(ugParser.parseKeyReRegistered('ladok2.kurser.KD.1070.omregistrerade_20171'),
+  {courseCode: 'KD1070',
+  shortYear: 17,
+  term: 'VT'} // No ladok id, has to query kopps to find it
+  )
   t.end()
 })
