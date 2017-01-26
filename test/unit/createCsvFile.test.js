@@ -33,7 +33,8 @@ test('should create the header and one more line when message has one member', t
     member: ['abc123']
   }
 
-  createCsvFile(message, sisCourseCode, '/tmp/', 'dev-lms-csv').then(({csvContent}) => {
+  createCsvFile(message, sisCourseCode, '/tmp/', 'dev-lms-csv')
+  .then(({csvContent}) => {
     // TODO: should this really return the name from azure?
     const expectedCsvContent = `course_id,user_id,role,status
 ${sisCourseCode},abc123,students,active
