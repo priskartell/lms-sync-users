@@ -13,7 +13,6 @@
  const csvDir = config.full.localFile.csvDir
 
  function _parseKey (msg) {
-   console.log('msg', msg)
    const {ug1Name, _desc} = msg
    const {userType} = _desc
 
@@ -43,9 +42,7 @@
     .then(sisCourseCode => createCsvFile(msg, sisCourseCode, csvDir, csvVol))
     .then(({csvFileName}) => canvasApi.sendCsvFile(csvFileName, true))
     .then(canvasReturnValue => {
-      let document = {msg: msg, resp: canvasReturnValue}
-      log.info(document)
-      return document
+      return {msg, resp: canvasReturnValue}
     })
  }
 
