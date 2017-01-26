@@ -29,7 +29,6 @@
  }
 
  function _process (msg) {
-   let sisCourseCode = ''
    let sisCourseCodeFunction
    if (msg._desc.userType === type.omregistrerade) {
      log.info('using calcSisForOmregistrerade')
