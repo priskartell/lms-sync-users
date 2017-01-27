@@ -6,6 +6,7 @@ const consumeMessages = require('../../messages/consumeMessages')
 function handleMessages (...messages) {
   console.log('handle messages', messages)
   config.full.azure.queueName = 'lms-sync-integration-tests-' + Math.random().toString(36)
+  config.secure.azure.queueName = config.full.azure.queueName
 
   function sendAndReadMessage (message) {
     console.log('Send and read a message', message)
