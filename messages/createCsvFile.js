@@ -24,6 +24,6 @@ module.exports = function createCsvFile (msg, sisCourseCodes, csvDir, csvVol) {
   .then(() => azureStorage.cloudgetFile(csvFileName, csvVol, csvDir))
   .then(result => {
     log.info(result)
-    return {csvContent: csvData, csvFileName: csvDir + result.name}
+    return {csvContent: csvData, name: csvDir + result.name}
   })
 }

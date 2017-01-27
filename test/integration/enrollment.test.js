@@ -7,6 +7,7 @@ function processMessage (message, course) {
   // First create a fresch course in canvas
   let canvasCourse
   return canvasApi.createCourse({course}, 14) // Courses that starts with an 'A' is handled by account 14
+  .catch(err => console.error(err))
   .then(res => { canvasCourse = res })
   .then(() => handleMessages(message))
   .then(([{resp}]) => canvasApi.pollUntilSisComplete(resp.id))

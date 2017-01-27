@@ -40,16 +40,18 @@ test.skip('should call _parseKey if msg type is OMREG', t => {
 })
 
 
-test.only('should skip the message when the course doesnt exist in canvas', t => {
+test.only('should send the csv file for user type is student', t => {
   t.plan(1)
   const canvasApi = require('../../../canvasApi')
-  canvasApi.findCourse = sinon.stub().returns(Promise.reject({statusCode:404}))
-  const createCsvFile = sinon.stub()
-  handleCourseMessages.__set__('_createCsvFile', createCsvFile)
-  const message = {} // Any message is fine since canvas api is stubbed
+  const createCsvFile = sinon.stub().returns({name:'file.csv'})
+  const handleCourseMessages = proxyquire('../../../messages/handleCourseMessage', {'./createCsvFile': createCsvFile})
+  canvasApi.sendCsvFile = sinon.stub()
+  handleCourseMessages.__set__('_parseKey', sinon.stub().returns(Promise.resolve()))
+  //.returns(Promise.reject({statusCode:404}))
+  const message = {_desc: {userType: type.students }}
 
   handleCourseMessages(message)
   .then(()=>{
-      t.notOk(createCsvFile.called)
+      t.ok(canvasApi.sendCsvFile.calledWith('file.csv', true))
   })
 })

@@ -26,7 +26,7 @@
    return Promise.reject(Error('Key parse error, type, ' + userType + ' ug1Name, ' + ug1Name))
  }
 
- function _process (msg) {
+ function process (msg) {
    let sisCourseCodeFunction
    if (msg._desc.userType === type.omregistrerade) {
      log.info('using calcSisForOmregistrerade')
@@ -38,19 +38,10 @@
 
    return sisCourseCodeFunction(msg)
     .then(sisCourseCode => createCsvFile(msg, sisCourseCode, csvDir, csvVol))
-    .then(({csvFileName}) => canvasApi.sendCsvFile(csvFileName, true))
+    .then(({name}) => canvasApi.sendCsvFile(name, true))
     .then(canvasReturnValue => {
       return {msg, resp: canvasReturnValue}
     })
  }
 
- module.exports = function (msg, counter) {
-   log.info('Processing for msg..... ' + msg.ug1Name)
-   var msgtype = msg._desc.userType
-   if (msg._desc && (msgtype === type.students || msgtype === type.omregistrerade || msgtype === type.teachers || msgtype === type.assistants || msgtype === type.courseresponsibles)) {
-     return _process(msg)
-   } else {
-     log.error('This is something else than students, teacher, assistant, courseresponsibles we can probably wait with this until the students is handled', JSON.stringify(msg, null, 4))
-     return Promise.resolve('Unknown flag: ' + msgtype)
-   }
- }
+ module.exports = process
