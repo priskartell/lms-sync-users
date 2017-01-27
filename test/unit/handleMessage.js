@@ -1,4 +1,4 @@
 var test = require('tape')
-test.skip('should handle type unknown', t=>{
-  dfgh('todo')
+test.skip('should handle type unknown', t => {
+
 })

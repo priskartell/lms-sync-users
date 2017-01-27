@@ -39,19 +39,22 @@ test.skip('should call _parseKey if msg type is OMREG', t => {
     })
 })
 
-
 test('should send the csv file for user type is student', t => {
   t.plan(1)
   const canvasApi = require('../../../canvasApi')
-  const createCsvFile = sinon.stub().returns({name:'file.csv'})
+  const createCsvFile = sinon.stub().returns({name: 'file.csv'})
   const handleCourseMessages = proxyquire('../../../messages/handleCourseMessage', {'./createCsvFile': createCsvFile})
   canvasApi.sendCsvFile = sinon.stub()
   handleCourseMessages.__set__('_parseKey', sinon.stub().returns(Promise.resolve()))
-  //.returns(Promise.reject({statusCode:404}))
-  const message = {_desc: {userType: type.students }}
+  // .returns(Promise.reject({statusCode:404}))
+  const message = {
+    _desc: {
+      userType: type.students
+    }
+  }
 
   handleCourseMessages(message)
-  .then(()=>{
-      t.ok(canvasApi.sendCsvFile.calledWith('file.csv', true))
+  .then(() => {
+    t.ok(canvasApi.sendCsvFile.calledWith('file.csv', true))
   })
 })
