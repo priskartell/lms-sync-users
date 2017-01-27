@@ -17,7 +17,7 @@ test('should only create the header when message has no members', t => {
 
   createCsvFile(message, 'SF1626VT171', '/tmp/', 'dev-lms-csv').then(result => {
     // TODO: should this really return the name from azure?
-    t.deepEqual(result, {csvContent: 'course_id,user_id,role,status\n', csvFileName: '/tmp/a cloud file name'})
+    t.deepEqual(result, {csvContent: 'course_id,user_id,role,status\n', name: '/tmp/a cloud file name'})
   })
 })
 
