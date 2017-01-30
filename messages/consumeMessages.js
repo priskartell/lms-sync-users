@@ -53,7 +53,7 @@ function readMessage () {
     .then(addDescription)
     .then(handleMessage)
     .then(_result => {
-      console.log('result from handleMessage', _result)
+      log.info('result from handleMessage', _result)
       result = _result
     })
     .then(() => queue.deleteMessageFromQueue(message))
