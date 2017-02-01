@@ -40,26 +40,25 @@ function parseBody (msg) {
 
 function initLogger (msg) {
   // log.debug('about to init logger for message:', msg)
-  // let body
-  // if (msg.body) {
+  let body
+  if (msg.body) {
   //   body = parseBody(msg)
   //   .catch(error => {
   //      // An error means that we couldnt parse the body. Use an empty body for init of the logger
   //      // We dont have to handle the error here, the message will be parsed again down the chain
   //     return {}
   //   })
-  // } else {
-  //   body = Promise.resolve({})
-  // }
-  // return body.then(body => {
-  //   log.init({
-  //     kthid: body && body.kthid,
-  //     ug1Name: body && body.ug1Name,
-  //     ugversion: msg.customProperties.ugversion,
-  //     messageId: msg.brokerProperties.MessageId
-  //   })
-  // })
-  return Promise.resolve()
+  } else {
+    body = Promise.resolve({})
+  }
+  return body.then(body => {
+    log.init({
+      kthid: body && body.kthid,
+      ug1Name: body && body.ug1Name,
+      ugversion: msg.customProperties.ugversion,
+      messageId: msg.brokerProperties.MessageId
+    })
+  })
 }
 
 function readMessage () {
