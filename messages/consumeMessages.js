@@ -38,6 +38,15 @@ function parseBody (msg) {
   })
 }
 
+function initLogger(msg){
+  log.init({
+    MessageId:msg.MessageId,
+    ug1Name: msg.ug1Name,
+    ugversion: msg.ugversion
+  })
+  return msg
+}
+
 function readMessage () {
   isReading = true
   let message, result
@@ -49,6 +58,7 @@ function readMessage () {
       return message
     })
     .then(abortIfNoMessage)
+    .then(initLogger)
     .then(parseBody)
     .then(addDescription)
     .then(handleMessage)

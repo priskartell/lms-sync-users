@@ -1,4 +1,4 @@
-'use strict'
+// 'use strict'
 
 const log = require('kth-node-log')
 const config = require('./configuration')
@@ -17,5 +17,39 @@ let logConfiguration = {
   src: configuration.log.src
 }
 
-const logger = log.init(logConfiguration)
-module.exports = logger
+// Use 'let' so we can create other instances instead of this one
+let logger = log.init(logConfiguration)
+
+/*
+Wrap Bunyans log functions so we
+can create new Bunyan instances without the calling code having to bother
+about which instance to use
+*/
+module.exports = {
+  init(extraConfiguration){
+    for (var key in extraConfiguration) {
+      if (extraConfiguration.hasOwnProperty(key)) {
+        logConfiguration[key] = extraConfiguration[key]
+      }
+    }
+    logger = log.init(logConfiguration)
+  },
+  get trace(){
+    return logger.trace.bind(logger)
+  },
+  get debug(){
+    return logger.debug.bind(logger)
+  },
+  get info(){
+    return logger.info.bind(logger)
+  },
+  get warn(){
+    return logger.warn.bind(logger)
+  },
+  get error(){
+    return logger.error.bind(logger)
+  },
+  get fatal(){
+    return logger.fatal.bind(logger)
+  },
+}
