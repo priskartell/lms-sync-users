@@ -7,11 +7,11 @@
  const Promise = require('bluebird')
  const mkdir = Promise.promisify(require('fs').mkdir)
 
-function cloudConnect () {
-  const csvVol = config.full.azure.csvBlobName
-  log.info('Creating: ' + csvVol)
-  return cloudCreateContainer(csvVol)
-}
+ function cloudConnect () {
+   const csvVol = config.full.azure.csvBlobName
+   log.info('Creating: ' + csvVol)
+   return cloudCreateContainer(csvVol)
+ }
 
  function checkParameterName (...p) {
    let result = true
