@@ -1,7 +1,7 @@
 {
   "//": "The production flag is added in the jenkins build script.",
   "name": "lms-sync",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Node.js based API template application.",
   "main": "app.js",
   "private": true,
