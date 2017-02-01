@@ -1,5 +1,15 @@
 'use strict'
 
+function parseKeyReRegistered (key) {
+  // ladok2.kurser.AG.1b9l.omregistrerade_20171
+  const regExp = /ladok2.kurser.(\w{2}.\w{4}).omregistrerade_20(\d{2})(\d)/
+  const [, courseCodeString, shortYear, termNum] = regExp.exec(key)
+  return {
+    courseCode: courseCodeString.replace('.', ''),
+    shortYear: parseInt(shortYear),
+    term: termNum === '1' ? 'VT' : 'HT'}
+}
+
 function parseKeyTeacher (key) {
    // edu.courses.AE.AE2302.20162.1.teachers edu.courses.DD.DD1310.20162.1.assistants
    // edu.courses.DD.DD1310.20162.1.courseresponsible
@@ -50,6 +60,7 @@ function parseKeyStudent (key) {
 }
 
 module.exports = {
-  'parseKeyTeacher': parseKeyTeacher,
-  'parseKeyStudent': parseKeyStudent
+  parseKeyTeacher,
+  parseKeyStudent,
+  parseKeyReRegistered
 }

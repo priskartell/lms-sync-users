@@ -5,7 +5,7 @@ module.exports = {
   },
   logging: {
     log: {
-      level: 'debug',
+      level: 'info',
       src: false
     },
     stdout: {

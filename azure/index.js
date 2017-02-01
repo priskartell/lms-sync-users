@@ -7,7 +7,7 @@ let blobService
 module.exports = {
   get blobService () {
     if (!blobService) {
-      log.info('Initializing blobService' + config.secure.azure.StorageConnectionString)
+      log.info('Initializing blobService')
       blobService = Promise.promisifyAll(azure.createBlobService(config.secure.azure.StorageConnectionString))
     }
 
