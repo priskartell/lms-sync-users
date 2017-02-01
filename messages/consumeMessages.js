@@ -39,6 +39,7 @@ function parseBody (msg) {
 }
 
 function initLogger (msg) {
+    debugger
   // log.debug('about to init logger for message:', msg)
   let body
   if (msg && msg.body) {
@@ -66,11 +67,12 @@ function initLogger (msg) {
 }
 
 function readMessage () {
+
   isReading = true
   let message, result
   return queue
     .readMessageFromQueue(config.secure.azure.queueName || config.full.azure.queueName)
-    .then(msg => initLogger(message))
+    .then(initLogger)
     .then(msg => {
       message = msg
       log.debug('message received from queue', msg)
