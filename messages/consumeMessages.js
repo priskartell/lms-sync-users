@@ -46,6 +46,8 @@ function initLogger (msg) {
     .catch(error => {
        // An error means that we couldnt parse the body. Use an empty body for init of the logger
        // We dont have to handle the error here, the message will be parsed again down the chain
+      log.info(error)
+
       return {}
     })
   } else {
