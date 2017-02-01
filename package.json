@@ -11,7 +11,6 @@
     "coverage": "cross-env NODE_ENV=development istanbul cover tape -- \"messages/*.js\" -- \"server/**/*.js\" -- \"test/**/*.js\"",
     "verify": "npm test && npm run codecheck",
     "codecheck": "standard",
-    "postversion": "git push && git push --tags",
     "nodeInspector": "node-inspector --web-port 8890",
     "openDebugBrowser": "sleep 2s && open http://127.0.0.1:8890/\\?port\\=5858 &2>/dev/null",
     "installAndStart": "npm install && npm start",
