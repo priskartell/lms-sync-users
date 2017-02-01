@@ -42,12 +42,12 @@ function initLogger (msg) {
   // log.debug('about to init logger for message:', msg)
   let body
   if (msg && msg.body) {
-  //   body = parseBody(msg)
-  //   .catch(error => {
-  //      // An error means that we couldnt parse the body. Use an empty body for init of the logger
-  //      // We dont have to handle the error here, the message will be parsed again down the chain
-  //     return {}
-  //   })
+    body = Promise.resolve().then(()=> JSON.parse(msg.body))
+    .catch(error => {
+       // An error means that we couldnt parse the body. Use an empty body for init of the logger
+       // We dont have to handle the error here, the message will be parsed again down the chain
+      return {}
+    })
   } else {
     body = Promise.resolve({})
   }
