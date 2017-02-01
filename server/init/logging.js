@@ -26,7 +26,7 @@ can create new Bunyan instances without the calling code having to bother
 about which instance to use
 */
 module.exports = {
-  init(extraConfiguration){
+  init (extraConfiguration) {
     for (var key in extraConfiguration) {
       if (extraConfiguration.hasOwnProperty(key)) {
         logConfiguration[key] = extraConfiguration[key]
@@ -34,22 +34,22 @@ module.exports = {
     }
     logger = log.init(logConfiguration)
   },
-  get trace(){
+  get trace () {
     return logger.trace.bind(logger)
   },
-  get debug(){
+  get debug () {
     return logger.debug.bind(logger)
   },
-  get info(){
+  get info () {
     return logger.info.bind(logger)
   },
-  get warn(){
+  get warn () {
     return logger.warn.bind(logger)
   },
-  get error(){
+  get error () {
     return logger.error.bind(logger)
   },
-  get fatal(){
+  get fatal () {
     return logger.fatal.bind(logger)
-  },
+  }
 }

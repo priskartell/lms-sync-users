@@ -38,9 +38,9 @@ function parseBody (msg) {
   })
 }
 
-function initLogger(msg){
+function initLogger (msg) {
   log.init({
-    MessageId:msg.MessageId,
+    MessageId: msg.MessageId,
     ug1Name: msg.ug1Name,
     ugversion: msg.ugversion
   })
