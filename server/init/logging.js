@@ -7,7 +7,7 @@ const packageFile = require('../../package.json')
 const configuration = config.full.logging
 const environment = config.env
 
-let logConfiguration = {
+const logConfiguration = {
   name: packageFile.name,
   app: packageFile.name,
   env: environment,
@@ -27,12 +27,7 @@ about which instance to use
 */
 module.exports = {
   init (extraConfiguration) {
-    for (var key in extraConfiguration) {
-      if (extraConfiguration.hasOwnProperty(key)) {
-        logConfiguration[key] = extraConfiguration[key]
-      }
-    }
-    logger = log.init(logConfiguration)
+    logger = log.init(logConfiguration, extraConfiguration)
   },
   get trace () {
     return logger.trace.bind(logger)
