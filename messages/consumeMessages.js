@@ -60,8 +60,8 @@ function initLogger (msg) {
       ugversion: (msg && msg.customProperties && msg.customProperties.ugversion) || undefined,
       messageId: (msg && msg.brokerProperties && msg.brokerProperties.MessageId) || undefined
     }
-    console.log(config)
     log.init(config)
+    return msg
   })
 }
 
