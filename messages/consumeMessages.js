@@ -39,7 +39,6 @@ function parseBody (msg) {
 }
 
 function initLogger (msg) {
-
   // log.debug('about to init logger for message:', msg)
   // let body
   // if (msg.body) {
@@ -61,7 +60,6 @@ function initLogger (msg) {
   //   })
   // })
   return Promise.resolve()
-  
 }
 
 function readMessage () {

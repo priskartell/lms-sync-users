@@ -37,34 +37,6 @@ test('should enroll an assistant in an existing course in canvas', t => {
   })
 })
 
-test.only('should enroll an assistant in an existing course in canvas', t => {
-  t.plan(1)
-
-  const courseCode = 'A' + randomstring.generate(5)
-  const userKthId = 'u1znmoik'
-
-  const message = { kthid: 'u2rzav5d',
-       ugClass: 'group',
-       deleted: false,
-       ug1Name: 'edu.courses.SF.SF1626.20072.1.teachers',
-       email_alias: [],
-       name_en: 'Teachers for SF1626 Autumn 2007 1',
-       name_sv: 'Lärare på SF1626 HT2007 1',
-       member: [ 'u1znmoik' ],
-       _desc: { type: 'COURSE', userType: 'TEACHER' } }
-
-  const course = {
-    name: 'Emil testar',
-    'course_code': courseCode,
-    'sis_course_id': `${courseCode}VT171`
-  }
-
-  handleMessages(message)
-  .then((enrolledUser) => {
-    t.equal(enrolledUser.sis_user_id, userKthId)
-  })
-})
-
 test('should enroll a re-registered student in an existing course in canvas', t => {
   t.plan(2)
   const userKthId = 'u1znmoik'
