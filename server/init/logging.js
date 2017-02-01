@@ -27,6 +27,7 @@ about which instance to use
 */
 module.exports = {
   init (extraConfiguration) {
+    log.info('initializing log with settings', extraConfiguration)
     logger = log.init(logConfiguration, extraConfiguration)
   },
   get trace () {

@@ -41,7 +41,7 @@ function parseBody (msg) {
 function initLogger (msg) {
   // log.debug('about to init logger for message:', msg)
   let body
-  if (msg.body) {
+  if (msg && msg.body) {
   //   body = parseBody(msg)
   //   .catch(error => {
   //      // An error means that we couldnt parse the body. Use an empty body for init of the logger
@@ -52,12 +52,14 @@ function initLogger (msg) {
     body = Promise.resolve({})
   }
   return body.then(body => {
-    log.init({
+    const config = {
       kthid: body && body.kthid,
       ug1Name: body && body.ug1Name,
-      ugversion: msg.customProperties.ugversion,
-      messageId: msg.brokerProperties.MessageId
-    })
+      ugversion: (msg && msg.customProperties && msg.customProperties.ugversion) || undefined,
+      messageId: (msg && msg.brokerProperties && msg.brokerProperties.MessageId) || undefined
+    }
+    console.log(config)
+    log.init(config)
   })
 }
 
