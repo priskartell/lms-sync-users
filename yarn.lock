@@ -2626,7 +2626,7 @@ ms-rest-azure@^1.14.0, ms-rest-azure@^1.14.2, ms-rest-azure@^1.14.4, ms-rest-azu
     ms-rest "^1.15.2"
     uuid "^3.0.1"
 
-ms-rest@1.5.1, ms-rest@^1.14.0, ms-rest@^1.14.2, ms-rest@^1.14.3, ms-rest@^1.15.0, ms-rest@^1.15.2:
+ms-rest@1.15.1, ms-rest@^1.14.0, ms-rest@^1.14.2, ms-rest@^1.14.3, ms-rest@^1.15.0, ms-rest@^1.15.2:
   version "1.15.1"
   resolved "https://registry.yarnpkg.com/ms-rest/-/ms-rest-1.15.1.tgz#1f0e30da30369e2960e495381a70fe9b99a86889"
   dependencies:
