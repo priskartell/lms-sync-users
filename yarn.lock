@@ -175,11 +175,11 @@ async@0.2.7:
   version "0.2.7"
   resolved "https://registry.yarnpkg.com/async/-/async-0.2.7.tgz#44c5ee151aece6c4bf5364cfc7c28fe4e58f18df"
 
-async@1.x, async@^1.4.0:
+async@1.x, async@>=0.6.0, async@^1.4.0:
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/async/-/async-1.5.2.tgz#ec6a61ae56480c0c3cb241c95618e20892f9672a"
 
-async@>=0.6.0, async@^2.0.1:
+async@^2.0.1:
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/async/-/async-2.1.4.tgz#2d2160c7788032e4dd6cbe2502f1f9a2c8f6cde4"
   dependencies:
@@ -2512,17 +2512,27 @@ ms-rest-azure@^1.14.0, ms-rest-azure@^1.14.2, ms-rest-azure@^1.14.4, ms-rest-azu
     ms-rest "^1.15.2"
     uuid "^3.0.1"
 
-ms-rest@^1.14.0, ms-rest@^1.14.2, ms-rest@^1.14.3, ms-rest@^1.15.0, ms-rest@^1.15.1, ms-rest@^1.15.2:
-  version "1.15.3"
-  resolved "https://registry.yarnpkg.com/ms-rest/-/ms-rest-1.15.3.tgz#e984f654b2d44ee12634c82fa8f98690eeeb2c85"
+ms-rest@1.5.1:
+  version "1.15.1"
+  resolved "https://registry.yarnpkg.com/ms-rest/-/ms-rest-1.15.1.tgz#1f0e30da30369e2960e495381a70fe9b99a86889"
   dependencies:
     duplexer "~0.1.1"
     moment "^2.14.1"
     request "~2.74.0"
     through "~2.3.4"
     tunnel "~0.0.2"
-    uuid "^3.0.1"
+    underscore "^1.4.0"
 
+ms-rest@^1.14.0, ms-rest@^1.14.2, ms-rest@^1.14.3, ms-rest@^1.15.0, ms-rest@^1.15.2:
+  version "1.15.1"
+  resolved "https://registry.yarnpkg.com/ms-rest/-/ms-rest-1.15.1.tgz#1f0e30da30369e2960e495381a70fe9b99a86889"
+  dependencies:
+    duplexer "~0.1.1"
+    moment "^2.14.1"
+    request "~2.74.0"
+    through "~2.3.4"
+    tunnel "~0.0.2"
+    underscore "^1.4.0"
 ms@0.7.1:
   version "0.7.1"
   resolved "https://registry.yarnpkg.com/ms/-/ms-0.7.1.tgz#9cd13c03adbff25b65effde7ce864ee952017098"
