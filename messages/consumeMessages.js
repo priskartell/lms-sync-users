@@ -67,7 +67,6 @@ function initLogger (msg) {
 }
 
 function readMessage () {
-
   isReading = true
   let message, result
   return queue
