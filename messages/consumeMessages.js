@@ -39,7 +39,6 @@ function parseBody (msg) {
 }
 
 function initLogger (msg) {
-    debugger
   // log.debug('about to init logger for message:', msg)
   let body
   if (msg && msg.body) {
