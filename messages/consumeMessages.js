@@ -40,9 +40,9 @@ function parseBody (msg) {
 
 function initLogger (msg) {
   // log.debug('about to init logger for message:', msg)
-  let body
+  let bodyPromise
   if (msg && msg.body) {
-    body = Promise.resolve().then(() => JSON.parse(msg.body))
+    bodyPromise = Promise.resolve().then(() => JSON.parse(msg.body))
     .catch(error => {
        // An error means that we couldnt parse the body. Use an empty body for init of the logger
        // We dont have to handle the error here, the message will be parsed again down the chain
@@ -51,9 +51,9 @@ function initLogger (msg) {
       return {}
     })
   } else {
-    body = Promise.resolve({})
+    bodyPromise = Promise.resolve({})
   }
-  return body.then(body => {
+  return bodyPromise.then(body => {
     const config = {
       kthid: body && body.kthid,
       ug1Name: body && body.ug1Name,
