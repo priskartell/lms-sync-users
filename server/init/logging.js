@@ -16,6 +16,6 @@ let logConfiguration = {
   stdout: configuration.stdout,
   src: configuration.log.src
 }
-//
+
 const logger = log.init(logConfiguration)
 module.exports = logger
