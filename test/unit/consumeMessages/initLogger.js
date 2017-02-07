@@ -6,7 +6,7 @@ const log = consumeMessages.__get__('log')
 const sinon = require('sinon')
 
 test('should init the logger when an empty message is passed', t => {
-  t.plan(2)
+  t.plan(1)
   log.init = sinon.stub()
 
   const message = {
@@ -25,12 +25,11 @@ test('should init the logger when an empty message is passed', t => {
       ugversion: 123,
       messageId: 'abc'
     }))
-    t.equals(result, message)
   })
 })
 
 test('should init the logger when an message with an empty body is passed', t => {
-  t.plan(2)
+  t.plan(1)
   log.init = sinon.stub()
 
   const message = {
@@ -50,12 +49,11 @@ test('should init the logger when an message with an empty body is passed', t =>
       ugversion: 123,
       messageId: 'abc'
     }))
-    t.equals(result, message)
   })
 })
 
 test('should init the logger when a message with a not parseable body is passed', t => {
-  t.plan(2)
+  t.plan(1)
   log.init = sinon.stub()
 
   const message = {
@@ -75,12 +73,11 @@ test('should init the logger when a message with a not parseable body is passed'
       ugversion: 123,
       messageId: 'abc'
     }))
-    t.equals(result, message)
   })
 })
 
 test('should init the logger when a message with a parseable body, without kthid or ug1name is passed', t => {
-  t.plan(2)
+  t.plan(1)
   log.init = sinon.stub()
 
   const message = {
@@ -100,12 +97,11 @@ test('should init the logger when a message with a parseable body, without kthid
       ugversion: 123,
       messageId: 'abc'
     }))
-    t.equals(result, message)
   })
 })
 
 test('should init the logger when a message with a parseable body, with kthid and ug1name is passed', t => {
-  t.plan(2)
+  t.plan(1)
   log.init = sinon.stub()
 
   const message = {
@@ -125,12 +121,11 @@ test('should init the logger when a message with a parseable body, with kthid an
       ugversion: 123,
       messageId: 'abc'
     }))
-    t.equals(result, message)
   })
 })
 
 test('should init the logger without any message settings when null message is passed', t => {
-  t.plan(2)
+  t.plan(1)
   log.init = sinon.stub()
 
   initLogger(null).then(result => {
@@ -140,6 +135,5 @@ test('should init the logger without any message settings when null message is p
       ugversion: undefined,
       messageId: undefined
     }))
-    t.equals(result, null)
   })
 })
