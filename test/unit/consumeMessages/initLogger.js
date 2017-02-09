@@ -1,9 +1,11 @@
 var test = require('tape')
 require('rewire-global').enable()
-const consumeMessages = require('../../../messages/consumeMessages.js')
+const proxyquire = require('proxyquire');
+const sinon = require('sinon')
+
+const consumeMessages = proxyquire('../../../messages/consumeMessages.js', {'node-queue-adapter':sinon.stub()})
 const initLogger = consumeMessages.__get__('initLogger')
 const log = consumeMessages.__get__('log')
-const sinon = require('sinon')
 
 test('should init the logger when an empty message is passed', t => {
   t.plan(1)
