@@ -10,7 +10,7 @@ module.exports = {
       src: true
     },
     stdout: {
-      enabled: false
+      enabled: true
     },
     console: {
       enabled: true
