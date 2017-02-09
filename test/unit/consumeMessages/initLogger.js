@@ -1,9 +1,9 @@
 var test = require('tape')
 require('rewire-global').enable()
-const proxyquire = require('proxyquire');
+const proxyquire = require('proxyquire')
 const sinon = require('sinon')
 
-const consumeMessages = proxyquire('../../../messages/consumeMessages.js', {'node-queue-adapter':sinon.stub()})
+const consumeMessages = proxyquire('../../../messages/consumeMessages.js', {'node-queue-adapter': sinon.stub()})
 const initLogger = consumeMessages.__get__('initLogger')
 const log = consumeMessages.__get__('log')
 
