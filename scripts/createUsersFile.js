@@ -2,9 +2,9 @@ const ldap = require('ldapjs')
 const config = require('../server/init/configuration')
 const fs = require('fs')
 const {writeLine} = require('../csvFile')
-const fileName = 'csv/allUsersAndMails.csv'
+const fileName = 'csv/usersFLEmail.csv'
 const headers = ['user_id', 'login_id', 'first_name', 'last_name', 'email', 'status']
-const attributes = ['ugKthid', 'ugUsername', 'mail', 'email_address', 'name', 'ugEmailAddressHR', 'Sn', 'givenName']
+const attributes = ['ugKthid', 'ugUsername', 'mail', 'email_address', 'name', 'Sn', 'givenName']
 const Promise = require('bluebird')
 
 const ldapClient = Promise.promisifyAll(ldap.createClient({
