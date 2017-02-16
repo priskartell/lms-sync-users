@@ -30,7 +30,7 @@ function appendUsers (type) {
         counter++
         const o = entry.object
         const userName = `${o.ugUsername}@kth.se`
-        writeLine([o.ugKthid, userName, o.givenName, o.sn, o.ugEmailAddressHR || o.mail || userName, 'active'], fileName)
+        writeLine([o.ugKthid, userName, o.givenName, o.sn, o.mail || userName, 'active'], fileName)
       })
       res.on('error', function (err) {
         console.error('error: ' + err.message)
