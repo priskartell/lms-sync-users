@@ -13,7 +13,7 @@ const ldapClient = Promise.promisifyAll(ldap.createClient({
 }))
 
 const opts = {
-  filter: `ugAffiliation=member`,
+  filter: 'ugAffiliation=member',
   scope: 'sub',
   paged: true,
   sizeLimit: 1000,
@@ -36,5 +36,5 @@ const ugUsers = ldapClient.bindAsync(config.secure.ldap.bind.username, config.se
 Promise.all([canvasApi.listUsers().map(canvasUser => canvasUser.sis_user_id), ugUsers])
 // .then(([canvasUsers, ugUsers])=>console.log(canvasUsers, ugUsers))
 .then(([canvasUsers, ugUsers]) => without(canvasUsers, ...ugUsers))
-.then(canvasUsersNotInUg => console.log(canvasUsersNotInUg.length))
+.then(canvasUsersNotInUg => console.log(canvasUsersNotInUg))
 .catch(e => console.error(e))
