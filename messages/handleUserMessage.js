@@ -23,7 +23,8 @@ function convertToCanvasUser (msg) {
         sis_user_id: msg.kthid // CSVs analogi av 'user_id' needed for enrollments
       },
       user: {
-        'name': `${msg.given_name} ${msg.family_name}`
+        'name': `${msg.given_name} ${msg.family_name}`,
+        'email': msg.primary_email
       }
     }
     return user
