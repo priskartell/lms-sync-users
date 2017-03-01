@@ -29,7 +29,6 @@ function convertToCanvasUser (msg) {
     return user
   } else {
     log.info('\nIncomplete fields to create user in canvas, skipping. Probably,it is missing a name(given_name, family_name) or a username or kth_id.....', msg)
-    return
   }
 }
 

@@ -32,7 +32,6 @@ function parseKeyTeacher (key) {
     let sisCourseCode = course + termin + year + ladok
     return sisCourseCode
   }
-  return
 }
 
 function parseKeyStudent (key) {
@@ -56,7 +55,6 @@ function parseKeyStudent (key) {
     let sisCourseCode = course + termin + year + ladok
     return sisCourseCode
   }
-  return
 }
 
 module.exports = {
