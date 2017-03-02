@@ -24,9 +24,9 @@ function convertToCanvasUser (msg) {
       },
       user: {
         'name': `${msg.given_name} ${msg.family_name}`,
-        'email': msg.primary_email //must be when 'updating' user
+        'email': msg.primary_email // must be when 'updating' user
       },
-      communication_channel: { //must be when 'creating' user
+      communication_channel: { // must be when 'creating' user
         type: 'email',
         address: msg.primary_email
       }
