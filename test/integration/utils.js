@@ -11,7 +11,7 @@ function handleMessages (...messages) {
 
   let receiver
 
-  function sendAndReadMessage (message) {
+  function sendAndWaitUntilMessageProcessed (message) {
     console.log('Send and read a message', message)
     const resultPromise = new Promise((resolve,reject)=>{
       consumeMessages.eventEmitter.once('messageProcessed', (msg, result)=>{
@@ -29,7 +29,7 @@ function handleMessages (...messages) {
   return queue.createQueueIfNotExists(config.full.azure.queueName)
   .then(()=> consumeMessages.start())
   .then(_receiver => receiver = _receiver)
-  .then(() => Promise.mapSeries(messages, sendAndReadMessage))
+  .then(() => Promise.mapSeries(messages, sendAndWaitUntilMessageProcessed))
   .then(messagesResults => {
     console.log('messagesResults:', messagesResults)
     result = messagesResults
