@@ -30,7 +30,7 @@ test('should init the logger when an empty message is passed', t => {
   }))
 })
 
-test('should init the logger when an message without a body is passed', t => {
+test('should init the logger when a message without a body is passed', t => {
   t.plan(1)
   log.init = sinon.stub()
 

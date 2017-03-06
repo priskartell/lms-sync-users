@@ -11,18 +11,19 @@ const client = new AMQPClient(Policy.Utils.RenewOnSettle(1, 1, Policy.ServiceBus
 
 function start () {
   return client.connect(`amqps://RootManageSharedAccessKey:${urlencode(config.full.secure.azure.SharedAccessKey)}@lms-queue.servicebus.windows.net`)
-    .then(() => {
-      return client.createReceiver(config.full.secure.azure.queueName)
-    })
+    .then(() => client.createReceiver(config.full.secure.azure.queueName))
     .then(receiver => {
       log.info('receiver created....')
-      receiver.on('errorReceived', err => log.info(err))
-      receiver.on('message', function (message) {
-        log.info('New message from ug queue....')
+      receiver.on('errorReceived', err => {
+        log.warn('An error occured when trying to receive message from queue', err)
+        return receiver.reject(message)
+      })
+      receiver.on('message',  message => {
+        log.info('New message from ug queue', message)
         if (message.body) {
           return _processMessage(receiver, message)
         } else {
-          log.info('Message is emptry or undefined, deteting from queue...', message)
+          log.info('Message is empty or undefined, deteting from queue...', message)
           return receiver.reject(message)
         }
       })
