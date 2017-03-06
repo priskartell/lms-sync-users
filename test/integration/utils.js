@@ -39,6 +39,7 @@ function handleMessages (...messages) {
   .then(_receiver => receiver = _receiver)
   .then(() => Promise.mapSeries(messages, sendAndReadMessage))
   .then(messagesResults => {
+    console.log('messagesResults:', messagesResults)
     result = messagesResults
   })
   .then(() => {
