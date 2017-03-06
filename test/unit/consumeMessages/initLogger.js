@@ -67,7 +67,7 @@ test('should init the logger when a message with a body, without kthid or ug1nam
     }
   }
 
-  const result = initLogger(message)
+  initLogger(message)
 
   t.ok(log.init.calledWith({
     kthid: undefined,
@@ -105,7 +105,7 @@ test('should init the logger without any message settings when null message is p
   t.plan(1)
   log.init = sinon.stub()
 
-  const result = initLogger(null)
+  initLogger(null)
 
   t.ok(log.init.calledWith({}))
 })

@@ -2,8 +2,8 @@
 const Promise = require('bluebird')
 const config = require('../server/init/configuration')
 const log = require('../server/init/logging')
-const EventEmitter = require('events');
-const eventEmitter = new EventEmitter();
+const EventEmitter = require('events')
+const eventEmitter = new EventEmitter()
 
 const {addDescription} = require('message-type')
 const handleMessage = require('./handleMessage')
@@ -44,7 +44,7 @@ function start () {
           result = _result
         })
         .then(() => receiver.accept(MSG))
-        .then(()=> eventEmitter.emit('messageProcessed', MSG, result))
+        .then(() => eventEmitter.emit('messageProcessed', MSG, result))
         .catch(e => {
           log.error(e)
           log.info('Error Occured, releaseing message back to queue...', MSG)

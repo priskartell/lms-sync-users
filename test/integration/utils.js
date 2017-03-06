@@ -1,6 +1,5 @@
 const config = require('../../server/init/configuration')
 const Promise = require('bluebird')
-const sinon = require('sinon')
 const rewire = require('rewire')
 const consumeMessages = rewire('../../messages/consumeMessages')
 
@@ -13,8 +12,8 @@ function handleMessages (...messages) {
 
   function sendAndWaitUntilMessageProcessed (message) {
     console.log('Send and read a message', message)
-    const resultPromise = new Promise((resolve,reject)=>{
-      consumeMessages.eventEmitter.once('messageProcessed', (msg, result)=>{
+    const resultPromise = new Promise((resolve, reject) => {
+      consumeMessages.eventEmitter.once('messageProcessed', (msg, result) => {
         resolve(result)
       })
     })
@@ -27,8 +26,8 @@ function handleMessages (...messages) {
 
   let result
   return queue.createQueueIfNotExists(config.full.azure.queueName)
-  .then(()=> consumeMessages.start())
-  .then(_receiver => receiver = _receiver)
+  .then(() => consumeMessages.start())
+  .then(_receiver => { receiver = _receiver })
   .then(() => Promise.mapSeries(messages, sendAndWaitUntilMessageProcessed))
   .then(messagesResults => {
     console.log('messagesResults:', messagesResults)
