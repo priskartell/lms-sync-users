@@ -14,38 +14,40 @@ function start () {
     .then(() => client.createReceiver(config.full.azure.queueName))
     .then(receiver => {
       log.info('receiver created....')
+
       receiver.on('errorReceived', err => {
         log.warn('An error occured when trying to receive message from queue', err)
-        return receiver.reject(message)
+        return receiver.reject(err)
       })
-      receiver.on('message',  message => {
+
+      receiver.on('message', message => {
         log.info('New message from ug queue', message)
         if (message.body) {
-          return _processMessage(receiver, message)
+          return _processMessage(message)
         } else {
           log.info('Message is empty or undefined, deteting from queue...', message)
           return receiver.reject(message)
         }
       })
 
+      function _processMessage (MSG) {
+        return Promise.resolve(MSG)
+        .then(initLogger)
+        .then(addDescription)
+        .then(handleMessage)
+        .then(_result => {
+          log.info('result from handleMessage', _result)
+        })
+        .then(() => receiver.accept(MSG))
+        .catch(e => {
+          log.error(e)
+          log.info('Error Occured, releaseing message back to queue...', MSG)
+          return receiver.reject(MSG, e)
+        })
+      }
+
       return receiver
     })
-}
-
-function _processMessage (receiver, MSG) {
-  return Promise.resolve(MSG)
-  .then(initLogger)
-  .then(addDescription)
-  .then(handleMessage)
-  .then(_result => {
-    log.info('result from handleMessage', _result)
-  })
-  .then(() => receiver.accept(MSG))
-  .catch(e => {
-    log.error(e)
-    log.info('Error Occured, releaseing message back to queue...', MSG)
-    return receiver.reject(MSG, e)
-  })
 }
 
 function initLogger (msg) {
