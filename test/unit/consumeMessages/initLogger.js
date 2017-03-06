@@ -107,7 +107,7 @@ test('should init the logger when a message with a parseable body, with kthid an
   log.init = sinon.stub()
 
   const message = {
-    body: '{"ug1Name":"someUg1Name", "kthid":"someKthid"}',
+    body: {ug1Name: 'someUg1Name', kthid: 'someKthid'},
     customProperties: {
       ugversion: 123
     },
