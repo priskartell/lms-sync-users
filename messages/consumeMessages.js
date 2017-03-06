@@ -2,6 +2,9 @@
 const Promise = require('bluebird')
 const config = require('../server/init/configuration')
 const log = require('../server/init/logging')
+const EventEmitter = require('events');
+const eventEmitter = new EventEmitter();
+
 const {addDescription} = require('message-type')
 const handleMessage = require('./handleMessage')
 require('colors')
@@ -31,14 +34,17 @@ function start () {
       })
 
       function _processMessage (MSG) {
+        let result
         return Promise.resolve(MSG)
         .then(initLogger)
         .then(addDescription)
         .then(handleMessage)
         .then(_result => {
           log.info('result from handleMessage', _result)
+          result = _result
         })
         .then(() => receiver.accept(MSG))
+        .then(()=> eventEmitter.emit('messageProcessed', MSG, result))
         .catch(e => {
           log.error(e)
           log.info('Error Occured, releaseing message back to queue...', MSG)
@@ -70,5 +76,5 @@ function initLogger (msg) {
 }
 
 module.exports = {
-  start
+  start, eventEmitter
 }

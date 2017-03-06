@@ -13,24 +13,16 @@ function handleMessages (...messages) {
 
   function sendAndReadMessage (message) {
     console.log('Send and read a message', message)
-    return queue.sendQueueMessage(config.full.azure.queueName, message)
-    .then(() => {
-      return new Promise((resolve, reject) => {
-        const accept = sinon.spy(receiver, 'accept')
-
-        const acceptInterval = setInterval(() => {
-          if (accept.called) {
-            console.log('Messages have been accepted by the consumer. Continue.')
-            clearInterval(acceptInterval)
-            // TODO: should resolve with the result from processMessage!
-            resolve()
-          } else {
-            console.log('.')
-          }
-        }, 100)
+    const resultPromise = new Promise((resolve,reject)=>{
+      consumeMessages.eventEmitter.once('messageProcessed', (msg, result)=>{
+        resolve(result)
       })
     })
+
+    queue.sendQueueMessage(config.full.azure.queueName, message)
     .catch(err => console.error(err))
+
+    return resultPromise
   }
 
   let result
