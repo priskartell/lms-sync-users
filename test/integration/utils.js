@@ -1,7 +1,8 @@
 const config = require('../../server/init/configuration')
 const Promise = require('bluebird')
 const sinon = require('sinon')
-const consumeMessages = require('../../messages/consumeMessages')
+const rewire = require('rewire')
+const consumeMessages = rewire('../../messages/consumeMessages')
 
 function handleMessages (...messages) {
   console.log('handle messages', messages.length)
@@ -40,6 +41,10 @@ function handleMessages (...messages) {
   .then(() => Promise.mapSeries(messages, sendAndReadMessage))
   .then(messagesResults => {
     result = messagesResults
+  })
+  .then(() => {
+    const client = consumeMessages.__get__('client')
+    client.disconnect()
   })
   .finally(() => queue.deleteQueue(config.full.azure.queueName))
   .then(() => result)
