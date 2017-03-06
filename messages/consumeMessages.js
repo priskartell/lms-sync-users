@@ -20,7 +20,7 @@ function start () {
       receiver.on('message', function (message) {
         log.info('New message from ug queue....')
         if (message.body) {
-          return _processMesage(receiver, message)
+          return _processMessage(receiver, message)
         } else {
           log.info('Message is emptry or undefined, deteting from queue...', message)
           return receiver.reject(message)
@@ -29,8 +29,9 @@ function start () {
     })
 }
 
-function _processMesage (receiver, MSG) {
-  initLogger(MSG)
+function _processMessage (receiver, MSG) {
+  return Promise.resolve(MSG)
+  .then(initLogger)
   .then(addDescription)
   .then(handleMessage)
   .then(_result => {
@@ -45,28 +46,22 @@ function _processMesage (receiver, MSG) {
 }
 
 function initLogger (msg) {
-  let bodyPromise
-  if (msg && msg.body) {
-    bodyPromise = Promise.resolve(msg.body)
-  } else {
-    bodyPromise = Promise.resolve({})
-  }
-
-  return bodyPromise.then(body => {
-    console.log(body)
-    const config = {
+  let config
+  if (msg) {
+    const {body} = msg
+    config = {
       kthid: body && body.kthid,
       ug1Name: body && body.ug1Name,
       ugversion: (msg && msg.customProperties && msg.customProperties.ugversion) || undefined,
       messageId: (msg && msg.brokerProperties && msg.brokerProperties.MessageId) || undefined
     }
-    log.init(config)
-    if (msg && msg.body) {
-      return msg.body
-    } else {
-      return {}
-    }
-  })
+  } else {
+    config = {}
+  }
+
+  log.init(config)
+
+  return msg && msg.body
 }
 
 module.exports = {

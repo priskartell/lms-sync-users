@@ -101,16 +101,12 @@ test('should init the logger when a message with a body, with kthid and ug1name 
   })
 })
 
-test('should init the logger without any message settings when null message is passed', t => {
+test.only('should init the logger without any message settings when null message is passed', t => {
   t.plan(1)
   log.init = sinon.stub()
 
-  initLogger(null).then(result => {
-    t.ok(log.init.calledWith({
-      kthid: undefined,
-      ug1Name: undefined,
-      ugversion: undefined,
-      messageId: undefined
-    }))
-  })
+  const result = initLogger(null)
+
+    t.ok(log.init.calledWith({}))
+
 })
