@@ -37,11 +37,40 @@ function parseBody (msg) {
     abort()
   })
 }
+
+function initLogger (msg) {
+  // log.debug('about to init logger for message:', msg)
+  let bodyPromise
+  if (msg && msg.body) {
+    bodyPromise = Promise.resolve().then(() => JSON.parse(msg.body))
+    .catch(error => {
+       // An error means that we couldnt parse the body. Use an empty body for init of the logger
+       // We dont have to handle the error here, the message will be parsed again down the chain
+      log.info(error)
+
+      return {}
+    })
+  } else {
+    bodyPromise = Promise.resolve({})
+  }
+  return bodyPromise.then(body => {
+    const config = {
+      kthid: body && body.kthid,
+      ug1Name: body && body.ug1Name,
+      ugversion: (msg && msg.customProperties && msg.customProperties.ugversion) || undefined,
+      messageId: (msg && msg.brokerProperties && msg.brokerProperties.MessageId) || undefined
+    }
+    log.init(config)
+    return msg
+  })
+}
+
 function readMessage () {
   isReading = true
   let message, result
   return queue
     .readMessageFromQueue(config.secure.azure.queueName || config.full.azure.queueName)
+    .then(initLogger)
     .then(msg => {
       message = msg
       log.debug('message received from queue', msg)

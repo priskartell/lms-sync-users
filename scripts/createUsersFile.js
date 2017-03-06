@@ -2,9 +2,9 @@ const ldap = require('ldapjs')
 const config = require('../server/init/configuration')
 const fs = require('fs')
 const {writeLine} = require('../csvFile')
-const fileName = 'csv/allUsers.csv'
-const headers = ['user_id', 'login_id', 'full_name', 'status']
-const attributes = ['ugKthid', 'ugUsername', 'mail', 'email_address', 'name', 'ugEmailAddressHR']
+const fileName = 'csv/usersFLEmail.csv'
+const headers = ['user_id', 'login_id', 'first_name', 'last_name', 'email', 'status']
+const attributes = ['ugKthid', 'ugUsername', 'mail', 'email_address', 'name', 'Sn', 'givenName']
 const Promise = require('bluebird')
 
 const ldapClient = Promise.promisifyAll(ldap.createClient({
@@ -28,11 +28,9 @@ function appendUsers (type) {
       }
       res.on('searchEntry', function (entry) {
         counter++
-        // console.log(entry.object)
-        // console.log('.')
         const o = entry.object
         const userName = `${o.ugUsername}@kth.se`
-        writeLine([o.ugKthid, userName, o.name, 'active'], fileName)
+        writeLine([o.ugKthid, userName, o.givenName, o.sn, o.mail || userName, 'active'], fileName)
       })
       res.on('error', function (err) {
         console.error('error: ' + err.message)
@@ -62,9 +60,7 @@ deleteFile()
 .then(() => writeLine(headers, fileName))
 .then(bindLdapClient)
 .then(() => Promise.all([
-  appendUsers('employee'),
-  appendUsers('member'),
-  appendUsers('student')]))
+  appendUsers('member')]))
 .then(() => console.log('Done with creating the file', fileName))
 .catch(e => console.error(e))
 .finally(() => ldapClient.unbindAsync())
