@@ -20,14 +20,14 @@ test('should init the logger when an empty message is passed', t => {
     }
   }
 
-  initLogger(message).then(result => {
-    t.ok(log.init.calledWith({
-      kthid: undefined,
-      ug1Name: undefined,
-      ugversion: 123,
-      messageId: 'abc'
-    }))
-  })
+  initLogger(message)
+
+  t.ok(log.init.calledWith({
+    kthid: undefined,
+    ug1Name: undefined,
+    ugversion: 123,
+    messageId: 'abc'
+  }))
 })
 
 test('should init the logger when an message without a body is passed', t => {
@@ -43,14 +43,14 @@ test('should init the logger when an message without a body is passed', t => {
     }
   }
 
-  initLogger(message).then(result => {
-    t.ok(log.init.calledWith({
-      kthid: undefined,
-      ug1Name: undefined,
-      ugversion: 123,
-      messageId: 'abc'
-    }))
-  })
+  initLogger(message)
+
+  t.ok(log.init.calledWith({
+    kthid: undefined,
+    ug1Name: undefined,
+    ugversion: 123,
+    messageId: 'abc'
+  }))
 })
 
 test('should init the logger when a message with a body, without kthid or ug1name is passed', t => {
@@ -67,17 +67,17 @@ test('should init the logger when a message with a body, without kthid or ug1nam
     }
   }
 
-  initLogger(message).then(result => {
-    t.ok(log.init.calledWith({
-      kthid: undefined,
-      ug1Name: undefined,
-      ugversion: 123,
-      messageId: 'abc'
-    }))
-  })
+  const result = initLogger(message)
+
+  t.ok(log.init.calledWith({
+    kthid: undefined,
+    ug1Name: undefined,
+    ugversion: 123,
+    messageId: 'abc'
+  }))
 })
 
-test.only('should init the logger when a message with a body, with kthid and ug1name is passed', t => {
+test('should init the logger when a message with a body, with kthid and ug1name is passed', t => {
   t.plan(1)
   log.init = sinon.stub()
 
