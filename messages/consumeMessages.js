@@ -11,7 +11,7 @@ const client = new AMQPClient(Policy.Utils.RenewOnSettle(1, 1, Policy.ServiceBus
 
 function start () {
   return client.connect(`amqps://RootManageSharedAccessKey:${urlencode(config.full.secure.azure.SharedAccessKey)}@lms-queue.servicebus.windows.net`)
-    .then(() => client.createReceiver(config.full.secure.azure.queueName))
+    .then(() => client.createReceiver(config.full.azure.queueName))
     .then(receiver => {
       log.info('receiver created....')
       receiver.on('errorReceived', err => {
