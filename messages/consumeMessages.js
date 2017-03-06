@@ -20,7 +20,6 @@ function start () {
 
       receiver.on('errorReceived', err => {
         log.warn('An error occured when trying to receive message from queue', err)
-        return receiver.reject(err)
       })
 
       receiver.on('message', message => {
