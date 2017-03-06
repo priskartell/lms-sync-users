@@ -23,7 +23,7 @@ function handleMessages (...messages) {
   config.secure.azure.queueName = config.full.azure.queueName
 
   let receiver, result
-  
+
   return queue.createQueueIfNotExists(config.full.azure.queueName)
   .then(() => consumeMessages.start())
   .then(_receiver => { receiver = _receiver })
