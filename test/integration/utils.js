@@ -11,9 +11,16 @@ function handleMessages (...messages) {
   function sendAndReadMessage (message) {
     console.log('Send and read a message', message)
     return queue.sendQueueMessage(config.full.azure.queueName, message)
-    .then(() => {
-      console.log('message is created in azure, about to read message...')
-      return consumeMessages.readMessage()
+    .then(() => consumeMessages.start())
+    .then(receiver => {
+
+      receiver.on('message',  message => {
+        console.log('message received', message)
+      })
+
+      return new Promise((resolve, reject)=>{
+        console.log('...')
+      })
     })
     .catch(err => console.error(err))
   }

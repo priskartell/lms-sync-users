@@ -27,6 +27,8 @@ function start () {
           return receiver.reject(message)
         }
       })
+
+      return receiver
     })
 }
 
