@@ -58,7 +58,7 @@ test('should init the logger when a message with a body, without kthid or ug1nam
   log.init = sinon.stub()
 
   const message = {
-    body: {1:2},
+    body: {1: 2},
     customProperties: {
       ugversion: 123
     },
@@ -77,7 +77,7 @@ test('should init the logger when a message with a body, without kthid or ug1nam
   })
 })
 
-test('should init the logger when a message with a body, with kthid and ug1name is passed', t => {
+test.only('should init the logger when a message with a body, with kthid and ug1name is passed', t => {
   t.plan(1)
   log.init = sinon.stub()
 
@@ -91,22 +91,21 @@ test('should init the logger when a message with a body, with kthid and ug1name 
     }
   }
 
-  initLogger(message).then(result => {
-    t.ok(log.init.calledWith({
-      kthid: 'someKthid',
-      ug1Name: 'someUg1Name',
-      ugversion: 123,
-      messageId: 'abc'
-    }))
-  })
+  initLogger(message)
+
+  t.ok(log.init.calledWith({
+    kthid: 'someKthid',
+    ug1Name: 'someUg1Name',
+    ugversion: 123,
+    messageId: 'abc'
+  }))
 })
 
-test.only('should init the logger without any message settings when null message is passed', t => {
+test('should init the logger without any message settings when null message is passed', t => {
   t.plan(1)
   log.init = sinon.stub()
 
   const result = initLogger(null)
 
-    t.ok(log.init.calledWith({}))
-
+  t.ok(log.init.calledWith({}))
 })
