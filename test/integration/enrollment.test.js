@@ -15,7 +15,7 @@ function processMessage (message, course) {
   .then(([enrolledUser]) => enrolledUser)
 }
 
-test.only('should enroll an assistant in an existing course in canvas', t => {
+test('should enroll an assistant in an existing course in canvas', t => {
   t.plan(1)
 
   const courseCode = 'A' + randomstring.generate(5)
