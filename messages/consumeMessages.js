@@ -18,9 +18,7 @@ function start () {
     .then(receiver => {
       log.info('receiver created....')
 
-      receiver.on('errorReceived', err => {
-        log.warn('An error occured when trying to receive message from queue', err)
-      })
+      receiver.on('errorReceived', err => log.warn('An error occured when trying to receive message from queue', err))
 
       receiver.on('message', message => {
         log.info('New message from ug queue', message)
