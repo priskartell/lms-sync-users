@@ -20,7 +20,7 @@ const opts = {
   attributes
 }
 
-const ugUsers = ldapClient.bindAsync(config.secure.ldap.bind.username, config.secure.ldap.bind.password)
+const ugUsersP = ldapClient.bindAsync(config.secure.ldap.bind.username, config.secure.ldap.bind.password)
 .then(() => ldapClient.searchAsync('OU=UG,DC=ug,DC=kth,DC=se', opts))
 .then(res => new Promise((resolve, reject) => {
   const result = []
@@ -33,8 +33,9 @@ const ugUsers = ldapClient.bindAsync(config.secure.ldap.bind.username, config.se
   return ugUsers
 })
 
-Promise.all([canvasApi.listUsers().map(canvasUser => canvasUser.sis_user_id), ugUsers])
-// .then(([canvasUsers, ugUsers])=>console.log(canvasUsers, ugUsers))
+const canvasUsersP = canvasApi.listUsers().map(canvasUser => canvasUser.sis_user_id)
+
+Promise.all([canvasUsersP, ugUsersP])
 .then(([canvasUsers, ugUsers]) => without(canvasUsers, ...ugUsers))
 .then(canvasUsersNotInUg => console.log(canvasUsersNotInUg))
 .catch(e => console.error(e))
