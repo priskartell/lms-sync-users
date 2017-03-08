@@ -2,6 +2,9 @@
 const Promise = require('bluebird')
 const config = require('../server/init/configuration')
 const log = require('../server/init/logging')
+const EventEmitter = require('events')
+const eventEmitter = new EventEmitter()
+
 const {addDescription} = require('message-type')
 const handleMessage = require('./handleMessage')
 require('colors')
@@ -11,65 +14,64 @@ const client = new AMQPClient(Policy.Utils.RenewOnSettle(1, 1, Policy.ServiceBus
 
 function start () {
   return client.connect(`amqps://RootManageSharedAccessKey:${urlencode(config.full.secure.azure.SharedAccessKey)}@lms-queue.servicebus.windows.net`)
-    .then(() => {
-      return client.createReceiver(config.full.secure.azure.queueName)
-    })
+    .then(() => client.createReceiver(config.full.azure.queueName))
     .then(receiver => {
       log.info('receiver created....')
-      receiver.on('errorReceived', err => log.info(err))
-      receiver.on('message', function (message) {
-        log.info('New message from ug queue....')
+
+      receiver.on('errorReceived', err => log.warn('An error occured when trying to receive message from queue', err))
+
+      receiver.on('message', message => {
+        log.info('New message from ug queue', message)
         if (message.body) {
-          return _processMesage(receiver, message)
+          return _processMessage(message)
         } else {
-          log.info('Message is emptry or undefined, deteting from queue...', message)
+          log.info('Message is empty or undefined, deteting from queue...', message)
           return receiver.reject(message)
         }
       })
+
+      function _processMessage (MSG) {
+        let result
+        return Promise.resolve(MSG)
+        .then(initLogger)
+        .then(addDescription)
+        .then(handleMessage)
+        .then(_result => {
+          log.info('result from handleMessage', _result)
+          result = _result
+        })
+        .then(() => receiver.accept(MSG))
+        .then(() => eventEmitter.emit('messageProcessed', MSG, result))
+        .catch(e => {
+          log.error(e)
+          log.info('Error Occured, releaseing message back to queue...', MSG)
+          return receiver.reject(MSG, e)
+        })
+      }
+
+      return receiver
     })
 }
 
-function _processMesage (receiver, MSG) {
-  initLogger(MSG)
-  .then(addDescription)
-  .then(handleMessage)
-  .then(_result => {
-    log.info('result from handleMessage', _result)
-  })
-  .then(() => receiver.accept(MSG))
-  .catch(e => {
-    log.error(e)
-    log.info('Error Occured, releaseing message back to queue...', MSG)
-    return receiver.reject(MSG, e)
-  })
-}
-
 function initLogger (msg) {
-  let bodyPromise
-  if (msg && msg.body) {
-    bodyPromise = Promise.resolve(msg.body)
-  } else {
-    bodyPromise = Promise.resolve({})
-  }
-
-  return bodyPromise.then(body => {
-    console.log(body)
-    const config = {
+  let config
+  if (msg) {
+    const {body} = msg
+    config = {
       kthid: body && body.kthid,
       ug1Name: body && body.ug1Name,
       ugversion: (msg && msg.customProperties && msg.customProperties.ugversion) || undefined,
       messageId: (msg && msg.brokerProperties && msg.brokerProperties.MessageId) || undefined
     }
-    console.log(config)
-    log.init(config)
-    if (msg && msg.body) {
-      return msg.body
-    } else {
-      return {}
-    }
-  })
+  } else {
+    config = {}
+  }
+
+  log.init(config)
+
+  return msg && msg.body
 }
 
 module.exports = {
-  start
+  start, eventEmitter
 }
