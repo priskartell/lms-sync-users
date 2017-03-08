@@ -62,7 +62,6 @@
     "tape": "^4.6.0"
   },
   "optionalDependencies": {
-    "node-inspector": "^0.12.8",
     "nodemon": "^1.10.0"
   },
   "engines": {
