@@ -29,6 +29,7 @@
     "test"
   ],
   "dependencies": {
+    "amqp10": "^3.5.0",
     "azure": "^1.2.0-preview",
     "blue-tape": "^1.0.0",
     "bluebird": "^3.4.7",
