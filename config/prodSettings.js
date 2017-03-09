@@ -28,7 +28,9 @@ module.exports = {
   },
   azure: {
     queueName: 'ug-canvas',
-    csvBlobName: 'lms-csv-prod'
+    csvBlobName: 'lms-csv-prod',
+    host: 'kth-integral.servicebus.windows.net',
+    SharedAccessKeyName: 'canvas-consumer'
   },
   localFile: {
     csvDir: '/tmp/'
