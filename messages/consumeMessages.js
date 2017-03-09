@@ -13,7 +13,7 @@ const urlencode = require('urlencode')
 const client = new AMQPClient(Policy.Utils.RenewOnSettle(1, 1, Policy.ServiceBusQueue))
 
 function start () {
-  return client.connect(`amqps://RootManageSharedAccessKey:${urlencode(config.full.secure.azure.SharedAccessKey)}@lms-queue.servicebus.windows.net`)
+  return client.connect(`amqps://${config.full.azure.SharedAccessKeyName}:${urlencode(config.secure.azure.SharedAccessKey)}@${config.full.azure.host}`)
     .then(() => client.createReceiver(config.full.azure.queueName))
     .then(receiver => {
       log.info('receiver created....')

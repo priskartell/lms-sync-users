@@ -14,7 +14,7 @@
     "nodeInspector": "node-inspector --web-port 8890",
     "openDebugBrowser": "sleep 2s && open http://127.0.0.1:8890/\\?port\\=5858 &2>/dev/null",
     "installAndStart": "yarn install --ignore-engines && npm start",
-    "start": "cross-env NODE_ENV=development node app.js",
+    "start": "cross-env NODE_ENV=ref node app.js",
     "start-nodemon": "cross-env NODE_ENV=development node app.js",
     "create-users-file": "cross-env NODE_ENV=development node scripts/createUsersFile.js",
     "create-csv-files": "npm run create-users-file && npm run create-courses-files",
