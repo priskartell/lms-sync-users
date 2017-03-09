@@ -18,7 +18,9 @@ module.exports = {
   },
   azure: {
     queueName: 'lms-elena',
-    csvBlobName: 'dev-lms-csv'
+    csvBlobName: 'dev-lms-csv',
+    host: 'lms-queue.servicebus.windows.net',
+    SharedAccessKeyName: 'RootManageSharedAccessKey'
   },
   ldap: {
     client: {

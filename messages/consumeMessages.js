@@ -14,7 +14,7 @@ const client = new AMQPClient(Policy.Utils.RenewOnSettle(1, 1, Policy.ServiceBus
 
 function start () {
   return client.connect(`amqps://${config.full.azure.SharedAccessKeyName}:${urlencode(config.secure.azure.SharedAccessKey)}@${config.full.azure.host}`)
-    .then(() => client.createReceiver(config.full.azure.queueName))
+    .then(() => client.createReceiver(config.secure.azure.queueName || config.full.azure.queueName))
     .then(receiver => {
       log.info('receiver created....')
 
