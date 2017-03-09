@@ -43,7 +43,8 @@ function handleMessages (...messages) {
   .then(() => result)
 }
 
-const queue = require('node-queue-adapter')(config.secure.azure.queueConnectionString)
+const queueConnectionString = `Endpoint=sb://${config.full.azure.host}/;SharedAccessKeyName=${config.full.azure.SharedAccessKeyName};SharedAccessKey=${config.secure.azure.SharedAccessKey}`
+const queue = require('node-queue-adapter')(queueConnectionString)
 module.exports = {
   handleMessages
 }
