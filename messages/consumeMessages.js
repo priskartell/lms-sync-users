@@ -45,7 +45,7 @@ function start () {
         .catch(e => {
           log.error(e)
           log.info('Error Occured, releaseing message back to queue...', MSG)
-          return receiver.reject(MSG, e)
+          return receiver.reject(MSG)
         })
       }
 
