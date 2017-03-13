@@ -16,10 +16,10 @@ module.exports = {
     }
   },
   azure: {
-    queueName: 'ug-canvas-ref',
+    queueName: 'canvas-ref',
     csvBlobName: 'reflmscsv',
-    host: 'kth-integral.servicebus.windows.net',
-    SharedAccessKeyName: 'canvas-consumer'
+    host: 'kth-integral-ref.servicebus.windows.net',
+    SharedAccessKeyName: 'canvas'
   },
   ldap: {
     client: {
