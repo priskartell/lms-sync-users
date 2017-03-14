@@ -18,4 +18,4 @@ services:
        LDAP_URI : "ldaps://ldap.ug.kth.se"
     # Port published from inside the Docker image
     ports:
-      - 3001
+      - 3000

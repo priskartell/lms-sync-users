@@ -13,7 +13,6 @@ const {getEnv} = require('kth-node-configuration')
  * This file is checked in to git, but the localSettings.js file each developer
  * should create based on this template is not.
  */
-console.log(getEnv('AZURE_QUEUE_CONNECTION_STRING'), getEnv)
 
 module.exports = {
   secure: {
