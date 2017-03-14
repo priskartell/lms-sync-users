@@ -13,7 +13,7 @@ services:
        LDAP_USERNAME : "system-lms-integration@ug.kth.se"
        LDAP_PASSWORD : ""
        CANVAS_API_KEY : ""
-       AZURE_QUEUE_CONNECTION_STRING : ""
+       AZURE_SHARED_ACCESS_KEY : ""
        AZURE_STORAGE_CONNECTION_STRING : ""
        LDAP_URI : "ldaps://ldap.ug.kth.se"
     # Port published from inside the Docker image
