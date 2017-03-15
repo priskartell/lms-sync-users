@@ -7,7 +7,7 @@ const consumeMessages = proxyquire('../../../messages/consumeMessages.js', {'nod
 const initLogger = consumeMessages.__get__('initLogger')
 const log = consumeMessages.__get__('log')
 
-test.only('should init the logger when a message without body is passed', t => {
+test('should init the logger when a message without body is passed', t => {
   t.plan(1)
   log.init = sinon.stub()
 
@@ -35,11 +35,11 @@ test('should init the logger when a message without a body is passed', t => {
   log.init = sinon.stub()
 
   const message = {
-    customProperties: {
-      ugversion: 123
+    applicationProperties: {
+      UGVersion: 123
     },
-    brokerProperties: {
-      MessageId: 'abc'
+    properties: {
+      messageId: 'abc'
     }
   }
 
@@ -59,11 +59,11 @@ test('should init the logger when a message with a body, without kthid or ug1nam
 
   const message = {
     body: {1: 2},
-    customProperties: {
-      ugversion: 123
+    applicationProperties: {
+      UGVersion: 123
     },
-    brokerProperties: {
-      MessageId: 'abc'
+    properties: {
+      messageId: 'abc'
     }
   }
 
@@ -83,11 +83,11 @@ test('should init the logger when a message with a body, with kthid and ug1name 
 
   const message = {
     body: {ug1Name: 'someUg1Name', kthid: 'someKthid'},
-    customProperties: {
-      ugversion: 123
+    applicationProperties: {
+      UGVersion: 123
     },
-    brokerProperties: {
-      MessageId: 'abc'
+    properties: {
+      messageId: 'abc'
     }
   }
 
