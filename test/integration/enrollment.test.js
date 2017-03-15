@@ -15,7 +15,6 @@ function processMessage (message, course) {
   .then(([enrolledUser]) => enrolledUser)
 }
 
-
 test('should enroll an assistant in an existing course in canvas', t => {
   t.plan(1)
 

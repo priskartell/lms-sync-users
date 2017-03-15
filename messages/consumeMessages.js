@@ -53,7 +53,7 @@ function start () {
         .catch(e => {
           log.error(e)
           log.info('Error Occured, releaseing message back to queue...', MSG)
-          return receiver.modify(MSG, {undeliverableHere:false, deliveryFailed: true})
+          return receiver.modify(MSG, {undeliverableHere: false, deliveryFailed: true})
         })
       }
 

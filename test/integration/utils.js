@@ -28,7 +28,7 @@ function handleMessages (...messages) {
   .then(() => consumeMessages.start())
   .then(_receiver => { receiver = _receiver })
   .then(() => Promise.mapSeries(messages, sendAndWaitUntilMessageProcessed))
-  .then(messagesResults => {result = messagesResults})
+  .then(messagesResults => { result = messagesResults })
   .then(() => {
     console.log('Close the receiver...')
     receiver.detach()
