@@ -35,6 +35,6 @@ COPY ["messages", "messages"]
 COPY ["scripts", "scripts"]
 
 ENV NODE_ENV development
-EXPOSE 3001
+EXPOSE 3000
 
 ENTRYPOINT ["node", "app.js"]

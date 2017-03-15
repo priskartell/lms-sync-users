@@ -24,7 +24,7 @@ function get (url) {
     method: 'GET',
     json: true,
     headers: {
-      'content-type': 'application/json'
+      'content-type': 'application/json' // testa docker
     }
   })
 }
