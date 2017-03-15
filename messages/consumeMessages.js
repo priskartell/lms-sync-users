@@ -23,7 +23,7 @@ function start () {
       receiver.on('message', message => {
         Promise.resolve(message)
         .then(initLogger)
-        .then(()=>{
+        .then(() => {
           log.info('New message from ug queue', message)
           if (message.body) {
             return _processMessage(message)
@@ -31,6 +31,10 @@ function start () {
             log.info('Message is empty or undefined, deleting from queue...', message)
             return receiver.reject(message)
           }
+        })
+        .then(() => {
+          // Init logger without settings from this message
+          initLogger()
         })
       })
 
@@ -63,8 +67,8 @@ function initLogger (msg) {
     config = {
       kthid: body && body.kthid,
       ug1Name: body && body.ug1Name,
-      ugversion: (msg && msg.customProperties && msg.customProperties.ugversion) || undefined,
-      messageId: (msg && msg.brokerProperties && msg.brokerProperties.MessageId) || undefined
+      ugversion: (msg && msg.applicationProperties && msg.applicationProperties.UGVersion) || undefined,
+      messageId: (msg && msg.properties && msg.properties.messageId) || undefined
     }
   } else {
     config = {}
