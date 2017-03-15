@@ -21,15 +21,16 @@ function start () {
       receiver.on('errorReceived', err => log.warn('An error occured when trying to receive message from queue', err))
 
       receiver.on('message', message => {
+        log.info('New message from ug queue', message)
+
         Promise.resolve(message)
         .then(initLogger)
         .then(() => {
-          log.info('New message from ug queue', message)
           if (message.body) {
             return _processMessage(message)
           } else {
             log.info('Message is empty or undefined, deleting from queue...', message)
-            return receiver.reject(message)
+            return receiver.accept(message)
           }
         })
         .then(() => {
@@ -47,7 +48,8 @@ function start () {
           log.info('result from handleMessage', _result)
           result = _result
         })
-        .then(() => receiver.accept(MSG))
+        .then(() => receiver.release(MSG))
+        // .then(() => receiver.accept(MSG))
         .then(() => eventEmitter.emit('messageProcessed', MSG, result))
         .catch(e => {
           log.error(e)
