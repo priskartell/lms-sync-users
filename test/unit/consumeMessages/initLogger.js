@@ -7,16 +7,16 @@ const consumeMessages = proxyquire('../../../messages/consumeMessages.js', {'nod
 const initLogger = consumeMessages.__get__('initLogger')
 const log = consumeMessages.__get__('log')
 
-test('should init the logger when an empty message is passed', t => {
+test.only('should init the logger when a message without body is passed', t => {
   t.plan(1)
   log.init = sinon.stub()
 
   const message = {
-    customProperties: {
-      ugversion: 123
+    applicationProperties: {
+      UGVersion: 123
     },
-    brokerProperties: {
-      MessageId: 'abc'
+    properties: {
+      messageId: 'abc'
     }
   }
 
