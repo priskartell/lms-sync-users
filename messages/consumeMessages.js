@@ -21,19 +21,22 @@ function start () {
       receiver.on('errorReceived', err => log.warn('An error occured when trying to receive message from queue', err))
 
       receiver.on('message', message => {
-        log.info('New message from ug queue', message)
-        if (message.body) {
-          return _processMessage(message)
-        } else {
-          log.info('Message is empty or undefined, deteting from queue...', message)
-          return receiver.reject(message)
-        }
+        Promise.resolve(message)
+        .then(initLogger)
+        .then(()=>{
+          log.info('New message from ug queue', message)
+          if (message.body) {
+            return _processMessage(message)
+          } else {
+            log.info('Message is empty or undefined, deleting from queue...', message)
+            return receiver.reject(message)
+          }
+        })
       })
 
       function _processMessage (MSG) {
         let result
         return Promise.resolve(MSG)
-        .then(initLogger)
         .then(addDescription)
         .then(handleMessage)
         .then(_result => {
