@@ -41,20 +41,19 @@ function start () {
 
       function _processMessage (MSG) {
         let result
-        return Promise.resolve(MSG)
+        return Promise.resolve(MSG.body)
         .then(addDescription)
         .then(handleMessage)
         .then(_result => {
           log.info('result from handleMessage', _result)
           result = _result
         })
-        .then(() => receiver.release(MSG))
-        // .then(() => receiver.accept(MSG))
+        .then(() => receiver.accept(MSG))
         .then(() => eventEmitter.emit('messageProcessed', MSG, result))
         .catch(e => {
           log.error(e)
           log.info('Error Occured, releaseing message back to queue...', MSG)
-          return receiver.reject(MSG)
+          return receiver.modify(MSG, {undeliverableHere:false, deliveryFailed: true})
         })
       }
 
