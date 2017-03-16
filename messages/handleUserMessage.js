@@ -23,13 +23,17 @@ function convertToCanvasUser (msg) {
         sis_user_id: msg.kthid // CSVs analogi av 'user_id' needed for enrollments
       },
       user: {
-        'name': `${msg.given_name} ${msg.family_name}`
+        'name': `${msg.given_name} ${msg.family_name}`,
+        'email': msg.primary_email // must be when 'updating' user
+      },
+      communication_channel: { // must be when 'creating' user
+        type: 'email',
+        address: msg.primary_email
       }
     }
     return user
   } else {
     log.info('\nIncomplete fields to create user in canvas, skipping. Probably,it is missing a name(given_name, family_name) or a username or kth_id.....', msg)
-    return
   }
 }
 

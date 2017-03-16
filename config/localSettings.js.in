@@ -28,7 +28,8 @@ module.exports = {
     },
     azure: {
       queueConnectionString: 'Endpoint=sb://kth-integral.servicebus.windows.net/;SharedAccessKeyName=canvas-consumer;SharedAccessKey=',
-      StorageConnectionString: 'DefaultEndpointsProtocol=https;AccountName=refkthlmssync;AccountKey='
+      StorageConnectionString: 'DefaultEndpointsProtocol=https;AccountName=refkthlmssync;AccountKey=',
+      SharedAccessKey: ''
     }
   }
 }

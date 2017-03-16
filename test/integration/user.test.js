@@ -1,5 +1,5 @@
 var test = require('tape')
-const {handleMessages} = require('././utils')
+const {handleMessages} = require('./utils')
 const canvasApi = require('../../canvasApi')
 const randomstring = require('randomstring')
 

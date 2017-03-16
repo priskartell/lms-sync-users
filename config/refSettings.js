@@ -1,7 +1,7 @@
 module.exports = {
   port: 3000,
   canvas: {
-    apiUrl: 'https://kth.beta.instructure.com/api/v1'
+    apiUrl: 'https://kth.test.instructure.com/api/v1'
   },
   logging: {
     log: {
@@ -16,8 +16,10 @@ module.exports = {
     }
   },
   azure: {
-    queueName: 'ug-canvas-ref',
-    csvBlobName: 'reflmscsv'
+    queueName: 'canvas-ref',
+    csvBlobName: 'reflmscsv',
+    host: 'kth-integral-ref.servicebus.windows.net',
+    SharedAccessKeyName: 'canvas'
   },
   ldap: {
     client: {

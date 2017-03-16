@@ -1,4 +1,4 @@
-FROM kthse/kth-nodejs-api:2.0-alpine
+FROM kthse/kth-nodejs-api:2.2-alpine
 
 MAINTAINER KTH Webb "cortina.developers@kth.se"
 
@@ -9,7 +9,7 @@ RUN mkdir -p /npm && \
 WORKDIR /npm
 COPY ["package.json", "package.json"]
 
-RUN npm install --production --no-optional
+RUN yarn install --production --ignore-engines --no-optional
 
 # Add the code and copy over the node_modules-catalog
 WORKDIR /application
@@ -35,6 +35,6 @@ COPY ["messages", "messages"]
 COPY ["scripts", "scripts"]
 
 ENV NODE_ENV development
-EXPOSE 3001
+EXPOSE 3000
 
 ENTRYPOINT ["node", "app.js"]

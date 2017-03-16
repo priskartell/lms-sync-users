@@ -2,103 +2,46 @@
 
  const {type} = require('message-type')
  const canvasApi = require('../canvasApi')
- const Promise = require('bluebird')
- const cl = require('../azureStorage')
  const config = require('../server/init/configuration')
  const log = require('../server/init/logging')
  const ugParser = require('./ugParser')
- require('colors')
+ const calcSisForOmregistrerade = require('./calcSisForOmregistrerade')
+ const createCsvFile = require('./createCsvFile')
 
  const csvVol = config.full.azure.csvBlobName
  const csvDir = config.full.localFile.csvDir
 
- function _createCsvFile (msg, sisCourseCode, timeStamp) {
-   let header = 'course_id,user_id,role,status\n'
-   let msgtype = msg._desc.userType
-   let csvFileName = 'enrollments.' + msgtype + '.' + sisCourseCode + '.' + timeStamp + '.csv'
-   let msgFileName = 'enrollments.' + msgtype + '.' + sisCourseCode + '.' + timeStamp + '.msg'
-   let csvString = ''
+ function _parseKey ({ug1Name, _desc}) {
+   const {userType} = _desc
 
-   if (msg.member && msg.member.length > 0) {
-     let csvArray = msg.member.map(user => {
-       return {
-         course_id: sisCourseCode,
-         user_id: user,
-         role: msgtype,
-         status: 'active'
-       }
-     })
-     csvArray.forEach(csvRow => {
-       csvString = csvString + `${csvRow.course_id},${csvRow.user_id},${csvRow.role},${csvRow.status}
-`
-     })
+   if (userType === type.students) {
+     return Promise.resolve(ugParser.parseKeyStudent(ug1Name))
    }
 
-   let csvData = header + csvString
-   log.info('\nGoing to open file: ' + csvFileName + ' ' + msgFileName)
-   return cl.cloudStoreTextToFile(csvFileName, csvVol, csvData)
-  .then(() => cl.cloudgetFile(csvFileName, csvVol, csvDir))
-  .then(result => { log.info(result); return {csvContent: csvData, csvFileName: csvDir + result.name} })
-  .catch(error => { log.error(error); return Promise.reject(error) })
+   if (userType === type.teachers || userType === type.assistants || userType === type.courseresponsibles) {
+     return Promise.resolve(ugParser.parseKeyTeacher(ug1Name))
+   }
+
+   log.error('Course code not parsable from Key. type, ', userType + ' ug1Name, ' + ug1Name)
+   return Promise.reject(Error('Key parse error, type, ' + userType + ' ug1Name, ' + ug1Name))
  }
 
- function _parseKey (key, msgtype) {
-   let sisCourseCode = 0
-   if (msgtype === type.students) {
-     sisCourseCode = ugParser.parseKeyStudent(key)
-   }
-   if (msgtype === type.teachers || msgtype === type.assistants || msgtype === type.courseresponsibles) {
-     sisCourseCode = ugParser.parseKeyTeacher(key)
-   }
-   if (!sisCourseCode) {
-     log.error('\nCourse code not parsable from Key. type, ' + msgtype + ' key, ' + key)
-     return Promise.reject(Error('Key parse error, type, ' + msgtype + ' key, ' + key))
-   }
-   return Promise.resolve(sisCourseCode)
- }
-
- function _process (msg) {
-   let sisCourseCode = ''
-   let timeStamp = Date.now()
-
-   return _parseKey(msg.ug1Name, msg._desc.userType)
-    .then(sisCode => {
-      sisCourseCode = sisCode
-      log.info(`In _process ${sisCourseCode}, processing for ${msg._desc.userType}`)
-      return canvasApi.findCourse(sisCourseCode)
-    })
-    .catch(err => {
-      if (err.statusCode === 404) {
-        log.info('Course does not exist in canvas, skipping, '.red + sisCourseCode.red)
-        return Promise.resolve('Course does not exist in canvas')
-      } else {
-        return Promise.reject(Error(err))
-      }
-    })
-    .then(result => {
-      log.info('Result from find course', result)
-      return _createCsvFile(msg, sisCourseCode, timeStamp)
-    })
-    .then(csvObject => {
-      log.info('FileName: ', csvObject.csvFileName)
-      return csvObject.csvFileName
-    })
-    .then(fileName => canvasApi.sendCsvFile(fileName, true))
-    .then(canvasReturnValue => {
-      let documentId = sisCourseCode + '.' + timeStamp
-      let document = {id: documentId, msg: msg, resp: canvasReturnValue}
-      log.info(document)
-      return document
-    })
- }
-
- module.exports = function (msg, counter) {
-   log.info('Processing for msg..... ' + msg.ug1Name)
-   var msgtype = msg._desc.userType
-   if (msg._desc && (msgtype === type.students || msgtype === type.teachers || msgtype === type.assistants || msgtype === type.courseresponsibles)) {
-     return _process(msg)
+ function process (msg) {
+   let sisCourseCodeFunction
+   if (msg._desc.userType === type.omregistrerade) {
+     log.info('using calcSisForOmregistrerade')
+     sisCourseCodeFunction = calcSisForOmregistrerade
    } else {
-     log.error('This is something else than students, teacher, assistant, courseresponsibles we can probably wait with this until the students is handled', JSON.stringify(msg, null, 4))
-     return Promise.resolve('Unknown flag: ' + msgtype)
+     log.info('using _parseKey')
+     sisCourseCodeFunction = _parseKey
    }
+
+   return sisCourseCodeFunction(msg)
+    .then(sisCourseCode => createCsvFile(msg, sisCourseCode, csvDir, csvVol))
+    .then(({name}) => canvasApi.sendCsvFile(name, true))
+    .then(canvasReturnValue => {
+      return {msg, resp: canvasReturnValue}
+    })
  }
+
+ module.exports = process

@@ -114,7 +114,7 @@
    return mkdir(pathToStore)
    .catch(err => {
      if (err.code === 'EEXIST') {
-       return
+
      } else {
        Promise.reject(err)
      }

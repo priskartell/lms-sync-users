@@ -1,81 +1,85 @@
 'use strict'
 const Promise = require('bluebird')
 const config = require('../server/init/configuration')
-const queue = require('node-queue-adapter')(config.secure.azure.queueConnectionString)
 const log = require('../server/init/logging')
+const EventEmitter = require('events')
+const eventEmitter = new EventEmitter()
+
 const {addDescription} = require('message-type')
 const handleMessage = require('./handleMessage')
 require('colors')
-
-let isReading = false
+const {Client: AMQPClient, Policy} = require('amqp10')
+const urlencode = require('urlencode')
+const client = new AMQPClient(Policy.Utils.RenewOnSettle(1, 1, Policy.ServiceBusQueue))
 
 function start () {
-  setInterval(readMessageUnlessReading, 50)
-}
+  return client.connect(`amqps://${config.full.azure.SharedAccessKeyName}:${urlencode(config.secure.azure.SharedAccessKey)}@${config.full.azure.host}`)
+    .then(() => client.createReceiver(config.secure.azure.queueName || config.full.azure.queueName))
+    .then(receiver => {
+      log.info('receiver created....')
 
-function abort () {
-  // Best way to abort a promise chain is by a custom error according to:
-  // http://stackoverflow.com/questions/11302271/how-to-properly-abort-a-node-js-promise-chain-using-q
+      receiver.on('errorReceived', err => log.warn('An error occured when trying to receive message from queue', err))
 
-  throw new Error('abort_chain')
-}
+      receiver.on('message', message => {
+        log.info('New message from ug queue', message)
 
-function abortIfNoMessage (msg) {
-  if (!msg || !msg.body) {
-    abort()
-  }
+        Promise.resolve(message)
+        .then(initLogger)
+        .then(() => {
+          if (message.body) {
+            return _processMessage(message)
+          } else {
+            log.info('Message is empty or undefined, deleting from queue...', message)
+            return receiver.accept(message)
+          }
+        })
+        .then(() => {
+          // Init logger without settings from this message
+          initLogger()
+        })
+      })
 
-  return msg
-}
-
-function parseBody (msg) {
-  return Promise.resolve()
-  .then(() => JSON.parse(msg.body))
-  .catch(e => {
-    log.warn('an error occured while trying to parse json:', e, msg)
-    queue.deleteMessageFromQueue(msg)
-    abort()
-  })
-}
-
-function readMessage () {
-  isReading = true
-  let message, result
-  return queue
-    .readMessageFromQueue(config.secure.azure.queueName || config.full.azure.queueName)
-    .then(msg => {
-      message = msg
-      log.debug('message received from queue', msg)
-      return message
-    })
-    .then(abortIfNoMessage)
-    .then(parseBody)
-    .then(addDescription)
-    .then(handleMessage)
-    .then(_result => {
-      result = _result
-    })
-    .then(() => queue.deleteMessageFromQueue(message))
-    .then(() => result)
-    .catch(e => {
-      if (e.message !== 'abort_chain') {
-        log.error(e)
+      function _processMessage (MSG) {
+        let result
+        return Promise.resolve(MSG.body)
+        .then(addDescription)
+        .then(handleMessage)
+        .then(_result => {
+          log.info('result from handleMessage', _result)
+          result = _result
+        })
+        .then(() => receiver.accept(MSG))
+        .then(() => eventEmitter.emit('messageProcessed', MSG, result))
+        .catch(e => {
+          log.error(e)
+          log.info('Error Occured, releaseing message back to queue...', MSG)
+          return receiver.modify(MSG, {undeliverableHere: false, deliveryFailed: true})
+        })
       }
-    })
-    .finally(() => {
-      isReading = false
+
+      return receiver
     })
 }
 
-function readMessageUnlessReading () {
-  if (isReading) {
-    // console.log('is already reading a message, abort')
-    return
+function initLogger (msg) {
+  let config
+  if (msg) {
+    const {body} = msg
+    config = {
+      kthid: body && body.kthid,
+      ug1Name: body && body.ug1Name,
+      ugversion: (msg && msg.applicationProperties && msg.applicationProperties.UGVersion) || undefined,
+      messageId: (msg && msg.properties && msg.properties.messageId) || undefined
+    }
   } else {
-    readMessage()
+    config = {}
   }
+
+  log.init(config)
+
+  return msg && msg.body
 }
 
 module.exports = {
-  start, readMessage
+  start, eventEmitter
 }
