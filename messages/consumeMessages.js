@@ -52,7 +52,7 @@ function start () {
         .then(() => eventEmitter.emit('messageProcessed', MSG, result))
         .catch(e => {
           log.error(e)
-          log.info('Error Occured, releaseing message back to queue...', MSG)
+          log.info('Error Occured, releasing message back to queue...', MSG)
           return receiver.modify(MSG, {undeliverableHere: false, deliveryFailed: true})
         })
       }
