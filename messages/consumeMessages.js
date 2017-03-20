@@ -13,6 +13,7 @@ const urlencode = require('urlencode')
 const client = new AMQPClient(Policy.Utils.RenewOnSettle(1, 1, Policy.ServiceBusQueue))
 
 function start () {
+  console.log('connecting with the following azure url:', `amqps://${config.full.azure.SharedAccessKeyName}:${(config.secure.azure.SharedAccessKey || '').replace(/\w/g,'x')}@${config.full.azure.host}`)
   return client.connect(`amqps://${config.full.azure.SharedAccessKeyName}:${urlencode(config.secure.azure.SharedAccessKey)}@${config.full.azure.host}`)
     .then(() => client.createReceiver(config.secure.azure.queueName || config.full.azure.queueName))
     .then(receiver => {
