@@ -19,7 +19,10 @@ var _about = function (req, res) {
     version.gitBranch:${version.gitBranch}
     version.gitCommit:${version.gitCommit}
     version.jenkinsBuild:${version.jenkinsBuild}
+    version.dockerName:${version.dockerName}
+    version.dockerVersion:${version.dockerVersion}
     version.jenkinsBuildDate:${version.jenkinsBuildDate}`)
+
 }
 
 /* GET /_monitor
