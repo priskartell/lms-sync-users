@@ -11,11 +11,14 @@ require('colors')
 const {Client: AMQPClient, Policy} = require('amqp10')
 const urlencode = require('urlencode')
 const client = new AMQPClient(Policy.Utils.RenewOnSettle(1, 1, Policy.ServiceBusQueue))
+const queueName = config.secure.azure.queueName || config.full.azure.queueName
 
 function start () {
   console.log('connecting with the following azure url:', `amqps://${config.full.azure.SharedAccessKeyName}:${(config.secure.azure.SharedAccessKey || '').replace(/\w/g, 'x')}@${config.full.azure.host}`)
+
+  console.log('connecting to the queue with name ', queueName)
   return client.connect(`amqps://${config.full.azure.SharedAccessKeyName}:${urlencode(config.secure.azure.SharedAccessKey)}@${config.full.azure.host}`)
-    .then(() => client.createReceiver(config.secure.azure.queueName || config.full.azure.queueName))
+    .then(() => client.createReceiver(queueName))
     .then(receiver => {
       log.info('receiver created....')
 
