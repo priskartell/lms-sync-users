@@ -22,7 +22,6 @@ var _about = function (req, res) {
     version.dockerName:${version.dockerName}
     version.dockerVersion:${version.dockerVersion}
     version.jenkinsBuildDate:${version.jenkinsBuildDate}`)
-
 }
 
 /* GET /_monitor
