@@ -14,9 +14,6 @@
     "installAndStart": "yarn install --ignore-engines && npm start",
     "start": "cross-env NODE_ENV=development node app.js",
     "create-users-file": "cross-env NODE_ENV=development node scripts/createUsersFile.js",
-    "create-csv-files": "npm run create-users-file && npm run create-courses-files",
-    "create-courses-files": "export TERMIN=2017:1 && export PERIOD=3 && cross-env NODE_ENV=development node scripts/createCoursesFile.js  && npm run create-enrollments-file",
-    "create-enrollments-file": "cross-env NODE_ENV=development node scripts/createEnrollmentsFile.js",
     "cleanLocalFiles": "rm -rf ./CSV ./MSG ./REPLAY ./AZURETEST"
   },
   "pre-push": [
