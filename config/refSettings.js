@@ -16,7 +16,7 @@ module.exports = {
     }
   },
   azure: {
-    queueName: 'canvas-ref',
+    queueName: 'ug-canvas-ref/Subscriptions/canvas-ref',
     csvBlobName: 'reflmscsv',
     host: 'kth-integral-ref.servicebus.windows.net',
     SharedAccessKeyName: 'canvas'
