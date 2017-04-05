@@ -11,6 +11,7 @@ function sendAndWaitUntilMessageProcessed (message) {
     })
   })
 
+  console.log('sending a message to the queue:', config.full.azure.queueName)
   queue.sendQueueMessage(config.full.azure.queueName, message)
   .catch(err => console.error(err))
 
@@ -19,9 +20,7 @@ function sendAndWaitUntilMessageProcessed (message) {
 
 function handleMessages (...messages) {
   console.log('handle messages', messages.length)
-  config.full.azure.queueName = 'lms-sync-integration-tests-' + Math.random().toString(36)
-  config.secure.azure.queueName = config.full.azure.queueName
-
+  config.secure.azure.queueName = config.full.azure.queueName = 'lms-sync-integration-tests-' + Math.random().toString(36)
   let receiver, result
 
   return queue.createQueueIfNotExists(config.full.azure.queueName)

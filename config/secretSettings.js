@@ -29,7 +29,6 @@ module.exports = {
       apiKey: getEnv('CANVAS_API_KEY')
     },
     azure: {
-      queueName: getEnv('AZURE_QUEUE_NAME'),
       SharedAccessKey: getEnv('AZURE_SHARED_ACCESS_KEY'),
       StorageConnectionString: getEnv('AZURE_STORAGE_CONNECTION_STRING')
     }
