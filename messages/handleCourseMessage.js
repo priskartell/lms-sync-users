@@ -26,7 +26,7 @@
    return Promise.reject(Error('Key parse error, type, ' + userType + ' ug1Name, ' + ug1Name))
  }
 
- function process (msg) {
+ function handleCourseMessage (msg) {
    let sisCourseCodeFunction
    if (msg._desc.userType === type.omregistrerade) {
      log.info('using calcSisForOmregistrerade')
@@ -44,4 +44,4 @@
     })
  }
 
- module.exports = process
+ module.exports = {handleCourseMessage}
