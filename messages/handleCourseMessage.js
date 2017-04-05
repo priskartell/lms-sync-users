@@ -11,19 +11,19 @@
  const csvVol = config.full.azure.csvBlobName
  const csvDir = config.full.localFile.csvDir
 
- function _parseKey ({ug1Name, _desc}) {
+ function parseKey ({ug1Name, _desc}) {
    const {userType} = _desc
 
    if (userType === type.students) {
-     return Promise.resolve(ugParser.parseKeyStudent(ug1Name))
+     return ugParser.parseKeyStudent(ug1Name)
    }
 
    if (userType === type.teachers || userType === type.assistants || userType === type.courseresponsibles) {
-     return Promise.resolve(ugParser.parseKeyTeacher(ug1Name))
+     return ugParser.parseKeyTeacher(ug1Name)
    }
 
    log.error('Course code not parsable from Key. type, ', userType + ' ug1Name, ' + ug1Name)
-   return Promise.reject(Error('Key parse error, type, ' + userType + ' ug1Name, ' + ug1Name))
+   throw new Error('Key parse error, type, ' + userType + ' ug1Name, ' + ug1Name)
  }
 
  function handleCourseMessage (msg) {
@@ -32,11 +32,12 @@
      log.info('using calcSisForOmregistrerade')
      sisCourseCodeFunction = calcSisForOmregistrerade
    } else {
-     log.info('using _parseKey')
-     sisCourseCodeFunction = _parseKey
+     log.info('using parseKey')
+     sisCourseCodeFunction = parseKey
    }
 
-   return sisCourseCodeFunction(msg)
+   return Promise.resolve()
+    .then(() => sisCourseCodeFunction(msg))
     .then(sisCourseCode => createCsvFile(msg, sisCourseCode, csvDir, csvVol))
     .then(({name}) => canvasApi.sendCsvFile(name, true))
     .then(canvasReturnValue => {
@@ -44,4 +45,4 @@
     })
  }
 
- module.exports = {handleCourseMessage}
+ module.exports = {handleCourseMessage, parseKey}
