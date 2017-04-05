@@ -86,3 +86,33 @@ test('should enroll a student in an existing course in canvas', t => {
     t.equal(enrolledUser.sis_user_id, userKthId)
   })
 })
+
+test.skip('should enroll an observer 👀 in an existing course in canvas', t => {
+  t.plan(2)
+
+  const courseCode0 = 'A' + randomstring.generate(1)
+  const courseCode1 = randomstring.generate(4)
+  const userKthId = 'u1znmoik'
+
+  const message = {
+    kthid: 'u2vvutyd',
+    ugClass: 'group',
+    deleted: false,
+    ug1Name: `ladok2.kurser.${courseCode0}.${courseCode1}_20171.1`,
+    member: [ userKthId ]
+  }
+
+  const course = {
+    name: 'Emil testar',
+    'course_code': courseCode0 + courseCode1,
+    'sis_course_id': `${courseCode0 + courseCode1}VT171`
+  }
+
+  processMessage(message, course)
+  .then((enrolledUser) => {
+    console.log('TODO: SHOULD CHECK THE ROLE OF THE USER!')
+    console.log(JSON.stringify(enrolledUser, null, 4))
+    t.ok(enrolledUser)
+    t.equal(enrolledUser.sis_user_id, userKthId)
+  })
+})
