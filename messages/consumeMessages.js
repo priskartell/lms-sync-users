@@ -13,8 +13,11 @@ const urlencode = require('urlencode')
 const client = new AMQPClient(Policy.Utils.RenewOnSettle(1, 1, Policy.ServiceBusQueue))
 
 function start () {
+  console.log('connecting with the following azure url:', `amqps://${config.full.azure.SharedAccessKeyName}:${(config.secure.azure.SharedAccessKey || '').replace(/\w/g, 'x')}@${config.full.azure.host}`)
+  const queueName = config.secure.azure.queueName || config.full.azure.queueName
+  console.log('connecting to the queue with name ', queueName)
   return client.connect(`amqps://${config.full.azure.SharedAccessKeyName}:${urlencode(config.secure.azure.SharedAccessKey)}@${config.full.azure.host}`)
-    .then(() => client.createReceiver(config.secure.azure.queueName || config.full.azure.queueName))
+    .then(() => client.createReceiver(queueName))
     .then(receiver => {
       log.info('receiver created....')
 
@@ -52,7 +55,7 @@ function start () {
         .then(() => eventEmitter.emit('messageProcessed', MSG, result))
         .catch(e => {
           log.error(e)
-          log.info('Error Occured, releaseing message back to queue...', MSG)
+          log.info('Error Occured, releasing message back to queue...', MSG)
           return receiver.modify(MSG, {undeliverableHere: false, deliveryFailed: true})
         })
       }
