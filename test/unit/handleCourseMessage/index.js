@@ -45,7 +45,7 @@ test('should send the csv file for user type is student', t => {
   const createCsvFile = sinon.stub().returns({name: 'file.csv'})
   const handleCourseMessages = proxyquire('../../../messages/handleCourseMessage', {'./createCsvFile': createCsvFile})
   canvasApi.sendCsvFile = sinon.stub()
-  handleCourseMessages.__set__('_parseKey', sinon.stub().returns(Promise.resolve()))
+  handleCourseMessages.__set__('parseKey', sinon.stub().returns(Promise.resolve()))
   // .returns(Promise.reject({statusCode:404}))
   const message = {
     _desc: {
@@ -53,7 +53,7 @@ test('should send the csv file for user type is student', t => {
     }
   }
 
-  handleCourseMessages(message)
+  handleCourseMessages.handleCourseMessage(message)
   .then(() => {
     t.ok(canvasApi.sendCsvFile.calledWith('file.csv', true))
   })
