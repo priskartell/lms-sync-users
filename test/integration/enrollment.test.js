@@ -98,7 +98,7 @@ test.skip('should enroll an observer 👀 in an existing course in canvas', t =>
     kthid: 'u2vvutyd',
     ugClass: 'group',
     deleted: false,
-    ug1Name: `ladok2.kurser.${courseCode0}.${courseCode1}_20171.1`,
+    ug1Name: `ladok2.kurser.${courseCode0}.${courseCode1}.antagna_20171.1`,
     member: [ userKthId ]
   }
 
