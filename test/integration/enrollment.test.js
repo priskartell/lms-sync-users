@@ -79,7 +79,7 @@ test('should enroll a student in an existing course in canvas', t => {
     'course_code': courseCode0 + courseCode1,
     'sis_course_id': `${courseCode0 + courseCode1}VT171`
   }
-//
+
   processMessage(message, course)
   .then((enrolledUser) => {
     t.ok(enrolledUser)
