@@ -4,7 +4,6 @@ test('should create an array of all possible sisCourseIds for the given course',
   const calcSisForOmregistrerade = require('../../messages/calcSisForOmregistrerade')
   calcSisForOmregistrerade({ug1Name: 'ladok2.kurser.KD.1070.omregistrerade_20171'}).then(result => {
     t.deepEqual(result, [
-      'KD1070VT170',
       'KD1070VT171',
       'KD1070VT172',
       'KD1070VT173',
