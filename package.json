@@ -32,7 +32,7 @@
     "kth-node-log": "KTH/kth-node-log.git",
     "kth-node-server": "KTH/kth-node-server.git",
     "ldapjs": "^1.0.1",
-    "message-type": "github:kth/node-message-type",
+    "message-type": "github:kth/node-message-type#v1.5.0",
     "node-queue-adapter": "github:kth/node-queue-adapter",
     "request-promise": "^4.1.0",
     "urlencode": "^1.1.0"
