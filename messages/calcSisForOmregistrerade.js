@@ -2,7 +2,7 @@ const ugParser = require('./ugParser')
 module.exports = function (msg) {
   const {courseCode, shortYear, term} = ugParser.parseKeyReRegistered(msg.ug1Name)
   const result = []
-  for (var i = 0; i <= 9; i++) {
+  for (var i = 1; i <= 9; i++) {
     result.push(`${courseCode}${term}${shortYear}${i}`)
   }
   return Promise.resolve(result)
