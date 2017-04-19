@@ -27,7 +27,7 @@
     "bluebird": "^3.4.7",
     "colors": "^1.1.2",
     "express": "^4.14.0",
-    "kth-canvas-api": "^0.4.4",
+    "kth-canvas-api": "^0.6.0",
     "kth-node-configuration": "KTH/kth-node-configuration.git#v1.0.1",
     "kth-node-log": "KTH/kth-node-log.git",
     "kth-node-server": "KTH/kth-node-server.git",
