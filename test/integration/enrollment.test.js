@@ -10,7 +10,7 @@ function processMessage (message, course) {
   return canvasApi.createCourse({course}, accountId)
   .catch(err => console.error(err))
   .then(res => { canvasCourse = res })
-  .then(()=>canvasApi.createDefaultSection(canvasCourse, accountId))
+  .then(() => canvasApi.createDefaultSection(canvasCourse, accountId))
   .catch(err => console.error(err))
   .then(() => handleMessages(message))
   .then(([{resp}]) => canvasApi.pollUntilSisComplete(resp.id))
