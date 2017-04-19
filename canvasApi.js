@@ -6,7 +6,7 @@ const apiUrl = config.secure.canvas.apiUrl || config.full.canvas.apiUrl
 console.log('using canvas api at:', apiUrl)
 
 const canvasApi = new CanvasApi(apiUrl, config.secure.canvas.apiKey)
-console.log(canvasApi.createCourse)
+
 canvasApi.logger = logger
 
 //
