@@ -14,6 +14,7 @@
     "installAndStart": "yarn install --ignore-engines && npm start",
     "start": "cross-env NODE_ENV=development node app.js",
     "create-users-file": "cross-env NODE_ENV=development node scripts/createUsersFile.js",
+    "create-sections-file": "cross-env NODE_ENV=development node scripts/createSectionsFile.js",
     "cleanLocalFiles": "rm -rf ./CSV ./MSG ./REPLAY ./AZURETEST"
   },
   "pre-push": [
