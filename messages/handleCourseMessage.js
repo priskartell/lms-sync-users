@@ -14,11 +14,11 @@ const csvDir = config.full.localFile.csvDir
 function parseKey ({ug1Name, _desc}) {
   const {userType} = _desc
 
-  if (userType === type.students) {
+  if ([type.students, type.antagna].includes(userType)) {
     return ugParser.parseKeyStudent(ug1Name)
   }
 
-  if (userType === type.teachers || userType === type.assistants || userType === type.courseresponsibles) {
+  if ([type.teachers, type.assistants, type.courseresponsibles].includes(userType)) {
     return ugParser.parseKeyTeacher(ug1Name)
   }
 
