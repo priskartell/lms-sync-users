@@ -14,11 +14,11 @@
  function parseKey ({ug1Name, _desc}) {
    const {userType} = _desc
 
-   if ([type.students, type.antagna].includes(userType)) {
+   if (userType === type.students) {
      return ugParser.parseKeyStudent(ug1Name)
    }
 
-   if ([type.teachers, type.assistants, type.courseresponsibles].includes(userType)) {
+   if (userType === type.teachers || userType === type.assistants || userType === type.courseresponsibles) {
      return ugParser.parseKeyTeacher(ug1Name)
    }
 
@@ -37,7 +37,7 @@
    }
 
    return Promise.resolve()
-   .then(() => sisCourseCodeFunction(msg))
+    .then(() => sisCourseCodeFunction(msg))
     .then(sisCourseCode => createCsvFile(msg, sisCourseCode, csvDir, csvVol))
     .then(({name}) => canvasApi.sendCsvFile(name, true))
     .then(canvasReturnValue => {
