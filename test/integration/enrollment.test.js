@@ -90,8 +90,8 @@ test('should enroll a student in an existing course in canvas', t => {
   })
 })
 
-test.skip('should enroll an observer 👀 in an existing course in canvas', t => {
-  t.plan(2)
+test('should enroll an observer 👀 in an existing course in canvas', t => {
+  t.plan(3)
 
   const courseCode0 = 'A' + randomstring.generate(1)
   const courseCode1 = randomstring.generate(4)
@@ -101,7 +101,7 @@ test.skip('should enroll an observer 👀 in an existing course in canvas', t =>
     kthid: 'u2vvutyd',
     ugClass: 'group',
     deleted: false,
-    ug1Name: `ladok2.kurser.${courseCode0}.${courseCode1}_20171.1`,
+    ug1Name: `ladok2.kurser.${courseCode0}.${courseCode1}.antagna_20171.1`,
     member: [ userKthId ]
   }
 
@@ -113,9 +113,8 @@ test.skip('should enroll an observer 👀 in an existing course in canvas', t =>
 
   processMessage(message, course)
   .then((enrolledUser) => {
-    console.log('TODO: SHOULD CHECK THE ROLE OF THE USER!')
-    console.log(JSON.stringify(enrolledUser, null, 4))
     t.ok(enrolledUser)
+    t.equal(enrolledUser.role, 'ObserverEnrollment')
     t.equal(enrolledUser.sis_user_id, userKthId)
   })
 })
