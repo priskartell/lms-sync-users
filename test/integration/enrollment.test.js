@@ -5,10 +5,13 @@ const randomstring = require('randomstring')
 
 function processMessage (message, course) {
   // First create a fresch course in canvas
+  const accountId = 14 // Courses that starts with an 'A' is handled by account 14
   let canvasCourse
-  return canvasApi.createCourse({course}, 14) // Courses that starts with an 'A' is handled by account 14
+  return canvasApi.createCourse({course}, accountId)
   .catch(err => console.error(err))
   .then(res => { canvasCourse = res })
+  .then(() => canvasApi.createDefaultSection(canvasCourse))
+  .catch(err => console.error(err))
   .then(() => handleMessages(message))
   .then(([{resp}]) => canvasApi.pollUntilSisComplete(resp.id))
   .then(() => canvasApi.getEnrollments(canvasCourse.id))
@@ -87,8 +90,8 @@ test('should enroll a student in an existing course in canvas', t => {
   })
 })
 
-test.skip('should enroll an observer 👀 in an existing course in canvas', t => {
-  t.plan(2)
+test('should enroll an observer 👀 in an existing course in canvas', t => {
+  t.plan(3)
 
   const courseCode0 = 'A' + randomstring.generate(1)
   const courseCode1 = randomstring.generate(4)
@@ -98,7 +101,7 @@ test.skip('should enroll an observer 👀 in an existing course in canvas', t =>
     kthid: 'u2vvutyd',
     ugClass: 'group',
     deleted: false,
-    ug1Name: `ladok2.kurser.${courseCode0}.${courseCode1}_20171.1`,
+    ug1Name: `ladok2.kurser.${courseCode0}.${courseCode1}.antagna_20171.1`,
     member: [ userKthId ]
   }
 
@@ -110,9 +113,8 @@ test.skip('should enroll an observer 👀 in an existing course in canvas', t =>
 
   processMessage(message, course)
   .then((enrolledUser) => {
-    console.log('TODO: SHOULD CHECK THE ROLE OF THE USER!')
-    console.log(JSON.stringify(enrolledUser, null, 4))
     t.ok(enrolledUser)
+    t.equal(enrolledUser.role, 'ObserverEnrollment')
     t.equal(enrolledUser.sis_user_id, userKthId)
   })
 })

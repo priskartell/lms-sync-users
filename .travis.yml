@@ -12,3 +12,6 @@ addons:
       - g++-4.8
 before_script:
   - cp config/localSettings.js.in config/localSettings.js
+script:
+  - yarn install --ignore-engines
+  - npm test

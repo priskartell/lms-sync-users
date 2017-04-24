@@ -8,13 +8,13 @@ module.exports = function createCsvFile (msg, sisCourseCodes, csvDir, csvVol) {
     sisCourseCodes = [sisCourseCodes]
   }
 
-  let msgtype = msg._desc.userType
-  let csvFileName = `enrollments.${msgtype}.${sisCourseCodes[0]}.${Date.now()}.csv`
-  let header = createLine(['course_id', 'user_id', 'role', 'status'])
+  let userType = msg._desc.userType
+  let csvFileName = `enrollments.${userType}.${sisCourseCodes[0]}.${Date.now()}.csv`
+  let header = createLine(['section_id', 'user_id', 'role', 'status'])
 
   // create one line per sisCourseId, per user. One user can be enrolled to multiple courses, for instance if this is re-registered students
   function oneLinePerSisCourseId (userId) {
-    return sisCourseCodes.map(sisCourseId => createLine([sisCourseId, userId, msgtype, 'active'])).join('')
+    return sisCourseCodes.map(sisCourseId => createLine([sisCourseId, userId, userType, 'active'])).join('')
   }
 
   const body = msg.member.map(oneLinePerSisCourseId)
