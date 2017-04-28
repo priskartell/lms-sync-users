@@ -9,12 +9,11 @@ RUN mkdir -p /npm && \
 WORKDIR /npm
 COPY ["package.json", "package.json"]
 
-RUN yarn install --production --ignore-engines --no-optional
-
-# Add the code and copy over the node_modules-catalog
-WORKDIR /application
-RUN cp -a /npm/node_modules /application && \
+RUN yarn install --production --ignore-engines --no-optional && \
+    cp -a /npm/node_modules /application && \
     rm -rf /npm
+
+WORKDIR /application
 
 # Copy config files
 COPY ["config", "config"]
