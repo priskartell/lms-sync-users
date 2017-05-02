@@ -69,7 +69,7 @@ function start () {
 
       return receiver
     })
-    .catch(e => log.error('An error occured:',e))
+    .catch(e => log.error('An error occured:', e))
 }
 
 function initLogger (msg) {
