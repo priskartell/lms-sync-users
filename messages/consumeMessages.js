@@ -16,12 +16,19 @@ function start () {
   console.log('connecting with the following azure url:', `amqps://${config.full.azure.SharedAccessKeyName}:${(config.secure.azure.SharedAccessKey || '').replace(/\w/g, 'x')}@${config.full.azure.host}`)
   const queueName = config.secure.azure.queueName || config.full.azure.queueName
   console.log('connecting to the queue with name ', queueName)
+
+  client.on('connection:closed', msg => log.info('connection:closed event received', msg))
+  client.on('connection:opened', msg => log.info('connection to azure opened'))
+
   return client.connect(`amqps://${config.full.azure.SharedAccessKeyName}:${urlencode(config.secure.azure.SharedAccessKey)}@${config.full.azure.host}`)
     .then(() => client.createReceiver(queueName))
     .then(receiver => {
       log.info('receiver created....')
 
       receiver.on('errorReceived', err => log.warn('An error occured when trying to receive message from queue', err))
+
+      receiver.on('detached', msg => log.info('Got a detached event', msg))
+      receiver.on('attached', msg => log.info('Got an attached event', msg))
 
       receiver.on('message', message => {
         log.info('New message from ug queue', message)
@@ -62,6 +69,7 @@ function start () {
 
       return receiver
     })
+    .catch(e => log.error('An error occured:',e))
 }
 
 function initLogger (msg) {
