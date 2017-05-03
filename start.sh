@@ -22,7 +22,7 @@ if [ "$1" = "prod" ] ; then
 	NODE_ENV=production node app.js > $SYSTEM_LOG 2>&1 &
     echo $! > $PIDFILE
 elif [ "$1" = "ref" ] ; then
-  NODE_ENV=referens node app.js > $SYSTEM_LOG 2>&1 &
+  NODE_ENV=referens DEBUG=amqp* node app.js > $SYSTEM_LOG 2>&1 &
     echo $! > $PIDFILE
 else
     npm run installAndStart
