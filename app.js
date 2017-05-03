@@ -2,6 +2,9 @@
 const config = require('./server/init/configuration')
 const app = require('kth-node-server')
 const azure = require('./azureStorage')
+
+process.env['DEBUG'] = 'amqp*';
+
 //
 azure.cloudConnect()
 app.start()
