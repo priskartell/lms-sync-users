@@ -90,7 +90,7 @@ test('should enroll a student in an existing course in canvas', t => {
   })
 })
 
-test('should enroll an observer 👀 in an existing course in canvas', t => {
+test.skip('should enroll an observer 👀 in an existing course in canvas', t => {
   t.plan(3)
 
   const courseCode0 = 'A' + randomstring.generate(1)

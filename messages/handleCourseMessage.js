@@ -27,6 +27,12 @@ function parseKey ({ug1Name, _desc}) {
 }
 
 function handleCourseMessage (msg) {
+
+  if(msg._desc.userType === type.antagna){
+    log.info('Skip antagna for now')
+    return Promise.resolve()
+  }
+
   let sisCourseCodeFunction
   if (msg._desc.userType === type.omregistrerade) {
     log.info('using calcSisForOmregistrerade')
