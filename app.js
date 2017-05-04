@@ -4,6 +4,7 @@ const app = require('kth-node-server')
 const azure = require('./azureStorage')
 const log = require('./server/init/logging')
 
+log.info('NODE_ENV:', process.env['NODE_ENV'])
 if (process.env['NODE_ENV'] === 'referens') {
   log.info('setting debug flag for amqp')
   process.env['DEBUG'] = 'amqp*'
