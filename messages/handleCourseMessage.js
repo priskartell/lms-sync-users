@@ -27,8 +27,7 @@ function parseKey ({ug1Name, _desc}) {
 }
 
 function handleCourseMessage (msg) {
-
-  if(msg._desc.userType === type.antagna){
+  if (msg._desc.userType === type.antagna) {
     log.info('Skip antagna for now')
     return Promise.resolve()
   }
