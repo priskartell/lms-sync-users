@@ -15,6 +15,10 @@ function processMessage (message, course) {
   .then(() => handleMessages(message))
   .then(([{resp}]) => canvasApi.pollUntilSisComplete(resp.id))
   .then(() => canvasApi.getEnrollments(canvasCourse.id))
+  .then(enrolledUsers => {
+    console.log('enrolledUsers:', JSON.stringify( enrolledUsers ))
+    return enrolledUsers
+  })
   .then(([enrolledUser]) => enrolledUser)
 }
 
@@ -90,7 +94,7 @@ test('should enroll a student in an existing course in canvas', t => {
   })
 })
 
-test.skip('should enroll an observer 👀 in an existing course in canvas', t => {
+test('should enroll an observer 👀 in an existing course in canvas', t => {
   t.plan(3)
 
   const courseCode0 = 'A' + randomstring.generate(1)
@@ -114,7 +118,7 @@ test.skip('should enroll an observer 👀 in an existing course in canvas', t =>
   processMessage(message, course)
   .then((enrolledUser) => {
     t.ok(enrolledUser)
-    t.equal(enrolledUser.role, 'ObserverEnrollment')
+    t.equal(enrolledUser.role, 'Applied pending registration (Observer)')
     t.equal(enrolledUser.sis_user_id, userKthId)
   })
 })
