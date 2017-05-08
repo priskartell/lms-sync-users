@@ -16,7 +16,7 @@ function processMessage (message, course) {
   .then(([{resp}]) => canvasApi.pollUntilSisComplete(resp.id))
   .then(() => canvasApi.getEnrollments(canvasCourse.id))
   .then(enrolledUsers => {
-    console.log('enrolledUsers:', JSON.stringify( enrolledUsers ))
+    console.log('enrolledUsers:', JSON.stringify(enrolledUsers))
     return enrolledUsers
   })
   .then(([enrolledUser]) => enrolledUser)
