@@ -42,7 +42,7 @@ var _monitor = function (req, res) {
   res.send(`
 IDLE TIME STARTED: ${idleTimeStart}
 LAST SUCCESSFUL MESSAGE SENT TO CANVAS: ${lastSuccessfulMessage || 'never since restarting server'}
-APPLICATION_STATUS: ${isOk?'OK':'NOT OK'}
+APPLICATION_STATUS: ${isOk ? 'OK' : 'NOT OK'}
   `)
 }
 

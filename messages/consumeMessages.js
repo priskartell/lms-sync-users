@@ -5,7 +5,6 @@ const log = require('../server/init/logging')
 const EventEmitter = require('events')
 const eventEmitter = new EventEmitter()
 
-
 const {addDescription} = require('message-type')
 const handleMessage = require('./handleMessage')
 require('colors')
