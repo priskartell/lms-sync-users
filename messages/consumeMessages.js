@@ -5,6 +5,7 @@ const log = require('../server/init/logging')
 const EventEmitter = require('events')
 const eventEmitter = new EventEmitter()
 
+
 const {addDescription} = require('message-type')
 const handleMessage = require('./handleMessage')
 require('colors')
@@ -52,12 +53,15 @@ function start () {
       function _processMessage (MSG) {
         let result
         return Promise.resolve(MSG.body)
+        .then(() => eventEmitter.emit('processMessageStart', MSG, result))
         .then(addDescription)
         .then(handleMessage)
         .then(_result => {
           log.info('result from handleMessage', _result)
           result = _result
         })
+        // .then(()=>console.log('delay...'))
+        // .then(()=>Promise.delay(1000 * 60 * 5))
         .then(() => receiver.accept(MSG))
         .then(() => eventEmitter.emit('messageProcessed', MSG, result))
         .catch(e => {

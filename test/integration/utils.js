@@ -7,6 +7,7 @@ function sendAndWaitUntilMessageProcessed (message) {
   console.log('Send and read a message', message)
   const resultPromise = new Promise((resolve, reject) => {
     consumeMessages.eventEmitter.once('messageProcessed', (msg, result) => {
+      console.log('has processed message. Resolve.')
       resolve(result)
     })
   })

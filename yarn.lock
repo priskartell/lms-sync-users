@@ -221,11 +221,11 @@ async@0.2.7:
   version "0.2.7"
   resolved "https://registry.yarnpkg.com/async/-/async-0.2.7.tgz#44c5ee151aece6c4bf5364cfc7c28fe4e58f18df"
 
-async@1.x, async@^1.4.0:
+async@1.x, async@>=0.6.0, async@^1.4.0:
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/async/-/async-1.5.2.tgz#ec6a61ae56480c0c3cb241c95618e20892f9672a"
 
-async@>=0.6.0, async@^2.0.1:
+async@^2.0.1:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/async/-/async-2.4.0.tgz#4990200f18ea5b837c2cc4f8c031a6985c385611"
   dependencies:
@@ -1707,7 +1707,7 @@ expand-range@^1.8.1:
   dependencies:
     fill-range "^2.1.0"
 
-express@^4.15.2:
+express@^4.13.3, express@^4.15.2:
   version "4.15.2"
   resolved "https://registry.yarnpkg.com/express/-/express-4.15.2.tgz#af107fc148504457f2dca9a6f2571d7129b97b35"
   dependencies:
@@ -2562,6 +2562,12 @@ kth-node-log@KTH/kth-node-log.git:
     bunyan-format "^0.2.1"
     bunyan-lumberjack "^1.0.3"
     lodash "^4.11.2"
+
+kth-node-server@^3.0.5:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/kth-node-server/-/kth-node-server-3.0.5.tgz#94a6af8e8bd3583ae85f9f31ae53e2b66df9ac69"
+  dependencies:
+    express "^4.13.3"
 
 latest-version@^1.0.0:
   version "1.0.1"
