@@ -21,43 +21,45 @@
     "codecheck",
     "test"
   ],
+  "resolutions": {
+    "azure-arm-intune": "1.0.0-preview"
+  },
   "dependencies": {
-    "amqp10": "^3.5.0",
-    "azure": "^1.2.0-preview",
+    "amqp10": "^3.5.3",
+    "azure": "^2.0.0-preview",
     "blue-tape": "^1.0.0",
-    "bluebird": "^3.4.7",
+    "bluebird": "^3.5.0",
     "colors": "^1.1.2",
-    "express": "^4.14.0",
+    "express": "^4.15.2",
     "kth-canvas-api": "^0.7.0",
     "kth-node-configuration": "KTH/kth-node-configuration.git#v1.0.1",
     "kth-node-log": "KTH/kth-node-log.git",
-    "kth-node-server": "KTH/kth-node-server.git",
     "ldapjs": "^1.0.1",
     "message-type": "github:kth/node-message-type#v1.7.0",
     "node-queue-adapter": "github:kth/node-queue-adapter",
     "request": "^2.81.0",
-    "request-promise": "^4.1.0",
+    "request-promise": "^4.2.1",
     "urlencode": "^1.1.0"
   },
   "devDependencies": {
-    "yarn": "^0.19.1",
-    "concurrently": "^2.2.0",
-    "cross-env": "^2.0.0",
-    "istanbul": "^0.4.4",
+    "yarn": "^0.23.4",
+    "concurrently": "^3.4.0",
+    "cross-env": "^4.0.0",
+    "istanbul": "^0.4.5",
     "kth-canvas-utilities": "github:kth/kth-canvas-utilities",
     "pre-push": "^0.1.1",
-    "proxyquire": "^1.7.10",
+    "proxyquire": "^1.7.11",
     "randomstring": "^1.1.5",
     "node-queue-adapter": "github:kth/node-queue-adapter",
     "rewire": "^2.5.2",
     "rewire-global": "^1.0.11",
-    "sinon": "^1.17.6",
-    "standard": "^7.1.2",
+    "sinon": "^2.2.0",
+    "standard": "^10.0.2",
     "tap-spec": "^4.1.1",
-    "tape": "^4.6.0"
+    "tape": "^4.6.3"
   },
   "optionalDependencies": {
-    "nodemon": "^1.10.0"
+    "nodemon": "^1.11.0"
   },
   "engines": {
     "node": "4.3.1"
