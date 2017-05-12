@@ -43,10 +43,7 @@ function start () {
             return receiver.accept(message)
           }
         })
-        .then(() => {
-          // Init logger without settings from this message
-          initLogger()
-        })
+        .then(initLogger)
       })
 
       function _processMessage (MSG) {
