@@ -59,8 +59,6 @@ function start () {
           log.info('result from handleMessage', _result)
           result = _result
         })
-        // .then(()=>console.log('delay...'))
-        // .then(()=>Promise.delay(1000 * 60 * 5))
         .then(() => receiver.accept(MSG))
         .then(() => eventEmitter.emit('messageProcessed', MSG, result))
         .catch(e => {
