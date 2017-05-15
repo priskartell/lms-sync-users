@@ -27,7 +27,13 @@ function start () {
 
       receiver.on('errorReceived', err => log.warn('An error occured when trying to receive message from queue', err))
 
-      receiver.on('detached', msg => log.info('Got a detached event', msg))
+      receiver.on('detached', msg => {
+        log.info('Got a detached event, restart the azure client')
+        client.disconnect()
+        .then(()=> log.info('Client disconnected'))
+        .then(start)
+        .catch(e => log.error(e))
+      })
       receiver.on('attached', msg => log.info('Got an attached event', msg))
 
       receiver.on('message', message => {
