@@ -30,7 +30,7 @@ function start () {
       receiver.on('detached', msg => {
         log.info('Got a detached event, restart the azure client')
         client.disconnect()
-        .then(()=> log.info('Client disconnected'))
+        .then(() => log.info('Client disconnected'))
         .then(start)
         .catch(e => log.error(e))
       })
