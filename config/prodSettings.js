@@ -27,10 +27,10 @@ module.exports = {
     }
   },
   azure: {
-    queueName: 'ug-canvas',
+    queueName: 'ug-infoclass-2/Subscriptions/canvas-prod',
     csvBlobName: 'lms-csv-prod',
     host: 'kth-integral.servicebus.windows.net',
-    SharedAccessKeyName: 'canvas-consumer'
+    SharedAccessKeyName: 'canvas-prod'
   },
   localFile: {
     csvDir: '/tmp/'

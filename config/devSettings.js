@@ -16,11 +16,19 @@ module.exports = {
       enabled: true
     }
   },
+  // azure: {
+  //   queueName: 'lms-elena',
+  //   csvBlobName: 'dev-lms-csv',
+  //   host: 'kth-integral.servicebus.windows.net',
+  //   SharedAccessKeyName: 'canvas-consumer'
+  //   // host: 'lms-queue.servicebus.windows.net',
+  //   // SharedAccessKeyName: 'RootManageSharedAccessKey'
+  // },
   azure: {
-    queueName: 'lms-elena',
-    csvBlobName: 'dev-lms-csv',
-    host: 'lms-queue.servicebus.windows.net',
-    SharedAccessKeyName: 'RootManageSharedAccessKey'
+    queueName: 'ug-infoclass-2/Subscriptions/canvas-prod',
+    csvBlobName: 'reflmscsv',
+    host: 'kth-integral.servicebus.windows.net',
+    SharedAccessKeyName: 'canvas-prod'
   },
   ldap: {
     client: {

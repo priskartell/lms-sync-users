@@ -2,7 +2,7 @@
 const config = require('./server/init/configuration')
 const app = require('kth-node-server')
 const azure = require('./azureStorage')
-const log = require('./server/init/logging')
+// const log = require('./server/init/logging')
 
 // log.info('NODE_ENV:', process.env['NODE_ENV'])
 // if (process.env['NODE_ENV'] === 'ref') {
