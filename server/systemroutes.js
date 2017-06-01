@@ -37,12 +37,12 @@ consumeMessages.eventEmitter.on('messageProcessed', (msg, result) => {
 
 var _monitor = function (req, res) {
   res.setHeader('Content-Type', 'text/plain')
+  const [waitAmount, waitUnit] = [5, 'seconds']
+  const idleTimeOk = idleTimeStart.isAfter(moment().subtract(waitAmount, waitUnit))
 
-  const isOk = idleTimeStart.isAfter(moment().subtract(10, 'hours'))
   res.send(`
-IDLE TIME STARTED: ${idleTimeStart}
-LAST SUCCESSFUL MESSAGE SENT TO CANVAS: ${lastSuccessfulMessage || 'never since restarting server'}
-APPLICATION_STATUS: ${isOk ? 'OK' : 'NOT OK'}
+APPLICATION_STATUS: ${idleTimeOk ? 'OK' : 'ERROR'} ${packageFile.name}-${packageFile.version}-${version.jenkinsBuild}
+READ MESSAGE: ${idleTimeOk ? `OK. The server has waited less then ${ waitAmount } ${waitUnit} for a message.` : `ERROR. The server has not received a message in ${ waitAmount } ${waitUnit}`}
   `)
 }
 
