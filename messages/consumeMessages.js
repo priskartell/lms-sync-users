@@ -13,9 +13,9 @@ const urlencode = require('urlencode')
 const client = new AMQPClient(Policy.Utils.RenewOnSettle(1, 1, Policy.ServiceBusQueue))
 
 function start () {
-  console.log('connecting with the following azure url:', `amqps://${config.full.azure.SharedAccessKeyName}:${(config.secure.azure.SharedAccessKey || '').replace(/\w/g, 'x')}@${config.full.azure.host}`)
+  log.info('connecting with the following azure url:', `amqps://${config.full.azure.SharedAccessKeyName}:${(config.secure.azure.SharedAccessKey || '').replace(/\w/g, 'x')}@${config.full.azure.host}`)
   const queueName = config.secure.azure.queueName || config.full.azure.queueName
-  console.log('connecting to the queue with name ', queueName)
+  log.info('connecting to the queue with name ', queueName)
 
   client.on('connection:closed', msg => log.info('connection:closed event received', msg))
   client.on('connection:opened', msg => log.info('connection to azure opened'))
@@ -34,7 +34,6 @@ function start () {
         .then(start)
         .catch(e => log.error(e))
       })
-      receiver.on('attached', msg => log.info('Got an attached event', msg))
 
       receiver.on('message', message => {
         log.info('New message from ug queue', message)
@@ -49,13 +48,15 @@ function start () {
             return receiver.accept(message)
           }
         })
-        .then(initLogger)
+        .then(() => {
+          // Init logger without settings from this message
+          initLogger()
+        })
       })
 
       function _processMessage (MSG) {
         let result
         return Promise.resolve(MSG.body)
-        .then(() => eventEmitter.emit('processMessageStart', MSG, result))
         .then(addDescription)
         .then(handleMessage)
         .then(_result => {
