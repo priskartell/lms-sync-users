@@ -6,7 +6,10 @@ const router = express.Router()
 const config = require('./init/configuration')
 const version = require('../config/version')
 const packageFile = require('../package.json')
-
+const moment = require('moment')
+const consumeMessages = require('../messages/consumeMessages')
+let idleTimeStart = moment()
+let lastSuccessfulMessage
 /* GET /_about
  * About page
  */
@@ -24,12 +27,23 @@ var _about = function (req, res) {
     version.jenkinsBuildDate:${version.jenkinsBuildDate}`)
 }
 
-/* GET /_monitor
- * Monitor page
- */
+consumeMessages.eventEmitter.on('processMessageStart', (msg, result) => {
+  idleTimeStart = moment()
+})
+
+consumeMessages.eventEmitter.on('messageProcessed', (msg, result) => {
+  lastSuccessfulMessage = moment()
+})
+
 var _monitor = function (req, res) {
   res.setHeader('Content-Type', 'text/plain')
-  res.send('APPLICATION_STATUS: OK')
+
+  const isOk = idleTimeStart.isAfter(moment().subtract(10, 'hours'))
+  res.send(`
+IDLE TIME STARTED: ${idleTimeStart}
+LAST SUCCESSFUL MESSAGE SENT TO CANVAS: ${lastSuccessfulMessage || 'never since restarting server'}
+APPLICATION_STATUS: ${isOk ? 'OK' : 'NOT OK'}
+  `)
 }
 
 router.get('/_monitor', _monitor)
