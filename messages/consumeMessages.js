@@ -12,23 +12,24 @@ const {Client: AMQPClient, Policy} = require('amqp10')
 const urlencode = require('urlencode')
 const client = new AMQPClient(Policy.Utils.RenewOnSettle(1, 1, Policy.ServiceBusQueue))
 
+client.on('connection:closed', msg => log.info('connection:closed event received', msg))
+client.on('connection:opened', msg => log.info('connection to azure opened'))
+client.on('connection:disconnected', msg => log.info('connection to azure disconnected'))
+
 function start () {
   log.info('connecting with the following azure url:', `amqps://${config.full.azure.SharedAccessKeyName}:${(config.secure.azure.SharedAccessKey || '').replace(/\w/g, 'x')}@${config.full.azure.host}`)
   const queueName = config.secure.azure.queueName || config.full.azure.queueName
   log.info('connecting to the queue with name ', queueName)
 
-  client.on('connection:closed', msg => log.info('connection:closed event received', msg))
-  client.on('connection:opened', msg => log.info('connection to azure opened'))
-
   return client.connect(`amqps://${config.full.azure.SharedAccessKeyName}:${urlencode(config.secure.azure.SharedAccessKey)}@${config.full.azure.host}`)
     .then(() => client.createReceiver(queueName))
     .then(receiver => {
-      log.info('receiver created....')
+      log.info('receiver created:', receiver.id)
 
       receiver.on('errorReceived', err => log.warn('An error occured when trying to receive message from queue', err))
 
       receiver.on('detached', msg => {
-        log.info('Got a detached event, restart the azure client')
+        log.info(`Got a detached event for receiver ${receiver.id}, restart the azure client`)
         client.disconnect()
         .then(() => log.info('Client disconnected'))
         .then(start)
@@ -36,7 +37,7 @@ function start () {
       })
 
       receiver.on('message', message => {
-        log.info('New message from ug queue', message)
+        log.info(`New message from ug queue for receiver ${receiver.id}`, message)
 
         Promise.resolve(message)
         .then(initLogger)
