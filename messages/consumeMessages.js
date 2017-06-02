@@ -48,15 +48,13 @@ function start () {
             return receiver.accept(message)
           }
         })
-        .then(() => {
-          // Init logger without settings from this message
-          initLogger()
-        })
+        .then(initLogger)
       })
 
       function _processMessage (MSG) {
         let result
         return Promise.resolve(MSG.body)
+        .then(() => eventEmitter.emit('processMessageStart', MSG, result))
         .then(addDescription)
         .then(handleMessage)
         .then(_result => {
