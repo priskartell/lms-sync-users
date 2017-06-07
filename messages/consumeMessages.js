@@ -16,6 +16,14 @@ client.on('connection:closed', msg => log.info('connection:closed event received
 client.on('connection:opened', msg => log.info('connection to azure opened'))
 client.on('connection:disconnected', msg => log.info('connection to azure disconnected'))
 
+function detached(msg){
+    log.info(`Got a detached event for receiver ${receiver.id}, restart the azure client`)
+    client.disconnect()
+    .then(() => log.info('Client disconnected'))
+    .then(start)
+    .catch(e => log.error(e))
+}
+
 function start () {
   log.info('connecting with the following azure url:', `amqps://${config.full.azure.SharedAccessKeyName}:${(config.secure.azure.SharedAccessKey || '').replace(/\w/g, 'x')}@${config.full.azure.host}`)
   const queueName = config.secure.azure.queueName || config.full.azure.queueName
@@ -28,13 +36,7 @@ function start () {
 
       receiver.on('errorReceived', err => log.warn('An error occured when trying to receive message from queue', err))
 
-      receiver.on('detached', msg => {
-        log.info(`Got a detached event for receiver ${receiver.id}, restart the azure client`)
-        client.disconnect()
-        .then(() => log.info('Client disconnected'))
-        .then(start)
-        .catch(e => log.error(e))
-      })
+      receiver.on('detached', detached)
 
       receiver.on('message', message => {
         log.info(`New message from ug queue for receiver ${receiver.id}`, message)
@@ -53,9 +55,9 @@ function start () {
       })
 
       function _processMessage (MSG) {
+        eventEmitter.emit('processMessageStart', MSG)
         let result
         return Promise.resolve(MSG.body)
-        .then(() => eventEmitter.emit('processMessageStart', MSG, result))
         .then(addDescription)
         .then(handleMessage)
         .then(_result => {
