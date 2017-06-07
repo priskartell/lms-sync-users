@@ -20,7 +20,7 @@ function sendAndWaitUntilMessageProcessed (message) {
 }
 
 function handleMessages (...messages) {
-  consumeMessages.__set__('detached', ()=>{})
+  consumeMessages.__set__('detached', () => {})
   console.log('handle messages', messages.length)
   config.secure.azure.queueName = config.full.azure.queueName = 'lms-sync-integration-tests-' + Math.random().toString(36)
   let receiver, result

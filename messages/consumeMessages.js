@@ -16,9 +16,9 @@ client.on('connection:closed', msg => log.info('connection:closed event received
 client.on('connection:opened', msg => log.info('connection to azure opened'))
 client.on('connection:disconnected', msg => log.info('connection to azure disconnected'))
 
-function detached(msg){
-    log.info(`Got a detached event for receiver ${receiver.id}, restart the azure client`)
-    client.disconnect()
+function detached (msg) {
+  log.info(`Got a detached event for receiver, restart the azure client`)
+  client.disconnect()
     .then(() => log.info('Client disconnected'))
     .then(start)
     .catch(e => log.error(e))
