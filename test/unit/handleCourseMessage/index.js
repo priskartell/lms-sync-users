@@ -4,6 +4,9 @@ const proxyquire = require('proxyquire')
 require('rewire-global')
 const sinon = require('sinon')
 
+const config = require('../../../server/init/configuration')
+console.log(':::::::::::::::.config:', JSON.stringify(config, null, 4))
+
 test('should parse key:student for antagna', t => {
   const ugParser = {parseKeyStudent: sinon.spy()}
   const handleCourseMessages = proxyquire('../../../messages/handleCourseMessage', {'./ugParser': ugParser})
