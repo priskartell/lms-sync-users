@@ -46,11 +46,11 @@
    let canvasOk, canvasKeyOk
 
    return checkCanvasStatus
-   .then(_canvasOk => canvasOk = _canvasOk)
-   .catch(e => canvasOk = false)
+   .then(_canvasOk => { canvasOk = _canvasOk })
+   .catch(e => { canvasOk = false })
    .then(() => readAccountInCanvas)
-   .then(keyOk => canvasKeyOk = keyOk)
-   .catch(e => canvasKeyOk = false)
+   .then(keyOk => { canvasKeyOk = keyOk })
+   .catch(e => { canvasKeyOk = false })
    .then(() => {
      return {canvasOk, canvasKeyOk}
    })
@@ -66,7 +66,7 @@
      const idleCanvasOk = idleCanvasStart.isAfter(moment().subtract(waitAmount, waitUnit))
 
      console.log('canvasOk', JSON.stringify(canvasOk, null, 4))
-     res.send(`APPLICATION_STATUS: ${idleTimeOk && canvasKeyOk && canvasOk && idleCanvasOk? 'OK' : 'ERROR'} ${packageFile.name}-${packageFile.version}-${version.jenkinsBuild}
+     res.send(`APPLICATION_STATUS: ${idleTimeOk && canvasKeyOk && canvasOk && idleCanvasOk ? 'OK' : 'ERROR'} ${packageFile.name}-${packageFile.version}-${version.jenkinsBuild}
 READ MESSAGE FROM AZURE: ${idleTimeOk ? `OK. The server has waited less then ${waitAmount} ${waitUnit} for a message.` : `ERROR. The server has not received a message in the last ${waitAmount} ${waitUnit}`}
 RESPONSE FROM CANVAS: ${idleCanvasOk ? `OK. The server has waited less then ${waitAmount} ${waitUnit} for a succesful response.` : `ERROR. The server has not received a succesful response in the last ${waitAmount} ${waitUnit}`}
 CANVAS: ${canvasOk ? 'OK' : 'Canvas is down'}
