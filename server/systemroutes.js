@@ -30,13 +30,14 @@
     version.jenkinsBuildDate:${version.jenkinsBuildDate}`)
  }
 
- consumeMessages.eventEmitter.on('processMessageStart', (msg, result) => {
+ consumeMessages.eventEmitter.on('processMessageStart', () => {
    idleTimeStart = moment()
  })
 
- consumeMessages.eventEmitter.on('messageProcessed', (msg, result) => {
+ canvasApi.eventEmitter.on('canvasResponse', () => {
    idleCanvasStart = moment()
  })
+
 
  function status () {
    const checkCanvasStatus = rp('http://nlxv32btr6v7.statuspage.io/api/v2/status.json')
@@ -56,12 +57,13 @@
    })
  }
 
- var _monitor = function (req, res) {
+
+
+ const _monitor = function (req, res) {
    status().then(({canvasOk, canvasKeyOk}) => {
      res.setHeader('Content-Type', 'text/plain')
-    //  const [waitAmount, waitUnit] = [10, 'hours']
-     const [waitAmount, waitUnit] = [1, 'seconds']
-
+     const [waitAmount, waitUnit] = [10, 'hours']
+     
      const idleTimeOk = idleTimeStart.isAfter(moment().subtract(waitAmount, waitUnit))
      const idleCanvasOk = idleCanvasStart.isAfter(moment().subtract(waitAmount, waitUnit))
 
