@@ -41,11 +41,11 @@
    let canvasOk, canvasKeyOk
 
    return checkCanvasStatus
-   .then(_canvasOk => canvasOk = _canvasOk)
-   .catch(e => canvasOk = false)
+   .then(_canvasOk => { canvasOk = _canvasOk })
+   .catch(e => { canvasOk = false })
    .then(() => readAccountInCanvas)
-   .then(keyOk => canvasKeyOk = keyOk)
-   .catch(e => canvasKeyOk = false)
+   .then(keyOk => { canvasKeyOk = keyOk })
+   .catch(e => { canvasKeyOk = false })
    .then(() => {
      return {canvasOk, canvasKeyOk}
    })
