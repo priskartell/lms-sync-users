@@ -38,7 +38,6 @@
    idleCanvasStart = moment()
  })
 
-
  function status () {
    const checkCanvasStatus = rp('http://nlxv32btr6v7.statuspage.io/api/v2/status.json')
     .then(JSON.parse)
@@ -57,13 +56,11 @@
    })
  }
 
-
-
  const _monitor = function (req, res) {
    status().then(({canvasOk, canvasKeyOk}) => {
      res.setHeader('Content-Type', 'text/plain')
      const [waitAmount, waitUnit] = [10, 'hours']
-     
+
      const idleTimeOk = idleTimeStart.isAfter(moment().subtract(waitAmount, waitUnit))
      const idleCanvasOk = idleCanvasStart.isAfter(moment().subtract(waitAmount, waitUnit))
 
