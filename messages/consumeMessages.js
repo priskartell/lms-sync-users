@@ -26,7 +26,7 @@ function detached (msg) {
 
 function start () {
   const sharedAccessKey = process.env.AZURE_SHARED_ACCESS_KEY || config.secure.azure.SharedAccessKey
-  log.info('shared access key:', sharedAccessKey)
+  
   log.info('connecting with the following azure url:', `amqps://${config.full.azure.SharedAccessKeyName}:${(sharedAccessKey || '').replace(/\w/g, 'x')}@${config.full.azure.host}`)
   const queueName = config.secure.azure.queueName || config.full.azure.queueName
   log.info('connecting to the queue with name ', queueName)
