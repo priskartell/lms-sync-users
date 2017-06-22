@@ -16,3 +16,6 @@ script:
   - yarn install --ignore-engines
   - npm test
   - npm run test:integration
+notifications:
+  email:
+    - emilsten@kth.se
