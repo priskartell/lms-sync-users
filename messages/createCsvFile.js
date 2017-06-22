@@ -1,5 +1,4 @@
 const {writeLine} = require('../csvFile')
-const log = require('../server/init/logging')
 const config = require('../server/init/configuration')
 const Promise = require('bluebird')
 
@@ -12,13 +11,12 @@ module.exports = function createCsvFile (msg, sisCourseCodes, csvDir, csvVol) {
     sisCourseCodes = [sisCourseCodes]
   }
 
-
   // create one line per sisCourseId, per user. One user can be enrolled to multiple courses, for instance if this is re-registered students
   function oneLinePerSisCourseId (userId) {
     return sisCourseCodes.forEach(sisCourseId => writeLine([sisCourseId, userId, userType, 'active'], fileName))
   }
 
   return writeLine(['section_id', 'user_id', 'role', 'status'], fileName)
-  .then(()=> Promise.map(msg.member, oneLinePerSisCourseId))
-  .then(()=> {return {name: fileName}})
+  .then(() => Promise.map(msg.member, oneLinePerSisCourseId))
+  .then(() => { return {name: fileName} })
 }
