@@ -8,9 +8,6 @@ const ugParser = require('./ugParser')
 const calcSisForOmregistrerade = require('./calcSisForOmregistrerade')
 const createCsvFile = require('./createCsvFile')
 
-const csvVol = config.full.azure.csvBlobName
-const csvDir = config.full.localFile.csvDir
-
 function parseKey ({ug1Name, _desc}) {
   const {userType} = _desc
 
@@ -38,7 +35,7 @@ function handleCourseMessage (msg) {
 
   return Promise.resolve()
   .then(() => sisCourseCodeFunction(msg))
-  .then(sisCourseCode => createCsvFile(msg, sisCourseCode, csvDir, csvVol))
+  .then(sisCourseCode => createCsvFile(msg, sisCourseCode))
   .then(({name}) => canvasApi.sendCsvFile(name, true))
   .then(canvasReturnValue => {
     return {msg, resp: canvasReturnValue}

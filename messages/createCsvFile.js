@@ -1,29 +1,23 @@
-const {createLine} = require('../csvFile')
+const {writeLine} = require('../csvFile')
 const log = require('../server/init/logging')
-const azureStorage = require('../azureStorage')
+const config = require('../server/init/configuration')
+const Promise = require('bluebird')
 
 module.exports = function createCsvFile (msg, sisCourseCodes, csvDir, csvVol) {
+  const fileName = `${config.localFile.csvDir}enrollments.${userType}.${sisCourseCodes[0]}.${Date.now()}.csv`
   // Make sure that sisCourseCodes is an array, which makes the rest of this function simpler
   if (!Array.isArray(sisCourseCodes)) {
     sisCourseCodes = [sisCourseCodes]
   }
 
   let userType = msg._desc.userType
-  let csvFileName = `enrollments.${userType}.${sisCourseCodes[0]}.${Date.now()}.csv`
-  let header = createLine(['section_id', 'user_id', 'role', 'status'])
 
   // create one line per sisCourseId, per user. One user can be enrolled to multiple courses, for instance if this is re-registered students
   function oneLinePerSisCourseId (userId) {
-    return sisCourseCodes.map(sisCourseId => createLine([sisCourseId, userId, userType, 'active'])).join('')
+    return sisCourseCodes.forEach(sisCourseId => writeLine([sisCourseId, userId, userType, 'active']))
   }
 
-  const body = msg.member.map(oneLinePerSisCourseId)
-  const csvData = [...header, ...body].join('')
-  log.info('created csv content', csvData)
-  return azureStorage.cloudStoreTextToFile(csvFileName, csvVol, csvData)
-  .then(() => azureStorage.cloudgetFile(csvFileName, csvVol, csvDir))
-  .then(result => {
-    log.info(result)
-    return {csvContent: csvData, name: csvDir + result.name}
-  })
+  return writeLine(['section_id', 'user_id', 'role', 'status'], fileName)
+  .then(()=> Promise.map(msg.member, oneLinePerSisCourseId))
+  .then(()=> {return {name: fileName}})
 }
