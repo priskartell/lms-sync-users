@@ -1,7 +1,6 @@
 'use strict'
 const config = require('./server/init/configuration')
 const app = require('kth-node-server')
-const azure = require('./azureStorage')
 console.log('config:', JSON.stringify(config, null, 4))
 // const log = require('./server/init/logging')
 
@@ -12,7 +11,6 @@ console.log('config:', JSON.stringify(config, null, 4))
 // }
 
 //
-azure.cloudConnect()
 app.start()
 const consumeMessages = require('./messages/consumeMessages')
 consumeMessages.start()
