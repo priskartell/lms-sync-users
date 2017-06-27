@@ -1,7 +1,6 @@
 'use strict'
 const config = require('./server/init/configuration')
 const app = require('kth-node-server')
-console.log('config:', JSON.stringify(config, null, 4))
 // const log = require('./server/init/logging')
 
 // log.info('NODE_ENV:', process.env['NODE_ENV'])
