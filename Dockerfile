@@ -21,14 +21,11 @@ COPY ["config/secretSettings.js", "config/localSettings.js"]
 
 # Source files in root
 COPY ["app.js", "app.js"]
-COPY ["azureStorage.js", "azureStorage.js"]
-COPY ["azureTest.js", "azureTest.js"]
 COPY ["canvasApi.js", "canvasApi.js"]
 COPY ["csvFile.js", "csvFile.js"]
 COPY ["package.json", "package.json"]
 
 # Source files directories
-COPY ["azure", "azure"]
 COPY ["server", "server"]
 COPY ["messages", "messages"]
 COPY ["scripts", "scripts"]

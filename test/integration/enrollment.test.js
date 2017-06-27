@@ -44,7 +44,7 @@ test('should enroll an assistant in an existing course in canvas', t => {
   })
 })
 
-test('should enroll a re-registered student in an existing course in canvas', t => {
+test.only('should enroll a re-registered student in an existing course in canvas', t => {
   t.plan(2)
   const userKthId = 'u1znmoik'
   const courseCode0 = 'A' + randomstring.generate(1)

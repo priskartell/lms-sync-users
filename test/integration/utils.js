@@ -21,6 +21,7 @@ function sendAndWaitUntilMessageProcessed (message) {
 
 function handleMessages (...messages) {
   consumeMessages.__set__('detached', () => {})
+
   console.log('handle messages', messages.length)
   config.secure.azure.queueName = config.full.azure.queueName = 'lms-sync-integration-tests-' + Math.random().toString(36)
   let receiver, result
@@ -44,7 +45,9 @@ function handleMessages (...messages) {
   .then(() => result)
 }
 
-const queueConnectionString = `Endpoint=sb://${config.full.azure.host}/;SharedAccessKeyName=${config.full.azure.SharedAccessKeyName};SharedAccessKey=${config.secure.azure.SharedAccessKey}`
+const sharedAccessKey = process.env.AZURE_SHARED_ACCESS_KEY || config.secure.azure.SharedAccessKey
+
+const queueConnectionString = `Endpoint=sb://${config.full.azure.host}/;SharedAccessKeyName=${config.full.azure.SharedAccessKeyName};SharedAccessKey=${sharedAccessKey}`
 const queue = require('node-queue-adapter')(queueConnectionString)
 module.exports = {
   handleMessages

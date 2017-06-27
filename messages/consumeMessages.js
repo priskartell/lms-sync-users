@@ -25,11 +25,13 @@ function detached (msg) {
 }
 
 function start () {
-  log.info('connecting with the following azure url:', `amqps://${config.full.azure.SharedAccessKeyName}:${(config.secure.azure.SharedAccessKey || '').replace(/\w/g, 'x')}@${config.full.azure.host}`)
+  const sharedAccessKey = process.env.AZURE_SHARED_ACCESS_KEY || config.secure.azure.SharedAccessKey
+
+  log.info('connecting with the following azure url:', `amqps://${config.full.azure.SharedAccessKeyName}:${(sharedAccessKey || '').replace(/\w/g, 'x')}@${config.full.azure.host}`)
   const queueName = config.secure.azure.queueName || config.full.azure.queueName
   log.info('connecting to the queue with name ', queueName)
 
-  return client.connect(`amqps://${config.full.azure.SharedAccessKeyName}:${urlencode(config.secure.azure.SharedAccessKey)}@${config.full.azure.host}`)
+  return client.connect(`amqps://${config.full.azure.SharedAccessKeyName}:${urlencode(sharedAccessKey)}@${config.full.azure.host}`)
     .then(() => client.createReceiver(queueName))
     .then(receiver => {
       log.info('receiver created:', receiver.id)

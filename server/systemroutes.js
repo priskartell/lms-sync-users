@@ -56,14 +56,11 @@
    })
  }
 
- const _monitor = function (req, res) {
+ var _monitor = function (req, res) {
    status().then(({canvasOk, canvasKeyOk}) => {
      res.setHeader('Content-Type', 'text/plain')
      const [waitAmount, waitUnit] = [10, 'hours']
-
      const idleTimeOk = idleTimeStart.isAfter(moment().subtract(waitAmount, waitUnit))
-     const idleCanvasOk = idleCanvasStart.isAfter(moment().subtract(waitAmount, waitUnit))
-
      console.log('canvasOk', JSON.stringify(canvasOk, null, 4))
      res.send(`APPLICATION_STATUS: ${idleTimeOk && canvasKeyOk && canvasOk && idleCanvasOk ? 'OK' : 'ERROR'} ${packageFile.name}-${packageFile.version}-${version.jenkinsBuild}
 READ MESSAGE FROM AZURE: ${idleTimeOk ? `OK. The server has waited less then ${waitAmount} ${waitUnit} for a message.` : `ERROR. The server has not received a message in the last ${waitAmount} ${waitUnit}`}
