@@ -17,11 +17,11 @@ client.on('connection:opened', msg => log.info('connection to azure opened'))
 client.on('connection:disconnected', msg => log.info('connection to azure disconnected'))
 
 function detached (msg) {
-  log.info(`Got a detached event for receiver, restart the azure client`)
-  client.disconnect()
-    .then(() => log.info('Client disconnected'))
-    .then(start)
-    .catch(e => log.error(e))
+    log.info(`Got a detached event for receiver, restart the azure client`)
+    client.disconnect()
+      .then(() => log.info('Client disconnected'))
+      .then(start)
+      .catch(e => log.error(e))
 }
 
 function start () {

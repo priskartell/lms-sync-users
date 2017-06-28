@@ -34,7 +34,7 @@
     "kth-canvas-api": "^0.8.0",
     "kth-node-configuration": "KTH/kth-node-configuration.git#v1.0.1",
     "kth-node-log": "KTH/kth-node-log.git",
-    "kth-node-server": "^3.0.5",
+    "kth-node-server": "^3.1.0",
     "ldapjs": "^1.0.1",
     "message-type": "github:kth/node-message-type#v1.7.0",
     "node-queue-adapter": "github:kth/node-queue-adapter",
