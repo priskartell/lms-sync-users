@@ -25,7 +25,7 @@ function processMessage (message, course) {
 test('should enroll an assistant in an existing course in canvas', t => {
   t.plan(1)
 
-  const courseCode = 'A' + randomstring.generate(5)
+  const courseCode = 'A' + randomstring.generate(5) // Assistants course code should be 6 chars
   const userKthId = 'u1znmoik'
   const message = {
     ugClass: 'group',
@@ -120,5 +120,20 @@ test('should enroll an observer 👀 in an existing course in canvas', t => {
     t.ok(enrolledUser)
     t.equal(enrolledUser.role, 'Applied pending registration (Observer)')
     t.equal(enrolledUser.sis_user_id, userKthId)
+  })
+})
+
+test('should 𝙣𝙤𝙩 enroll an observer when he is added to the parent group, but return with the message and type:unknown', t => {
+  t.plan(1)
+
+  const message = {
+    ugClass: 'group',
+    ug1Name: `ladok2.kurser.SF1624.antagna_20171`,
+    member: ['u1znmoik']
+  }
+
+  handleMessages(message)
+  .then(([{_desc}]) => {
+    t.deepEqual(_desc, { type: 'UNKNOWN' } )
   })
 })
