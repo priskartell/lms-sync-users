@@ -134,6 +134,6 @@ test('should 𝙣𝙤𝙩 enroll an observer when he is added to the parent grou
 
   handleMessages(message)
   .then(([{_desc}]) => {
-    t.deepEqual(_desc, { type: 'UNKNOWN' } )
+    t.deepEqual(_desc, { type: 'UNKNOWN' })
   })
 })
