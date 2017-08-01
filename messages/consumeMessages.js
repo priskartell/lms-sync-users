@@ -16,15 +16,19 @@ client.on('connection:closed', msg => log.info('connection:closed event received
 client.on('connection:opened', msg => log.info('connection to azure opened'))
 client.on('connection:disconnected', msg => log.info('connection to azure disconnected'))
 
-function detached (msg) {
-  log.info(`Got a detached event for receiver, restart the azure client`)
-  client.disconnect()
-      .then(() => log.info('Client disconnected'))
-      .then(start)
-      .catch(e => log.error(e))
+process.on('message', msg => {
+  if (msg.action === 'start') {
+    start()
+  }
+})
+
+function detached (msg, receiver) {
+  log.info(`Got a detached event for receiver ${receiver.id}`)
+  process.send({action:'restart'})
 }
 
 function start () {
+  log.info('start consuming messages')
   const sharedAccessKey = process.env.AZURE_SHARED_ACCESS_KEY || config.secure.azure.SharedAccessKey
 
   log.info('connecting with the following azure url:', `amqps://${config.full.azure.SharedAccessKeyName}:${(sharedAccessKey || '').replace(/\w/g, 'x')}@${config.full.azure.host}`)
@@ -35,10 +39,9 @@ function start () {
     .then(() => client.createReceiver(queueName))
     .then(receiver => {
       log.info('receiver created:', receiver.id)
-
       receiver.on('errorReceived', err => log.warn('An error occured when trying to receive message from queue', err))
 
-      receiver.on('detached', detached)
+      receiver.on('detached', msg => detached(msg, receiver))
 
       receiver.on('message', message => {
         log.info(`New message from ug queue for receiver ${receiver.id}`, message)
@@ -100,5 +103,5 @@ function initLogger (msg) {
 }
 
 module.exports = {
-  start, eventEmitter
+  eventEmitter, start
 }
