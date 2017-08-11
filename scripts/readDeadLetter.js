@@ -1,4 +1,4 @@
-const config = require('./config/prodSettings')
+const config = require('../config/prodSettings')
 const sharedAccessKey = process.env['SHARED_ACCESS_KEY']
 console.log('shared access key:', sharedAccessKey)
 const {Client: AMQPClient, Policy} = require('amqp10')
