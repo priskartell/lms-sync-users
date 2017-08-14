@@ -28,7 +28,6 @@ function detached (msg, receiver) {
 }
 
 function start () {
-  log.info('start consuming messages')
   const sharedAccessKey = process.env.AZURE_SHARED_ACCESS_KEY || config.secure.azure.SharedAccessKey
 
   log.info('connecting with the following azure url:', `amqps://${config.full.azure.SharedAccessKeyName}:${(sharedAccessKey || '').replace(/\w/g, 'x')}@${config.full.azure.host}`)
@@ -39,6 +38,7 @@ function start () {
     .then(() => client.createReceiver(queueName))
     .then(receiver => {
       log.info('receiver created:', receiver.id)
+
       receiver.on('errorReceived', err => log.warn('An error occured when trying to receive message from queue', err))
 
       receiver.on('detached', msg => detached(msg, receiver))
@@ -103,5 +103,5 @@ function initLogger (msg) {
 }
 
 module.exports = {
-  eventEmitter, start
+  start, eventEmitter
 }

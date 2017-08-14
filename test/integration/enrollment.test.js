@@ -127,7 +127,7 @@ test('should 𝙣𝙤𝙩 enroll an observer when he is added to the parent grou
   t.plan(1)
   const message = {
     ugClass: 'group',
-    ug1Name: `ladok2.kurser.SF1624.antagna_20171`,
+    ug1Name: 'ladok2.kurser.SF1624.antagna_20171',
     member: ['u1znmoik']
   }
 
