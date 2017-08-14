@@ -21,9 +21,9 @@ module.exports = function createCsvFile (msg, sisCourseCodes, csvDir, csvVol) {
 
   return writeLine(['section_id', 'user_id', 'role', 'status'], fileName)
   .then(() => Promise.map(msg.member, oneLinePerSisCourseId))
-  .then(()=> readFile(fileName, 'utf8'))
+  .then(() => readFile(fileName, 'utf8'))
   .then(data => {
-    log.info('Wrote file',fileName)
+    log.info('Wrote file', fileName)
     log.info(data)
   })
   .then(() => { return {name: fileName} })
