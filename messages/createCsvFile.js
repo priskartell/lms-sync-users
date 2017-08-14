@@ -1,6 +1,9 @@
 const {writeLine} = require('../csvFile')
 const config = require('../server/init/configuration')
 const Promise = require('bluebird')
+const fs = require('fs')
+const readFile = Promise.promisify(fs.readFile)
+const log = require('../server/init/logging')
 
 module.exports = function createCsvFile (msg, sisCourseCodes, csvDir, csvVol) {
   let userType = msg._desc.userType
@@ -18,5 +21,10 @@ module.exports = function createCsvFile (msg, sisCourseCodes, csvDir, csvVol) {
 
   return writeLine(['section_id', 'user_id', 'role', 'status'], fileName)
   .then(() => Promise.map(msg.member, oneLinePerSisCourseId))
+  .then(()=> readFile(fileName, 'utf8'))
+  .then(data => {
+    log.info('Wrote file',fileName)
+    log.info(data)
+  })
   .then(() => { return {name: fileName} })
 }
