@@ -16,12 +16,15 @@ client.on('connection:closed', msg => log.info('connection:closed event received
 client.on('connection:opened', msg => log.info('connection to azure opened'))
 client.on('connection:disconnected', msg => log.info('connection to azure disconnected'))
 
-function detached (msg) {
-  log.info('Got a detached event for receiver, restart the azure client')
-  client.disconnect()
-      .then(() => log.info('Client disconnected'))
-      .then(start)
-      .catch(e => log.error(e))
+process.on('message', msg => {
+  if (msg.action === 'start') {
+    start()
+  }
+})
+
+function detached (msg, receiver) {
+  log.info(`Got a detached event for receiver ${receiver.id}`)
+  process.send({action:'restart'})
 }
 
 function start () {
@@ -38,7 +41,7 @@ function start () {
 
       receiver.on('errorReceived', err => log.warn('An error occured when trying to receive message from queue', err))
 
-      receiver.on('detached', detached)
+      receiver.on('detached', msg => detached(msg, receiver))
 
       receiver.on('message', message => {
         log.info(`New message from ug queue for receiver ${receiver.id}`, message)
