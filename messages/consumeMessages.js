@@ -24,7 +24,7 @@ process.on('message', msg => {
 
 function detached (msg, receiver) {
   log.info(`Got a detached event for receiver ${receiver.id}`)
-  process.send({action:'restart'})
+  process.send({action: 'restart'})
 }
 
 function start () {

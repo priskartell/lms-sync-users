@@ -9,7 +9,7 @@ app.start()
 function consumeMessages () {
   let forked = fork('./messages/consumeMessages')
 
-  forked.send({ action: 'start' });
+  forked.send({ action: 'start' })
 
   forked.on('message', (msg) => {
     if (msg.action === 'restart') {
