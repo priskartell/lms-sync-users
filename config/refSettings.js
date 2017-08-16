@@ -12,7 +12,7 @@ module.exports = {
       enabled: true
     },
     console: {
-      enabled: true
+      enabled: false
     }
   },
   azure: {
