@@ -21,3 +21,5 @@ notifications:
   email:
     recipients:
       - emilsten@kth.se
+    on_success: always
+    on_failure: always
