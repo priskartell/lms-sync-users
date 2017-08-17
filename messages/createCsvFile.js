@@ -23,8 +23,7 @@ module.exports = function createCsvFile (msg, sisCourseCodes, csvDir, csvVol) {
   .then(() => Promise.map(msg.member, oneLinePerSisCourseId))
   .then(() => readFile(fileName, 'utf8'))
   .then(data => {
-    log.info('Wrote file', fileName)
-    log.info(data)
+    log.info('Wrote file', fileName, '\n', data)
   })
   .then(() => { return {name: fileName} })
 }
