@@ -18,9 +18,9 @@ script:
 notifications:
   slack:
     secure: sZMduFi62gZofudI39qlGce0l2lg5inlHlUHZ9cw3WiB1gyzYbtaxq2yqjOgs/aKpoCwqjgkBIFt3aCQrTFQ5eeXmsrldFzpzEUguetOwoM+iZqiziqOFdcav2ImxrbX9cCJmsf9PrM19JO+IEXajlHEOaT492TGuQiXYCSTq8nPA25DJ50a8lQuN/r/fa+k+SCpZuXOlYw2GAI+Bm2NP8ALcUy+q9/HhG++80e47fELDz3bYqyxNopDjhylbszplbTCmxkpYK1pARVgaiFgWE0J34aevEplm8taYvdUwq7VmphsZsoIHZT0scbZxcMALhXofQBhFG5qAB7cZz8i6EjiLKzE7u5/GoPcj7IXgaW9dqcpVDxGYM6nlxR0IkAO9YVoMoOHToxB0vp3LXACVKgrIzJWBQVHWZWbDEeNex4bPC6NJFrOwEjyzxa3yf7mThrPfXujB6F37aoNXw37/v2v14bBsVugLsEVNE+yWm9HXItOA8tZ0RMd8XTZOyC8xIMgt88At52lkJYB193rg+GM7dzEDm5v2PJLrEwepWcImNxyXm2ByZ/XhBZiY8YfwDFkU97ez/plEs08uZqaAKVj0IZkNNHO7RQ6m1CyV4Ej1UK7fZIXxQSJlRDG1vSWrSxDQpwE6BafZzQeX+7GD4U2JQsgtCiajOD9ms4OpTM=
-    email:
-      recipients:
-        - emilsten@kth.se
-      on_success: always
-      on_start: always
-      on_failure: always
+  email:
+    recipients:
+      - emilsten@kth.se
+    on_success: always
+    on_start: always
+    on_failure: always
