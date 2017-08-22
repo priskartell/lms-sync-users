@@ -16,7 +16,7 @@ module.exports = function createCsvFile (msg, sisCourseCodes, csvDir, csvVol) {
 
   // create one line per sisCourseId, per user. One user can be enrolled to multiple courses, for instance if this is re-registered students
   function oneLinePerSisCourseId (userId) {
-    return sisCourseCodes.forEach(sisCourseId => writeLine([sisCourseId, userId, userType, 'active'], fileName))
+    return Promise.each(sisCourseCodes, sisCourseId => writeLine([sisCourseId, userId, userType, 'active'], fileName))
   }
 
   return writeLine(['section_id', 'user_id', 'role', 'status'], fileName)
