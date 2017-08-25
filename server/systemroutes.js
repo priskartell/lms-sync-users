@@ -10,9 +10,9 @@
  const packageFile = require('../package.json')
  const moment = require('moment')
  const consumeMessages = require('../messages/consumeMessages')
- const [waitAmount, waitUnit] = [10, 'hours'] 
+ const [waitAmount, waitUnit] = [10, 'hours']
  let idleTimeStart = moment()
- 
+
 /* GET /_about
  * About page
  */
@@ -35,7 +35,7 @@
  })
 
  function status () {
-   const checkCanvasStatus = rp('http://nlxv32btr6v7.statuspage.io/api/v2/status.json')
+   let checkCanvasStatus = rp('http://nlxv32btr6v7.statuspage.io/api/v2/status.json')
     .then(JSON.parse)
     .then(data => data.status.indicator === 'none')
    let readAccountInCanvas = canvasApi.getRootAccount()
@@ -55,9 +55,9 @@
  var _monitor = function (req, res) {
    status().then(({canvasOk, canvasKeyOk}) => {
      res.setHeader('Content-Type', 'text/plain')
-     
+
      let idleTimeOk = idleTimeStart.isAfter(moment().subtract(waitAmount, waitUnit))
-     
+
      res.send(`APPLICATION_STATUS: ${idleTimeOk && canvasKeyOk && canvasOk ? 'OK' : 'ERROR'} ${packageFile.name}-${packageFile.version}-${version.jenkinsBuild}
 READ MESSAGE FROM AZURE: ${idleTimeOk ? `OK. The server has waited less then ${waitAmount} ${waitUnit} for a message.` : `ERROR. The server has not received a message in the last ${waitAmount} ${waitUnit}`}
 CANVAS: ${canvasOk ? 'OK' : 'Canvas is down'}
