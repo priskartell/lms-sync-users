@@ -1,7 +1,7 @@
 
 const consumeMessages = require('./messages/consumeMessages')
 const app = require('kth-node-server')
-const systemRoutes = require('../server/systemroutes')
+const systemRoutes = require('./server/systemroutes')
 const config = require('./server/init/configuration')
 const log = require('./server/init/logging')
 

@@ -20,7 +20,7 @@ function sendAndWaitUntilMessageProcessed (message) {
 }
 
 function handleMessages (...messages) {
-  consumeMessages.onDetached = ()=>{}
+  consumeMessages.onDetached = () => {}
 
   console.log('handle messages', messages.length)
   config.secure.azure.queueName = config.full.azure.queueName = 'lms-sync-integration-tests-' + Math.random().toString(36)

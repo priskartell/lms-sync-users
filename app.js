@@ -3,7 +3,7 @@ const { fork } = require('child_process')
 const log = require('./server/init/logging')
 
 function start () {
-  let forked = fork('./fork')
+  let forked = fork('./forkedApp')
 
   forked.send({ action: 'start' })
 
