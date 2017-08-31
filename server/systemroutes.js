@@ -30,7 +30,7 @@
  }
 
  function status () {
-   let checkCanvasStatus = rp('http://nlxv32btr6v7.statuspage.io/api/v2/status.json')
+   const checkCanvasStatus = rp('http://nlxv32btr6v7.statuspage.io/api/v2/status.json')
     .then(JSON.parse)
     .then(data => data.status.indicator === 'none')
 
