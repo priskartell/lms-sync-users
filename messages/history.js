@@ -2,10 +2,10 @@ const moment = require('moment')
 let _idleTimeStart = moment()
 
 module.exports = {
-  setIdleTimeStart(){
+  setIdleTimeStart () {
     _idleTimeStart = moment()
   },
-  get idleTimeStart(){
+  get idleTimeStart () {
     return _idleTimeStart
   }
 }

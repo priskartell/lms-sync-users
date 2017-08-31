@@ -1,5 +1,4 @@
 'use strict'
-const config = require('./server/init/configuration')
 const { fork } = require('child_process')
 const log = require('./server/init/logging')
 
