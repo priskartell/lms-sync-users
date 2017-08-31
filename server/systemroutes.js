@@ -9,8 +9,8 @@
  const version = require('../config/version')
  const packageFile = require('../package.json')
  const moment = require('moment')
- const consumeMessages = require('../messages/consumeMessages')
- let idleTimeStart = moment()
+ const [waitAmount, waitUnit] = [10, 'hours']
+ const history = require('../messages/history')
 
 /* GET /_about
  * About page
@@ -29,15 +29,12 @@
     version.jenkinsBuildDate:${version.jenkinsBuildDate}`)
  }
 
- consumeMessages.eventEmitter.on('processMessageStart', () => {
-   idleTimeStart = moment()
- })
-
  function status () {
    const checkCanvasStatus = rp('http://nlxv32btr6v7.statuspage.io/api/v2/status.json')
     .then(JSON.parse)
     .then(data => data.status.indicator === 'none')
-   let readAccountInCanvas = canvasApi.getRootAccount()
+
+   const readAccountInCanvas = canvasApi.getRootAccount()
    let canvasOk, canvasKeyOk
 
    return checkCanvasStatus
@@ -54,9 +51,11 @@
  var _monitor = function (req, res) {
    status().then(({canvasOk, canvasKeyOk}) => {
      res.setHeader('Content-Type', 'text/plain')
-     const [waitAmount, waitUnit] = [10, 'hours']
+     const checkTimeAgainst = moment().subtract(waitAmount, waitUnit)
 
-     const idleTimeOk = idleTimeStart.isAfter(moment().subtract(waitAmount, waitUnit))
+     const idleTimeOk = history.idleTimeStart.isAfter(checkTimeAgainst)
+
+     console.log(`checking idle time: last time a message was read was: ${history.idleTimeStart}, compare this to now minus some predifined time: ${checkTimeAgainst}`)
 
      res.send(`APPLICATION_STATUS: ${idleTimeOk && canvasKeyOk && canvasOk ? 'OK' : 'ERROR'} ${packageFile.name}-${packageFile.version}-${version.jenkinsBuild}
 READ MESSAGE FROM AZURE: ${idleTimeOk ? `OK. The server has waited less then ${waitAmount} ${waitUnit} for a message.` : `ERROR. The server has not received a message in the last ${waitAmount} ${waitUnit}`}

@@ -1,13 +1,9 @@
 'use strict'
-const config = require('./server/init/configuration')
-const app = require('kth-node-server')
 const { fork } = require('child_process')
 const log = require('./server/init/logging')
 
-app.start()
-
-function consumeMessages () {
-  let forked = fork('./messages/consumeMessages')
+function start () {
+  let forked = fork('./forkedApp')
 
   forked.send({ action: 'start' })
 
@@ -16,12 +12,9 @@ function consumeMessages () {
       log.info('Kill the process and restart it.')
       forked.kill()
         // Then start a new fork
-      consumeMessages()
+      start()
     }
   })
 }
 
-consumeMessages()
-
-const systemRoutes = require('./server/systemroutes')
-app.use(config.full.proxyPrefixPath.uri, systemRoutes)
+start()
