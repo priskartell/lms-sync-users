@@ -5,10 +5,6 @@ const log = require('../server/init/logging')
 const EventEmitter = require('events')
 const eventEmitter = new EventEmitter()
 const history = require('./history')
-const app = require('kth-node-server')
-const systemRoutes = require('../server/systemroutes')
-app.use(config.full.proxyPrefixPath.uri, systemRoutes)
-app.start()
 
 const {addDescription} = require('message-type')
 const handleMessage = require('./handleMessage')
@@ -16,22 +12,11 @@ require('colors')
 const {Client: AMQPClient, Policy} = require('amqp10')
 const urlencode = require('urlencode')
 const client = new AMQPClient(Policy.Utils.RenewOnSettle(1, 1, Policy.ServiceBusQueue))
+let _onDetached
 
 client.on('connection:closed', msg => log.info('connection:closed event received', msg))
 client.on('connection:opened', msg => log.info('connection to azure opened'))
 client.on('connection:disconnected', msg => log.info('connection to azure disconnected'))
-
-process.on('message', msg => {
-  if (msg.action === 'start') {
-    start()
-  }
-})
-start()
-
-function detached (msg, receiver) {
-  log.info(`Got a detached event for receiver ${receiver.id}`)
-  process.send({action: 'restart'})
-}
 
 function start () {
   const sharedAccessKey = process.env.AZURE_SHARED_ACCESS_KEY || config.secure.azure.SharedAccessKey
@@ -47,7 +32,7 @@ function start () {
 
       receiver.on('errorReceived', err => log.warn('An error occured when trying to receive message from queue', err))
 
-      receiver.on('detached', msg => detached(msg, receiver))
+      receiver.on('detached', msg => _onDetached && _onDetached(msg))
 
       receiver.on('message', message => {
         log.info(`New message from ug queue for receiver ${receiver.id}`, message)
@@ -109,5 +94,11 @@ function initLogger (msg) {
 
 module.exports = {
   start,
-  eventEmitter
+  eventEmitter,
+  set onDetached (cb) {
+    _onDetached = cb
+  },
+  get onDetached () {
+    return _onDetached
+  }
 }

@@ -2,8 +2,8 @@
 const { fork } = require('child_process')
 const log = require('./server/init/logging')
 
-function consumeMessages () {
-  let forked = fork('./messages/consumeMessages')
+function start () {
+  let forked = fork('./fork')
 
   forked.send({ action: 'start' })
 
@@ -12,9 +12,9 @@ function consumeMessages () {
       log.info('Kill the process and restart it.')
       forked.kill()
         // Then start a new fork
-      consumeMessages()
+      start()
     }
   })
 }
 
-consumeMessages()
+start()
