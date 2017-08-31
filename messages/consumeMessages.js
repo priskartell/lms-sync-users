@@ -4,6 +4,11 @@ const config = require('../server/init/configuration')
 const log = require('../server/init/logging')
 const EventEmitter = require('events')
 const eventEmitter = new EventEmitter()
+const history = require('./history')
+const app = require('kth-node-server')
+const systemRoutes = require('../server/systemroutes')
+app.use(config.full.proxyPrefixPath.uri, systemRoutes)
+app.start()
 
 const {addDescription} = require('message-type')
 const handleMessage = require('./handleMessage')
@@ -21,6 +26,7 @@ process.on('message', msg => {
     start()
   }
 })
+start()
 
 function detached (msg, receiver) {
   log.info(`Got a detached event for receiver ${receiver.id}`)
@@ -28,6 +34,8 @@ function detached (msg, receiver) {
 }
 
 function start () {
+
+
   const sharedAccessKey = process.env.AZURE_SHARED_ACCESS_KEY || config.secure.azure.SharedAccessKey
 
   log.info('connecting with the following azure url:', `amqps://${config.full.azure.SharedAccessKeyName}:${(sharedAccessKey || '').replace(/\w/g, 'x')}@${config.full.azure.host}`)
@@ -45,7 +53,7 @@ function start () {
 
       receiver.on('message', message => {
         log.info(`New message from ug queue for receiver ${receiver.id}`, message)
-
+        history.setIdleTimeStart()
         Promise.resolve(message)
         .then(initLogger)
         .then(() => {
@@ -60,7 +68,6 @@ function start () {
       })
 
       function _processMessage (MSG) {
-        eventEmitter.emit('processMessageStart', MSG)
         let result
         return Promise.resolve(MSG.body)
         .then(addDescription)
@@ -103,5 +110,6 @@ function initLogger (msg) {
 }
 
 module.exports = {
-  start, eventEmitter
+  start,
+  eventEmitter
 }
