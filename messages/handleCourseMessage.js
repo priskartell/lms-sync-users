@@ -22,7 +22,7 @@ function parseKey ({ug1Name, _desc}) {
   throw new Error('Key parse error, type, ' + userType + ' ug1Name, ' + ug1Name)
 }
 
-function handleCourseMessage (msg) {
+async function handleCourseMessage (msg) {
   let sisCourseCodeFunction
   if (msg._desc.userType === type.omregistrerade) {
     log.info('using calcSisForOmregistrerade')
@@ -32,13 +32,11 @@ function handleCourseMessage (msg) {
     sisCourseCodeFunction = parseKey
   }
 
-  return Promise.resolve()
-  .then(() => sisCourseCodeFunction(msg))
-  .then(sisCourseCode => createCsvFile(msg, sisCourseCode))
-  .then(({name}) => canvasApi.sendCsvFile(name, true))
-  .then(canvasReturnValue => {
-    return {msg, resp: canvasReturnValue}
-  })
+  const sisCourseCode = sisCourseCodeFunction(msg)
+  const {name} = await createCsvFile(msg, sisCourseCode)
+  const canvasReturnValue = await canvasApi.sendCsvFile(name, true)
+
+  return {msg, resp: canvasReturnValue}
 }
 
 module.exports = {handleCourseMessage, parseKey}
