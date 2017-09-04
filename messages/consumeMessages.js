@@ -47,38 +47,23 @@ async function start () {
     }
 
     initLogger(message)
-
-    // Promise.resolve(message)
-    //   .then(initLogger)
-    //   .then(() => {
-    //     if (message.body) {
-    //       return _processMessage(message)
-    //     } else {
-    //       log.info('Message is empty or undefined, deleting from queue...', message)
-    //       return receiver.accept(message)
-    //     }
-    //   })
-    //   .then(initLogger)
   })
 
   async function _processMessage (MSG) {
-    let result
-    return Promise.resolve(MSG.body)
-      .then(addDescription)
-      .then(handleMessage)
-      .then(_result => {
-        log.info('result from handleMessage', _result)
-        result = _result
-      })
-      .then(() => receiver.accept(MSG))
-      .then(() => eventEmitter.emit('messageProcessed', MSG, result))
-      .catch(e => {
+    try {
+      const body = addDescription(MSG.body)
+      const result = await handleMessage(body)
+      log.info('result from handleMessage', result)
+      await receiver.accept(MSG)
+      eventEmitter.emit('messageProcessed', MSG, result)
+    } catch (e) {
         log.error(e)
         log.info('Error Occured, releasing message back to queue...', MSG)
         return receiver.modify(MSG, {undeliverableHere: false, deliveryFailed: true})
-      })
+    }
   }
 
+  // Return receiver, used by the integration tests
   return receiver
 }
 
