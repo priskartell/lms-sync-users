@@ -54,12 +54,12 @@ async function start () {
       const body = addDescription(MSG.body)
       const result = await handleMessage(body)
       log.info('result from handleMessage', result)
-      await receiver.accept(MSG)
       eventEmitter.emit('messageProcessed', MSG, result)
+      return receiver.accept(MSG)
     } catch (e) {
-        log.error(e)
-        log.info('Error Occured, releasing message back to queue...', MSG)
-        return receiver.modify(MSG, {undeliverableHere: false, deliveryFailed: true})
+      log.error(e)
+      log.info('Error Occured, releasing message back to queue...', MSG)
+      return receiver.modify(MSG, {undeliverableHere: false, deliveryFailed: true})
     }
   }
 
