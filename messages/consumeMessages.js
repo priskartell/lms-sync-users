@@ -28,31 +28,42 @@ async function start () {
   await client.connect(`amqps://${config.full.azure.SharedAccessKeyName}:${urlencode(sharedAccessKey)}@${config.full.azure.host}`)
   const receiver = await client.createReceiver(queueName)
 
-    log.info('receiver created:', receiver.id)
+  log.info('receiver created:', receiver.id)
 
-    receiver.on('errorReceived', err => log.warn('An error occured when trying to receive message from queue', err))
+  receiver.on('errorReceived', err => log.warn('An error occured when trying to receive message from queue', err))
 
-    receiver.on('detached', msg => _onDetached && _onDetached(msg))
+  receiver.on('detached', msg => _onDetached && _onDetached(msg))
 
-    receiver.on('message', message => {
-      log.info(`New message from ug queue for receiver ${receiver.id}`, message)
-      history.setIdleTimeStart()
-      Promise.resolve(message)
-      .then(initLogger)
-      .then(() => {
-        if (message.body) {
-          return _processMessage(message)
-        } else {
-          log.info('Message is empty or undefined, deleting from queue...', message)
-          return receiver.accept(message)
-        }
-      })
-      .then(initLogger)
-    })
+  receiver.on('message', async message => {
+    log.info(`New message from ug queue for receiver ${receiver.id}`, message)
+    history.setIdleTimeStart()
+    initLogger(message)
 
-    async function _processMessage (MSG) {
-      let result
-      return Promise.resolve(MSG.body)
+    if (message.body) {
+      await _processMessage(message)
+    } else {
+      log.info('Message is empty or undefined, deleting from queue...', message)
+      await receiver.accept(message)
+    }
+
+    initLogger(message)
+
+    // Promise.resolve(message)
+    //   .then(initLogger)
+    //   .then(() => {
+    //     if (message.body) {
+    //       return _processMessage(message)
+    //     } else {
+    //       log.info('Message is empty or undefined, deleting from queue...', message)
+    //       return receiver.accept(message)
+    //     }
+    //   })
+    //   .then(initLogger)
+  })
+
+  async function _processMessage (MSG) {
+    let result
+    return Promise.resolve(MSG.body)
       .then(addDescription)
       .then(handleMessage)
       .then(_result => {
@@ -66,10 +77,9 @@ async function start () {
         log.info('Error Occured, releasing message back to queue...', MSG)
         return receiver.modify(MSG, {undeliverableHere: false, deliveryFailed: true})
       })
-    }
+  }
 
-    return receiver
-  
+  return receiver
 }
 
 function initLogger (msg) {
