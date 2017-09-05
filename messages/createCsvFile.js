@@ -5,7 +5,7 @@ const fs = require('fs')
 const readFile = Promise.promisify(fs.readFile)
 const log = require('../server/init/logging')
 
-module.exports =async function createCsvFile (msg, sisCourseCodes, csvDir, csvVol) {
+module.exports = async function createCsvFile (msg, sisCourseCodes, csvDir, csvVol) {
   let userType = msg._desc.userType
 
   const fileName = `${config.full.localFile.csvDir}enrollments.${userType}.${sisCourseCodes[0]}.${Date.now()}.csv`

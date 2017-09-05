@@ -1,5 +1,4 @@
 'use strict'
-const Promise = require('bluebird')
 const config = require('../server/init/configuration')
 const log = require('../server/init/logging')
 const EventEmitter = require('events')
