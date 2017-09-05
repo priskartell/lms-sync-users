@@ -5,15 +5,19 @@ const randomstring = require('randomstring')
 
 async function processMessage (message, course) {
   // First create a fresch course in canvas
-  const accountId = 14 // Courses that starts with an 'A' is handled by account 14
-  const canvasCourse = await canvasApi.createCourse({course}, accountId)
-  await canvasApi.createDefaultSection(canvasCourse)
-  const [{resp}] = await handleMessages(message)
-  await canvasApi.pollUntilSisComplete(resp.id)
-  const enrolledUsers = await canvasApi.getEnrollments(canvasCourse.id)
-  console.log('enrolledUsers:', JSON.stringify(enrolledUsers))
-  const [enrolledUser] = enrolledUsers
-  return enrolledUser
+  try {
+    const accountId = 14 // Courses that starts with an 'A' is handled by account 14
+    const canvasCourse = await canvasApi.createCourse({course}, accountId)
+    await canvasApi.createDefaultSection(canvasCourse)
+    const [{resp}] = await handleMessages(message)
+    await canvasApi.pollUntilSisComplete(resp.id)
+    const enrolledUsers = await canvasApi.getEnrollments(canvasCourse.id)
+    console.log('enrolledUsers:', JSON.stringify(enrolledUsers))
+    const [enrolledUser] = enrolledUsers
+    return enrolledUser
+  } catch (e) {
+      console.error('An error occured', e)
+  }
 }
 
 test('should enroll an assistant in an existing course in canvas', t => {

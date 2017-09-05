@@ -37,7 +37,6 @@ function convertToCanvasUser (msg) {
   }
 }
 
-// Should this function be moved into canvasApi instead?
 async function createOrUpdate (user) {
   try {
     const userFromCanvas = await canvasApi.getUser(user.pseudonym.sis_user_id)

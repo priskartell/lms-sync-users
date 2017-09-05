@@ -42,28 +42,6 @@ async function handleMessages (...messages) {
   } finally {
     queue.deleteQueue(config.full.azure.queueName)
   }
-
-
-  // .finally(() => queue.deleteQueue(config.full.azure.queueName))
-  // .then(() => result)
-  //
-  // return queue.createQueueIfNotExists(config.full.azure.queueName)
-  // .then(() => consumeMessages.start())
-  // .then(_receiver => { receiver = _receiver })
-  // .then(() => Promise.mapSeries(messages, sendAndWaitUntilMessageProcessed))
-  // .then(messagesResults => { result = messagesResults })
-  // .then(() => {
-  //   console.log('Close the receiver...')
-  //   receiver.detach()
-  //   return new Promise((resolve, reject) => receiver.on('detached', () => resolve()))
-  // })
-  // .then(() => {
-  //   console.log('Close the connection...')
-  //   const client = consumeMessages.__get__('client')
-  //   client.disconnect()
-  // })
-  // .finally(() => queue.deleteQueue(config.full.azure.queueName))
-  // .then(() => result)
 }
 
 const sharedAccessKey = process.env.AZURE_SHARED_ACCESS_KEY || config.secure.azure.SharedAccessKey
