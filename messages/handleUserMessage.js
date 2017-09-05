@@ -39,27 +39,21 @@ function convertToCanvasUser (msg) {
 
 // Should this function be moved into canvasApi instead?
 async function createOrUpdate (user) {
-  return canvasApi.getUser(user.pseudonym.sis_user_id)
-        .then(userFromCanvas => {
-          log.info('found user in canvas', userFromCanvas)
-          log.info('update the user with new values: ', user)
-          log.info({'metric.updateUser': 1})
-          return userFromCanvas
-        })
-        .then(userFromCanvas => canvasApi.updateUser(user, userFromCanvas.id))
-        .catch(e => {
-          if (e.statusCode === 404) {
-            log.info('user doesnt exist in canvas. Create it.', user)
-            return canvasApi.createUser(user)
-            .then(res => {
-              log.info('Success! User created', res)
-              log.info({'metric.createdUser': 1})
-              return res
-            })
-          } else {
-            throw e
-          }
-        })
+  try {
+    const userFromCanvas = await canvasApi.getUser(user.pseudonym.sis_user_id)
+    log.info('found user in canvas', userFromCanvas)
+    log.info('update the user with new values: ', user)
+    await canvasApi.updateUser(user, userFromCanvas.id)
+  } catch (e) {
+      if (e.statusCode === 404) {
+        log.info('user doesnt exist in canvas. Create it.', user)
+        const res = await canvasApi.createUser(user)
+        log.info('Success! User created', res)
+        return res
+      } else {
+        throw e
+      }
+  }
 }
 
 module.exports = async function (msg) {
