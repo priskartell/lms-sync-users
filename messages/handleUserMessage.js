@@ -38,7 +38,7 @@ function convertToCanvasUser (msg) {
 }
 
 // Should this function be moved into canvasApi instead?
-function createOrUpdate (user) {
+async function createOrUpdate (user) {
   return canvasApi.getUser(user.pseudonym.sis_user_id)
         .then(userFromCanvas => {
           log.info('found user in canvas', userFromCanvas)
@@ -62,13 +62,12 @@ function createOrUpdate (user) {
         })
 }
 
-module.exports = function (msg) {
+module.exports = async function (msg) {
   const user = convertToCanvasUser(msg)
 
   if (isInScope(msg) && user) {
-    return createOrUpdate(user)
-    .then(user => msg)
-  } else {
-    return Promise.resolve(msg)
+    await createOrUpdate(user)
   }
+
+  return msg
 }
