@@ -3,23 +3,17 @@ const {handleMessages} = require('././utils')
 const canvasApi = require('../../canvasApi')
 const randomstring = require('randomstring')
 
-function processMessage (message, course) {
+async function processMessage (message, course) {
   // First create a fresch course in canvas
   const accountId = 14 // Courses that starts with an 'A' is handled by account 14
-  let canvasCourse
-  return canvasApi.createCourse({course}, accountId)
-  .catch(err => console.error(err))
-  .then(res => { canvasCourse = res })
-  .then(() => canvasApi.createDefaultSection(canvasCourse))
-  .catch(err => console.error(err))
-  .then(() => handleMessages(message))
-  .then(([{resp}]) => canvasApi.pollUntilSisComplete(resp.id))
-  .then(() => canvasApi.getEnrollments(canvasCourse.id))
-  .then(enrolledUsers => {
-    console.log('enrolledUsers:', JSON.stringify(enrolledUsers))
-    return enrolledUsers
-  })
-  .then(([enrolledUser]) => enrolledUser)
+  const canvasCourse = await canvasApi.createCourse({course}, accountId)
+  await canvasApi.createDefaultSection(canvasCourse)
+  const [{resp}] = await handleMessages(message)
+  await canvasApi.pollUntilSisComplete(resp.id)
+  const enrolledUsers = await canvasApi.getEnrollments(canvasCourse.id)
+  console.log('enrolledUsers:', JSON.stringify(enrolledUsers))
+  const [enrolledUser] = enrolledUsers
+  return enrolledUser
 }
 
 test('should enroll an assistant in an existing course in canvas', t => {
