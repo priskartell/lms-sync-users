@@ -5,7 +5,7 @@ const fs = require('fs')
 const readFile = Promise.promisify(fs.readFile)
 const log = require('../server/init/logging')
 
-module.exports = function createCsvFile (msg, sisCourseCodes, csvDir, csvVol) {
+module.exports =async function createCsvFile (msg, sisCourseCodes, csvDir, csvVol) {
   let userType = msg._desc.userType
 
   const fileName = `${config.full.localFile.csvDir}enrollments.${userType}.${sisCourseCodes[0]}.${Date.now()}.csv`
@@ -19,11 +19,9 @@ module.exports = function createCsvFile (msg, sisCourseCodes, csvDir, csvVol) {
     return Promise.each(sisCourseCodes, sisCourseId => writeLine([sisCourseId, userId, userType, 'active'], fileName))
   }
 
-  return writeLine(['section_id', 'user_id', 'role', 'status'], fileName)
-  .then(() => Promise.map(msg.member, oneLinePerSisCourseId))
-  .then(() => readFile(fileName, 'utf8'))
-  .then(data => {
-    log.info('Wrote file', fileName, '\n', data)
-  })
-  .then(() => { return {name: fileName} })
+  await writeLine(['section_id', 'user_id', 'role', 'status'], fileName)
+  await Promise.map(msg.member, oneLinePerSisCourseId)
+  const data = await readFile(fileName, 'utf8')
+  log.info('Wrote file', fileName, '\n', data)
+  return {name: fileName}
 }
