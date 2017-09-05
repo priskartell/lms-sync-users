@@ -29,7 +29,7 @@
     "bluebird": "^3.5.0",
     "colors": "^1.1.2",
     "express": "^4.15.2",
-    "kth-canvas-api": "^0.8.0",
+    "kth-canvas-api": "^0.11.0",
     "kth-node-configuration": "KTH/kth-node-configuration.git#v1.0.1",
     "kth-node-log": "KTH/kth-node-log.git",
     "kth-node-server": "^3.1.0",
@@ -51,11 +51,11 @@
     "randomstring": "^1.1.5",
     "rewire": "^2.5.2",
     "rewire-global": "^1.0.11",
-    "sinon": "^2.2.0",
+    "sinon": "^3.2.1",
     "standard": "^10.0.2",
     "tap-spec": "^4.1.1",
     "tape": "^4.6.3",
-    "yarn": "^0.24.5"
+    "yarn": "^0.27.5"
   },
   "optionalDependencies": {
     "nodemon": "^1.11.0"
