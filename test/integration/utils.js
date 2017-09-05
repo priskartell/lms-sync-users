@@ -19,30 +19,51 @@ function sendAndWaitUntilMessageProcessed (message) {
   return resultPromise
 }
 
-function handleMessages (...messages) {
-  consumeMessages.onDetached = () => {}
+async function handleMessages (...messages) {
+  try {
+    consumeMessages.onDetached = () => {}
 
-  console.log('handle messages', messages.length)
-  config.secure.azure.queueName = config.full.azure.queueName = 'lms-sync-integration-tests-' + Math.random().toString(36)
-  let receiver, result
+    console.log('handle messages', messages.length)
+    config.secure.azure.queueName = config.full.azure.queueName = 'lms-sync-integration-tests-' + Math.random().toString(36)
 
-  return queue.createQueueIfNotExists(config.full.azure.queueName)
-  .then(() => consumeMessages.start())
-  .then(_receiver => { receiver = _receiver })
-  .then(() => Promise.mapSeries(messages, sendAndWaitUntilMessageProcessed))
-  .then(messagesResults => { result = messagesResults })
-  .then(() => {
+    await queue.createQueueIfNotExists(config.full.azure.queueName)
+    const receiver = await consumeMessages.start()
+    const result = await Promise.mapSeries(messages, sendAndWaitUntilMessageProcessed)
     console.log('Close the receiver...')
-    receiver.detach()
-    return new Promise((resolve, reject) => receiver.on('detached', () => resolve()))
-  })
-  .then(() => {
+    await new Promise((resolve, reject) => {
+      receiver.detach()
+      receiver.on('detached', () => resolve())
+    })
+
     console.log('Close the connection...')
     const client = consumeMessages.__get__('client')
-    client.disconnect()
-  })
-  .finally(() => queue.deleteQueue(config.full.azure.queueName))
-  .then(() => result)
+    await client.disconnect()
+    return result
+  } finally {
+    queue.deleteQueue(config.full.azure.queueName)
+  }
+
+
+  // .finally(() => queue.deleteQueue(config.full.azure.queueName))
+  // .then(() => result)
+  //
+  // return queue.createQueueIfNotExists(config.full.azure.queueName)
+  // .then(() => consumeMessages.start())
+  // .then(_receiver => { receiver = _receiver })
+  // .then(() => Promise.mapSeries(messages, sendAndWaitUntilMessageProcessed))
+  // .then(messagesResults => { result = messagesResults })
+  // .then(() => {
+  //   console.log('Close the receiver...')
+  //   receiver.detach()
+  //   return new Promise((resolve, reject) => receiver.on('detached', () => resolve()))
+  // })
+  // .then(() => {
+  //   console.log('Close the connection...')
+  //   const client = consumeMessages.__get__('client')
+  //   client.disconnect()
+  // })
+  // .finally(() => queue.deleteQueue(config.full.azure.queueName))
+  // .then(() => result)
 }
 
 const sharedAccessKey = process.env.AZURE_SHARED_ACCESS_KEY || config.secure.azure.SharedAccessKey
