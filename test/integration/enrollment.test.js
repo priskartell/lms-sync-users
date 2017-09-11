@@ -16,7 +16,7 @@ async function processMessage (message, course) {
     const [enrolledUser] = enrolledUsers
     return enrolledUser
   } catch (e) {
-      console.error('An error occured', e)
+    console.error('An error occured', e)
   }
 }
 
