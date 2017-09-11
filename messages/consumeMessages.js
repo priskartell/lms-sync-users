@@ -1,5 +1,4 @@
 'use strict'
-const Promise = require('bluebird')
 const config = require('../server/init/configuration')
 const log = require('../server/init/logging')
 const EventEmitter = require('events')
@@ -18,59 +17,53 @@ client.on('connection:closed', msg => log.info('connection:closed event received
 client.on('connection:opened', msg => log.info('connection to azure opened'))
 client.on('connection:disconnected', msg => log.info('connection to azure disconnected'))
 
-function start () {
+async function start () {
   const sharedAccessKey = process.env.AZURE_SHARED_ACCESS_KEY || config.secure.azure.SharedAccessKey
 
   log.info('connecting with the following azure url:', `amqps://${config.full.azure.SharedAccessKeyName}:${(sharedAccessKey || '').replace(/\w/g, 'x')}@${config.full.azure.host}`)
   const queueName = config.secure.azure.queueName || config.full.azure.queueName
   log.info('connecting to the queue with name ', queueName)
 
-  return client.connect(`amqps://${config.full.azure.SharedAccessKeyName}:${urlencode(sharedAccessKey)}@${config.full.azure.host}`)
-    .then(() => client.createReceiver(queueName))
-    .then(receiver => {
-      log.info('receiver created:', receiver.id)
+  await client.connect(`amqps://${config.full.azure.SharedAccessKeyName}:${urlencode(sharedAccessKey)}@${config.full.azure.host}`)
+  const receiver = await client.createReceiver(queueName)
 
-      receiver.on('errorReceived', err => log.warn('An error occured when trying to receive message from queue', err))
+  log.info('receiver created:', receiver.id)
 
-      receiver.on('detached', msg => _onDetached && _onDetached(msg))
+  receiver.on('errorReceived', err => log.warn('An error occured when trying to receive message from queue', err))
 
-      receiver.on('message', message => {
-        log.info(`New message from ug queue for receiver ${receiver.id}`, message)
-        history.setIdleTimeStart()
-        Promise.resolve(message)
-        .then(initLogger)
-        .then(() => {
-          if (message.body) {
-            return _processMessage(message)
-          } else {
-            log.info('Message is empty or undefined, deleting from queue...', message)
-            return receiver.accept(message)
-          }
-        })
-        .then(initLogger)
-      })
+  receiver.on('detached', msg => _onDetached && _onDetached(msg))
 
-      function _processMessage (MSG) {
-        let result
-        return Promise.resolve(MSG.body)
-        .then(addDescription)
-        .then(handleMessage)
-        .then(_result => {
-          log.info('result from handleMessage', _result)
-          result = _result
-        })
-        .then(() => receiver.accept(MSG))
-        .then(() => eventEmitter.emit('messageProcessed', MSG, result))
-        .catch(e => {
-          log.error(e)
-          log.info('Error Occured, releasing message back to queue...', MSG)
-          return receiver.modify(MSG, {undeliverableHere: false, deliveryFailed: true})
-        })
-      }
+  receiver.on('message', async message => {
+    log.info(`New message from ug queue for receiver ${receiver.id}`, message)
+    history.setIdleTimeStart()
+    initLogger(message)
 
-      return receiver
-    })
-    .catch(e => log.error('An error occured:', e))
+    if (message.body) {
+      await _processMessage(message)
+    } else {
+      log.info('Message is empty or undefined, deleting from queue...', message)
+      await receiver.accept(message)
+    }
+
+    initLogger(message)
+  })
+
+  async function _processMessage (MSG) {
+    try {
+      const body = addDescription(MSG.body)
+      const result = await handleMessage(body)
+      log.info('result from handleMessage', result)
+      eventEmitter.emit('messageProcessed', MSG, result)
+      return receiver.accept(MSG)
+    } catch (e) {
+      log.error(e)
+      log.info('Error Occured, releasing message back to queue...', MSG)
+      return receiver.modify(MSG, {undeliverableHere: false, deliveryFailed: true})
+    }
+  }
+
+  // Return receiver, used by the integration tests
+  return receiver
 }
 
 function initLogger (msg) {

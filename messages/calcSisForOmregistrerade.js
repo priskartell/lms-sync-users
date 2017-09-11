@@ -5,7 +5,7 @@ module.exports = function (msg) {
   for (var i = 1; i <= 9; i++) {
     result.push(`${courseCode}${term}${shortYear}${i}`)
   }
-  return Promise.resolve(result)
+  return result
 }
 
 // const message = {
