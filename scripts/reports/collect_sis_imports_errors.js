@@ -28,8 +28,9 @@ async function listErrors () {
     .reduce((a,b)=>a.concat(b),[])  // Flatten every warning from every sis_import
 
     const filteredWarnings = allWarnings
-    // .filter(([fileName,warning])=> !warning.startsWith('Neither course nor section existed'))
-    // .filter(([fileName,warning])=> !warning.startsWith('An enrollment referenced a non-existent section'))
+    .filter(([fileName,warning])=> !warning.startsWith('Neither course nor section existed'))
+    .filter(([fileName,warning])=> !/There were [\d\,]+ more warnings/.test(warning))
+    .filter(([fileName,warning])=> !warning.startsWith('An enrollment referenced a non-existent section'))
 
     console.log(filteredWarnings)
   } catch (e) {
