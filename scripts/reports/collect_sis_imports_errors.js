@@ -3,7 +3,6 @@ require('colors')
 const CanvasApi = require('kth-canvas-api')
 const inquirer = require('inquirer')
 const moment = require('moment')
-const config = require('../../server/init/configuration')
 
 async function listErrors () {
   try {
@@ -12,14 +11,13 @@ async function listErrors () {
         message: 'Vilken miljö?',
         name: 'apiUrl',
         choices: [
-          {name:'prod', value:'https://kth.instructure.com/api/v1'},
-          {name:'test', value:'https://kth.test.instructure.com/api/v1'},
-          {name:'beta', value:'https://kth.beta.instructure.com/api/v1'}
+          {name: 'prod', value: 'https://kth.instructure.com/api/v1'},
+          {name: 'test', value: 'https://kth.test.instructure.com/api/v1'},
+          {name: 'beta', value: 'https://kth.beta.instructure.com/api/v1'}
         ],
         type: 'list'
       })
 
-    console.log(apiUrl)
     const {apiKey} = await inquirer.prompt({
       message: 'Pasta in api nyckel här',
       name: 'apiKey',
