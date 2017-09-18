@@ -24,18 +24,14 @@ async function listErrors () {
 
 
     const allWarnings = flattenedSisImports
-    .map(_import => _import.processing_warnings)
-    .filter(warnings => warnings) // filter out nulls and undefineds
+    .map(_import => [...(_import.processing_warnings || []),...(_import.processing_errors || [])])
     .reduce((a,b)=>a.concat(b),[])  // Flatten every warning from every sis_import
 
-    // console.log(allWarnings)
     const filteredWarnings = allWarnings
-    .filter(([fileName,warning])=> !warning.startsWith('Neither course nor section existed'))
-    .filter(([fileName,warning])=> !warning.startsWith('An enrollment referenced a non-existent section'))
+    // .filter(([fileName,warning])=> !warning.startsWith('Neither course nor section existed'))
+    // .filter(([fileName,warning])=> !warning.startsWith('An enrollment referenced a non-existent section'))
+
     console.log(filteredWarnings)
-      // const canvasUsers = await canvasApi.recursePages('/accounts/1/sis_imports?created_since=2017-09-13T06:30:10.278Z')
-      // const usersWithoutSisId = canvasUsers.filter(u => !u.sis_user_id)
-      // console.log(JSON.stringify(usersWithoutSisId, null, 4))
   } catch (e) {
     console.error(e)
   }
