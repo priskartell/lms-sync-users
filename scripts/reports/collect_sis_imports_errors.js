@@ -1,5 +1,4 @@
 process.env['NODE_ENV'] = 'production'
-const config = require('../../server/init/configuration.js')
 const CanvasApi = require('kth-canvas-api')
 const inquirer = require('inquirer')
 const moment = require('moment')
@@ -21,10 +20,10 @@ async function listErrors () {
     const allSisImports = await canvasApi.recursePages(`${process.env.CANVAS_API_URL}/accounts/1/sis_imports?created_since=${from}`)
     console.log(JSON.stringify(allSisImports, null, 4))
 
-    const flattenedSisImports = allSisImports.reduce((a,b)=>{
+    const flattenedSisImports = allSisImports.reduce((a, b) => {
       a.push(...b.sis_imports)
       return a
-    },[])
+    }, [])
 
     console.log(flattenedSisImports)
       // const canvasUsers = await canvasApi.recursePages('/accounts/1/sis_imports?created_since=2017-09-13T06:30:10.278Z')
