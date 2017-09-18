@@ -15,17 +15,6 @@ module.exports = {
       enabled: false
     }
   },
-  ldap: {
-    client: {
-      url: 'ldaps://ldap.ug.kth.se',
-      timeout: 300000,
-      connectTimeout: 3000,
-      maxConnections: 10,
-      idleTimeout: 300000,
-      checkInterval: 10000,
-      reconnect: true
-    }
-  },
   azure: {
     queueName: 'ug-infoclass-2/Subscriptions/canvas-prod',
     csvBlobName: 'lms-csv-prod',
