@@ -46,7 +46,7 @@ async function listErrors () {
     .reduce((a, b) => a.concat(b.sis_imports), []) // Flatten every page
 
     const allWarnings = flattenedSisImports
-    .map(_import => [...(_import.processing_warnings || []), ...(_import.processing_errors || [])])
+    .map(_import => [...(_import.processing_warnings || []), ...(_import.processing_errors || [])]) // both errors and warnings
     .reduce((a, b) => a.concat(b), [])  // Flatten every warning from every sis_import
 
     const filteredWarnings = allWarnings
