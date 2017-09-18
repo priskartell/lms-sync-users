@@ -1,3 +1,8 @@
+/*
+* To run this script, just open a terminal and run it with node.
+* Then just follow the instructions on the screen.
+*/
+
 process.env['NODE_ENV'] = 'production'
 require('colors')
 const CanvasApi = require('kth-canvas-api')
@@ -19,7 +24,7 @@ async function listErrors () {
       })
 
     const {apiKey} = await inquirer.prompt({
-      message: 'Pasta in api nyckel här',
+      message: 'Klistra in api nyckel till Canvas här',
       name: 'apiKey',
       type: 'string'
     })
@@ -30,7 +35,7 @@ async function listErrors () {
       message: 'Hur många dagar bakåt?',
       name: 'numOfDays',
       type: 'number',
-      default: 1
+      default: 7
     })
 
     const from = moment().subtract(numOfDays, 'days').utc().toDate().toISOString()
