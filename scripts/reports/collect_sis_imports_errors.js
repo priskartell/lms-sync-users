@@ -8,6 +8,7 @@ require('colors')
 const CanvasApi = require('kth-canvas-api')
 const inquirer = require('inquirer')
 const moment = require('moment')
+const request = require('request-promise')
 
 async function listErrors () {
   try {
@@ -45,17 +46,29 @@ async function listErrors () {
     const flattenedSisImports = allSisImports
     .reduce((a, b) => a.concat(b.sis_imports), []) // Flatten every page
 
-    const allWarnings = flattenedSisImports
-    .map(_import => [...(_import.processing_warnings || []), ...(_import.processing_errors || [])]) // both errors and warnings
-    .reduce((a, b) => a.concat(b), [])  // Flatten every warning from every sis_import
+    //console.log(JSON.stringify(flattenedSisImports))
+    //const sisUrls = 
+    flattenedSisImports.map(_sisObj => (_sisObj.errors_attachment && _sisObj.errors_attachment.url) || [])
+    .reduce((a, b) => a.concat(b), [])
+    .map(_url => { 
+      request(_url)
+      .then(function (allWarnings) {
+        console.log('Warnings and errors:'.green)
+        console.log(allWarnings)
+      })
+      .catch(function (err) {
+          // Crawling failed...
+      });
+    })
 
-    const filteredWarnings = allWarnings
-    .filter(([fileName, warning]) => !warning.startsWith('Neither course nor section existed'))
-    .filter(([fileName, warning]) => !/There were [\d,]+ more warnings/.test(warning))
-    .filter(([fileName, warning]) => !warning.startsWith('An enrollment referenced a non-existent section'))
+    // const allWarnings = flattenedSisImports
+    // .map(_import => [...(_import.processing_warnings || []), ...(_import.processing_errors || [])]) // both errors and warnings
+    // .reduce((a, b) => a.concat(b), [])  // Flatten every warning from every sis_import
 
-    console.log('Warnings and errors:'.green)
-    console.log(filteredWarnings)
+    // const filteredWarnings = allWarnings
+    // .filter(([fileName, warning]) => !warning.startsWith('Neither course nor section existed'))
+    // // .filter(([fileName, warning]) => !/There were [\d,]+ more warnings/.test(warning))
+    // .filter(([fileName, warning]) => !warning.startsWith('An enrollment referenced a non-existent section'))
   } catch (e) {
     console.error(e)
   }
