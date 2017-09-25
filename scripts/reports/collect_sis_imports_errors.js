@@ -45,18 +45,16 @@ async function listErrors () {
 
     const flattenedSisImports = allSisImports
     .reduce((a, b) => a.concat(b.sis_imports), []) // Flatten every page
-
-    flattenedSisImports.map(_sisObj => (_sisObj.errors_attachment && _sisObj.errors_attachment.url) || [])
+    
+    const reportUrls = flattenedSisImports.map(_sisObj => (_sisObj.errors_attachment && _sisObj.errors_attachment.url) || [])
     .reduce((a, b) => a.concat(b), [])
-    .map(_url => { request(_url)
-      .then(function (allWarnings) {
-        console.log('Warnings and errors:'.green)
-        console.log(allWarnings)
-      })
-      .catch(function (err) {
-          // Crawling failed...
-      });
-    })
+
+    console.log('Warnings and errors:'.green)
+
+    for (let url of reportUrls) {
+      const warnings = await request(url)
+      console.log(warnings)
+    }
 
     // const filteredWarnings = allWarnings
     // .filter(([fileName, warning]) => !warning.startsWith('Neither course nor section existed'))
