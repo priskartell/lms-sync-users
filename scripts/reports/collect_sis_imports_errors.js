@@ -54,16 +54,12 @@ async function listErrors () {
     for (let url of reportUrls) {
       const warnings = await request(url)
       let warnArr = warnings.split("\n")
-      let filteredWarn = warnArr
+      const filteredWarn = warnArr
       .filter((warning) => !warning.includes('Neither course nor section existed') )
       .filter((warning) => !warning.includes('An enrollment referenced a non-existent section'))
-      console.log(filteredWarn)
+      .filter((warning) => !/There were [\d,]+ more warnings/.test(warning))      
+      console.log(filteredWarn)        
     }
-
-    // const filteredWarnings = allWarnings
-    // .filter(([fileName, warning]) => !warning.startsWith('Neither course nor section existed'))
-    // // .filter(([fileName, warning]) => !/There were [\d,]+ more warnings!/There were [\d,]+ more warnings/.test(warning)))
-    // .filter(([fileName, warning]) => !warning.startsWith('An enrollment referenced a non-existent section'))
   } catch (e) {
     console.error(e)
   }
