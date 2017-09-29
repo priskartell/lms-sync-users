@@ -16,15 +16,6 @@ const {getEnv} = require('kth-node-configuration')
 
 module.exports = {
   secure: {
-    ldap: {
-      client: {
-        url: getEnv('LDAP_URI')
-      },
-      bind: {
-        username: getEnv('LDAP_USERNAME'),
-        password: getEnv('LDAP_PASSWORD')
-      }
-    },
     canvas: {
       apiKey: getEnv('CANVAS_API_KEY')
     },
