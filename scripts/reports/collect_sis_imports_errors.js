@@ -49,17 +49,20 @@ async function listErrors () {
     const reportUrls = flattenedSisImports.map(_sisObj => (_sisObj.errors_attachment && _sisObj.errors_attachment.url) || [])
     .reduce((a, b) => a.concat(b), [])
 
-    console.log('Warnings and errors:'.green)
+    console.log('Searching for warnings and errors:'.green)
 
     for (let url of reportUrls) {
       const warnings = await request(url)
-      console.log(warnings)
+      let filteredWarn = warnings.split("\n")
+      .filter(warning => !warning.includes('Neither course nor section existed'))
+      .filter(warning => !warning.includes('An enrollment referenced a non-existent section'))
+      .filter(warning => !/There were [\d,]+ more warnings/.test(warning))
+      .filter(warning => warning != '')      
+      if (filteredWarn.length > 0) 
+        {
+          console.log(filteredWarn)
+        }
     }
-
-    // const filteredWarnings = allWarnings
-    // .filter(([fileName, warning]) => !warning.startsWith('Neither course nor section existed'))
-    // // .filter(([fileName, warning]) => !/There were [\d,]+ more warnings/.test(warning))
-    // .filter(([fileName, warning]) => !warning.startsWith('An enrollment referenced a non-existent section'))
   } catch (e) {
     console.error(e)
   }
