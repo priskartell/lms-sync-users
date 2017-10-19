@@ -53,14 +53,15 @@ async function listErrors () {
 
     for (let url of reportUrls) {
       const warnings = await request(url)
-      let filteredWarn = warnings.split('\n')
+      let filteredWarn = warnings.split("\n")
       .filter(warning => !warning.includes('Neither course nor section existed'))
       .filter(warning => !warning.includes('An enrollment referenced a non-existent section'))
       .filter(warning => !/There were [\d,]+ more warnings/.test(warning))
-      .filter(warning => warning != '')
-      if (filteredWarn.length > 0) {
-        console.log(filteredWarn)
-      }
+      .filter(warning => warning !== '')      
+      if (filteredWarn.length > 0)
+        {
+          console.log(filteredWarn)
+        }
     }
   } catch (e) {
     console.error(e)
