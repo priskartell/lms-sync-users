@@ -17,4 +17,4 @@ client.connect(`amqps://${config.azure.SharedAccessKeyName}:${urlencode(sharedAc
     console.log('new message', JSON.stringify(message, null, 4))
     receiver.release(message)
   })
-})
+}).catch(e => console.error(e))

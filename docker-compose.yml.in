@@ -11,12 +11,9 @@ services:
     # Configuration
     environment:
        NODE_ENV: "development"
-       LDAP_USERNAME : "system-lms-integration@ug.kth.se"
-       LDAP_PASSWORD : ""
        AZURE_SHARED_ACCESS_KEY: ""
        CANVAS_API_KEY : ""
        AZURE_STORAGE_CONNECTION_STRING : ""
-       LDAP_URI : "ldaps://ldap.ug.kth.se"
     # Port published from inside the Docker image
     ports:
       - 3000

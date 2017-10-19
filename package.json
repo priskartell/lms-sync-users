@@ -13,7 +13,8 @@
     "codecheck": "standard",
     "installAndStart": "yarn install --ignore-engines && npm start",
     "start": "cross-env NODE_ENV=development nodemon app.js",
-    "clearDeadLetter": "node clearDeadLetter.js"
+    "clearDeadLetter": "node scripts/clearDeadLetter.js",
+    "readDeadLetter": "node scripts/readDeadLetter.js"
   },
   "pre-push": [
     "codecheck",
@@ -34,7 +35,6 @@
     "kth-node-configuration": "KTH/kth-node-configuration.git#v1.0.1",
     "kth-node-log": "KTH/kth-node-log.git",
     "kth-node-server": "^3.1.0",
-    "ldapjs": "^1.0.1",
     "message-type": "github:kth/node-message-type#v1.7.1",
     "node-queue-adapter": "github:kth/node-queue-adapter",
     "request": "^2.81.0",

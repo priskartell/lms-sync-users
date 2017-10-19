@@ -1,4 +1,4 @@
-const config = require('./config/prodSettings')
+const config = require('../config/prodSettings')
 const sharedAccessKey = process.env['SHARED_ACCESS_KEY']
 console.log('shared access key:', sharedAccessKey)
 const {Client: AMQPClient, Policy} = require('amqp10')
@@ -17,4 +17,4 @@ client.connect(`amqps://${config.azure.SharedAccessKeyName}:${urlencode(sharedAc
     console.log('new message', JSON.stringify(message, null, 4))
     receiver.accept(message)
   })
-})
+}).catch(e => console.error(e))
