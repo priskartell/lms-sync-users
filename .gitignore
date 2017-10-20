@@ -38,3 +38,5 @@ CSV
 MSG
 allUsers.csv
 csv
+
+.env
