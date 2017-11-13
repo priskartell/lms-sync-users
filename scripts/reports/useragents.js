@@ -7,7 +7,6 @@ process.env['NODE_ENV'] = 'production'
 require('colors')
 const CanvasApi = require('kth-canvas-api')
 const inquirer = require('inquirer')
-const request = require('request-promise')
 
 async function listUseragents () {
   try {
@@ -35,7 +34,6 @@ async function listUseragents () {
   // let allUsers = await canvasApi.listUsers()
     console.log('TODO: remove subset!')
 
-
     // Check users in an active course
     const coursesIds = [
       2708,
@@ -62,13 +60,13 @@ async function listUseragents () {
     ]
 
     const pageViewsPerUseragent = {}
-    for (courseId of coursesIds) {
+    for (let courseId of coursesIds) {
       let allUsers = await canvasApi.requestUrl(`courses/${courseId}/users`)
 
       for (let user of allUsers) {
         try {
           const pageViews = await canvasApi.requestUrl(`users/${user.id}/page_views?per_page=5`) // Only one page, the latest views
-          for (pageView of pageViews) {
+          for (let pageView of pageViews) {
             if (pageView.user_agent) {
               const viewsByTheSameUseragent = pageViewsPerUseragent[pageView.user_agent] || 0
               pageViewsPerUseragent[pageView.user_agent] = viewsByTheSameUseragent + 1
@@ -83,17 +81,16 @@ async function listUseragents () {
     console.log('pageViews', JSON.stringify(pageViewsPerUseragent, null, 4))
 
     const groupedViews = {}
-    for(let k in pageViewsPerUseragent){
+    for (let k in pageViewsPerUseragent) {
       const v = pageViewsPerUseragent[k]
-      if(/canvas|candroid/.test(k)){
+      if (/canvas|candroid/.test(k)) {
         groupedViews.canvas = (groupedViews.canvas || 0) + v
       }
-      if(/Mozilla/.test(k)){
+      if (/Mozilla/.test(k)) {
         groupedViews.mozilla = (groupedViews.mozilla || 0) + v
       }
     }
     console.log(groupedViews)
-
   } catch (err) {
     console.error('an error:', err)
   }
