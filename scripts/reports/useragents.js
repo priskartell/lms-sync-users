@@ -86,7 +86,7 @@ async function listUseragents () {
       if (/canvas|candroid/.test(k)) {
         groupedViews.canvas = (groupedViews.canvas || 0) + v
       }
-      if (/Mozilla/.test(k)) {
+      if (/Mozilla|BPRODUCT/.test(k)) {
         groupedViews.mozilla = (groupedViews.mozilla || 0) + v
       }
     }
