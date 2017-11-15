@@ -2,7 +2,7 @@
 * To run this script, just open a terminal and run it with node.
 * Then just follow the instructions on the screen.
 */
-
+const inquirer = require('inquirer')
 process.env['NODE_ENV'] = 'production'
 require('colors')
 const CanvasApi = require('kth-canvas-api')
