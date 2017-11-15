@@ -22,14 +22,14 @@ async function connectAndHandle () {
       message: 'Klistra in en access key till kön canvas-prod i Azure. Den finns här: https://tinyurl.com/ydfquezj',
       name: 'sharedAccessKey'
     })
-
+    let confirmed
     if (action === 'delete') {
-      const {confirmed} = await inquirer.prompt({
+      confirmed = await inquirer.prompt({
         message: 'Vill du verkligen ta bort meddelandena?',
         name: 'confirmed',
         type: 'confirm',
         default: false
-      })
+      }).confirmed
     }
 
     const client = await new AMQPClient(Policy.Utils.RenewOnSettle(1, 1, Policy.ServiceBusQueue))
