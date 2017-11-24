@@ -1,5 +1,4 @@
-// 'use strict'
-
+console.log('---------------------- logging')
 const log = require('kth-node-log')
 const config = require('./configuration')
 const packageFile = require('../../package.json')
@@ -37,6 +36,7 @@ module.exports = {
     return logger.debug.bind(logger)
   },
   get info () {
+    console.log('get info!')
     return logger.info.bind(logger)
   },
   get warn () {

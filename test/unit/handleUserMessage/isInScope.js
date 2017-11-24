@@ -3,7 +3,7 @@ require('rewire-global').enable()
 const handleUserMessage = require('../../../messages/handleUserMessage')
 const isInScope = handleUserMessage.__get__('isInScope')
 
-test('affiliation: student should be in scope', t => {
+test.skip('affiliation: student should be in scope', t => {
   const msg = {
     affiliation: ['student']
   }
@@ -12,7 +12,7 @@ test('affiliation: student should be in scope', t => {
   t.ok(result)
 })
 
-test('affiliation: employee should be in scope', t => {
+test.skip('affiliation: employee should be in scope', t => {
   const msg = {
     affiliation: ['employee']
   }
@@ -21,7 +21,7 @@ test('affiliation: employee should be in scope', t => {
   t.ok(result)
 })
 
-test('affiliation: member should be in scope', t => {
+test.skip('affiliation: member should be in scope', t => {
   const msg = {
     affiliation: ['member']
   }
@@ -30,7 +30,7 @@ test('affiliation: member should be in scope', t => {
   t.ok(result)
 })
 
-test('affiliation: other should NOT be in scope', t => {
+test.skip('affiliation: other should NOT be in scope', t => {
   const msg = {
     affiliation: ['other']
   }
