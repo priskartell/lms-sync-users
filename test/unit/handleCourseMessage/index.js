@@ -4,7 +4,7 @@ const proxyquire = require('proxyquire')
 require('rewire-global')
 const sinon = require('sinon')
 
-test.skip('should parse key:student for antagna', t => {
+test('should parse key:student for antagna', t => {
   const ugParser = {parseKeyStudent: sinon.spy()}
   const handleCourseMessages = proxyquire('../../../messages/handleCourseMessage', {'./ugParser': ugParser})
 
@@ -13,7 +13,7 @@ test.skip('should parse key:student for antagna', t => {
   t.end()
 })
 
-test.skip('should send the csv file for user type is student', t => {
+test('should send the csv file for user type is student', t => {
   t.plan(1)
   const canvasApi = require('../../../canvasApi')
   const createCsvFile = sinon.stub().returns({name: 'file.csv'})

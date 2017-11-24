@@ -7,7 +7,7 @@ const consumeMessages = proxyquire('../../../messages/consumeMessages.js', {'nod
 const initLogger = consumeMessages.__get__('initLogger')
 const log = consumeMessages.__get__('log')
 
-test.skip('should init the logger when a message without body is passed', t => {
+test('should init the logger when a message without body is passed', t => {
   t.plan(1)
   log.init = sinon.stub()
 
@@ -30,7 +30,7 @@ test.skip('should init the logger when a message without body is passed', t => {
   }))
 })
 
-test.skip('should init the logger when a message without a body is passed', t => {
+test('should init the logger when a message without a body is passed', t => {
   t.plan(1)
   log.init = sinon.stub()
 
@@ -53,7 +53,7 @@ test.skip('should init the logger when a message without a body is passed', t =>
   }))
 })
 
-test.skip('should init the logger when a message with a body, without kthid or ug1name is passed', t => {
+test('should init the logger when a message with a body, without kthid or ug1name is passed', t => {
   t.plan(1)
   log.init = sinon.stub()
 
@@ -77,7 +77,7 @@ test.skip('should init the logger when a message with a body, without kthid or u
   }))
 })
 
-test.skip('should init the logger when a message with a body, with kthid and ug1name is passed', t => {
+test('should init the logger when a message with a body, with kthid and ug1name is passed', t => {
   t.plan(1)
   log.init = sinon.stub()
 
@@ -101,7 +101,7 @@ test.skip('should init the logger when a message with a body, with kthid and ug1
   }))
 })
 
-test.skip('should init the logger without any message settings when null message is passed', t => {
+test('should init the logger without any message settings when null message is passed', t => {
   t.plan(1)
   log.init = sinon.stub()
 
