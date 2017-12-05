@@ -12,7 +12,7 @@ addons:
 before_script:
 - cp config/localSettings.js.in config/localSettings.js
 script:
-- yarn install --ignore-engines
+- npm install
 - npx standard
 - npm test
 - npm run test:integration
