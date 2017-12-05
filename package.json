@@ -6,7 +6,7 @@
   "main": "app.js",
   "private": true,
   "scripts": {
-    "test": "cross-env NODE_ENV=development tape \"test/unit/**/*.js\" | tap-spec",
+    "test": "cross-env NODE§_ENV=development tape \"test/unit/**/*.js\" | tap-spec",
     "test:integration": "cross-env NODE_ENV=development tape \"test/integration/**/*.js\" | tap-spec",
     "coverage": "cross-env NODE_ENV=development istanbul cover tape -- \"messages/*.js\" -- \"server/**/*.js\" -- \"test/**/*.js\"",
     "verify": "npm test && npm run codecheck",
@@ -16,10 +16,6 @@
     "clearDeadLetter": "node scripts/clearDeadLetter.js",
     "readDeadLetter": "node scripts/readDeadLetter.js"
   },
-  "pre-push": [
-    "codecheck",
-    "test"
-  ],
   "resolutions": {
     "azure-arm-intune": "1.0.0-preview"
   },
@@ -47,7 +43,6 @@
     "istanbul": "^0.4.5",
     "kth-canvas-utilities": "github:kth/kth-canvas-utilities",
     "node-queue-adapter": "github:kth/node-queue-adapter",
-    "pre-push": "^0.1.1",
     "proxyquire": "^1.7.11",
     "randomstring": "^1.1.5",
     "rewire": "^2.5.2",
