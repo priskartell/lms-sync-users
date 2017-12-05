@@ -48,8 +48,7 @@
     "sinon": "^3.2.1",
     "standard": "^10.0.2",
     "tap-spec": "^4.1.1",
-    "tape": "^4.6.3",
-    "yarn": "^0.27.5"
+    "tape": "^4.6.3"
   },
   "optionalDependencies": {
     "nodemon": "^1.11.0"
