@@ -9,8 +9,6 @@
     "test": "cross-env NODE§_ENV=development tape \"test/unit/**/*.js\" | tap-spec",
     "test:integration": "cross-env NODE_ENV=development tape \"test/integration/**/*.js\" | tap-spec",
     "coverage": "cross-env NODE_ENV=development istanbul cover tape -- \"messages/*.js\" -- \"server/**/*.js\" -- \"test/**/*.js\"",
-    "verify": "npm test && npm run codecheck",
-    "codecheck": "standard",
     "installAndStart": "yarn install --ignore-engines && npm start",
     "start": "cross-env NODE_ENV=development nodemon app.js",
     "clearDeadLetter": "node scripts/clearDeadLetter.js",

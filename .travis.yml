@@ -13,6 +13,7 @@ before_script:
 - cp config/localSettings.js.in config/localSettings.js
 script:
 - yarn install --ignore-engines
+- npx standard
 - npm test
 - npm run test:integration
 notifications:
