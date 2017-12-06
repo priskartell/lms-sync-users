@@ -25,16 +25,23 @@ async function createFile () {
   const canvasApi = new CanvasApi(apiUrl, apiKey)
   try {
     await csvFile.writeLine(['section_id', 'user_id', 'role', 'status'], 'csv/unenrollObservers.csv')
-    // const allSisImports = await canvasApi.recursePages(`${apiUrl}/accounts/1/sis_imports?created_since=${from}&per_page=100`)
+
     const courses = await canvasApi.recursePages(`${apiUrl}/accounts/1/courses?per_page=100`)
+
+    // const courses = await canvasApi.requestUrl(`accounts/1/courses?per_page=100`)
+    // const course = courses[0]
+    // course.id = 2339
+
     for (let course of courses) {
       console.log(course)
-      const enrollments = await canvasApi.recursePages(`${apiUrl}/courses/${course.id}/enrollments?per_page=100`) // ?type[]=ObserverEnrollment
+
+      const enrollments = await canvasApi.recursePages(`${apiUrl}/courses/${course.id}/enrollments?type[]=ObserverEnrollment&per_page=100`)
       for (enrollment of enrollments) {
-        // if (enrollment.sis_section_id) {
+        console.log(enrollment)
+        if (enrollment.sis_section_id) {
             // TODO Only removing observers from sections. Guess we should also remove from courses?
-          await csvFile.writeLine([enrollment.sis_section_id, enrollment.user_id, 'Observer', 'deleted'], 'csv/unenrollObservers.csv')
-        // }
+          await csvFile.writeLine([enrollment.sis_section_id, enrollment.user_id, 'ObserverEnrollment', 'deleted'], 'csv/unenrollObservers.csv')
+        }
       }
     }
     console.log('Done. Now upload the sis file to canvas.')
