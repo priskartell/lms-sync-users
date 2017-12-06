@@ -19,8 +19,7 @@ async function createFile () {
   const {apiKey} = await inquirer.prompt({
     message: 'Klistra in api nyckel till Canvas här',
     name: 'apiKey',
-    type: 'string',
-    default: '8779~66Y8d1yIlORRWAZh7TTc3cgUMVtV92Tm9rYaj36UIsSzT1yTAcSiLsaxhwIPsIy0'
+    type: 'string'
   })
 
   const canvasApi = new CanvasApi(apiUrl, apiKey)
@@ -32,13 +31,13 @@ async function createFile () {
       console.log(course)
       const enrollments = await canvasApi.recursePages(`${apiUrl}/courses/${course.id}/enrollments?per_page=100`) // ?type[]=ObserverEnrollment
       for (enrollment of enrollments) {
-        if (enrollment.sis_section_id) {
+        // if (enrollment.sis_section_id) {
             // TODO Only removing observers from sections. Guess we should also remove from courses?
           await csvFile.writeLine([enrollment.sis_section_id, enrollment.user_id, 'Observer', 'deleted'], 'csv/unenrollObservers.csv')
-        }
+        // }
       }
-      console.log('Done. Now upload the sis file to canvas.')
     }
+    console.log('Done. Now upload the sis file to canvas.')
   } catch (err) {
     console.error(err)
   }
