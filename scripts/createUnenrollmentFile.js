@@ -27,6 +27,7 @@ async function createFile () {
     await csvFile.writeLine(['section_id', 'user_id', 'role', 'status'], 'csv/unenrollObservers.csv')
 
     const courses = await canvasApi.recursePages(`${apiUrl}/accounts/1/courses?per_page=100`)
+    // const courses = await canvasApi.requestUrl(`accounts/1/courses?per_page=100`)
 
     // const courses = await canvasApi.requestUrl(`accounts/1/courses?per_page=100`)
     // const course = courses[0]
@@ -36,11 +37,12 @@ async function createFile () {
       console.log(course)
 
       const enrollments = await canvasApi.recursePages(`${apiUrl}/courses/${course.id}/enrollments?type[]=ObserverEnrollment&per_page=100`)
+      // const enrollments = await canvasApi.recursePages(`${apiUrl}/courses/${course.id}/enrollments?per_page=100`)
       for (enrollment of enrollments) {
         console.log(enrollment)
         if (enrollment.sis_section_id) {
             // TODO Only removing observers from sections. Guess we should also remove from courses?
-          await csvFile.writeLine([enrollment.sis_section_id, enrollment.user_id, 'ObserverEnrollment', 'deleted'], 'csv/unenrollObservers.csv')
+          await csvFile.writeLine([enrollment.sis_section_id, enrollment.sis_user_id, 'ObserverEnrollment', 'deleted'], 'csv/unenrollObservers.csv')
         }
       }
     }
