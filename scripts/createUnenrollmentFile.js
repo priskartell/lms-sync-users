@@ -38,17 +38,21 @@ async function createFile () {
     // course.id = 2339
 
     for (let course of courses) {
-      const enrollments = await canvasApi.recursePages(`${apiUrl}/courses/${course.id}/enrollments?type[]=ObserverEnrollment&per_page=100`)
-      // const enrollments = await canvasApi.recursePages(`${apiUrl}/courses/${course.id}/enrollments?per_page=100`)
-      for (enrollment of enrollments) {
-        console.log(':::::::::::::. enrollment:',enrollment , '------------------')
-        if (enrollment.sis_section_id) {
-          console.log('Yes, enrollment is in a section', enrollment.sis_section_id)
-            // TODO Only removing observers from sections. Guess we should also remove from courses?
-          await csvFile.writeLine([enrollment.sis_section_id, enrollment.sis_user_id, 'ObserverEnrollment', 'deleted'], sectionFileName)
-        }else{
-          console.log('enrollment is in a course?')
+      try {
+        const enrollments = await canvasApi.recursePages(`${apiUrl}/courses/${course.id}/enrollments?type[]=ObserverEnrollment&per_page=100`)
+        // const enrollments = await canvasApi.recursePages(`${apiUrl}/courses/${course.id}/enrollments?per_page=100`)
+        for (let enrollment of enrollments) {
+          console.log(':::::::::::::. enrollment:', enrollment, '------------------')
+          if (enrollment.sis_section_id) {
+            console.log('Yes, enrollment is in a section', enrollment.sis_section_id)
+              // TODO Only removing observers from sections. Guess we should also remove from courses?
+            await csvFile.writeLine([enrollment.sis_section_id, enrollment.sis_user_id, 'ObserverEnrollment', 'deleted'], sectionFileName)
+          } else {
+            console.log('enrollment is in a course?')
+          }
         }
+      } catch (e) {
+        console.log('an error occured, continue', e)
       }
     }
     console.log('Done. Now upload the sis file to canvas.')
