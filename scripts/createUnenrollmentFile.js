@@ -42,13 +42,18 @@ async function createFile () {
         const enrollments = await canvasApi.recursePages(`${apiUrl}/courses/${course.id}/enrollments?type[]=ObserverEnrollment&per_page=100`)
         // const enrollments = await canvasApi.recursePages(`${apiUrl}/courses/${course.id}/enrollments?per_page=100`)
         for (let enrollment of enrollments) {
-          console.log(':::::::::::::. enrollment:', enrollment, '------------------')
-          if (enrollment.sis_section_id) {
-            console.log('Yes, enrollment is in a section', enrollment.sis_section_id)
+          console.log('enrollment:', enrollment)
+
+          if (enrollment.role === 'Applied pending registration (Observer)') {
               // TODO Only removing observers from sections. Guess we should also remove from courses?
-            await csvFile.writeLine([enrollment.sis_section_id, enrollment.sis_user_id, 'ObserverEnrollment', 'deleted'], sectionFileName)
+              if(enrollment.sis_section_id){
+                await csvFile.writeLine([enrollment.sis_section_id, enrollment.sis_user_id, 'Applied pending registration (Observer)', 'deleted'], sectionFileName)
+              }else{
+                console.log('user is not enrolled in a section...')
+              }
+
           } else {
-            console.log('enrollment is in a course?')
+            console.log('enrollment is not an antagen.', enrollment)
           }
         }
       } catch (e) {
