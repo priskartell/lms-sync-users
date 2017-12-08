@@ -46,12 +46,11 @@ async function createFile () {
 
           if (enrollment.role === 'Applied pending registration (Observer)') {
               // TODO Only removing observers from sections. Guess we should also remove from courses?
-              if(enrollment.sis_section_id){
-                await csvFile.writeLine([enrollment.sis_section_id, enrollment.sis_user_id, 'Applied pending registration (Observer)', 'deleted'], sectionFileName)
-              }else{
-                console.log('user is not enrolled in a section...')
-              }
-
+            if (enrollment.sis_section_id) {
+              await csvFile.writeLine([enrollment.sis_section_id, enrollment.sis_user_id, 'Applied pending registration (Observer)', 'deleted'], sectionFileName)
+            } else {
+              console.log('user is not enrolled in a section...')
+            }
           } else {
             console.log('enrollment is not an antagen.', enrollment)
           }
