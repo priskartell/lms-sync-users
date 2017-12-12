@@ -18,7 +18,6 @@ function parseKey ({ug1Name, _desc}) {
     return ugParser.parseKeyTeacher(ug1Name)
   }
 
-  log.error('Course code not parsable from Key. type, ', userType + ' ug1Name, ' + ug1Name)
   throw new Error('Key parse error, type, ' + userType + ' ug1Name, ' + ug1Name)
 }
 
