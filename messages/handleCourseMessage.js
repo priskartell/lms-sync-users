@@ -10,7 +10,7 @@ const createCsvFile = require('./createCsvFile')
 function parseKey ({ug1Name, _desc}) {
   const {userType} = _desc
 
-  if ([type.students, type.antagna].includes(userType)) {
+  if ([type.students].includes(userType)) {
     return ugParser.parseKeyStudent(ug1Name)
   }
 
@@ -18,7 +18,6 @@ function parseKey ({ug1Name, _desc}) {
     return ugParser.parseKeyTeacher(ug1Name)
   }
 
-  log.error('Course code not parsable from Key. type, ', userType + ' ug1Name, ' + ug1Name)
   throw new Error('Key parse error, type, ' + userType + ' ug1Name, ' + ug1Name)
 }
 

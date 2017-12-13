@@ -92,35 +92,6 @@ test('should enroll a student in an existing course in canvas', t => {
   })
 })
 
-test('should enroll an observer 👀 in an existing course in canvas', t => {
-  t.plan(3)
-
-  const courseCode0 = 'A' + randomstring.generate(1)
-  const courseCode1 = randomstring.generate(4)
-  const userKthId = 'u1znmoik'
-
-  const message = {
-    kthid: 'u2vvutyd',
-    ugClass: 'group',
-    deleted: false,
-    ug1Name: `ladok2.kurser.${courseCode0}.${courseCode1}.antagna_20171.1`,
-    member: [ userKthId ]
-  }
-
-  const course = {
-    name: 'Emil testar',
-    'course_code': courseCode0 + courseCode1,
-    'sis_course_id': `${courseCode0 + courseCode1}VT171`
-  }
-
-  processMessage(message, course)
-  .then((enrolledUser) => {
-    t.ok(enrolledUser)
-    t.equal(enrolledUser.role, 'Applied pending registration (Observer)')
-    t.equal(enrolledUser.sis_user_id, userKthId)
-  })
-})
-
 test('should 𝙣𝙤𝙩 enroll an observer when he is added to the parent group, but return with the message and type:unknown', t => {
   t.plan(1)
   const message = {

@@ -4,12 +4,10 @@ const proxyquire = require('proxyquire')
 require('rewire-global')
 const sinon = require('sinon')
 
-test('should parse key:student for antagna', t => {
+test('should NOT parse key:student for antagna', t => {
   const ugParser = {parseKeyStudent: sinon.spy()}
   const handleCourseMessages = proxyquire('../../../messages/handleCourseMessage', {'./ugParser': ugParser})
-
-  handleCourseMessages.parseKey({ug1Name: 'ladok2.kurser.SF.1626.antagna_20171.1', _desc: {userType: type.antagna}})
-  t.ok(ugParser.parseKeyStudent.called)
+  t.throws(() => handleCourseMessages.parseKey({ug1Name: 'ladok2.kurser.SF.1626.antagna_20171.1', _desc: {userType: type.antagna}}))
   t.end()
 })
 
