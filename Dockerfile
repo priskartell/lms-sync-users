@@ -1,6 +1,4 @@
-FROM kthse/kth-nodejs-api:2.3
-
-MAINTAINER KTH Webb "cortina.developers@kth.se"
+FROM kthse/kth-nodejs-api:2.4
 
 RUN mkdir -p /npm && \
     mkdir -p /application
@@ -9,7 +7,7 @@ RUN mkdir -p /npm && \
 WORKDIR /npm
 COPY ["package.json", "package.json"]
 
-RUN yarn install --production --ignore-engines --no-optional && \
+RUN npm install --production --ignore-engines --no-optional && \
     cp -a /npm/node_modules /application && \
     rm -rf /npm
 
@@ -23,6 +21,7 @@ COPY ["config/secretSettings.js", "config/localSettings.js"]
 COPY ["app.js", "app.js"]
 COPY ["canvasApi.js", "canvasApi.js"]
 COPY ["csvFile.js", "csvFile.js"]
+COPY ["forkedApp.js", "forkedApp.js"]
 COPY ["package.json", "package.json"]
 
 # Source files directories

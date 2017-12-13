@@ -16,12 +16,21 @@ const {getEnv} = require('kth-node-configuration')
 
 module.exports = {
   secure: {
+    ldap: {
+      client: {
+        url: 'ldaps://ldap.ug.kth.se'
+      },
+      bind: {
+        username: 'system-lms-integration@ug.kth.se',
+        password: getEnv('LDAP_PASSWORD')
+      }
+    },
     canvas: {
       apiKey: getEnv('CANVAS_API_KEY')
     },
     azure: {
-      SharedAccessKey: getEnv('AZURE_SHARED_ACCESS_KEY'),
-      StorageConnectionString: getEnv('AZURE_STORAGE_CONNECTION_STRING')
+      queueName: getEnv('AZURE_QUEUE_NAME'),
+      SharedAccessKey: getEnv('AZURE_SHARED_ACCESS_KEY')
     }
   }
 }
