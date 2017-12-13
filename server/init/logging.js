@@ -1,4 +1,3 @@
-console.log('---------------------- logging')
 const log = require('kth-node-log')
 const config = require('./configuration')
 const packageFile = require('../../package.json')
