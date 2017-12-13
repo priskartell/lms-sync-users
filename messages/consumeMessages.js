@@ -13,9 +13,9 @@ const urlencode = require('urlencode')
 const client = new AMQPClient(Policy.Utils.RenewOnSettle(1, 1, Policy.ServiceBusQueue))
 let _onDetached
 
-client.once('connection:closed', msg => log.info('connection:closed event received', msg))
+client.on('connection:closed', msg => log.info('connection:closed event received', msg))
 client.on('connection:opened', msg => log.info('connection to azure opened'))
-client.once('connection:disconnected', msg => log.info('connection to azure disconnected'))
+client.on('connection:disconnected', msg => log.info('connection to azure disconnected'))
 
 async function start () {
   const sharedAccessKey = process.env.AZURE_SHARED_ACCESS_KEY || config.secure.azure.SharedAccessKey
