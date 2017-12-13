@@ -30,7 +30,10 @@ async function start () {
 
   receiver.on('errorReceived', err => log.warn('An error occured when trying to receive message from queue', err))
 
-  receiver.on('detached', msg => _onDetached && _onDetached(msg))
+  receiver.on('detached', msg => {
+    log.info('detached received for receiver ', receiver.id)
+    _onDetached && _onDetached(msg)
+  })
 
   receiver.on('message', async message => {
     log.info(`New message from ug queue for receiver ${receiver.id}`, message)
