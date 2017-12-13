@@ -18,11 +18,11 @@ module.exports = {
   secure: {
     ldap: {
       client: {
-	url: 'ldaps://ldap.ug.kth.se'
+        url: 'ldaps://ldap.ug.kth.se'
       },
       bind: {
-	username: 'system-lms-integration@ug.kth.se',
-	password: getEnv('LDAP_PASSWORD')
+        username: 'system-lms-integration@ug.kth.se',
+        password: getEnv('LDAP_PASSWORD')
       }
     },
     canvas: {
@@ -30,7 +30,7 @@ module.exports = {
     },
     azure: {
       queueName: getEnv('AZURE_QUEUE_NAME'),
-      SharedAccessKey: getEnv('AZURE_SHARED_ACCESS_KEY'),
+      SharedAccessKey: getEnv('AZURE_SHARED_ACCESS_KEY')
     }
   }
 }
