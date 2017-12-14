@@ -92,11 +92,11 @@ test('should enroll a student in an existing course in canvas', t => {
   })
 })
 
-test('should 𝙣𝙤𝙩 enroll an observer when he is added to the parent group, but return with the message and type:unknown', t => {
+test('should 𝙣𝙤𝙩 enroll an antagen, but return with the message and type:unknown', t => {
   t.plan(1)
   const message = {
     ugClass: 'group',
-    ug1Name: 'ladok2.kurser.SF1624.antagna_20171',
+    ug1Name: 'ladok2.kurser.SF1624.antagna_20171.1',
     member: ['u1znmoik']
   }
 
