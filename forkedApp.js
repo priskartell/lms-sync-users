@@ -10,7 +10,13 @@ consumeMessages.onDetached = function (msg) {
   process.send({action: 'restart'})
 }
 
-consumeMessages.start()
+// This is a temporary fix to make sure that the ref server won't run with the
+// production settings. It can safely be removed once we only use docker.
+if (config.secure.dontRun) {
+  log.info('dontRun is set, skip consuming messages')
+}else{
+  consumeMessages.start()
+}
 
 app.use(config.full.proxyPrefixPath.uri, systemRoutes)
 app.start()
