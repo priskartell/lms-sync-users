@@ -14,7 +14,7 @@ consumeMessages.onDetached = function (msg) {
 // production settings. It can safely be removed once we only use docker.
 if (config.secure.dontRun) {
   log.info('dontRun is set, skip consuming messages')
-}else{
+} else {
   consumeMessages.start()
 }
 
