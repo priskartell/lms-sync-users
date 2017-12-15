@@ -39,7 +39,6 @@
     "concurrently": "^3.4.0",
     "cross-env": "^5.0.1",
     "istanbul": "^0.4.5",
-    "kth-canvas-utilities": "github:kth/kth-canvas-utilities",
     "node-queue-adapter": "github:kth/node-queue-adapter",
     "proxyquire": "^1.7.11",
     "randomstring": "^1.1.5",
