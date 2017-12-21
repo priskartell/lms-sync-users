@@ -22,15 +22,6 @@ async function connectAndHandle () {
       message: 'Klistra in en access key till kön canvas-prod i Azure. Den finns här: https://tinyurl.com/ydfquezj',
       name: 'sharedAccessKey'
     })
-    let confirmed
-    if (action === 'delete') {
-      confirmed = await inquirer.prompt({
-        message: 'Vill du verkligen ta bort meddelandena?',
-        name: 'confirmed',
-        type: 'confirm',
-        default: false
-      }).confirmed
-    }
 
     const client = await new AMQPClient(Policy.Utils.RenewOnSettle(1, 1, Policy.ServiceBusQueue))
     await client.connect(`amqps://${config.azure.SharedAccessKeyName}:${urlencode(sharedAccessKey)}@${config.azure.host}`)
@@ -39,7 +30,7 @@ async function connectAndHandle () {
 
     receiver.on('message', message => {
       console.log('new message', JSON.stringify(message, null, 4))
-      if (action === 'delete' && confirmed) {
+      if (action === 'delete') {
         receiver.accept(message)
       } else {
         receiver.release(message)
