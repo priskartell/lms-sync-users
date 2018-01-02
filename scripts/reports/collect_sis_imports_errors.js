@@ -51,7 +51,7 @@ async function listErrors () {
     console.log('Searching for warnings and errors:'.green)
 
     for (let url of reportUrls) {
-      const warnings = await request(url)
+      const warnings = await request({uri : url, headers: {"Connection": "keep-alive"} })
       let filteredWarn = warnings.split('\n')
       .filter(warning => !warning.includes('Neither course nor section existed'))
       .filter(warning => !warning.includes('An enrollment referenced a non-existent section'))
