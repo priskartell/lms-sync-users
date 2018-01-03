@@ -9,9 +9,9 @@ async function createFile () {
       message: 'Vilken miljö?',
       name: 'api',
       choices: [
-        {name: 'test', value: {apiUrl:'https://kth.test.instructure.com/api/v1', roleId:57}},
-        {name: 'prod', value: {apiUrl:'https://kth.instructure.com/api/v1', roleId:25}},
-        {name: 'beta', value: {apiUrl:'https://kth.beta.instructure.com/api/v1', roleId:25}}
+        {name: 'test', value: {apiUrl: 'https://kth.test.instructure.com/api/v1', roleId: 57}},
+        {name: 'prod', value: {apiUrl: 'https://kth.instructure.com/api/v1', roleId: 25}},
+        {name: 'beta', value: {apiUrl: 'https://kth.beta.instructure.com/api/v1', roleId: 25}}
       ],
       type: 'list'
     })
@@ -39,7 +39,7 @@ async function createFile () {
     // const courses = await canvasApi.recursePages(`${apiUrl}/accounts/1/courses?per_page=100`)
     const courses = [
       { id: 17,
-      name: 'Lasse Wingård sandbox'},
+        name: 'Lasse Wingård sandbox'},
       { id: 2221,
         name: 'LT1018 VT17-1 Ämnesdidaktik'},
       { id: 2413,
@@ -70,7 +70,7 @@ async function createFile () {
           const newEnrollment = {
             enrollment: {
               user_id: enrollment.user_id,
-              role_id:roleId
+              role_id: roleId
             }
           }
 
