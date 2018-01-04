@@ -11,7 +11,7 @@
  const moment = require('moment')
  const [waitAmount, waitUnit] = [10, 'hours']
  const history = require('../messages/history')
-
+ const log = require('../server/init/logging')
 /* GET /_about
  * About page
  */
@@ -55,13 +55,14 @@
 
      const idleTimeOk = history.idleTimeStart.isAfter(checkTimeAgainst)
 
-     console.log(`checking idle time: last time a message was read was: ${history.idleTimeStart}, compare this to now minus some predifined time: ${checkTimeAgainst}`)
-
-     res.send(`APPLICATION_STATUS: ${idleTimeOk && canvasKeyOk ? 'OK' : 'ERROR'} ${packageFile.name}-${packageFile.version}-${version.jenkinsBuild}
+     log.info(`checking idle time: last time a message was read was: ${history.idleTimeStart}, compare this to now minus some predifined time: ${checkTimeAgainst}`)
+     const statusStr = `APPLICATION_STATUS: ${idleTimeOk && canvasKeyOk ? 'OK' : 'ERROR'} ${packageFile.name}-${packageFile.version}-${version.jenkinsBuild}
 READ MESSAGE FROM AZURE: ${idleTimeOk ? `OK. The server has waited less then ${waitAmount} ${waitUnit} for a message.` : `ERROR. The server has not received a message in the last ${waitAmount} ${waitUnit}`}
 CANVAS: ${canvasOk ? 'OK' : 'Canvas is down'}
 CANVASKEY: ${canvasKeyOk ? 'OK' : 'Invalid access token (in case if CANVAS is "OK")'}
-  `)
+  `
+    log.info('monitor page displays:', statusStr)
+     res.send(statusStr)
    })
  }
 
