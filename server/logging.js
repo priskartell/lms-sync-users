@@ -1,4 +1,4 @@
-const config = require('../config/serverSettings')
+const config = require('../config')
 const packageFile = require('../package.json')
 
 const bunyan = require('bunyan')

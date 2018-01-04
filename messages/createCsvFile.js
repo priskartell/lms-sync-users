@@ -1,5 +1,5 @@
 const {writeLine} = require('../csvFile')
-const config = require('../config/serverSettings')
+const config = require('../config')
 const Promise = require('bluebird')
 const fs = require('fs')
 const readFile = Promise.promisify(fs.readFile)

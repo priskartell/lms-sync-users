@@ -1,5 +1,5 @@
 'use strict'
-const config = require('../config/serverSettings')
+const config = require('../config')
 const log = require('../server/logging')
 const EventEmitter = require('events')
 const eventEmitter = new EventEmitter()

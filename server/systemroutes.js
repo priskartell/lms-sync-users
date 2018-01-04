@@ -5,7 +5,7 @@
  const rp = require('request-promise')
  const express = require('express')
  const router = express.Router()
- const config = require('../config/serverSettings')
+ const config = require('../config')
  const version = require('../config/version')
  const packageFile = require('../package.json')
  const moment = require('moment')

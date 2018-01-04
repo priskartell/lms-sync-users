@@ -1,4 +1,4 @@
-const config = require('./config/serverSettings')
+const config = require('./config')
 const logger = require('./server/logging')
 const CanvasApi = require('kth-canvas-api')
 const apiUrl = config.canvas.apiUrl || config.canvas.apiUrl

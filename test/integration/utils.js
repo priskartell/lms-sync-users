@@ -1,4 +1,4 @@
-const config = require('../../config/serverSettings')
+const config = require('../../config')
 const Promise = require('bluebird')
 const rewire = require('rewire')
 const consumeMessages = rewire('../../messages/consumeMessages')

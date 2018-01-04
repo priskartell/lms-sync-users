@@ -1,7 +1,7 @@
 const consumeMessages = require('./messages/consumeMessages')
 const app = require('kth-node-server')
 const systemRoutes = require('./server/systemroutes')
-const config = require('./config/serverSettings')
+const config = require('./config')
 const log = require('./server/logging')
 
 consumeMessages.onDetached = function (msg) {
