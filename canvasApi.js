@@ -1,5 +1,5 @@
 const config = require('./server/init/configuration')
-const logger = require('kth-node-log')
+const logger = require('./server/init/logging')
 const CanvasApi = require('kth-canvas-api')
 const apiUrl = config.secure.canvas.apiUrl || config.full.canvas.apiUrl
 

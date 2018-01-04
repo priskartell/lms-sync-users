@@ -1,32 +1,36 @@
-const log = require('kth-node-log')
 const config = require('./configuration')
 const packageFile = require('../../package.json')
+
+const bunyan = require('bunyan')
+
+function init (extraConfiguration) {
+  const logConf = {
+    name: 'node-logger',
+    app: packageFile.name,
+    env: environment,
+    level: configuration.log.level,
+    src: configuration.log.src,
+    ...extraConfiguration
+  }
+  return bunyan.createLogger(logConf)
+}
 
 const configuration = config.full.logging
 const environment = config.env
 
-const logConfiguration = {
-  name: packageFile.name,
-  app: packageFile.name,
-  env: environment,
-  level: configuration.log.level,
-  console: configuration.console,
-  stdout: configuration.stdout,
-  src: configuration.log.src
-}
-
 // Use 'let' so we can create other instances instead of this one
-let logger = log.init(logConfiguration)
+let logger = init()
 
 /*
 Wrap Bunyans log functions so we
 can create new Bunyan instances without the calling code having to bother
-about which instance to use
+about which instance to use, but the 'src' configuration logs the calling code,
+instead of logging lines in this file
 */
 module.exports = {
   init (extraConfiguration) {
-    log.trace('initializing log with settings', extraConfiguration)
-    logger = log.init(logConfiguration, extraConfiguration)
+    logger.trace('initializing log with settings', extraConfiguration)
+    logger = init(extraConfiguration)
   },
   get trace () {
     return logger.trace.bind(logger)
@@ -35,7 +39,6 @@ module.exports = {
     return logger.debug.bind(logger)
   },
   get info () {
-    console.log('get info!')
     return logger.info.bind(logger)
   },
   get warn () {
