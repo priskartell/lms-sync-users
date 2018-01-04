@@ -1,6 +1,6 @@
 'use strict'
 const { fork } = require('child_process')
-const log = require('./server/init/logging')
+const log = require('./server/logging')
 
 function start () {
   let forked = fork('./forkedApp')

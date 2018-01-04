@@ -1,11 +1,11 @@
-const config = require('./server/init/configuration')
-const logger = require('./server/init/logging')
+const config = require('./config/serverSettings')
+const logger = require('./server/logging')
 const CanvasApi = require('kth-canvas-api')
-const apiUrl = config.secure.canvas.apiUrl || config.full.canvas.apiUrl
+const apiUrl = config.canvas.apiUrl || config.canvas.apiUrl
 
 console.log('using canvas api at:', apiUrl)
 
-const canvasApi = new CanvasApi(apiUrl, process.env.CANVAS_API_KEY || config.secure.canvas.apiKey)
+const canvasApi = new CanvasApi(apiUrl, process.env.CANVAS_API_KEY || config.canvas.apiKey)
 
 canvasApi.logger = logger
 

@@ -2,7 +2,7 @@
 
 const {type} = require('message-type')
 const canvasApi = require('../canvasApi')
-const log = require('../server/init/logging')
+const log = require('../server/logging')
 const ugParser = require('./ugParser')
 const calcSisForOmregistrerade = require('./calcSisForOmregistrerade')
 const createCsvFile = require('./createCsvFile')

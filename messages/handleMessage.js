@@ -3,7 +3,7 @@
 const {handleCourseMessage} = require('./handleCourseMessage')
 const handleUserMessage = require('./handleUserMessage')
 const {type} = require('message-type')
-const log = require('../server/init/logging')
+const log = require('../server/logging')
 
 module.exports = function (msg) {
   log.info({'metric.handleMessage': 1})

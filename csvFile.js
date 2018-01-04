@@ -1,6 +1,6 @@
 const Promise = require('bluebird')
 const fs = Promise.promisifyAll(require('fs'))
-const log = require('./server/init/logging')
+const log = require('./server/logging')
 
 function escapeCsvData (str) {
   str = '' + str

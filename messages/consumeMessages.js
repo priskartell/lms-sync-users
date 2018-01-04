@@ -1,6 +1,6 @@
 'use strict'
-const config = require('../server/init/configuration')
-const log = require('../server/init/logging')
+const config = require('../config/serverSettings')
+const log = require('../server/logging')
 const EventEmitter = require('events')
 const eventEmitter = new EventEmitter()
 const history = require('./history')
@@ -18,12 +18,12 @@ client.on('connection:opened', msg => log.info('connection to azure opened'))
 client.on('connection:disconnected', msg => log.info('connection to azure disconnected'))
 
 async function start () {
-  const sharedAccessKey = process.env.AZURE_SHARED_ACCESS_KEY || config.secure.azure.SharedAccessKey
-  log.info('connecting with the following azure url:', `amqps://${config.full.azure.SharedAccessKeyName}:${(sharedAccessKey || '').replace(/\w/g, 'x')}@${config.full.azure.host}`)
-  const queueName = config.secure.azure.queueName || config.full.azure.queueName
+  const sharedAccessKey = process.env.AZURE_SHARED_ACCESS_KEY || config.azure.SharedAccessKey
+  log.info('connecting with the following azure url:', `amqps://${config.azure.SharedAccessKeyName}:${(sharedAccessKey || '').replace(/\w/g, 'x')}@${config.azure.host}`)
+  const queueName = config.azure.queueName || config.azure.queueName
   log.info('connecting to the queue with name ', queueName)
 
-  await client.connect(`amqps://${config.full.azure.SharedAccessKeyName}:${urlencode(sharedAccessKey)}@${config.full.azure.host}`)
+  await client.connect(`amqps://${config.azure.SharedAccessKeyName}:${urlencode(sharedAccessKey)}@${config.azure.host}`)
   const receiver = await client.createReceiver(queueName)
 
   log.info('receiver created:', receiver.id)

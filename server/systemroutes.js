@@ -5,13 +5,13 @@
  const rp = require('request-promise')
  const express = require('express')
  const router = express.Router()
- const config = require('./init/configuration')
+ const config = require('../config/serverSettings')
  const version = require('../config/version')
  const packageFile = require('../package.json')
  const moment = require('moment')
  const [waitAmount, waitUnit] = [10, 'hours']
  const history = require('../messages/history')
- const log = require('../server/init/logging')
+ const log = require('../server/logging')
 /* GET /_about
  * About page
  */
@@ -73,7 +73,7 @@ CANVASKEY: ${canvasKeyOk ? 'OK' : 'Invalid access token (in case if CANVAS is "O
  router.get('/_about', _about)
 
  router.get('/', function (req, res) {
-   res.redirect(`${config.full.proxyPrefixPath.uri}/_monitor`)
+   res.redirect(`${config.proxyPrefixPath.uri}/_monitor`)
  })
 
  module.exports = router

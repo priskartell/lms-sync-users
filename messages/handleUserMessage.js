@@ -2,7 +2,7 @@
 
 const canvasApi = require('../canvasApi')
 require('colors')
-const log = require('../server/init/logging')
+const log = require('../server/logging')
 
 function isInScope (msg) {
   var affArray = msg.affiliation
