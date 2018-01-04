@@ -36,23 +36,24 @@ async function createFile () {
     await csvFile.writeLine(['section_id', 'user_id', 'role', 'status'], sectionFileName)
     await csvFile.writeLine(['course_id', 'user_id', 'role', 'status'], coursesFileName)
 
-    // const courses = await canvasApi.recursePages(`${apiUrl}/accounts/1/courses?per_page=100`)
-    const courses = [
-      { id: 17,
-        name: 'Lasse Wingård sandbox'},
-      { id: 2221,
-        name: 'LT1018 VT17-1 Ämnesdidaktik'},
-      { id: 2413,
-        name: 'II2202 HT17-1 Research Methodology and Scientific Writing'},
-      { id: 2414,
-        name: 'II2202 TIVNM HT17-2 Research Methodology and Scientific Writing'},
-      { id: 2858,
-        name: 'KH0023 TBASD HT17-1 Kemi för basår I'},
-      { id: 2875,
-        name: 'KH0022/KH0025 HT17/VT18 Fysik för basår'},
-      { id: 3110,
-        name: 'A11P1B HT17-1 Arkitekturprojekt 1:1 Sammansättning, geometri, skala'}
-    ]
+    const courses = await canvasApi.recurse(`/accounts/1/courses?per_page=100`)
+
+    // const courses = [
+    //   { id: 17,
+    //     name: 'Lasse Wingård sandbox'},
+    //   { id: 2221,
+    //     name: 'LT1018 VT17-1 Ämnesdidaktik'},
+    //   { id: 2413,
+    //     name: 'II2202 HT17-1 Research Methodology and Scientific Writing'},
+    //   { id: 2414,
+    //     name: 'II2202 TIVNM HT17-2 Research Methodology and Scientific Writing'},
+    //   { id: 2858,
+    //     name: 'KH0023 TBASD HT17-1 Kemi för basår I'},
+    //   { id: 2875,
+    //     name: 'KH0022/KH0025 HT17/VT18 Fysik för basår'},
+    //   { id: 3110,
+    //     name: 'A11P1B HT17-1 Arkitekturprojekt 1:1 Sammansättning, geometri, skala'}
+    // ]
 
     // List courses with old role
     // for (let course of courses) {
@@ -61,10 +62,11 @@ async function createFile () {
     //     console.log('found antagen in course'.red, course.id)
     //   }
     // }
-
+    const allEnrollments = []
     for (let course of courses) {
       try {
-        const enrollments = await canvasApi.recursePages(`${apiUrl}/courses/${course.id}/enrollments?role[]=Applied%20pending%20registration%20(Observer)&per_page=100`)
+        const enrollments = await canvasApi.recurse(`/courses/${course.id}/enrollments?role[]=Applied%20pending%20registration%20(Observer)&per_page=100`)
+        allEnrollments.push(...enrollments)
         for (let enrollment of enrollments) {
           // console.log('Enroll the user with the new role (25) instead')
           const newEnrollment = {
@@ -74,8 +76,6 @@ async function createFile () {
             }
           }
 
-          await canvasApi.requestUrl(`/sections/${enrollment.course_section_id}/enrollments`, 'POST', newEnrollment)
-
           // console.log('Unenroll the user with the old role (21)')
           await canvasApi.requestUrl(`/courses/${enrollment.course_id}/enrollments/${enrollment.id}`, 'DELETE')
         }
@@ -84,6 +84,7 @@ async function createFile () {
       }
     }
     console.log('Done.'.green)
+    console.log(JSON.stringify(allEnrollments, null, 4))
   } catch (err) {
     console.error(err)
   }
