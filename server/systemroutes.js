@@ -61,7 +61,7 @@ READ MESSAGE FROM AZURE: ${idleTimeOk ? `OK. The server has waited less then ${w
 CANVAS: ${canvasOk ? 'OK' : 'Canvas is down'}
 CANVASKEY: ${canvasKeyOk ? 'OK' : 'Invalid access token (in case if CANVAS is "OK")'}
   `
-    log.info('monitor page displays:', statusStr)
+     log.info('monitor page displays:', statusStr)
      res.send(statusStr)
    })
  }
