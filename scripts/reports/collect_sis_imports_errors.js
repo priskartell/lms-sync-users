@@ -40,7 +40,7 @@ async function listErrors () {
 
     const from = moment().subtract(numOfDays, 'days').utc().toDate().toISOString()
 
-    const allSisImports = await canvasApi.recursePages(`${apiUrl}/accounts/1/sis_imports?created_since=${from}&per_page=100`)
+    const allSisImports = await canvasApi.get(`/accounts/1/sis_imports?created_since=${from}&per_page=100`)
 
     const flattenedSisImports = allSisImports
     .reduce((a, b) => a.concat(b.sis_imports), []) // Flatten every page

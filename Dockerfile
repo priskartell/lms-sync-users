@@ -15,7 +15,6 @@ WORKDIR /application
 
 # Copy config files
 COPY ["config", "config"]
-COPY ["config/secretSettings.js", "config/localSettings.js"]
 
 # Source files in root
 COPY ["app.js", "app.js"]
@@ -27,7 +26,6 @@ COPY ["package.json", "package.json"]
 # Source files directories
 COPY ["server", "server"]
 COPY ["messages", "messages"]
-COPY ["scripts", "scripts"]
 
 EXPOSE 3000
 

@@ -36,12 +36,12 @@ async function createFile () {
     await csvFile.writeLine(['section_id', 'user_id', 'role', 'status'], sectionFileName)
     await csvFile.writeLine(['course_id', 'user_id', 'role', 'status'], coursesFileName)
 
-    const courses = await canvasApi.recurse(`/accounts/1/courses?per_page=100`)
+    const courses = await canvasApi.get(`/accounts/1/courses?per_page=100`)
 
     const allEnrollments = []
     for (let course of courses) {
       try {
-        const enrollments = await canvasApi.recurse(`/courses/${course.id}/enrollments?role[]=Applied%20pending%20registration%20(Observer)&per_page=100`)
+        const enrollments = await canvasApi.get(`/courses/${course.id}/enrollments?role[]=Applied%20pending%20registration%20(Observer)&per_page=100`)
         allEnrollments.push(...enrollments)
         for (let enrollment of enrollments) {
           // console.log('Unenroll the user with the old role (21)')

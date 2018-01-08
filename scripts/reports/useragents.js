@@ -61,7 +61,7 @@ async function listUseragents () {
 
     const pageViewsPerUseragent = {}
     for (let courseId of coursesIds) {
-      let allUsers = await canvasApi.recursePages(`${apiUrl}/courses/${courseId}/users?per_page=100`)
+      let allUsers = await canvasApi.get(`/courses/${courseId}/users?per_page=100`)
 
       for (let user of allUsers) {
         try {
