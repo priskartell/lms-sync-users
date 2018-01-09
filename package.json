@@ -27,7 +27,7 @@
     "dotenv": "^4.0.0",
     "express": "^4.16.2",
     "inquirer": "^4.0.2",
-    "kth-canvas-api": "^0.12.2",
+    "kth-canvas-api": "^0.15.0",
     "kth-node-server": "^3.1.1",
     "message-type": "github:kth/node-message-type#v1.8.0",
     "request": "^2.83.0",
