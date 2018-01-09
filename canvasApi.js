@@ -1,7 +1,7 @@
 const config = require('./config')
 const logger = require('./server/logging')
 const CanvasApi = require('kth-canvas-api')
-const apiUrl = config.canvas.apiUrl || config.canvas.apiUrl
+const apiUrl = config.canvas.apiUrl
 
 logger.info('using canvas api at:', apiUrl)
 
