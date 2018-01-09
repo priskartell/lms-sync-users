@@ -18,4 +18,4 @@ if (config.dontRun) {
 }
 
 app.use(config.proxyPrefixPath.uri, systemRoutes)
-app.start({logger:log})
+app.start({logger: log})
