@@ -1,4 +1,8 @@
+// Read .env file
 require('dotenv').config()
+
+// Read localSettings.js, a dirty fix for making the ansible script deploy as before
+require('dotenv').config({path: './config/localSettings.js'})
 
 module.exports = {
   proxyPrefixPath: {
