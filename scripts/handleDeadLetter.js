@@ -1,11 +1,11 @@
-const config = require('../config/prodSettings')
 const {Client: AMQPClient, Policy} = require('amqp10')
 const urlencode = require('urlencode')
 const inquirer = require('inquirer')
 
 async function connectAndHandle () {
   try {
-    const queueName = `${config.azure.queueName}/$DeadLetterQueue`
+
+    const queueName = `ug-infoclass-2/Subscriptions/canvas-prod/$DeadLetterQueue`
 
     const {action} = await inquirer.prompt(
       {
@@ -24,7 +24,7 @@ async function connectAndHandle () {
     })
 
     const client = await new AMQPClient(Policy.Utils.RenewOnSettle(1, 1, Policy.ServiceBusQueue))
-    await client.connect(`amqps://${config.azure.SharedAccessKeyName}:${urlencode(sharedAccessKey)}@${config.azure.host}`)
+    await client.connect(`amqps://canvas-prod:${urlencode(sharedAccessKey)}@kth-integral.servicebus.windows.net`)
     const receiver = await client.createReceiver(queueName)
     console.log('receiver created:', receiver.id)
 
