@@ -4,7 +4,6 @@ const inquirer = require('inquirer')
 
 async function connectAndHandle () {
   try {
-
     const queueName = `ug-infoclass-2/Subscriptions/canvas-prod/$DeadLetterQueue`
 
     const {action} = await inquirer.prompt(
