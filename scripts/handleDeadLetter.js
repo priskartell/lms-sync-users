@@ -4,8 +4,6 @@ const inquirer = require('inquirer')
 
 async function connectAndHandle () {
   try {
-    const queueName = `ug-infoclass-2/Subscriptions/canvas-prod/$DeadLetterQueue`
-
     const {action} = await inquirer.prompt(
       {
         message: 'Vad vill du göra?',
@@ -17,14 +15,25 @@ async function connectAndHandle () {
         type: 'list'
       })
 
+      const {queue} = await inquirer.prompt(
+        {
+          message: 'Vilken miljö?',
+          name: 'queue',
+          choices: [
+            {name: 'produktion', value: {name:`ug-infoclass-2/Subscriptions/canvas-prod/$DeadLetterQueue`, url:'amqps://canvas-prod'}},
+            {name: 'referens', value: {name:`ug-infoclass-2/Subscriptions/canvas-ref/$DeadLetterQueue`, url:'amqps://canvas-ref'}}
+          ],
+          type: 'list'
+        })
+
     const {sharedAccessKey} = await inquirer.prompt({
-      message: 'Klistra in en access key till kön canvas-prod i Azure. Den finns här: https://tinyurl.com/ydfquezj',
+      message: 'Klistra in en access key till valda kön i Azure. Den finns här: https://tinyurl.com/ydfquezj',
       name: 'sharedAccessKey'
     })
 
     const client = await new AMQPClient(Policy.Utils.RenewOnSettle(1, 1, Policy.ServiceBusQueue))
-    await client.connect(`amqps://canvas-prod:${urlencode(sharedAccessKey)}@kth-integral.servicebus.windows.net`)
-    const receiver = await client.createReceiver(queueName)
+    await client.connect(`${queue.url}:${urlencode(sharedAccessKey)}@kth-integral.servicebus.windows.net`)
+    const receiver = await client.createReceiver(queue.name)
     console.log('receiver created:', receiver.id)
 
     receiver.on('message', message => {
