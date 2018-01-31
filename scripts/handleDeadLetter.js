@@ -15,16 +15,16 @@ async function connectAndHandle () {
         type: 'list'
       })
 
-      const {queue} = await inquirer.prompt(
-        {
-          message: 'Vilken miljö?',
-          name: 'queue',
-          choices: [
-            {name: 'produktion', value: {name:`ug-infoclass-2/Subscriptions/canvas-prod/$DeadLetterQueue`, url:'amqps://canvas-prod'}},
-            {name: 'referens', value: {name:`ug-infoclass-2/Subscriptions/canvas-ref/$DeadLetterQueue`, url:'amqps://canvas-ref'}}
-          ],
-          type: 'list'
-        })
+    const {queue} = await inquirer.prompt(
+      {
+        message: 'Vilken miljö?',
+        name: 'queue',
+        choices: [
+            {name: 'produktion', value: {name: `ug-infoclass-2/Subscriptions/canvas-prod/$DeadLetterQueue`, url: 'amqps://canvas-prod'}},
+            {name: 'referens', value: {name: `ug-infoclass-2/Subscriptions/canvas-ref/$DeadLetterQueue`, url: 'amqps://canvas-ref'}}
+        ],
+        type: 'list'
+      })
 
     const {sharedAccessKey} = await inquirer.prompt({
       message: 'Klistra in en access key till valda kön i Azure. Den finns här: https://tinyurl.com/ydfquezj',
