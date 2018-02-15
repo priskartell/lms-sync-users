@@ -9,7 +9,7 @@
  const version = require('../config/version')
  const packageFile = require('../package.json')
  const moment = require('moment')
- const [waitAmount, waitUnit] = [10, 'seconds']
+ const [waitAmount, waitUnit] = [10, 'hours']
  const history = require('../messages/history')
  const log = require('../server/logging')
 /* GET /_about
