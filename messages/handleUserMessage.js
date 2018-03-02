@@ -30,7 +30,8 @@ function convertToCanvasUser (msg) {
       },
       communication_channel: { // must be when 'creating' user
         type: 'email',
-        address: msg.primary_email
+        address: msg.primary_email,
+        skip_confirmation: true
       }
     }
     return user
