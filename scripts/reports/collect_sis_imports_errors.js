@@ -3,7 +3,6 @@
 * Then just follow the instructions on the screen.
 */
 process.env['NODE_ENV'] = 'production'
-require('colors')
 const CanvasApi = require('kth-canvas-api')
 const inquirer = require('inquirer')
 const moment = require('moment')
@@ -48,7 +47,7 @@ async function listErrors () {
     const reportUrls = flattenedSisImports.map(_sisObj => (_sisObj.errors_attachment && _sisObj.errors_attachment.url) || [])
     .reduce((a, b) => a.concat(b), [])
 
-    console.log('Searching for warnings and errors:'.green)
+    .log('Searching for warnings and errors:'.green)
 
     for (let url of reportUrls) {
       const warnings = await request({

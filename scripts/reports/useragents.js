@@ -4,7 +4,6 @@
 */
 
 process.env['NODE_ENV'] = 'production'
-require('colors')
 const CanvasApi = require('kth-canvas-api')
 const inquirer = require('inquirer')
 

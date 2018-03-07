@@ -7,7 +7,6 @@ const history = require('./history')
 
 const {addDescription} = require('message-type')
 const handleMessage = require('./handleMessage')
-require('colors')
 const {Client: AMQPClient, Policy} = require('amqp10')
 const urlencode = require('urlencode')
 const client = new AMQPClient(Policy.Utils.RenewOnSettle(1, 1, Policy.ServiceBusQueue))

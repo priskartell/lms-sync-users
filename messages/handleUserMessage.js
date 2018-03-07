@@ -1,7 +1,6 @@
 'use strict'
 
 const canvasApi = require('../canvasApi')
-require('colors')
 const log = require('../server/logging')
 
 function isInScope (msg) {
