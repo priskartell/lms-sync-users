@@ -32,9 +32,8 @@
     "urlencode": "^1.1.0"
   },
   "devDependencies": {
-    "blue-tape": "^1.0.0",
     "azure": "^2.2.1-preview",
-    "concurrently": "^3.5.1",
+    "blue-tape": "^1.0.0",
     "cross-env": "^5.1.3",
     "istanbul": "^0.4.5",
     "node-queue-adapter": "github:kth/node-queue-adapter",
