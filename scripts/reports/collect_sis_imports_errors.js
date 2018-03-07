@@ -42,12 +42,12 @@ async function listErrors () {
     const allSisImports = await canvasApi.get(`/accounts/1/sis_imports?created_since=${from}&per_page=100`)
 
     const flattenedSisImports = allSisImports
-    .reduce((a, b) => a.concat(b.sis_imports), []) // Flatten every page
+      .reduce((a, b) => a.concat(b.sis_imports), []) // Flatten every page
 
     const reportUrls = flattenedSisImports.map(_sisObj => (_sisObj.errors_attachment && _sisObj.errors_attachment.url) || [])
-    .reduce((a, b) => a.concat(b), [])
+      .reduce((a, b) => a.concat(b), [])
 
-    .log('Searching for warnings and errors:'.green)
+      .log('Searching for warnings and errors:'.green)
 
     for (let url of reportUrls) {
       const warnings = await request({
@@ -55,10 +55,10 @@ async function listErrors () {
         headers: {'Connection': 'keep-alive'}
       })
       let filteredWarn = warnings.split('\n')
-      .filter(warning => !warning.includes('Neither course nor section existed'))
-      .filter(warning => !warning.includes('An enrollment referenced a non-existent section'))
-      .filter(warning => !/There were [\d,]+ more warnings/.test(warning))
-      .filter(warning => warning !== '')
+        .filter(warning => !warning.includes('Neither course nor section existed'))
+        .filter(warning => !warning.includes('An enrollment referenced a non-existent section'))
+        .filter(warning => !/There were [\d,]+ more warnings/.test(warning))
+        .filter(warning => warning !== '')
       if (filteredWarn.length > 0) {
         console.log(filteredWarn)
       }

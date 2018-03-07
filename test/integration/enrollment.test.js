@@ -37,9 +37,9 @@ test('should enroll an assistant in an existing course in canvas', t => {
   }
 
   processMessage(message, course)
-  .then((enrolledUser) => {
-    t.equal(enrolledUser.sis_user_id, userKthId)
-  })
+    .then((enrolledUser) => {
+      t.equal(enrolledUser.sis_user_id, userKthId)
+    })
 })
 
 test('should enroll a re-registered student in an existing course in canvas', t => {
@@ -60,10 +60,10 @@ test('should enroll a re-registered student in an existing course in canvas', t 
   }
 
   processMessage(message, course)
-  .then(enrolledUser => {
-    t.ok(enrolledUser)
-    t.equal(enrolledUser.sis_user_id, userKthId)
-  })
+    .then(enrolledUser => {
+      t.ok(enrolledUser)
+      t.equal(enrolledUser.sis_user_id, userKthId)
+    })
 })
 
 test('should enroll a student in an existing course in canvas', t => {
@@ -86,10 +86,10 @@ test('should enroll a student in an existing course in canvas', t => {
   }
 
   processMessage(message, course)
-  .then((enrolledUser) => {
-    t.ok(enrolledUser)
-    t.equal(enrolledUser.sis_user_id, userKthId)
-  })
+    .then((enrolledUser) => {
+      t.ok(enrolledUser)
+      t.equal(enrolledUser.sis_user_id, userKthId)
+    })
 })
 
 test('should 𝙣𝙤𝙩 enroll an antagen, but return with the message and type:unknown', t => {
@@ -101,7 +101,7 @@ test('should 𝙣𝙤𝙩 enroll an antagen, but return with the message and typ
   }
 
   handleMessages(message)
-  .then(([{_desc}]) => {
-    t.deepEqual(_desc, { type: 'UNKNOWN' })
-  })
+    .then(([{_desc}]) => {
+      t.deepEqual(_desc, { type: 'UNKNOWN' })
+    })
 })

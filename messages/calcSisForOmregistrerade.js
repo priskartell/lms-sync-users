@@ -14,5 +14,5 @@ module.exports = function (msg) {
 //   member: [userKthId]}
 
 // { ugClass: 'group',
-      // ug1Name: 'ladok2.kurser.AG.1b9l.omregistrerade_20171',
-      // member: [ 'u1znmoik' ] }
+// ug1Name: 'ladok2.kurser.AG.1b9l.omregistrerade_20171',
+// member: [ 'u1znmoik' ] }

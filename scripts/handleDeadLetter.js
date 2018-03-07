@@ -20,8 +20,8 @@ async function connectAndHandle () {
         message: 'Vilken miljö?',
         name: 'queue',
         choices: [
-            {name: 'canvas-prod', value: {name: `ug-infoclass-2/Subscriptions/canvas-prod/$DeadLetterQueue`, shortName: 'canvas-prod'}},
-            {name: 'canvas-ref', value: {name: `ug-infoclass-2/Subscriptions/canvas-ref/$DeadLetterQueue`, shortName: 'canvas-ref'}}
+          {name: 'canvas-prod', value: {name: `ug-infoclass-2/Subscriptions/canvas-prod/$DeadLetterQueue`, shortName: 'canvas-prod'}},
+          {name: 'canvas-ref', value: {name: `ug-infoclass-2/Subscriptions/canvas-ref/$DeadLetterQueue`, shortName: 'canvas-ref'}}
         ],
         type: 'list'
       })

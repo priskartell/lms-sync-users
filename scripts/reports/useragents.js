@@ -30,7 +30,7 @@ async function listUseragents () {
 
     const canvasApi = new CanvasApi(apiUrl, apiKey)
 
-  // let allUsers = await canvasApi.listUsers()
+    // let allUsers = await canvasApi.listUsers()
     console.log('TODO: remove subset!')
 
     // Check users in an active course
