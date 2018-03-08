@@ -4,7 +4,6 @@
 */
 
 process.env['NODE_ENV'] = 'production'
-require('colors')
 const CanvasApi = require('kth-canvas-api')
 const inquirer = require('inquirer')
 
@@ -31,7 +30,7 @@ async function listUseragents () {
 
     const canvasApi = new CanvasApi(apiUrl, apiKey)
 
-  // let allUsers = await canvasApi.listUsers()
+    // let allUsers = await canvasApi.listUsers()
     console.log('TODO: remove subset!')
 
     // Check users in an active course

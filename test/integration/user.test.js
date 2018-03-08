@@ -18,8 +18,8 @@ test('should create a new user in canvas', t => {
     'primary_email': 'esandin@gmail.com'}
 
   handleMessages(message)
-  .then(() => canvasApi.getUser(kthid))
-  .then(user => t.ok(user))
+    .then(() => canvasApi.getUser(kthid))
+    .then(user => t.ok(user))
 })
 
 test('should create a new user of affiliation:member in canvas', t => {
@@ -37,8 +37,8 @@ test('should create a new user of affiliation:member in canvas', t => {
     'primary_email': 'esandin@gmail.com'}
 
   handleMessages(message)
-  .then(() => canvasApi.getUser(kthid))
-  .then(user => t.ok(user))
+    .then(() => canvasApi.getUser(kthid))
+    .then(user => t.ok(user))
 })
 
 test('should update a user in canvas', t => {

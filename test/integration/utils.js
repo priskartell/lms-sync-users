@@ -14,7 +14,7 @@ function sendAndWaitUntilMessageProcessed (message) {
 
   console.log('sending a message to the queue:', config.azure.queueName)
   queue.sendQueueMessage(config.azure.queueName, message)
-  .catch(err => console.error(err))
+    .catch(err => console.error(err))
 
   return resultPromise
 }

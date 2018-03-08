@@ -26,7 +26,7 @@ test('should send the csv file for user type is student', t => {
   }
 
   handleCourseMessages.handleCourseMessage(message)
-  .then(() => {
-    t.ok(canvasApi.sendCsvFile.calledWith('file.csv', true))
-  })
+    .then(() => {
+      t.ok(canvasApi.sendCsvFile.calledWith('file.csv', true))
+    })
 })

@@ -11,7 +11,7 @@ function start () {
     if (msg.action === 'restart') {
       log.info('Kill the process and restart it.')
       forked.kill()
-        // Then start a new fork
+      // Then start a new fork
       start()
     }
   })
