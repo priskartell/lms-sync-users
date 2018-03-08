@@ -47,7 +47,7 @@ async function listErrors () {
     const reportUrls = flattenedSisImports.map(_sisObj => (_sisObj.errors_attachment && _sisObj.errors_attachment.url) || [])
       .reduce((a, b) => a.concat(b), [])
 
-      console.log('Searching for warnings and errors:')
+    console.log('Searching for warnings and errors:')
 
     for (let url of reportUrls) {
       const warnings = await request({
