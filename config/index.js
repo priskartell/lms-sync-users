@@ -26,6 +26,6 @@ module.exports = {
     SharedAccessKey: process.env.AZURE_SHARED_ACCESS_KEY
   },
   localFile: {
-    csvDir: process.env.SERVER_PORT || '/tmp/'
+    csvDir: process.env.CSV_DIR || '/tmp/'
   }
 }
