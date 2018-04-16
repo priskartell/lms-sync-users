@@ -42,7 +42,7 @@ test('should enroll an assistant in an existing course in canvas', t => {
     })
 })
 
-test.skip('should enroll an employee in Miljöutbildningen', async t => {
+test.only('should enroll an employee in correct section in Miljöutbildningen', async t => {
   t.plan(1)
   const canvasCourseId = 5011 // Miljöutbildningen
 
@@ -69,7 +69,7 @@ test.skip('should enroll an employee in Miljöutbildningen', async t => {
 
   await handleMessages(staffMessage)
 
-  const enrolledUsers = await canvasApi.getEnrollments(canvasCourseId)
+  const enrolledUsers = await canvasApi.get(`courses/${canvasCourseId}/enrollments?sis_section_id[]=app.katalog3.A.section_1`)
   console.log(enrolledUsers)
   t.ok(enrolledUsers.find(user => user.user.sis_user_id === kthid))
 })
