@@ -67,7 +67,8 @@ test.only('should enroll an employee in correct section in Miljöutbildningen', 
     ug1Name: 'app.katalog3.A',
     member: [kthid]}
 
-  await handleMessages(staffMessage)
+  const [{resp}] = await handleMessages(staffMessage)
+  await canvasApi.pollUntilSisComplete(resp.id)
 
   const enrolledUsers = await canvasApi.get(`courses/${canvasCourseId}/enrollments?sis_section_id[]=app.katalog3.A.section_1`)
   console.log(enrolledUsers)
