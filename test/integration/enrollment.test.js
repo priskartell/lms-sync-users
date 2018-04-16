@@ -42,26 +42,36 @@ test('should enroll an assistant in an existing course in canvas', t => {
     })
 })
 
-test.only('should enroll an employee in correct section and course for ???', t => {
+test.skip('should enroll an employee in Miljöutbildningen', async t => {
   t.plan(1)
+  const canvasCourseId = 5011 // Miljöutbildningen
 
-  const courseCode = 'A' + randomstring.generate(5) // Assistants course code should be 6 chars
-  const userKthId = 'u1znmoik'
-  const message = {
+  // First create a new user
+  const kthid = randomstring.generate(8)
+  const username = `${kthid}_abc`
+  const createUserMessage = {
+    kthid,
+    'ugClass': 'user',
+    'deleted': false,
+    'affiliation': ['student'],
+    username,
+    'family_name': 'Stenberg',
+    'given_name': 'Emil Stenberg',
+    'primary_email': 'esandin@gmail.com'}
+
+  await handleMessages(createUserMessage)
+
+  // Then enroll the new user
+  const staffMessage = {
     ugClass: 'group',
     ug1Name: 'app.katalog3.A',
-    member: [userKthId]}
+    member: [kthid]}
 
-  const course = {
-    name: 'Emil testar',
-    'course_code': courseCode,
-    'sis_course_id': `${courseCode}VT171`
-  }
+  await handleMessages(staffMessage)
 
-  processMessage(message, course)
-    .then((enrolledUser) => {
-      t.ok(1)
-    })
+  const enrolledUsers = await canvasApi.getEnrollments(canvasCourseId)
+  console.log(enrolledUsers)
+  t.ok(enrolledUsers.find(user => user.user.sis_user_id === kthid))
 })
 
 test('should enroll a re-registered student in an existing course in canvas', t => {
