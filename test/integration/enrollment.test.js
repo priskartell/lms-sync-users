@@ -2,6 +2,7 @@ var test = require('tape')
 const {handleMessages} = require('././utils')
 const canvasApi = require('../../canvasApi')
 const randomstring = require('randomstring')
+const assert = require('assert')
 
 async function processMessage (message, course) {
   // First create a fresch course in canvas
@@ -42,10 +43,9 @@ test('should enroll an assistant in an existing course in canvas', t => {
     })
 })
 
-test('should enroll an employee in correct section in Miljöutbildningen and Canvas at KTH', async t => {
-  t.plan(1)
+test.only('should enroll an employee in correct section in Miljöutbildningen and Canvas at KTH', async t => {
   const canvasCourseId = 5011 // Miljöutbildningen
-  // const canvasCourseId2 = 85 // Miljöutbildningen
+  const canvasCourseId2 = 85 // Canvas at KTH
 
   // First create a new user
   const kthid = randomstring.generate(8)
@@ -72,10 +72,12 @@ test('should enroll an employee in correct section in Miljöutbildningen and Can
   await canvasApi.pollUntilSisComplete(resp.id)
 
   const enrolledUsersMU = await canvasApi.get(`courses/${canvasCourseId}/enrollments?sis_section_id[]=app.katalog3.A.section_1`)
-  t.ok(enrolledUsersMU.find(user => user.user.sis_user_id === kthid))
+  assert(enrolledUsersMU.find(user => user.user.sis_user_id === kthid), 'Oh no, the user is not enrolled in this section!')
 
-  // const enrolledUsersCanvasAtKth = await canvasApi.get(`courses/${canvasCourseId2}/enrollments?sis_section_id[]=app.katalog3.A.section_2`)
-  // t.ok(enrolledUsersCanvasAtKth.find(user => user.user.sis_user_id === kthid))
+  const enrolledUsersCanvasAtKth = await canvasApi.get(`courses/${canvasCourseId2}/enrollments?sis_section_id[]=app.katalog3.A.section_2`)
+  assert(enrolledUsersCanvasAtKth.find(user => user.user.sis_user_id === kthid), 'Oh no, the user is not enrolled in this section!')
+
+  t.end()
 })
 
 test('should enroll a re-registered student in an existing course in canvas', t => {
