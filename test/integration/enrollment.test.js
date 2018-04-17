@@ -43,7 +43,7 @@ test('should enroll an assistant in an existing course in canvas', t => {
     })
 })
 
-test.only('should enroll an employee in correct section in Miljöutbildningen and Canvas at KTH', async t => {
+test('should enroll an employee in correct section in Miljöutbildningen and Canvas at KTH', async t => {
   const canvasCourseId = 5011 // Miljöutbildningen
   const canvasCourseId2 = 85 // Canvas at KTH
 

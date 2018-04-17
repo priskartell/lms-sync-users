@@ -7,7 +7,6 @@ const unlink = promisify(require('fs').unlink)
 const logging = require('../server/logging')
 
 async function handleStaffMessage (msg) {
-  // TODO: delete before create
   try {
     await unlink(fileName)
   } catch (e) {
