@@ -5,7 +5,7 @@ const EventEmitter = require('events')
 const eventEmitter = new EventEmitter()
 const history = require('./history')
 
-const {addDescription} = require('message-type')
+const {addDescription} = require('kth-message-type')
 const handleMessage = require('./handleMessage')
 const {Client: AMQPClient, Policy} = require('amqp10')
 const urlencode = require('urlencode')
