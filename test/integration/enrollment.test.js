@@ -71,10 +71,10 @@ test.only('should enroll an employee in correct section in Miljöutbildningen an
   const [{resp}] = await handleMessages(staffMessage)
   await canvasApi.pollUntilSisComplete(resp.id)
 
-  const enrolledUsersMU = await canvasApi.get(`courses/${canvasCourseId}/enrollments?sis_section_id[]=app.katalog3.A.section_1`)
+  const enrolledUsersMU = await canvasApi.get(`courses/${canvasCourseId}/enrollments?sis_section_id[]=app.katalog3.A.section1`)
   assert(enrolledUsersMU.find(user => user.user.sis_user_id === kthid), 'Oh no, the user is not enrolled in this section!')
 
-  const enrolledUsersCanvasAtKth = await canvasApi.get(`courses/${canvasCourseId2}/enrollments?sis_section_id[]=app.katalog3.A.section_2`)
+  const enrolledUsersCanvasAtKth = await canvasApi.get(`courses/${canvasCourseId2}/enrollments?sis_section_id[]=app.katalog3.A.section2`)
   assert(enrolledUsersCanvasAtKth.find(user => user.user.sis_user_id === kthid), 'Oh no, the user is not enrolled in this section!')
 
   t.end()
