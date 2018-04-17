@@ -9,8 +9,7 @@ const logging = require('../server/logging')
 async function handleStaffMessage (msg) {
   // TODO: delete before create
   try {
-    await fs.unlink(fileName)
-
+    await unlink(fileName)
   } catch (e) {
       logging.info('Couldnt delete file. This is fine.')
   }
