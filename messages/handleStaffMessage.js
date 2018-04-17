@@ -11,7 +11,7 @@ async function handleStaffMessage (msg) {
   try {
     await unlink(fileName)
   } catch (e) {
-      logging.info('Couldnt delete file. This is fine.')
+    logging.info('Couldnt delete file. This is fine.')
   }
 
   await writeLine(['section_id', 'user_id', 'role', 'status'], fileName)
