@@ -1,10 +1,20 @@
 const {writeLine} = require('../csvFile')
 const canvasApi = require('../canvasApi')
-const fileName = 'staff_enroll.csv'
+const config = require('../config')
+const fileName = `${config.localFile.csvDir}/staff_enroll.csv`
+const {promisify} = require('util')
+const unlink = promisify(require('fs').unlink)
+const logging = require('../server/logging')
 
 async function handleStaffMessage (msg) {
-  console.log('Handle STAFF')
   // TODO: delete before create
+  try {
+    await fs.unlink(fileName)
+
+  } catch (e) {
+      logging.info('Couldnt delete file. This is fine.')
+  }
+
   await writeLine(['section_id', 'user_id', 'role', 'status'], fileName)
   for (let i of [1, 2, 3, 4, 5]) {
     const sisSectionId = `${msg.ug1Name}.section_${i}`
