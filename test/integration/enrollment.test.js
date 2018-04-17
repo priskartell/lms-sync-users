@@ -42,10 +42,10 @@ test('should enroll an assistant in an existing course in canvas', t => {
     })
 })
 
-test.only('should enroll an employee in correct section in Miljöutbildningen and Canvas at KTH', async t => {
+test('should enroll an employee in correct section in Miljöutbildningen and Canvas at KTH', async t => {
   t.plan(1)
   const canvasCourseId = 5011 // Miljöutbildningen
-  const canvasCourseId2 = 85 // Miljöutbildningen
+  // const canvasCourseId2 = 85 // Miljöutbildningen
 
   // First create a new user
   const kthid = randomstring.generate(8)
