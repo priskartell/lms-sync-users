@@ -42,9 +42,10 @@ test('should enroll an assistant in an existing course in canvas', t => {
     })
 })
 
-test.only('should enroll an employee in correct section in Miljöutbildningen', async t => {
+test.only('should enroll an employee in correct section in Miljöutbildningen and Canvas at KTH', async t => {
   t.plan(1)
   const canvasCourseId = 5011 // Miljöutbildningen
+  const canvasCourseId2 = 85 // Miljöutbildningen
 
   // First create a new user
   const kthid = randomstring.generate(8)
@@ -70,9 +71,11 @@ test.only('should enroll an employee in correct section in Miljöutbildningen', 
   const [{resp}] = await handleMessages(staffMessage)
   await canvasApi.pollUntilSisComplete(resp.id)
 
-  const enrolledUsers = await canvasApi.get(`courses/${canvasCourseId}/enrollments?sis_section_id[]=app.katalog3.A.section_1`)
-  console.log(enrolledUsers)
-  t.ok(enrolledUsers.find(user => user.user.sis_user_id === kthid))
+  const enrolledUsersMU = await canvasApi.get(`courses/${canvasCourseId}/enrollments?sis_section_id[]=app.katalog3.A.section_1`)
+  t.ok(enrolledUsersMU.find(user => user.user.sis_user_id === kthid))
+
+  // const enrolledUsersCanvasAtKth = await canvasApi.get(`courses/${canvasCourseId2}/enrollments?sis_section_id[]=app.katalog3.A.section_2`)
+  // t.ok(enrolledUsersCanvasAtKth.find(user => user.user.sis_user_id === kthid))
 })
 
 test('should enroll a re-registered student in an existing course in canvas', t => {
