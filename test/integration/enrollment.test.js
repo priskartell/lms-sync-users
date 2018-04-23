@@ -149,10 +149,10 @@ test('should 𝙣𝙤𝙩 enroll an antagen', async t => {
 
   const accountId = 14 // Courses that starts with an 'A' is handled by account 14
   const canvasCourse = await canvasApi.createCourse({course}, accountId)
-  await canvasApi.createDefaultSection(canvasCourse)
-  const res = await handleMessages(message)
-    // Can't poll since no csv file should have been sent to canvas
-    // Add a short sleep (I know, this is really ugly) to make sure that any incorrectly sent csv files are caught
+  await handleMessages(message)
+
+  // Can't poll since no csv file should have been sent to canvas
+  // Add a short sleep (I know, this is really ugly) to make sure that any incorrectly sent csv files are caught
   const delay = promisify(setTimeout)
   await delay(5000)
   const enrolledUsers = await canvasApi.getEnrollments(canvasCourse.id)
