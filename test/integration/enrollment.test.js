@@ -3,7 +3,7 @@ const {handleMessages} = require('././utils')
 const canvasApi = require('../../canvasApi')
 const randomstring = require('randomstring')
 const assert = require('assert')
-
+const {promisify} = require('util')
 async function processMessage (message, course) {
   // First create a fresch course in canvas
   try {
@@ -130,16 +130,32 @@ test('should enroll a student in an existing course in canvas', t => {
     })
 })
 
-test.only('should 𝙣𝙤𝙩 enroll an antagen, but return with the message and type:unknown', t => {
-  t.plan(1)
+test('should 𝙣𝙤𝙩 enroll an antagen', async t => {
+  const courseCode0 = 'A' + randomstring.generate(1)
+  const courseCode1 = randomstring.generate(4)
+  const userKthId = 'u1znmoik'
+
   const message = {
+    kthid: 'u2yp4zyn',
     ugClass: 'group',
-    ug1Name: 'ladok2.kurser.II.142X.antagna_20181.1',
-    member: ['u1znmoik']
+    ug1Name: `ladok2.kurser.${courseCode0}.${courseCode1}.antagna_20181.1`,
+    member: [userKthId]}
+
+  const course = {
+    name: 'Emil testar',
+    'course_code': courseCode0 + courseCode1,
+    'sis_course_id': `${courseCode0 + courseCode1}VT171`
   }
 
-  handleMessages(message)
-    .then(([{_desc}]) => {
-      t.deepEqual(_desc, { type: 'UNKNOWN' })
-    })
+  const accountId = 14 // Courses that starts with an 'A' is handled by account 14
+  const canvasCourse = await canvasApi.createCourse({course}, accountId)
+  await canvasApi.createDefaultSection(canvasCourse)
+  const res = await handleMessages(message)
+    // Can't poll since no csv file should have been sent to canvas
+    // Add a short sleep (I know, this is really ugly) to make sure that any incorrectly sent csv files are caught
+  const delay = promisify(setTimeout)
+  await delay(5000)
+  const enrolledUsers = await canvasApi.getEnrollments(canvasCourse.id)
+  assert.deepEqual(enrolledUsers, [])
+  t.end()
 })
