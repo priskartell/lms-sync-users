@@ -130,11 +130,11 @@ test('should enroll a student in an existing course in canvas', t => {
     })
 })
 
-test('should 𝙣𝙤𝙩 enroll an antagen, but return with the message and type:unknown', t => {
+test.only('should 𝙣𝙤𝙩 enroll an antagen, but return with the message and type:unknown', t => {
   t.plan(1)
   const message = {
     ugClass: 'group',
-    ug1Name: 'ladok2.kurser.SF1624.antagna_20171.1',
+    ug1Name: 'ladok2.kurser.II.142X.antagna_20181.1',
     member: ['u1znmoik']
   }
 
