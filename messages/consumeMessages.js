@@ -38,7 +38,7 @@ async function start () {
     initLogger(message)
     log.info(`New message from ug queue for receiver ${receiver.id}`, message)
     history.setIdleTimeStart()
-    
+
     if (message.body) {
       await _processMessage(message)
     } else {
