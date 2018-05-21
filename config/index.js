@@ -5,7 +5,6 @@ require('dotenv').config()
 require('dotenv').config({path: './config/localSettings.js'})
 
 module.exports = {
-  dontRun: process.env.DONT_RUN || false,
   proxyPrefixPath: {
     uri: '/lms-sync'
   },

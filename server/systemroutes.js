@@ -52,8 +52,7 @@ var _monitor = function (req, res) {
   status().then(({canvasOk, canvasKeyOk}) => {
     res.setHeader('Content-Type', 'text/plain')
     const checkTimeAgainst = moment().subtract(waitAmount, waitUnit)
-    // TODO: Remove the check for DONT_RUN here!
-    const idleTimeOk = process.env.DONT_RUN || history.idleTimeStart.isAfter(checkTimeAgainst)
+    const idleTimeOk = history.idleTimeStart.isAfter(checkTimeAgainst)
 
     log.info(`checking idle time: last time a message was read was: ${history.idleTimeStart}, compare this to now minus some predifined time: ${checkTimeAgainst}`)
     const statusStr = `APPLICATION_STATUS: ${idleTimeOk && canvasKeyOk ? 'OK' : 'ERROR'} ${packageFile.name}-${packageFile.version}-${version.jenkinsBuild}
