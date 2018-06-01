@@ -6,7 +6,7 @@ require('dotenv').config({path: './config/localSettings.js'})
 
 module.exports = {
   proxyPrefixPath: {
-    uri: '/lms-sync'
+    uri: '/lms-sync-users'
   },
   port: 3000,
   canvas: {
