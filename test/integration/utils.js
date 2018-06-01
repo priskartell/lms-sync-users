@@ -24,7 +24,7 @@ async function handleMessages (...messages) {
     consumeMessages.onDetached = () => {}
 
     console.log('handle messages', messages.length)
-    config.azure.queueName = config.azure.queueName = 'lms-sync-integration-tests-' + Math.random().toString(36)
+    config.azure.queueName = config.azure.queueName = 'lms-sync-users-integration-tests-' + Math.random().toString(36)
 
     await queue.createQueueIfNotExists(config.azure.queueName)
     const receiver = await consumeMessages.start()
