@@ -24,11 +24,11 @@
     "dotenv": "^6.0.0",
     "express": "^4.16.3",
     "inquirer": "^6.0.0",
-    "kth-canvas-api": "^0.15.3",
+    "kth-canvas-api": "^0.15.5",
     "kth-message-type": "^1.9.0",
     "kth-node-server": "^3.1.1",
     "moment": "^2.21.0",
-    "request": "^2.85.0",
+    "request": "^2.87.0",
     "request-promise": "^4.2.2",
     "urlencode": "^1.1.0"
   },
