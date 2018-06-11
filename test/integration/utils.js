@@ -7,7 +7,7 @@ const azureCommon = require('azure-common')
 
 const consumeMessages = rewire('../../messages/consumeMessages')
 
-function createQueue(queueConnectionString) {
+function createQueue (queueConnectionString) {
   const queueService = azureSb.createServiceBusService(queueConnectionString)
   queueService.logger = new azureCommon.Logger(azureCommon.Logger.LogLevels['TRACE'])
 
@@ -22,7 +22,7 @@ function createQueue(queueConnectionString) {
       { context: queueService }
     ),
 
-    sendQueueMessage(queueName, message) {
+    sendQueueMessage (queueName, message) {
       if (typeof message === 'object') {
         message = JSON.stringify(message)
       }
