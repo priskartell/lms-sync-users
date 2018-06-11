@@ -1,7 +1,47 @@
 const config = require('../../config')
 const Promise = require('bluebird')
 const rewire = require('rewire')
+
+const azureSb = require('azure-sb')
+const azureCommon = require('azure-common')
+
 const consumeMessages = rewire('../../messages/consumeMessages')
+
+function createQueue(queueConnectionString) {
+  const queueService = azureSb.createServiceBusService(queueConnectionString)
+  queueService.logger = new azureCommon.Logger(azureCommon.Logger.LogLevels['TRACE'])
+
+  return {
+    deleteQueue: Promise.promisify(
+      queueService.deleteQueue,
+      { context: queueService }
+    ),
+
+    createQueueIfNotExists: Promise.promisify(
+      queueService.createQueueIfNotExists,
+      { context: queueService }
+    ),
+
+    sendQueueMessage(queueName, message) {
+      if (typeof message === 'object') {
+        message = JSON.stringify(message)
+      }
+
+      const queueMessage = { body: message }
+
+      return new Promise((resolve, reject) => {
+        queueService.sendQueueMessage(queueName, queueMessage, (err) => {
+          if (err) reject(err)
+          else resolve()
+        })
+      })
+    }
+  }
+}
+
+const sharedAccessKey = process.env.AZURE_SHARED_ACCESS_KEY || config.azure.SharedAccessKey
+const queueConnectionString = `Endpoint=sb://${config.azure.host}/;SharedAccessKeyName=${config.azure.SharedAccessKeyName};SharedAccessKey=${sharedAccessKey}`
+const queue = createQueue(queueConnectionString)
 
 function sendAndWaitUntilMessageProcessed (message) {
   console.log('Send and read a message', message)
@@ -44,10 +84,6 @@ async function handleMessages (...messages) {
   }
 }
 
-const sharedAccessKey = process.env.AZURE_SHARED_ACCESS_KEY || config.azure.SharedAccessKey
-
-const queueConnectionString = `Endpoint=sb://${config.azure.host}/;SharedAccessKeyName=${config.azure.SharedAccessKeyName};SharedAccessKey=${sharedAccessKey}`
-const queue = require('node-queue-adapter')(queueConnectionString)
 module.exports = {
   handleMessages
 }
