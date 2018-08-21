@@ -12,6 +12,7 @@ RUN npm install --production --ignore-engines --no-optional && \
     rm -rf /npm
 
 WORKDIR /application
+ENV NODE_PATH /application
 
 # Copy config files
 COPY ["config", "config"]
@@ -29,4 +30,4 @@ COPY ["messages", "messages"]
 
 EXPOSE 3000
 
-ENTRYPOINT ["node", "app.js"]
+CMD ["node", "app.js"]

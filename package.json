@@ -6,13 +6,11 @@
   "main": "app.js",
   "private": true,
   "scripts": {
-    "test": "cross-env NODE_ENV=development tape \"test/unit/**/*.js\" | tap-spec",
     "test:integration": "cross-env NODE_ENV=development tape \"test/integration/**/*.js\" | tap-spec",
     "coverage": "cross-env NODE_ENV=development istanbul cover tape -- \"messages/*.js\" -- \"server/**/*.js\" -- \"test/**/*.js\"",
-    "installAndStart": "yarn install --ignore-engines && npm start",
-    "start": "cross-env NODE_ENV=development nodemon app.js",
-    "clearDeadLetter": "node scripts/clearDeadLetter.js",
-    "readDeadLetter": "node scripts/readDeadLetter.js"
+    "test:unit": "apk update; apk add python make; npm install; npx standard; tape \"/test/unit/**/*.js\" | tap-spec",
+    "test": "npx standard; tape \"test/unit/**/*.js\" | tap-spec",
+    "start": "cross-env NODE_ENV=development nodemon app.js"
   },
   "resolutions": {
     "azure-arm-intune": "1.0.0-preview"
@@ -47,9 +45,7 @@
     "tap-spec": "^4.1.1",
     "tape": "^4.9.0"
   },
-  "optionalDependencies": {
-    "nodemon": "^1.17.2"
-  },
+  "optionalDependencies": {},
   "engines": {
     "node": "4.3.1"
   }
