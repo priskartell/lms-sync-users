@@ -8,8 +8,9 @@
   "scripts": {
     "test:integration": "cross-env NODE_ENV=development tape \"test/integration/**/*.js\" | tap-spec",
     "coverage": "cross-env NODE_ENV=development istanbul cover tape -- \"messages/*.js\" -- \"server/**/*.js\" -- \"test/**/*.js\"",
-    "test:docker-unit": "apk update; apk add python make; npm install; npm test", 
     "test": "npx standard; tape \"test/unit/**/*.js\" | tap-spec",
+    "test:docker-unit": "apk update; apk add python make; npm install; npm test", 
+    "test:docker-integration": "apk update; apk add python make; npm install; npm run test:integration", 
     "start": "cross-env NODE_ENV=development nodemon app.js"
   },
   "resolutions": {
