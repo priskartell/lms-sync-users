@@ -2,6 +2,11 @@ const test = require('tape')
 const ugParser = require('../../messages/ugParser.js')
 
 test('Parse teacher group name for a spring round', t => {
+  t.equal(1, 0)
+  t.end()
+})
+
+test('Parse teacher group name for a spring round', t => {
   t.equal(ugParser.parseKeyTeacher('edu.courses.MG.MG1028.20171.2.teachers'),
     'MG1028VT172')
   t.end()
