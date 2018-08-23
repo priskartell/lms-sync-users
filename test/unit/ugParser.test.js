@@ -7,8 +7,8 @@ test('Parse teacher group name for a spring round', t => {
   t.end()
 })
 
-test('should fail', t => {
-t.equal(1,0)
+test.skip('should fail', t => {
+  t.equal(1, 0)
   t.end()
 })
 
