@@ -7,6 +7,11 @@ test('Parse teacher group name for a spring round', t => {
   t.end()
 })
 
+test('should fail', t => {
+t.equal(1,0)
+  t.end()
+})
+
 test('Parse teacher group name for a fall round', t => {
   t.equal(ugParser.parseKeyTeacher('edu.courses.MG.MG1028.20172.7.teachers'),
     'MG1028HT177')
