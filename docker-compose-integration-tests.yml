@@ -26,8 +26,8 @@ services:
     # This example runs test in package.json which is
     # part of the kth-azure-app image.
     tty: true
-    command: npm run test:docker-unit 
-    # TODO: remove environment, should not be needed for unit tests
-    #
+    command: npm run test:docker-integration 
     environment:
+      - CANVAS_API_KEY
+      - CANVAS_API_URL
       - TEST_CREDENTIAL_FEEL_FREE_TO_REMOVE
