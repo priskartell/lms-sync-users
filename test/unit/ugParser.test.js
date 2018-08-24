@@ -1,6 +1,11 @@
 const test = require('tape')
 const ugParser = require('../../messages/ugParser.js')
 
+test('should print a variable', t => {
+  console.log('TEST_CREDENTIAL_FEEL_FREE_TO_REMOVE:', process.env.TEST_CREDENTIAL_FEEL_FREE_TO_REMOVE)
+  t.end()
+})
+
 test('Parse teacher group name for a spring round', t => {
   t.equal(ugParser.parseKeyTeacher('edu.courses.MG.MG1028.20171.2.teachers'),
     'MG1028VT172')
