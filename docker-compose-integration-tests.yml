@@ -28,6 +28,9 @@ services:
     tty: true
     command: npm run test:docker-integration 
     environment:
-      - CANVAS_API_KEY
       - CANVAS_API_URL
-      - TEST_CREDENTIAL_FEEL_FREE_TO_REMOVE
+      - CANVAS_API_KEY
+      - AZURE_QUEUE_NAME
+      - AZURE_HOST
+      - AZURE_SHARED_ACCESS_KEY_NAME
+      - AZURE_SHARED_ACCESS_KEY
