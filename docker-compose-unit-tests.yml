@@ -31,3 +31,4 @@ services:
     #
     environment:
       - TEST_CREDENTIAL_FEEL_FREE_TO_REMOVE
+      - REGISTRY_HOST
