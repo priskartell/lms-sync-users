@@ -30,7 +30,7 @@ services:
     environment:
       - CANVAS_API_URL
       - CANVAS_API_KEY
-      - AZURE_QUEUE_NAME
+        #- AZURE_QUEUE_NAME
       - AZURE_HOST
       - AZURE_SHARED_ACCESS_KEY_NAME
       - AZURE_SHARED_ACCESS_KEY
