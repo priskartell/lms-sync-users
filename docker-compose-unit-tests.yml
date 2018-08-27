@@ -30,5 +30,9 @@ services:
     # TODO: remove environment, should not be needed for unit tests
     #
     environment:
-      - TEST_CREDENTIAL_FEEL_FREE_TO_REMOVE
-      - REGISTRY_HOST
+      - CANVAS_API_URL
+      - CANVAS_API_KEY
+      - AZURE_QUEUE_NAME
+      - AZURE_HOST
+      - AZURE_SHARED_ACCESS_KEY_NAME
+      - AZURE_SHARED_ACCESS_KEY
