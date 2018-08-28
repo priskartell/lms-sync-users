@@ -21,10 +21,6 @@ async function processMessage (message, course) {
   }
 }
 
-test('should fail', t=>{
-    t.assert(false)
-} )
-
 test('should enroll an assistant in an existing course in canvas', t => {
   t.plan(1)
 
