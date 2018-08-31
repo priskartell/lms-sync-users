@@ -27,3 +27,5 @@ services:
     # part of the kth-azure-app image.
     tty: true
     command: npm run test:docker-unit
+    environment:
+      - TEST_CREDENTIAL_FEEL_FREE_TO_REMOVE     
