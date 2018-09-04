@@ -21,7 +21,7 @@ async function processMessage (message, course) {
   }
 }
 
-test.skip('should enroll an assistant in an existing course in canvas', t => {
+test('should enroll an assistant in an existing course in canvas', t => {
   t.assert(false)
 })
 test('should enroll an assistant in an existing course in canvas', t => {
