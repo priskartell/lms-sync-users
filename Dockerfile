@@ -1,19 +1,7 @@
 FROM kthse/kth-nodejs-api:2.4
 
-RUN mkdir -p /npm && \
-    mkdir -p /application
-
-# We do this to avoid npm install when we're only changing code
-WORKDIR /npm
 COPY ["package.json", "package.json"]
 
-RUN npm install --production --ignore-engines --no-optional && \
-    cp -a /npm/node_modules /application && \
-    rm -rf /npm
-
-WORKDIR /application
-
-# Copy config files
 COPY ["config", "config"]
 
 # Source files in root
@@ -27,6 +15,8 @@ COPY ["package.json", "package.json"]
 COPY ["server", "server"]
 COPY ["messages", "messages"]
 
+RUN npm install --production --ignore-engines --no-optional
+
 EXPOSE 3000
 
-ENTRYPOINT ["node", "app.js"]
+CMD ["node", "app.js"]
