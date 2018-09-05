@@ -15,7 +15,7 @@ COPY ["package.json", "package.json"]
 COPY ["server", "server"]
 COPY ["messages", "messages"]
 
-RUN npm install
+RUN npm install --production --ignore-engines --no-optional
 
 EXPOSE 3000
 
