@@ -9,8 +9,8 @@
     "test:integration": "cross-env NODE_ENV=development tape \"test/integration/**/*.js\" | tap-spec",
     "coverage": "cross-env NODE_ENV=development istanbul cover tape -- \"messages/*.js\" -- \"server/**/*.js\" -- \"test/**/*.js\"",
     "test": "npx standard; tape \"test/unit/**/*.js\" | tap-spec",
-    "test:docker-unit": "apk update; apk add python make; npm install; npm test", 
-    "test:docker-integration": "apk update; apk add python make; npm install; npm run test:integration", 
+    "test:docker-unit": "apk update; apk add python make; npm install --no-optional; npm test",
+    "test:docker-integration": "apk update; apk add python make; npm install --no-optional; npm run test:integration",
     "start": "cross-env NODE_ENV=development nodemon app.js"
   },
   "resolutions": {
@@ -46,7 +46,9 @@
     "tap-spec": "^4.1.1",
     "tape": "^4.9.0"
   },
-  "optionalDependencies": {},
+  "optionalDependencies": {
+    "nodemon": "^1.17.2"
+  },
   "engines": {
     "node": "4.3.1"
   }
