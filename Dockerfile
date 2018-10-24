@@ -1,4 +1,4 @@
-FROM kthse/kth-nodejs-api:2.4
+FROM kthse/kth-nodejs:9.11.0
 RUN apk update; apk add python make;
 COPY ["config", "config"]
 COPY ["package.json", "package.json"]
