@@ -17,7 +17,6 @@
     "azure-arm-intune": "1.0.0-preview"
   },
   "dependencies": {
-    "amqp10": "^3.6.0",
     "bluebird": "^3.5.3",
     "bunyan": "^1.8.12",
     "dotenv": "^6.1.0",
@@ -29,6 +28,7 @@
     "moment": "^2.21.0",
     "request": "^2.88.0",
     "request-promise": "^4.2.2",
+    "rhea": "^0.3.4",
     "urlencode": "^1.1.0"
   },
   "devDependencies": {
@@ -40,7 +40,7 @@
     "nodemon": "^1.18.7",
     "proxyquire": "^2.1.0",
     "randomstring": "^1.1.5",
-    "rewire": "^4.0.1",
+    "rewire": "^2.5.2",
     "rewire-global": "^1.0.11",
     "sinon": "^5.1.1",
     "standard": "^11.0.1",
