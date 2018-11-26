@@ -3,7 +3,7 @@ const { handleMessages } = require('./utils')
 const canvasApi = require('../../canvasApi')
 const randomstring = require('randomstring')
 
-async function createCourse(sisCourseId) {
+async function createCourse (sisCourseId) {
   const ACCOUNT_ID = 14
   const course = {
     name: `Integration test ${sisCourseId}`,
@@ -17,7 +17,7 @@ async function createCourse(sisCourseId) {
   return canvasCourse
 }
 
-async function createUser() {
+async function createUser () {
   const kthId = `v${randomstring.generate(7)}`
   const email = `${kthId}@kth.se`
   await canvasApi.createUser({
@@ -42,7 +42,6 @@ async function createUser() {
   return kthId
 }
 
-
 test('should enroll an assistant in an existing course in canvas', async t => {
   t.plan(1)
 
@@ -61,13 +60,13 @@ test('should enroll an assistant in an existing course in canvas', async t => {
   const [{resp}] = await handleMessages(message)
   await canvasApi.pollUntilSisComplete(resp.id)
   const enrollments = await canvasApi.getEnrollments(canvasCourse.id)
-  t.equal(enrollments[0].sis_user_id , userKthId)
+  t.equal(enrollments[0].sis_user_id, assistantId)
 })
 
 test('should enroll an employee in Miljöutbildningen and Canvas at KTH', async t => {
   t.plan(2)
   const muId = 5014 // Miljöutbildningen
-  const ckId = 85   // Canvas at KTH
+  const ckId = 85 // Canvas at KTH
 
   // Create the "employee" in Canvas
   const employeeId = await createUser()
@@ -78,7 +77,7 @@ test('should enroll an employee in Miljöutbildningen and Canvas at KTH', async 
     member: [employeeId]
   }
 
-  const [{resp}] = await handleMessages(staffMessage)
+  const [{resp}] = await handleMessages(message)
   await canvasApi.pollUntilSisComplete(resp.id)
 
   const muEnrollments = await canvasApi.get(`courses/${muId}/enrollments?sis_section_id[]=app.katalog3.A.section1`)
