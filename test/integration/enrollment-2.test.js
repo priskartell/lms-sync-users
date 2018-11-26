@@ -22,7 +22,7 @@ async function createUser() {
   const email = `${kthId}@kth.se`
   await canvasApi.createUser({
     pseudonym: {
-      unique_id: ${kthId},
+      unique_id: kthId,
       sis_user_id: kthId,
       skip_registration: true,
       send_confirmation: false
