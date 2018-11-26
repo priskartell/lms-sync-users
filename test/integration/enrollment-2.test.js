@@ -151,10 +151,9 @@ test('should not enroll an antagen', async t => {
     member: [studentId]
   }
 
-  const [{resp}] = await handleMessages(message)
-  await canvasApi.pollUntilSisComplete(resp.id)
+  await handleMessages(message)
 
   await promisify(setTimeout)(5000)
   const enrollments = await canvasApi.getEnrollments(canvasCourse.id)
-  t.equal(enrollments[0].sis_user_id, studentId)
+  t.deepEqual(enrollments, [])
 })
