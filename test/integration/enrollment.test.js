@@ -44,7 +44,7 @@ test('should enroll an assistant in an existing course in canvas', t => {
 })
 
 test('should enroll an employee in correct section in Miljöutbildningen and Canvas at KTH', async t => {
-  const canvasCourseId = 5011 // Miljöutbildningen
+  const canvasCourseId = 5014 // Miljöutbildningen
   const canvasCourseId2 = 85 // Canvas at KTH
 
   // First create a new user
