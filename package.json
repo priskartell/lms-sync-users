@@ -11,7 +11,8 @@
     "test": "standard; tape \"test/unit/**/*.js\" | tap-spec",
     "test:docker-unit": "apk update; apk add python make; npm install --no-optional; npm test",
     "test:docker-integration": "apk update; apk add python make; npm install --no-optional; npm run test:integration",
-    "start": "cross-env NODE_ENV=development nodemon app.js"
+    "start": "cross-env NODE_ENV=development nodemon app.js",
+    "debug": "NODE_ENV=development node --nolazy --inspect-brk=9229 app.js | bunyan -o short"
   },
   "resolutions": {
     "azure-arm-intune": "1.0.0-preview"
