@@ -4,18 +4,28 @@ const canvasApi = require('../../canvasApi')
 const randomstring = require('randomstring')
 const assert = require('assert')
 const {promisify} = require('util')
-async function processMessage (message, course) {
-  // First create a fresch course in canvas
+
+/**
+ * Process a "enrollment" message against a Canvas Course
+ */
+async function processEnrollmentMessage (message, course) {
+  // Create the course
   try {
     const accountId = 14 // Courses that starts with an 'A' is handled by account 14
     const canvasCourse = await canvasApi.createCourse({course}, accountId)
     await canvasApi.createDefaultSection(canvasCourse)
+  } catch (e) {
+    console.error('Error creating the course/section in Canvas', e)
+    throw e
+  }
+
+  // Process the enrollment message
+  try {
     const [{resp}] = await handleMessages(message)
     await canvasApi.pollUntilSisComplete(resp.id)
     const enrolledUsers = await canvasApi.getEnrollments(canvasCourse.id)
-    console.log('enrolledUsers:', JSON.stringify(enrolledUsers))
-    const [enrolledUser] = enrolledUsers
-    return enrolledUser
+
+    return enrolledUsers[0]
   } catch (e) {
     console.error('An error occured', e)
   }
@@ -37,7 +47,7 @@ test('should enroll an assistant in an existing course in canvas', t => {
     'sis_course_id': `${courseCode}VT171`
   }
 
-  processMessage(message, course)
+  processEnrollmentMessage(message, course)
     .then((enrolledUser) => {
       t.equal(enrolledUser.sis_user_id, userKthId)
     })
@@ -97,7 +107,7 @@ test('should enroll a re-registered student in an existing course in canvas', t 
     'sis_course_id': `${courseCode0 + courseCode1}VT173`
   }
 
-  processMessage(message, course)
+  processEnrollmentMessage(message, course)
     .then(enrolledUser => {
       t.ok(enrolledUser)
       t.equal(enrolledUser.sis_user_id, userKthId)
@@ -123,7 +133,7 @@ test('should enroll a student in an existing course in canvas', t => {
     'sis_course_id': `${courseCode0 + courseCode1}VT171`
   }
 
-  processMessage(message, course)
+  processEnrollmentMessage(message, course)
     .then((enrolledUser) => {
       t.ok(enrolledUser)
       t.equal(enrolledUser.sis_user_id, userKthId)
