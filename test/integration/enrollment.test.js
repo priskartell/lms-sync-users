@@ -10,9 +10,10 @@ const {promisify} = require('util')
  */
 async function processEnrollmentMessage (message, course) {
   // Create the course
+  const ACCOUNT_ID = 14 // Courses starting by "A" are handled by Account 14
+  let canvasCourse
   try {
-    const accountId = 14 // Courses that starts with an 'A' is handled by account 14
-    const canvasCourse = await canvasApi.createCourse({course}, accountId)
+    canvasCourse = await canvasApi.createCourse({course}, ACCOUNT_ID)
     await canvasApi.createDefaultSection(canvasCourse)
   } catch (e) {
     console.error('Error creating the course/section in Canvas', e)
