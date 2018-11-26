@@ -2,6 +2,7 @@ const test = require('tape')
 const { handleMessages } = require('./utils')
 const canvasApi = require('../../canvasApi')
 const randomstring = require('randomstring')
+const promisify = require('promisify')
 
 async function createCourse (sisCourseId) {
   const ACCOUNT_ID = 14
@@ -92,4 +93,68 @@ test('should enroll an employee in Miljöutbildningen and Canvas at KTH', async 
     ckEnrollments.find(e => e.user.sis_user_id === employeeId),
     `The user ${employeeId} is not correctly enrolled in Canvas at KTH`
   )
+})
+
+test('should enroll a re-registered student in an existing course in Canvas', async t => {
+  t.plan(1)
+  const cc0 = 'A' + randomstring.generate(1)
+  const cc1 = randomstring.generate(4)
+
+  const canvasCourse = await createCourse(cc0 + cc1 + 'VT173')
+  const studentId = await createUser()
+
+  const message = {
+    ugClass: 'group',
+    ug1Name: `ladok2.kurser.${cc0}.${cc1}.omregistrerade_20171`,
+    member: [studentId]
+  }
+
+  const [{resp}] = await handleMessages(message)
+  await canvasApi.pollUntilSisComplete(resp.id)
+
+  const enrollments = await canvasApi.getEnrollments(canvasCourse.id)
+  t.equal(enrollments[0].sis_user_id, studentId)
+})
+
+test('should enroll a student in an existing course', async t => {
+  t.plan(1)
+  const cc0 = 'A' + randomstring.generate(1)
+  const cc1 = randomstring.generate(4)
+
+  const canvasCourse = await createCourse(cc0 + cc1 + 'VT171')
+  const studentId = await createUser()
+
+  const message = {
+    ugClass: 'group',
+    ug1Name: `ladok2.kurser.${cc0}.${cc1}.registrerade_20171.1`,
+    member: [studentId]
+  }
+
+  const [{resp}] = await handleMessages(message)
+  await canvasApi.pollUntilSisComplete(resp.id)
+
+  const enrollments = await canvasApi.getEnrollments(canvasCourse.id)
+  t.equal(enrollments[0].sis_user_id, studentId)
+})
+
+test('should not enroll an antagen', async t => {
+  t.plan(1)
+  const cc0 = 'A' + randomstring.generate(1)
+  const cc1 = randomstring.generate(4)
+
+  const canvasCourse = await createCourse(cc0 + cc1 + 'VT181')
+  const studentId = await createUser()
+
+  const message = {
+    ugClass: 'group',
+    ug1Name: `ladok2.kurser.${cc0}.${cc1}.antagna_20181.1`,
+    member: [studentId]
+  }
+
+  const [{resp}] = await handleMessages(message)
+  await canvasApi.pollUntilSisComplete(resp.id)
+
+  await promisify(setTimeout)(5000)
+  const enrollments = await canvasApi.getEnrollments(canvasCourse.id)
+  t.equal(enrollments[0].sis_user_id, studentId)
 })
