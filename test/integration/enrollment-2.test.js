@@ -60,7 +60,7 @@ test('should enroll an assistant in an existing course in canvas', async t => {
 
   const [{resp}] = await handleMessages(message)
   await canvasApi.pollUntilSisComplete(resp.id)
-  const enrollments = await canvasApi.getEnrollments(course.id)
+  const enrollments = await canvasApi.getEnrollments(canvasCourse.id)
   t.equal(enrollments[0].sis_user_id , userKthId)
 })
 
