@@ -1,4 +1,4 @@
-const tape = require('tape')
+const test = require('tape')
 const { handleMessages } = require('./utils')
 const canvasApi = require('../../canvasApi')
 const randomstring = require('randomstring')
@@ -26,7 +26,7 @@ async function createUser() {
       sis_user_id: kthId,
       skip_registration: true,
       send_confirmation: false
-    }m
+    },
     user: {
       name: 'Integration test',
       sortable_name: 'Integration test'
