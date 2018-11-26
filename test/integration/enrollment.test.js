@@ -32,65 +32,6 @@ async function processEnrollmentMessage (message, course) {
   }
 }
 
-test('should enroll an assistant in an existing course in canvas', t => {
-  t.plan(1)
-
-  const courseCode = 'A' + randomstring.generate(5) // Assistants course code should be 6 chars
-  const userKthId = 'u1znmoik'
-  const message = {
-    ugClass: 'group',
-    ug1Name: `edu.courses.SF.${courseCode}.20171.1.assistants`,
-    member: [userKthId]}
-
-  const course = {
-    name: 'Emil testar',
-    'course_code': courseCode,
-    'sis_course_id': `${courseCode}VT171`
-  }
-
-  processEnrollmentMessage(message, course)
-    .then((enrolledUser) => {
-      t.equal(enrolledUser.sis_user_id, userKthId)
-    })
-})
-
-test('should enroll an employee in correct section in Miljöutbildningen and Canvas at KTH', async t => {
-  const canvasCourseId = 5014 // Miljöutbildningen
-  const canvasCourseId2 = 85 // Canvas at KTH
-
-  // First create a new user
-  const kthid = randomstring.generate(8)
-  const username = `${kthid}_abc`
-  const createUserMessage = {
-    kthid,
-    'ugClass': 'user',
-    'deleted': false,
-    'affiliation': ['student'],
-    username,
-    'family_name': 'Stenberg',
-    'given_name': 'Emil Stenberg',
-    'primary_email': 'esandin@gmail.com'}
-
-  await handleMessages(createUserMessage)
-
-  // Then enroll the new user
-  const staffMessage = {
-    ugClass: 'group',
-    ug1Name: 'app.katalog3.A',
-    member: [kthid]}
-
-  const [{resp}] = await handleMessages(staffMessage)
-  await canvasApi.pollUntilSisComplete(resp.id)
-
-  const enrolledUsersMU = await canvasApi.get(`courses/${canvasCourseId}/enrollments?sis_section_id[]=app.katalog3.A.section1`)
-  assert(enrolledUsersMU.find(user => user.user.sis_user_id === kthid), 'Oh no, the user is not enrolled in this section!')
-
-  const enrolledUsersCanvasAtKth = await canvasApi.get(`courses/${canvasCourseId2}/enrollments?sis_section_id[]=app.katalog3.A.section2`)
-  assert(enrolledUsersCanvasAtKth.find(user => user.user.sis_user_id === kthid), 'Oh no, the user is not enrolled in this section!')
-
-  t.end()
-})
-
 test('should enroll a re-registered student in an existing course in canvas', t => {
   t.plan(2)
   const userKthId = 'u1znmoik'
