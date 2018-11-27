@@ -36,23 +36,33 @@ async function start () {
     host: config.azure.host,
     hostname: config.azure.host,
     port: 5671,
-    username: 'RootManageSharedAccessKey',
-    password: 'H9Fld2dcEyT+AdpqRPF0ek91BHeURaXMX/TG51L1Ie4=',
+    username: config.azure.SharedAccessKeyName,
+    password: sharedAccessKey,
     container_id: 'lms-client',
     reconnect_limit: 100 // TODO: Is this even remotely reasonable?
   })
-  connection.on('message', function (context) {
+  connection.on('message', async function (context) {
     // TODO: Some extended logic might be needed here if we do have a "detached issue"...
-    if (context.message.body === 'detach') {
-      context.receiver.detach()
-      context.connection.close()
-    } else if (context.message.body === 'close') {
-      context.receiver.close()
-      context.connection.close()
+    // TODO: Step one will be to decode the message which seems to always(?) come as a Buffer... We crave the JSON!
+    if (context.message.body.typecode === 117) {
+      const jsonData = {body: JSON.parse(Buffer.from(context.message.body.content).toString())}
+      initLogger(jsonData)
+      log.info(`New message from ug queue for receiver ${connection.id}`, jsonData)
+      history.setIdleTimeStart()
+
+      if (jsonData.body) {
+        await _processMessage(jsonData, context.delivery)
+      } else {
+        log.info('Message is empty or undefined, deleting from queue...', jsonData)
+        // TODO: Please fix!
+        // await receiver.accept(jsonData)
+        context.delivery.accept()
+      }
+
+      initLogger(jsonData)
     } else {
-      let parsedString = Buffer.from(context.message.body.content).toString()
-      let json = JSON.parse(parsedString)
-      log.info('well hello')
+      // TODO: This is uncharted territory! PANIC!
+      log.error(`An unexpected content type was received: ${context.message.body.content.type}`)
     }
   })
   connection.open_receiver({
@@ -63,7 +73,8 @@ async function start () {
       durable: 2, // TODO: Find out if this is reasonable...
       expiry_policy: 'never'
     },
-    autoaccept: false
+    autoaccept: false,
+    credit_window: 1 // TODO: Is this the way to fetch one message at a time?
   })
 
   // TODO: Remove or enchance!
@@ -87,24 +98,29 @@ async function start () {
     }
 
     initLogger(message)
-  })
+  }) */
 
-  async function _processMessage (MSG) {
+  async function _processMessage (MSG, delivery) {
     try {
       const body = addDescription(MSG.body)
       const result = await handleMessage(body)
       log.info('result from handleMessage', result)
       eventEmitter.emit('messageProcessed', MSG, result)
-      return receiver.accept(MSG)
+      // TODO: Gotta fix this...
+      // return receiver.accept(MSG)
+      delivery.accept()
     } catch (e) {
       log.error(e)
       log.info('Error Occured, releasing message back to queue...', MSG)
-      return receiver.modify(MSG, {undeliverableHere: false, deliveryFailed: true})
+      // TODO: Gotta fix this...
+      // return receiver.modify(MSG, {undeliverableHere: false, deliveryFailed: true})
+      delivery.modified({deliveryFailed: true, undeliverable_here: false})
     }
   }
 
+  // TODO: What about this return?
   // Return receiver, used by the integration tests
-  return receiver */
+  // return receiver
 }
 
 function initLogger (msg) {
