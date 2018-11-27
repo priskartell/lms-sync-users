@@ -86,12 +86,12 @@ test('should enroll an employee in Miljöutbildningen and Canvas at KTH', async 
 
   t.ok(
     muEnrollments.find(e => e.user.sis_user_id === employeeId),
-    `The user ${employeeId} is not correctly enrolled in Miljöutbildningen`
+    `The user ${employeeId} has been enrolled in Miljöutbildningen`
   )
 
   t.ok(
     ckEnrollments.find(e => e.user.sis_user_id === employeeId),
-    `The user ${employeeId} is not correctly enrolled in Canvas at KTH`
+    `The user ${employeeId} has been enrolled in Canvas at KTH`
   )
 })
 
