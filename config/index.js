@@ -19,8 +19,9 @@ module.exports = {
     }
   },
   azure: {
-    queueName: process.env.AZURE_QUEUE_NAME,
-    host: process.env.AZURE_HOST || 'lms-queue.servicebus.windows.net',
+    subscriptionName: process.env.AZURE_SUBSCRIPTION_NAME,
+    subscriptionPath: process.env.AZURE_SUBSCRIPTION_PATH,
+    host: process.env.AZURE_SERVICE_BUS_URL || 'lms-queue.servicebus.windows.net',
     SharedAccessKeyName: process.env.AZURE_SHARED_ACCESS_KEY_NAME || 'RootManageSharedAccessKey',
     SharedAccessKey: process.env.AZURE_SHARED_ACCESS_KEY
   },

@@ -7,12 +7,7 @@ const history = require('./history')
 
 const {addDescription} = require('kth-message-type')
 const handleMessage = require('./handleMessage')
-// TODO: Remove once outdated
-// const {Client: AMQPClient, Policy} = require('amqp10')
 const rhea = require('rhea')
-const urlencode = require('urlencode')
-// TODO: Remove once outdated
-// const client = new AMQPClient(Policy.Utils.RenewOnSettle(1, 1, Policy.ServiceBusQueue))
 
 // TODO: Remove once outdated
 /* client.on('connection:closed', msg => log.info('connection:closed event received', msg))
@@ -21,15 +16,7 @@ client.on('connection:disconnected', msg => log.info('connection to azure discon
 
 async function start () {
   const sharedAccessKey = process.env.AZURE_SHARED_ACCESS_KEY || config.azure.SharedAccessKey
-  log.info('connecting with the following azure url:', `amqps://${config.azure.SharedAccessKeyName}:${(sharedAccessKey || '').replace(/\w/g, 'x')}@${config.azure.host}`)
-  const queueName = config.azure.queueName || config.azure.queueName
-  log.info('connecting to the queue with name ', queueName)
-
-  // TODO: Remove once outdated
-  // await client.connect(`amqps://${config.azure.SharedAccessKeyName}:${urlencode(sharedAccessKey)}@${config.azure.host}`)
-  // const receiver = await client.createReceiver(queueName)
-  // log.info('receiver created:', receiver.id)
-
+  log.info(`connecting to the following azure service bus: ${config.azure.host}`)
   console.log(config.azure.host)
   const connection = rhea.connect({
     transport: 'tls',
@@ -41,6 +28,27 @@ async function start () {
     container_id: 'lms-client',
     reconnect_limit: 100 // TODO: Is this even remotely reasonable?
   })
+
+  // TODO: Improve error handling!
+  connection.on('connection_open', function (context) {
+    log.info('Connection was opened!')
+  })
+  connection.on('connection_close', function (context) {
+    log.warning('Connection was closed!')
+  })
+  connection.on('connection_error', function (context) {
+    log.error('Connection had an error!')
+  })
+  connection.on('disconnected', function (context) {
+    log.warning('Connection was disconnected!')
+  })
+  connection.on('receiver_open', function (context) {
+    log.info('Receiver was opened!')
+  })
+  connection.on('receiver_close', function (context) {
+    log.warning('Receiver was closed!')
+  })
+
   connection.on('message', async function (context) {
     // TODO: Some extended logic might be needed here if we do have a "detached issue"...
     // TODO: Step one will be to decode the message which seems to always(?) come as a Buffer... We crave the JSON!
@@ -54,21 +62,21 @@ async function start () {
         await _processMessage(jsonData, context.delivery)
       } else {
         log.info('Message is empty or undefined, deleting from queue...', jsonData)
-        // TODO: Please fix!
-        // await receiver.accept(jsonData)
         context.delivery.accept()
       }
 
       initLogger(jsonData)
     } else {
-      // TODO: This is uncharted territory! PANIC!
-      log.error(`An unexpected content type was received: ${context.message.body.content.type}`)
+      log.error(`An unexpected content type was received: ${context.message.body.typecode}`)
+      context.delivery.modified({deliveryFailed: true, undeliverable_here: false})
     }
   })
+
+  log.info(`opening receiver for subscription: ${config.azure.subscriptionName} @ ${config.azure.subscriptionPath}`)
   connection.open_receiver({
-    name: 'lms-sub-peter',
+    name: config.azure.subscriptionName,
     source: {
-      address: 'lms-topic-peter/Subscriptions',
+      address: config.azure.subscriptionPath,
       dynamic: false,
       durable: 2, // TODO: Find out if this is reasonable...
       expiry_policy: 'never'
@@ -106,14 +114,10 @@ async function start () {
       const result = await handleMessage(body)
       log.info('result from handleMessage', result)
       eventEmitter.emit('messageProcessed', MSG, result)
-      // TODO: Gotta fix this...
-      // return receiver.accept(MSG)
       delivery.accept()
     } catch (e) {
       log.error(e)
       log.info('Error Occured, releasing message back to queue...', MSG)
-      // TODO: Gotta fix this...
-      // return receiver.modify(MSG, {undeliverableHere: false, deliveryFailed: true})
       delivery.modified({deliveryFailed: true, undeliverable_here: false})
     }
   }
