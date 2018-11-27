@@ -1,161 +1,159 @@
-var test = require('tape')
-const {handleMessages} = require('././utils')
+const test = require('tape')
+const { handleMessages } = require('./utils')
 const canvasApi = require('../../canvasApi')
 const randomstring = require('randomstring')
-const assert = require('assert')
-const {promisify} = require('util')
-async function processMessage (message, course) {
-  // First create a fresch course in canvas
-  try {
-    const accountId = 14 // Courses that starts with an 'A' is handled by account 14
-    const canvasCourse = await canvasApi.createCourse({course}, accountId)
-    await canvasApi.createDefaultSection(canvasCourse)
-    const [{resp}] = await handleMessages(message)
-    await canvasApi.pollUntilSisComplete(resp.id)
-    const enrolledUsers = await canvasApi.getEnrollments(canvasCourse.id)
-    console.log('enrolledUsers:', JSON.stringify(enrolledUsers))
-    const [enrolledUser] = enrolledUsers
-    return enrolledUser
-  } catch (e) {
-    console.error('An error occured', e)
+const { promisify } = require('util')
+
+async function createCourse (sisCourseId) {
+  const ACCOUNT_ID = 14
+  const course = {
+    name: `Integration test ${sisCourseId}`,
+    course_code: 'Integration test',
+    sis_course_id: sisCourseId
   }
+
+  const canvasCourse = await canvasApi.createCourse({course}, ACCOUNT_ID)
+  await canvasApi.createDefaultSection(canvasCourse)
+
+  return canvasCourse
 }
 
-test('should enroll an assistant in an existing course in canvas', t => {
+async function createUser () {
+  const kthId = `v${randomstring.generate(7)}`
+  const email = `${kthId}@kth.se`
+  await canvasApi.createUser({
+    pseudonym: {
+      unique_id: kthId,
+      sis_user_id: kthId,
+      skip_registration: true,
+      send_confirmation: false
+    },
+    user: {
+      name: 'Integration test',
+      sortable_name: 'Integration test'
+    },
+    communication_channel: {
+      type: 'email',
+      address: email,
+      skip_confirmation: true
+    },
+    enable_sis_reactivation: false
+  })
+
+  return kthId
+}
+
+test('should enroll an assistant in an existing course in canvas', async t => {
   t.plan(1)
 
-  const courseCode = 'A' + randomstring.generate(5) // Assistants course code should be 6 chars
-  const userKthId = 'u1znmoik'
+  // Create the "existing course" and the "assistant" in Canvas
+  // Course code should be 6 characters long
+  const courseCode = 'A' + randomstring.generate(5)
+  const assistantId = await createUser()
+  const canvasCourse = await createCourse(courseCode + 'VT171')
+
   const message = {
     ugClass: 'group',
     ug1Name: `edu.courses.SF.${courseCode}.20171.1.assistants`,
-    member: [userKthId]}
-
-  const course = {
-    name: 'Emil testar',
-    'course_code': courseCode,
-    'sis_course_id': `${courseCode}VT171`
+    member: [assistantId]
   }
 
-  processMessage(message, course)
-    .then((enrolledUser) => {
-      t.equal(enrolledUser.sis_user_id, userKthId)
-    })
+  const [{resp}] = await handleMessages(message)
+  await canvasApi.pollUntilSisComplete(resp.id)
+  const enrollments = await canvasApi.getEnrollments(canvasCourse.id)
+  t.equal(enrollments[0].sis_user_id, assistantId)
 })
 
-test('should enroll an employee in correct section in Miljöutbildningen and Canvas at KTH', async t => {
-  const canvasCourseId = 5014 // Miljöutbildningen
-  const canvasCourseId2 = 85 // Canvas at KTH
+test('should enroll an employee in Miljöutbildningen and Canvas at KTH', async t => {
+  t.plan(2)
+  const muId = 5014 // Miljöutbildningen
+  const ckId = 85 // Canvas at KTH
 
-  // First create a new user
-  const kthid = randomstring.generate(8)
-  const username = `${kthid}_abc`
-  const createUserMessage = {
-    kthid,
-    'ugClass': 'user',
-    'deleted': false,
-    'affiliation': ['student'],
-    username,
-    'family_name': 'Stenberg',
-    'given_name': 'Emil Stenberg',
-    'primary_email': 'esandin@gmail.com'}
+  // Create the "employee" in Canvas
+  const employeeId = await createUser()
 
-  await handleMessages(createUserMessage)
-
-  // Then enroll the new user
-  const staffMessage = {
+  const message = {
     ugClass: 'group',
     ug1Name: 'app.katalog3.A',
-    member: [kthid]}
+    member: [employeeId]
+  }
 
-  const [{resp}] = await handleMessages(staffMessage)
+  const [{resp}] = await handleMessages(message)
   await canvasApi.pollUntilSisComplete(resp.id)
 
-  const enrolledUsersMU = await canvasApi.get(`courses/${canvasCourseId}/enrollments?sis_section_id[]=app.katalog3.A.section1`)
-  assert(enrolledUsersMU.find(user => user.user.sis_user_id === kthid), 'Oh no, the user is not enrolled in this section!')
+  const muEnrollments = await canvasApi.get(`courses/${muId}/enrollments?sis_section_id[]=app.katalog3.A.section1`)
+  const ckEnrollments = await canvasApi.get(`courses/${ckId}/enrollments?sis_section_id[]=app.katalog3.A.section2`)
 
-  const enrolledUsersCanvasAtKth = await canvasApi.get(`courses/${canvasCourseId2}/enrollments?sis_section_id[]=app.katalog3.A.section2`)
-  assert(enrolledUsersCanvasAtKth.find(user => user.user.sis_user_id === kthid), 'Oh no, the user is not enrolled in this section!')
+  t.ok(
+    muEnrollments.find(e => e.user.sis_user_id === employeeId),
+    `The user ${employeeId} has been enrolled in Miljöutbildningen`
+  )
 
-  t.end()
+  t.ok(
+    ckEnrollments.find(e => e.user.sis_user_id === employeeId),
+    `The user ${employeeId} has been enrolled in Canvas at KTH`
+  )
 })
 
-test('should enroll a re-registered student in an existing course in canvas', t => {
-  t.plan(2)
-  const userKthId = 'u1znmoik'
-  const courseCode0 = 'A' + randomstring.generate(1)
-  const courseCode1 = randomstring.generate(4)
+test('should enroll a re-registered student in an existing course in Canvas', async t => {
+  t.plan(1)
+  const cc0 = 'A' + randomstring.generate(1)
+  const cc1 = randomstring.generate(4)
+
+  const canvasCourse = await createCourse(cc0 + cc1 + 'VT173')
+  const studentId = await createUser()
 
   const message = {
     ugClass: 'group',
-    ug1Name: `ladok2.kurser.${courseCode0}.${courseCode1}.omregistrerade_20171`,
-    member: [userKthId]}
-
-  const course = {
-    name: 'Emil testar',
-    'course_code': courseCode0 + courseCode1,
-    'sis_course_id': `${courseCode0 + courseCode1}VT173`
+    ug1Name: `ladok2.kurser.${cc0}.${cc1}.omregistrerade_20171`,
+    member: [studentId]
   }
 
-  processMessage(message, course)
-    .then(enrolledUser => {
-      t.ok(enrolledUser)
-      t.equal(enrolledUser.sis_user_id, userKthId)
-    })
+  const [{resp}] = await handleMessages(message)
+  await canvasApi.pollUntilSisComplete(resp.id)
+
+  const enrollments = await canvasApi.getEnrollments(canvasCourse.id)
+  t.equal(enrollments[0].sis_user_id, studentId)
 })
 
-test('should enroll a student in an existing course in canvas', t => {
-  t.plan(2)
+test('should enroll a student in an existing course', async t => {
+  t.plan(1)
+  const cc0 = 'A' + randomstring.generate(1)
+  const cc1 = randomstring.generate(4)
 
-  const courseCode0 = 'A' + randomstring.generate(1)
-  const courseCode1 = randomstring.generate(4)
-  const userKthId = 'u1znmoik'
+  const canvasCourse = await createCourse(cc0 + cc1 + 'VT171')
+  const studentId = await createUser()
 
   const message = {
-    kthid: 'u2yp4zyn',
     ugClass: 'group',
-    ug1Name: `ladok2.kurser.${courseCode0}.${courseCode1}.registrerade_20171.1`,
-    member: [userKthId]}
-
-  const course = {
-    name: 'Emil testar',
-    'course_code': courseCode0 + courseCode1,
-    'sis_course_id': `${courseCode0 + courseCode1}VT171`
+    ug1Name: `ladok2.kurser.${cc0}.${cc1}.registrerade_20171.1`,
+    member: [studentId]
   }
 
-  processMessage(message, course)
-    .then((enrolledUser) => {
-      t.ok(enrolledUser)
-      t.equal(enrolledUser.sis_user_id, userKthId)
-    })
+  const [{resp}] = await handleMessages(message)
+  await canvasApi.pollUntilSisComplete(resp.id)
+
+  const enrollments = await canvasApi.getEnrollments(canvasCourse.id)
+  t.equal(enrollments[0].sis_user_id, studentId)
 })
 
-test('should 𝙣𝙤𝙩 enroll an antagen', async t => {
-  const courseCode0 = 'A' + randomstring.generate(1)
-  const courseCode1 = randomstring.generate(4)
-  const userKthId = 'u1znmoik'
+test('should not enroll an antagen', async t => {
+  t.plan(1)
+  const cc0 = 'A' + randomstring.generate(1)
+  const cc1 = randomstring.generate(4)
+
+  const canvasCourse = await createCourse(cc0 + cc1 + 'VT181')
+  const studentId = await createUser()
 
   const message = {
-    kthid: 'u2yp4zyn',
     ugClass: 'group',
-    ug1Name: `ladok2.kurser.${courseCode0}.${courseCode1}.antagna_20181.1`,
-    member: [userKthId]}
-
-  const course = {
-    name: 'Emil testar',
-    'course_code': courseCode0 + courseCode1,
-    'sis_course_id': `${courseCode0 + courseCode1}VT171`
+    ug1Name: `ladok2.kurser.${cc0}.${cc1}.antagna_20181.1`,
+    member: [studentId]
   }
 
-  const accountId = 14 // Courses that starts with an 'A' is handled by account 14
-  const canvasCourse = await canvasApi.createCourse({course}, accountId)
   await handleMessages(message)
 
-  // Can't poll since no csv file should have been sent to canvas
-  // Add a short sleep (I know, this is really ugly) to make sure that any incorrectly sent csv files are caught
-  const delay = promisify(setTimeout)
-  await delay(5000)
-  const enrolledUsers = await canvasApi.getEnrollments(canvasCourse.id)
-  assert.deepEqual(enrolledUsers, [])
-  t.end()
+  await promisify(setTimeout)(5000)
+  const enrollments = await canvasApi.getEnrollments(canvasCourse.id)
+  t.deepEqual(enrollments, [])
 })
