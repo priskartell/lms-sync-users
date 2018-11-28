@@ -7,41 +7,37 @@ const azureCommon = require('azure-common')
 
 const consumeMessages = rewire('../../messages/consumeMessages')
 
-function createQueue (queueConnectionString) {
-  const queueService = azureSb.createServiceBusService(queueConnectionString)
-  queueService.logger = new azureCommon.Logger(azureCommon.Logger.LogLevels['TRACE'])
+const topicName = 'lms-topic-integration'
+const subscriptionName = 'lms-sub-integration'
+
+function createSBService (queueConnectionString) {
+  const sBService = azureSb.createServiceBusService(queueConnectionString)
+  sBService.logger = new azureCommon.Logger(azureCommon.Logger.LogLevels['TRACE'])
 
   return {
-    deleteQueue: Promise.promisify(
-      queueService.deleteQueue,
-      { context: queueService }
-    ),
 
-    createQueueIfNotExists: Promise.promisify(
-      queueService.createQueueIfNotExists,
-      { context: queueService }
-    ),
-
-    sendQueueMessage (queueName, message) {
+    sendTopicMessage (topicName, message) {
       if (typeof message === 'object') {
         message = JSON.stringify(message)
       }
 
-      const queueMessage = { body: message }
+      const topicMessage = { body: message }
 
       return new Promise((resolve, reject) => {
-        queueService.sendQueueMessage(queueName, queueMessage, (err) => {
-          if (err) reject(err)
-          else resolve()
+        sBService.sendTopicMessage(topicName, topicMessage, (err) => {
+          if (err) {
+            reject(err)
+          } else {
+            resolve()
+          }
         })
       })
     }
   }
 }
 
-const sharedAccessKey = process.env.AZURE_SHARED_ACCESS_KEY || config.azure.SharedAccessKey
-const queueConnectionString = `Endpoint=sb://${config.azure.host}/;SharedAccessKeyName=${config.azure.SharedAccessKeyName};SharedAccessKey=${sharedAccessKey}`
-const queue = createQueue(queueConnectionString)
+const sBConnectionString = `Endpoint=sb://lms-queue.servicebus.windows.net/;SharedAccessKeyName=${config.azure.SharedAccessKeyName};SharedAccessKey=${config.azure.SharedAccessKey}`
+const sBService = createSBService(sBConnectionString)
 
 function sendAndWaitUntilMessageProcessed (message) {
   console.log('Send and read a message', message)
@@ -52,9 +48,8 @@ function sendAndWaitUntilMessageProcessed (message) {
     })
   })
 
-  console.log('sending a message to the queue:', config.azure.queueName)
-  queue.sendQueueMessage(config.azure.queueName, message)
-    .catch(err => console.error(err))
+  console.log('sending a message to the topic:', topicName)
+  sBService.sendTopicMessage(topicName, message).catch(err => console.error(err))
 
   return resultPromise
 }
@@ -62,23 +57,27 @@ function sendAndWaitUntilMessageProcessed (message) {
 async function handleMessages (...messages) {
   try {
     console.log('handle messages', messages.length)
-    config.azure.queueName = config.azure.queueName = 'lms-sync-users-integration-tests-' + Math.random().toString(36)
-
-    await queue.createQueueIfNotExists(config.azure.queueName)
-    const receiver = await consumeMessages.start()
+    config.azure.subscriptionName = subscriptionName
+    config.azure.subscriptionPath = `${topicName}/Subscriptions`
+    await consumeMessages.start()
     const result = await Promise.mapSeries(messages, sendAndWaitUntilMessageProcessed)
     console.log('Close the receiver...')
-    await new Promise((resolve, reject) => {
+    // TODO: Add some proper code here for shuutting down (also - do we need connection or receiver or both)
+    console.log('Close the connection...')
+    const connection = consumeMessages.__get__('connection')
+    await connection.close()
+
+    /* await new Promise((resolve, reject) => {
       receiver.detach()
       receiver.on('detached', () => resolve())
     })
 
     console.log('Close the connection...')
     const client = consumeMessages.__get__('client')
-    await client.disconnect()
+    await client.disconnect() */
     return result
-  } finally {
-    queue.deleteQueue(config.azure.queueName)
+  } catch (e) {
+    console.error(`An exception occured when running handleMessage: ${e}`)
   }
 }
 

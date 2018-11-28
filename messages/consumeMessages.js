@@ -9,16 +9,12 @@ const {addDescription} = require('kth-message-type')
 const handleMessage = require('./handleMessage')
 const rhea = require('rhea')
 
-// TODO: Remove once outdated
-/* client.on('connection:closed', msg => log.info('connection:closed event received', msg))
-client.on('connection:opened', msg => log.info('connection to azure opened'))
-client.on('connection:disconnected', msg => log.info('connection to azure disconnected')) */
+let connection
 
 async function start () {
   const sharedAccessKey = process.env.AZURE_SHARED_ACCESS_KEY || config.azure.SharedAccessKey
   log.info(`connecting to the following azure service bus: ${config.azure.host}`)
-  console.log(config.azure.host)
-  const connection = rhea.connect({
+  connection = rhea.connect({
     transport: 'tls',
     host: config.azure.host,
     hostname: config.azure.host,
@@ -34,25 +30,34 @@ async function start () {
     log.info('Connection was opened!')
   })
   connection.on('connection_close', function (context) {
-    log.warning('Connection was closed!')
+    log.warn('Connection was closed!')
   })
   connection.on('connection_error', function (context) {
-    log.error('Connection had an error!')
+    log.error(`Connection had an error: ${context.connection.get_error()}`)
   })
   connection.on('disconnected', function (context) {
-    log.warning('Connection was disconnected!')
+    log.warn('Connection was disconnected!')
   })
   connection.on('receiver_open', function (context) {
     log.info('Receiver was opened!')
   })
   connection.on('receiver_close', function (context) {
-    log.warning('Receiver was closed!')
+    log.warn('Receiver was closed!')
+    log.warn(context)
   })
 
   connection.on('message', async function (context) {
-    // TODO: Some extended logic might be needed here if we do have a "detached issue"...
+    // NOTE: Seems like this is the way to handle detachment issues...
+    if (context.message.body === 'detach') {
+      log.warn('Receiver was told to detached!')
+      context.receiver.detach()
+      context.connection.close()
+    } else if (context.message.body === 'close') {
+      log.warn('Receiver was told to close!')
+      context.receiver.close()
+      context.connection.close()
     // TODO: Step one will be to decode the message which seems to always(?) come as a Buffer... We crave the JSON!
-    if (context.message.body.typecode === 117) {
+    } else if (context.message.body.typecode === 117) {
       const jsonData = {body: JSON.parse(Buffer.from(context.message.body.content).toString())}
       initLogger(jsonData)
       log.info(`New message from ug queue for receiver ${connection.id}`, jsonData)
@@ -121,10 +126,6 @@ async function start () {
       delivery.modified({deliveryFailed: true, undeliverable_here: false})
     }
   }
-
-  // TODO: What about this return?
-  // Return receiver, used by the integration tests
-  // return receiver
 }
 
 function initLogger (msg) {
