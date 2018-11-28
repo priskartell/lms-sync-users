@@ -7,6 +7,7 @@ const azureCommon = require('azure-common')
 
 const consumeMessages = rewire('../../messages/consumeMessages')
 
+const serviceBusUrl = 'lms-queue.servicebus.windows.net'
 const topicName = 'lms-topic-integration'
 const subscriptionName = 'lms-sub-integration'
 
@@ -57,6 +58,7 @@ function sendAndWaitUntilMessageProcessed (message) {
 async function handleMessages (...messages) {
   try {
     console.log('handle messages', messages.length)
+    config.azure.host = serviceBusUrl
     config.azure.subscriptionName = subscriptionName
     config.azure.subscriptionPath = `${topicName}/Subscriptions`
     await consumeMessages.start()

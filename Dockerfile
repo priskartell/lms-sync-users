@@ -4,12 +4,10 @@ COPY ["config", "config"]
 COPY ["package.json", "package.json"]
 COPY ["package-lock.json", "package-lock.json"]
 
-# TODO: Clean up this mess for a post-forkedApp world!
 # Source files in root
 COPY ["app.js", "app.js"]
 COPY ["canvasApi.js", "canvasApi.js"]
 COPY ["csvFile.js", "csvFile.js"]
-COPY ["forkedApp.js", "forkedApp.js"]
 COPY ["package.json", "package.json"]
 
 # Source files directories
