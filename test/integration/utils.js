@@ -1,3 +1,4 @@
+const crypto = require('crypto')
 const config = require('../../config')
 const Promise = require('bluebird')
 const rewire = require('rewire')
@@ -8,14 +9,29 @@ const azureCommon = require('azure-common')
 const consumeMessages = rewire('../../messages/consumeMessages')
 
 const serviceBusUrl = 'lms-queue.servicebus.windows.net'
-const topicName = 'lms-topic-integration'
-const subscriptionName = 'lms-sub-integration'
+const topicNamePrefix = 'lms-topic-integration-test-'
+const subscriptionNamePrefix = 'lms-sub-integration-test-'
 
 function createSBService (queueConnectionString) {
   const sBService = azureSb.createServiceBusService(queueConnectionString)
   sBService.logger = new azureCommon.Logger(azureCommon.Logger.LogLevels['TRACE'])
 
   return {
+
+    deleteTopic: Promise.promisify(
+      sBService.deleteTopic,
+      { context: sBService }
+    ),
+
+    createTopicIfNotExists: Promise.promisify(
+      sBService.createTopicIfNotExists,
+      { context: sBService }
+    ),
+
+    createSubscription: Promise.promisify(
+      sBService.createSubscription,
+      { context: sBService }
+    ),
 
     sendTopicMessage (topicName, message) {
       if (typeof message === 'object') {
@@ -39,6 +55,7 @@ function createSBService (queueConnectionString) {
 
 const sBConnectionString = `Endpoint=sb://lms-queue.servicebus.windows.net/;SharedAccessKeyName=${config.azure.SharedAccessKeyName};SharedAccessKey=${config.azure.SharedAccessKey}`
 const sBService = createSBService(sBConnectionString)
+let topicName = ''
 
 function sendAndWaitUntilMessageProcessed (message) {
   console.log('Send and read a message', message)
@@ -59,27 +76,25 @@ async function handleMessages (...messages) {
   try {
     console.log('handle messages', messages.length)
     config.azure.host = serviceBusUrl
-    config.azure.subscriptionName = subscriptionName
+    topicName = `${topicNamePrefix}${crypto.randomBytes(8).toString('hex')}`
+    config.azure.subscriptionName = `${subscriptionNamePrefix}${crypto.randomBytes(8).toString('hex')}`
     config.azure.subscriptionPath = `${topicName}/Subscriptions`
+    await sBService.createTopicIfNotExists(topicName)
+    await sBService.createSubscription(topicName, config.azure.subscriptionName)
+
     await consumeMessages.start()
     const result = await Promise.mapSeries(messages, sendAndWaitUntilMessageProcessed)
     console.log('Close the receiver...')
-    // TODO: Add some proper code here for shuutting down (also - do we need connection or receiver or both)
+
     console.log('Close the connection...')
     const connection = consumeMessages.__get__('connection')
     await connection.close()
 
-    /* await new Promise((resolve, reject) => {
-      receiver.detach()
-      receiver.on('detached', () => resolve())
-    })
-
-    console.log('Close the connection...')
-    const client = consumeMessages.__get__('client')
-    await client.disconnect() */
     return result
   } catch (e) {
     console.error(`An exception occured when running handleMessage: ${e}`)
+  } finally {
+    sBService.deleteTopic(topicName)
   }
 }
 

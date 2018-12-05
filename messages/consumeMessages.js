@@ -22,7 +22,7 @@ async function start () {
     username: config.azure.SharedAccessKeyName,
     password: sharedAccessKey,
     container_id: 'lms-client',
-    reconnect_limit: 100 // TODO: Is this even remotely reasonable?
+    reconnect_limit: 100
   })
 
   // TODO: Improve error handling!
@@ -56,7 +56,6 @@ async function start () {
       log.warn('Receiver was told to close!')
       context.receiver.close()
       context.connection.close()
-    // TODO: Step one will be to decode the message which seems to always(?) come as a Buffer... We crave the JSON!
     } else if (context.message.body.typecode === 117) {
       const jsonData = {body: JSON.parse(Buffer.from(context.message.body.content).toString())}
       initLogger(jsonData)
@@ -83,35 +82,12 @@ async function start () {
     source: {
       address: config.azure.subscriptionPath,
       dynamic: false,
-      durable: 2, // TODO: Find out if this is reasonable...
+      durable: 2, // NOTE: Value taken from rhea official code example for durable subscription reader.
       expiry_policy: 'never'
     },
     autoaccept: false,
-    credit_window: 1 // TODO: Is this the way to fetch one message at a time?
+    credit_window: 1 // NOTE: My assumption is that this is the way to fetch one message at a time.
   })
-
-  // TODO: Remove or enchance!
-  /* receiver.on('errorReceived', err => log.warn('An error occured when trying to receive message from queue', err))
-
-  receiver.on('detached', msg => {
-    log.info('detached received for receiver ', receiver.id)
-    _onDetached && _onDetached(msg)
-  })
-
-  receiver.on('message', async message => {
-    initLogger(message)
-    log.info(`New message from ug queue for receiver ${receiver.id}`, message)
-    history.setIdleTimeStart()
-
-    if (message.body) {
-      await _processMessage(message)
-    } else {
-      log.info('Message is empty or undefined, deleting from queue...', message)
-      await receiver.accept(message)
-    }
-
-    initLogger(message)
-  }) */
 
   async function _processMessage (MSG, delivery) {
     try {
