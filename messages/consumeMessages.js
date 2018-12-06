@@ -10,6 +10,7 @@ const handleMessage = require('./handleMessage')
 const rhea = require('rhea')
 
 let connection
+let receiver
 
 async function start () {
   const sharedAccessKey = process.env.AZURE_SHARED_ACCESS_KEY || config.azure.SharedAccessKey
@@ -74,10 +75,11 @@ async function start () {
       log.error(`An unexpected content type was received: ${context.message.body.typecode}`)
       context.delivery.modified({deliveryFailed: true, undeliverable_here: false})
     }
+    receiver.add_credit(1)
   })
 
   log.info(`opening receiver for subscription: ${config.azure.subscriptionName} @ ${config.azure.subscriptionPath}`)
-  connection.open_receiver({
+  receiver = connection.open_receiver({
     name: config.azure.subscriptionName,
     source: {
       address: config.azure.subscriptionPath,
@@ -86,8 +88,9 @@ async function start () {
       expiry_policy: 'never'
     },
     autoaccept: false,
-    credit_window: 1 // NOTE: My assumption is that this is the way to fetch one message at a time.
+    credit_window: 0 // NOTE: Handling when to receive a message manually
   })
+  receiver.add_credit(1)
 
   async function _processMessage (MSG, delivery) {
     try {
