@@ -28,6 +28,10 @@ services:
     tty: true
     command: npm run test:docker-integration 
     environment:
+      - PROXY_PREFIX_PATH
+      - CSV_DIR
+      - LOG_LEVEL
+      - LOG_SRC
       - CANVAS_API_URL
       - CANVAS_API_KEY
       - AZURE_SHARED_ACCESS_KEY_NAME
