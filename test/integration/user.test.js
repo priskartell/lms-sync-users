@@ -1,5 +1,5 @@
 var test = require('tape')
-const {handleMessages} = require('./utils')
+const { handleMessages } = require('./utils')
 const canvasApi = require('../../canvasApi')
 const randomstring = require('randomstring')
 
@@ -15,7 +15,7 @@ test('should create a new user in canvas', t => {
     username,
     'family_name': 'Stenberg',
     'given_name': 'Emil Stenberg',
-    'primary_email': 'esandin@gmail.com'}
+    'primary_email': 'esandin@gmail.com' }
 
   handleMessages(message)
     .then(() => canvasApi.getUser(kthid))
@@ -34,7 +34,7 @@ test('should create a new user of affiliation:member in canvas', t => {
     username,
     'family_name': 'Stenberg',
     'given_name': 'Emil Stenberg',
-    'primary_email': 'esandin@gmail.com'}
+    'primary_email': 'esandin@gmail.com' }
 
   handleMessages(message)
     .then(() => canvasApi.getUser(kthid))
@@ -53,7 +53,7 @@ test('should update a user in canvas', t => {
     username,
     'family_name': 'Stenberg',
     'given_name': 'Emil Stenberg',
-    'primary_email': 'esandin@gmail.com'}
+    'primary_email': 'esandin@gmail.com' }
 
   const message2 = {
     kthid,
@@ -63,7 +63,7 @@ test('should update a user in canvas', t => {
     username,
     'family_name': 'Stenberg',
     'given_name': 'Emil Stenberg Uppdaterad',
-    'primary_email': 'esandin@gmail.com'}
+    'primary_email': 'esandin@gmail.com' }
 
   handleMessages(message, message2)
     .then(() => canvasApi.getUser(kthid))

@@ -2,7 +2,7 @@ const test = require('tape')
 test('should create an array of all possible sisCourseIds for the given course', t => {
   t.plan(1)
   const calcSisForOmregistrerade = require('../../messages/calcSisForOmregistrerade')
-  const result = calcSisForOmregistrerade({ug1Name: 'ladok2.kurser.KD.1070.omregistrerade_20171'})
+  const result = calcSisForOmregistrerade({ ug1Name: 'ladok2.kurser.KD.1070.omregistrerade_20171' })
 
   t.deepEqual(result, [
     'KD1070VT171',

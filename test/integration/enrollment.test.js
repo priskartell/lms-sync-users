@@ -12,7 +12,7 @@ async function createCourse (sisCourseId) {
     sis_course_id: sisCourseId
   }
 
-  const canvasCourse = await canvasApi.createCourse({course}, ACCOUNT_ID)
+  const canvasCourse = await canvasApi.createCourse({ course }, ACCOUNT_ID)
   await canvasApi.createDefaultSection(canvasCourse)
 
   return canvasCourse
@@ -58,7 +58,7 @@ test('should enroll an assistant in an existing course in canvas', async t => {
     member: [assistantId]
   }
 
-  const [{resp}] = await handleMessages(message)
+  const [{ resp }] = await handleMessages(message)
   await canvasApi.pollUntilSisComplete(resp.id)
   const enrollments = await canvasApi.getEnrollments(canvasCourse.id)
   t.equal(enrollments[0].sis_user_id, assistantId)
@@ -78,7 +78,7 @@ test('should enroll an employee in Miljöutbildningen and Canvas at KTH', async 
     member: [employeeId]
   }
 
-  const [{resp}] = await handleMessages(message)
+  const [{ resp }] = await handleMessages(message)
   await canvasApi.pollUntilSisComplete(resp.id)
 
   const muEnrollments = await canvasApi.get(`courses/${muId}/enrollments?sis_section_id[]=app.katalog3.A.section1`)
@@ -109,7 +109,7 @@ test('should enroll a re-registered student in an existing course in Canvas', as
     member: [studentId]
   }
 
-  const [{resp}] = await handleMessages(message)
+  const [{ resp }] = await handleMessages(message)
   await canvasApi.pollUntilSisComplete(resp.id)
 
   const enrollments = await canvasApi.getEnrollments(canvasCourse.id)
@@ -130,7 +130,7 @@ test('should enroll a student in an existing course', async t => {
     member: [studentId]
   }
 
-  const [{resp}] = await handleMessages(message)
+  const [{ resp }] = await handleMessages(message)
   await canvasApi.pollUntilSisComplete(resp.id)
 
   const enrollments = await canvasApi.getEnrollments(canvasCourse.id)

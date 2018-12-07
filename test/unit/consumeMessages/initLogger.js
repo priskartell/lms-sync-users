@@ -57,7 +57,7 @@ test('should init the logger when a message with a body, without kthid or ug1nam
   log.init = sinon.stub()
 
   const message = {
-    body: {1: 2},
+    body: { 1: 2 },
     applicationProperties: {
       UGVersion: 123
     },
@@ -81,7 +81,7 @@ test('should init the logger when a message with a body, with kthid and ug1name 
   log.init = sinon.stub()
 
   const message = {
-    body: {ug1Name: 'someUg1Name', kthid: 'someKthid'},
+    body: { ug1Name: 'someUg1Name', kthid: 'someKthid' },
     applicationProperties: {
       UGVersion: 123
     },
