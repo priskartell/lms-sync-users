@@ -1,10 +1,11 @@
-const {writeLine} = require('../csvFile')
+const { writeLine } = require('../csvFile')
 const canvasApi = require('../canvasApi')
-const config = require('../config')
-const fileName = `${config.localFile.csvDir}/staff_enroll.csv`
-const {promisify} = require('util')
+const { promisify } = require('util')
 const unlink = promisify(require('fs').unlink)
 const logging = require('../server/logging')
+require('dotenv').config()
+
+const fileName = `${process.env.CSV_DIR}/staff_enroll.csv`
 
 async function handleStaffMessage (msg) {
   try {
@@ -21,7 +22,7 @@ async function handleStaffMessage (msg) {
     }
   }
   const canvasReturnValue = await canvasApi.sendCsvFile(fileName, true)
-  return {msg, resp: canvasReturnValue}
+  return { msg, resp: canvasReturnValue }
 }
 
-module.exports = {handleStaffMessage}
+module.exports = { handleStaffMessage }

@@ -1,6 +1,5 @@
 FROM kthse/kth-nodejs:9.11.0
 RUN apk update; apk add python make;
-COPY ["config", "config"]
 COPY ["package.json", "package.json"]
 COPY ["package-lock.json", "package-lock.json"]
 

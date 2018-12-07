@@ -5,13 +5,14 @@ const canvasApi = require('../canvasApi')
 const rp = require('request-promise')
 const express = require('express')
 const router = express.Router()
-const config = require('../config')
-const version = require('../config/version')
 const packageFile = require('../package.json')
 const moment = require('moment')
 const [waitAmount, waitUnit] = [10, 'hours']
 const history = require('../messages/history')
 const log = require('../server/logging')
+const version = require('../config/version')
+require('dotenv').config()
+
 /* GET /_about
  * About page
  */
@@ -44,12 +45,12 @@ function status () {
     .then(keyOk => { canvasKeyOk = keyOk })
     .catch(e => { canvasKeyOk = false })
     .then(() => {
-      return {canvasOk, canvasKeyOk}
+      return { canvasOk, canvasKeyOk }
     })
 }
 
 var _monitor = function (req, res) {
-  status().then(({canvasOk, canvasKeyOk}) => {
+  status().then(({ canvasOk, canvasKeyOk }) => {
     res.setHeader('Content-Type', 'text/plain')
     const checkTimeAgainst = moment().subtract(waitAmount, waitUnit)
     const idleTimeOk = history.idleTimeStart.isAfter(checkTimeAgainst)
@@ -72,7 +73,7 @@ router.get('/_monitor_core', _monitor)
 router.get('/_about', _about)
 
 router.get('/', function (req, res) {
-  res.redirect(`${config.proxyPrefixPath.uri}/_monitor`)
+  res.redirect(`${process.env.PROXY_PREFIX_PATH}/_monitor`)
 })
 
 module.exports = router

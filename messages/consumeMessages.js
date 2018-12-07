@@ -1,28 +1,28 @@
 'use strict'
-const config = require('../config')
 const log = require('../server/logging')
 const EventEmitter = require('events')
 const eventEmitter = new EventEmitter()
 const history = require('./history')
-
-const {addDescription} = require('kth-message-type')
+const { addDescription } = require('kth-message-type')
 const handleMessage = require('./handleMessage')
 const rhea = require('rhea')
+require('dotenv').config()
 
 let connection
 let receiver
 
 async function start () {
-  const sharedAccessKey = process.env.AZURE_SHARED_ACCESS_KEY || config.azure.SharedAccessKey
-  log.info(`connecting to the following azure service bus: ${config.azure.host}`)
+  const sharedAccessKey = process.env.AZURE_SHARED_ACCESS_KEY
+  log.info(`connecting to the following azure service bus: ${process.env.AZURE_SERVICE_BUS_URL}`)
   connection = rhea.connect({
     transport: 'tls',
-    host: config.azure.host,
-    hostname: config.azure.host,
+    host: process.env.AZURE_SERVICE_BUS_URL,
+    hostname: process.env.AZURE_SERVICE_BUS_URL,
     port: 5671,
-    username: config.azure.SharedAccessKeyName,
+    username: process.env.AZURE_SHARED_ACCESS_KEY_NAME,
     password: sharedAccessKey,
     container_id: 'lms-client',
+    reconnect: true,
     reconnect_limit: 100
   })
 
@@ -58,7 +58,7 @@ async function start () {
       context.receiver.close()
       context.connection.close()
     } else if (context.message.body.typecode === 117) {
-      const jsonData = {body: JSON.parse(Buffer.from(context.message.body.content).toString())}
+      const jsonData = { body: JSON.parse(Buffer.from(context.message.body.content).toString()) }
       initLogger(jsonData)
       log.info(`New message from ug queue for receiver ${connection.id}`, jsonData)
       history.setIdleTimeStart()
@@ -73,16 +73,16 @@ async function start () {
       initLogger(jsonData)
     } else {
       log.error(`An unexpected content type was received: ${context.message.body.typecode}`)
-      context.delivery.modified({deliveryFailed: true, undeliverable_here: false})
+      context.delivery.modified({ deliveryFailed: true, undeliverable_here: false })
     }
     receiver.add_credit(1)
   })
 
-  log.info(`opening receiver for subscription: ${config.azure.subscriptionName} @ ${config.azure.subscriptionPath}`)
+  log.info(`opening receiver for subscription: ${process.env.AZURE_SUBSCRIPTION_NAME} @ ${process.env.AZURE_SUBSCRIPTION_PATH}`)
   receiver = connection.open_receiver({
-    name: config.azure.subscriptionName,
+    name: process.env.AZURE_SUBSCRIPTION_NAME,
     source: {
-      address: config.azure.subscriptionPath,
+      address: process.env.AZURE_SUBSCRIPTION_PATH,
       dynamic: false,
       durable: 2, // NOTE: Value taken from rhea official code example for durable subscription reader.
       expiry_policy: 'never'
@@ -102,7 +102,7 @@ async function start () {
     } catch (e) {
       log.error(e)
       log.info('Error Occured, releasing message back to queue...', MSG)
-      delivery.modified({deliveryFailed: true, undeliverable_here: false})
+      delivery.modified({ deliveryFailed: true, undeliverable_here: false })
     }
   }
 }
@@ -110,7 +110,7 @@ async function start () {
 function initLogger (msg) {
   let config
   if (msg) {
-    const {body} = msg
+    const { body } = msg
     config = {
       kthid: body && body.kthid,
       ug1Name: body && body.ug1Name,

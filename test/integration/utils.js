@@ -1,10 +1,9 @@
 const crypto = require('crypto')
-const config = require('../../config')
 const Promise = require('bluebird')
 const rewire = require('rewire')
-
 const azureSb = require('azure-sb')
 const azureCommon = require('azure-common')
+require('dotenv').config()
 
 const consumeMessages = rewire('../../messages/consumeMessages')
 
@@ -53,7 +52,7 @@ function createSBService (queueConnectionString) {
   }
 }
 
-const sBConnectionString = `Endpoint=sb://lms-queue.servicebus.windows.net/;SharedAccessKeyName=${config.azure.SharedAccessKeyName};SharedAccessKey=${config.azure.SharedAccessKey}`
+const sBConnectionString = `Endpoint=sb://lms-queue.servicebus.windows.net/;SharedAccessKeyName=${process.env.AZURE_SHARED_ACCESS_KEY_NAME};SharedAccessKey=${process.env.AZURE_SHARED_ACCESS_KEY}`
 const sBService = createSBService(sBConnectionString)
 let topicName = ''
 
@@ -75,12 +74,12 @@ function sendAndWaitUntilMessageProcessed (message) {
 async function handleMessages (...messages) {
   try {
     console.log('handle messages', messages.length)
-    config.azure.host = serviceBusUrl
+    process.env.AZURE_SERVICE_BUS_URL = serviceBusUrl
     topicName = `${topicNamePrefix}${crypto.randomBytes(8).toString('hex')}`
-    config.azure.subscriptionName = `${subscriptionNamePrefix}${crypto.randomBytes(8).toString('hex')}`
-    config.azure.subscriptionPath = `${topicName}/Subscriptions`
+    process.env.AZURE_SUBSCRIPTION_NAME = `${subscriptionNamePrefix}${crypto.randomBytes(8).toString('hex')}`
+    process.env.AZURE_SUBSCRIPTION_PATH = `${topicName}/Subscriptions`
     await sBService.createTopicIfNotExists(topicName)
-    await sBService.createSubscription(topicName, config.azure.subscriptionName)
+    await sBService.createSubscription(topicName, process.env.AZURE_SUBSCRIPTION_NAME)
 
     await consumeMessages.start()
     const result = await Promise.mapSeries(messages, sendAndWaitUntilMessageProcessed)

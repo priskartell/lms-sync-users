@@ -1,11 +1,10 @@
-const config = require('./config')
 const logger = require('./server/logging')
 const CanvasApi = require('kth-canvas-api')
-const apiUrl = config.canvas.apiUrl
+require('dotenv').config()
 
-logger.info('using canvas api at:', apiUrl)
+logger.info('using canvas api at:', process.env.CANVAS_API_URL)
 
-const canvasApi = new CanvasApi(apiUrl, process.env.CANVAS_API_KEY || config.canvas.apiKey)
+const canvasApi = new CanvasApi(process.env.CANVAS_API_URL, process.env.CANVAS_API_KEY)
 
 canvasApi.logger = logger
 

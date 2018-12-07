@@ -1,7 +1,6 @@
-const config = require('../config')
 const packageFile = require('../package.json')
-
 const bunyan = require('bunyan')
+require('dotenv').config()
 
 function init (extraConfiguration) {
   const logConf = {
@@ -15,8 +14,13 @@ function init (extraConfiguration) {
   return bunyan.createLogger(logConf)
 }
 
-const configuration = config.logging
-const environment = config.env
+const configuration = {
+  log: {
+    level: process.env.LOG_LEVEL,
+    src: process.env.LOG_SRC
+  }
+}
+const environment = process.env
 
 // Use 'let' so we can create other instances instead of this one
 let logger = init()

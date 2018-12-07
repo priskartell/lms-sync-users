@@ -19,9 +19,6 @@ typings.json
 *.sublime-project
 *.sublime-workspace
 
-# Settings
-config/localSettings.js
-
 # Logs
 logs/*
 *.log
