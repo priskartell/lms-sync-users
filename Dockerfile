@@ -10,6 +10,7 @@ COPY ["csvFile.js", "csvFile.js"]
 COPY ["package.json", "package.json"]
 
 # Source files directories
+COPY ["config", "config"]
 COPY ["server", "server"]
 COPY ["messages", "messages"]
 
