@@ -6,7 +6,6 @@ function init (extraConfiguration) {
   const logConf = {
     name: 'node-logger',
     app: packageFile.name,
-    env: environment,
     level: configuration.log.level,
     src: configuration.log.src,
     ...extraConfiguration
@@ -20,7 +19,6 @@ const configuration = {
     src: process.env.LOG_SRC
   }
 }
-const environment = process.env
 
 // Use 'let' so we can create other instances instead of this one
 let logger = init()
