@@ -48,34 +48,37 @@ async function start () {
   })
 
   connection.on('message', async function (context) {
-    // NOTE: Seems like this is the way to handle detachment issues...
-    if (context.message.body === 'detach') {
-      log.warn('Receiver was told to detached!')
-      context.receiver.detach()
-      context.connection.close()
-    } else if (context.message.body === 'close') {
-      log.warn('Receiver was told to close!')
-      context.receiver.close()
-      context.connection.close()
-    } else if (context.message.body.typecode === 117) {
-      const jsonData = { body: JSON.parse(Buffer.from(context.message.body.content).toString()) }
-      initLogger(jsonData)
-      log.info(`New message from ug queue for receiver ${connection.id}`, jsonData)
-      history.setIdleTimeStart()
+    try {
+      // NOTE: Seems like this is the way to handle detachment issues...
+      if (context.message.body === 'detach') {
+        log.warn('Receiver was told to detach!')
+        context.receiver.detach()
+        context.connection.close()
+      } else if (context.message.body === 'close') {
+        log.warn('Receiver was told to close!')
+        context.receiver.close()
+        context.connection.close()
+      } else if (context.message.body.typecode === 117) {
+        const jsonData = { body: JSON.parse(Buffer.from(context.message.body.content).toString()) }
+        initLogger(jsonData)
+        log.info(`New message from ug queue for receiver ${connection.id}`, jsonData)
+        history.setIdleTimeStart()
 
-      if (jsonData.body) {
-        await _processMessage(jsonData, context.delivery)
+        if (jsonData.body) {
+          await _processMessage(jsonData, context.delivery)
+        } else {
+          log.info('Message is empty or undefined, deleting from queue...', jsonData)
+          context.delivery.accept()
+        }
       } else {
-        log.info('Message is empty or undefined, deleting from queue...', jsonData)
-        context.delivery.accept()
+        log.error(`An unexpected content type was received: ${context.message.body.typecode}`)
+        context.delivery.modified({ deliveryFailed: true, undeliverable_here: false })
       }
-
-      initLogger(jsonData)
-    } else {
-      log.error(`An unexpected content type was received: ${context.message.body.typecode}`)
-      context.delivery.modified({ deliveryFailed: true, undeliverable_here: false })
+    } catch (err) {
+      log.err(`An unhandled execption occured in onMessage: ${err}`)
+    } finally {
+      receiver.add_credit(1)
     }
-    receiver.add_credit(1)
   })
 
   log.info(`opening receiver for subscription: ${process.env.AZURE_SUBSCRIPTION_NAME} @ ${process.env.AZURE_SUBSCRIPTION_PATH}`)
