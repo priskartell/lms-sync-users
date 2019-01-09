@@ -61,7 +61,7 @@ async function start () {
       } else if (context.message.body.typecode === 117) {
         const jsonData = { body: JSON.parse(Buffer.from(context.message.body.content).toString()) }
         initLogger(jsonData)
-        log.info(`New message from ug queue for receiver ${connection.id}`, jsonData)
+        log.info(`New message from ug queue for AMQP container ${context.connection.container_id}`, jsonData)
         history.setIdleTimeStart()
 
         if (jsonData.body) {
