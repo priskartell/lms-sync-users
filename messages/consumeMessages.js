@@ -29,6 +29,19 @@ async function start () {
   // TODO: Improve error handling!
   connection.on('connection_open', function (context) {
     log.info('Connection was opened!')
+    log.info(`opening receiver for subscription: ${process.env.AZURE_SUBSCRIPTION_NAME} @ ${process.env.AZURE_SUBSCRIPTION_PATH}`)
+    receiver = connection.open_receiver({
+      name: process.env.AZURE_SUBSCRIPTION_NAME,
+      source: {
+        address: process.env.AZURE_SUBSCRIPTION_PATH,
+        dynamic: false,
+        durable: 2, // NOTE: Value taken from rhea official code example for durable subscription reader.
+        expiry_policy: 'never'
+      },
+      autoaccept: false,
+      credit_window: 0 // NOTE: Handling when to receive a message manually
+    })
+    receiver.add_credit(1)
   })
   connection.on('connection_close', function (context) {
     log.warn('Connection was closed!')
@@ -80,20 +93,6 @@ async function start () {
       receiver.add_credit(1)
     }
   })
-
-  log.info(`opening receiver for subscription: ${process.env.AZURE_SUBSCRIPTION_NAME} @ ${process.env.AZURE_SUBSCRIPTION_PATH}`)
-  receiver = connection.open_receiver({
-    name: process.env.AZURE_SUBSCRIPTION_NAME,
-    source: {
-      address: process.env.AZURE_SUBSCRIPTION_PATH,
-      dynamic: false,
-      durable: 2, // NOTE: Value taken from rhea official code example for durable subscription reader.
-      expiry_policy: 'never'
-    },
-    autoaccept: false,
-    credit_window: 0 // NOTE: Handling when to receive a message manually
-  })
-  receiver.add_credit(1)
 
   async function _processMessage (MSG, delivery) {
     try {
