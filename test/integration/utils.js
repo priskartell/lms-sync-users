@@ -82,13 +82,9 @@ async function handleMessages (...messages) {
     await sBService.createSubscription(topicName, process.env.AZURE_SUBSCRIPTION_NAME)
 
     await consumeMessages.start()
+
     const result = await Promise.mapSeries(messages, sendAndWaitUntilMessageProcessed)
-    console.log('Close the receiver...')
-    const receiver = consumeMessages.__get__('receiver')
-    await receiver.close()
-    console.log('Close the connection...')
-    const connection = consumeMessages.__get__('connection')
-    await connection.close()
+    await sendAndWaitUntilMessageProcessed('close')
 
     return result
   } catch (e) {
