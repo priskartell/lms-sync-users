@@ -7,11 +7,21 @@ const handleMessage = require('./handleMessage')
 const container = require('rhea')
 require('dotenv').config()
 
+// The number of credits give to the message receiver at a time i.e. how many messages can be handled in parallell.
+// Note that the code logic is primarily adapted to handle one message, so this value should not be altered without code improvements.
 const CREDIT_INCREMENT = 1
 
+// Simply saving a reference to the latest connection, for testing purposes.
+let connection // eslint-disable-line
+
+/**
+ * To make sure rhea is consuming one message at a time, we are manually handling the receiver's credits.
+ * Upon opening a receiver, it is handed a number of credits equal to the constant CREDIT_INCREMENT.
+ * This credit is consumed once a message is received, and yet another credit given once it has been handled.
+ */
 async function start () {
   log.info(`connecting to the following azure service bus: ${process.env.AZURE_SERVICE_BUS_URL}`)
-  container.connect({
+  connection = container.connect({
     transport: 'tls',
     host: process.env.AZURE_SERVICE_BUS_URL,
     hostname: process.env.AZURE_SERVICE_BUS_URL,
@@ -86,33 +96,26 @@ container.on('message', async function (context) {
   let jsonData
   let result
   try {
-    log.debug(`Consumed 1 credit.`)
+    log.debug(`Consumed 1 credit. `)
     if (context.message.body.typecode === 117) {
-      const messageAsString = Buffer.from(context.message.body.content).toString()
-      if (messageAsString === 'close') {
-        log.warn('Receiver was told to close!')
-        context.receiver.close()
-        context.connection.close()
-      } else {
-        jsonData = { body: JSON.parse(messageAsString) }
-        initLogger(jsonData)
-        log.info(`New message from ug queue for AMQP container ${context.connection.container_id}`, jsonData)
-        history.setIdleTimeStart()
-        if (jsonData.body) {
-          try {
-            const body = addDescription(jsonData.body)
-            result = await handleMessage(body)
-            log.info('result from handleMessage', result)
-            context.delivery.accept()
-          } catch (e) {
-            log.error(e)
-            log.info('Error Occured, releasing message back to queue...', jsonData)
-            context.delivery.modified({ deliveryFailed: true, undeliverable_here: false })
-          }
-        } else {
-          log.info('Message is empty or undefined, deleting from queue...', jsonData)
+      jsonData = { body: JSON.parse(Buffer.from(context.message.body.content).toString()) }
+      initLogger(jsonData)
+      log.info(`New message from ug queue for AMQP container ${context.connection.container_id}`, jsonData)
+      history.setIdleTimeStart()
+      if (jsonData.body) {
+        try {
+          const body = addDescription(jsonData.body)
+          result = await handleMessage(body)
+          log.info('result from handleMessage', result)
           context.delivery.accept()
+        } catch (e) {
+          log.error(e)
+          log.info('Error Occured, releasing message back to queue...', jsonData)
+          context.delivery.modified({ deliveryFailed: true, undeliverable_here: false })
         }
+      } else {
+        log.info('Message is empty or undefined, deleting from queue...', jsonData)
+        context.delivery.accept()
       }
     } else {
       log.error(`An unexpected content type was received: ${context.message.body.typecode}`)

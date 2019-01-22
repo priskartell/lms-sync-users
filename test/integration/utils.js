@@ -84,7 +84,7 @@ async function handleMessages (...messages) {
     await consumeMessages.start()
 
     const result = await Promise.mapSeries(messages, sendAndWaitUntilMessageProcessed)
-    await sendAndWaitUntilMessageProcessed('close')
+    consumeMessages.__get__('connection').close()
 
     return result
   } catch (e) {
