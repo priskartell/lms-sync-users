@@ -1,6 +1,5 @@
 FROM kthse/kth-nodejs:9.11.0
 RUN apk update; apk add python make;
-COPY ["config", "config"]
 COPY ["package.json", "package.json"]
 COPY ["package-lock.json", "package-lock.json"]
 
@@ -8,10 +7,10 @@ COPY ["package-lock.json", "package-lock.json"]
 COPY ["app.js", "app.js"]
 COPY ["canvasApi.js", "canvasApi.js"]
 COPY ["csvFile.js", "csvFile.js"]
-COPY ["forkedApp.js", "forkedApp.js"]
 COPY ["package.json", "package.json"]
 
 # Source files directories
+COPY ["config", "config"]
 COPY ["server", "server"]
 COPY ["messages", "messages"]
 

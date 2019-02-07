@@ -1,47 +1,60 @@
-const config = require('../../config')
+const crypto = require('crypto')
 const Promise = require('bluebird')
 const rewire = require('rewire')
-
 const azureSb = require('azure-sb')
 const azureCommon = require('azure-common')
+require('dotenv').config()
 
 const consumeMessages = rewire('../../messages/consumeMessages')
 
-function createQueue (queueConnectionString) {
-  const queueService = azureSb.createServiceBusService(queueConnectionString)
-  queueService.logger = new azureCommon.Logger(azureCommon.Logger.LogLevels['TRACE'])
+const serviceBusUrl = 'lms-queue.servicebus.windows.net'
+const topicNamePrefix = 'lms-topic-integration-test-'
+const subscriptionNamePrefix = 'lms-sub-integration-test-'
+
+function createSBService (queueConnectionString) {
+  const sBService = azureSb.createServiceBusService(queueConnectionString)
+  sBService.logger = new azureCommon.Logger(azureCommon.Logger.LogLevels['TRACE'])
 
   return {
-    deleteQueue: Promise.promisify(
-      queueService.deleteQueue,
-      { context: queueService }
+
+    deleteTopic: Promise.promisify(
+      sBService.deleteTopic,
+      { context: sBService }
     ),
 
-    createQueueIfNotExists: Promise.promisify(
-      queueService.createQueueIfNotExists,
-      { context: queueService }
+    createTopicIfNotExists: Promise.promisify(
+      sBService.createTopicIfNotExists,
+      { context: sBService }
     ),
 
-    sendQueueMessage (queueName, message) {
+    createSubscription: Promise.promisify(
+      sBService.createSubscription,
+      { context: sBService }
+    ),
+
+    sendTopicMessage (topicName, message) {
       if (typeof message === 'object') {
         message = JSON.stringify(message)
       }
 
-      const queueMessage = { body: message }
+      const topicMessage = { body: message }
 
       return new Promise((resolve, reject) => {
-        queueService.sendQueueMessage(queueName, queueMessage, (err) => {
-          if (err) reject(err)
-          else resolve()
+        sBService.sendTopicMessage(topicName, topicMessage, (err) => {
+          if (err) {
+            reject(err)
+          } else {
+            resolve()
+          }
         })
       })
     }
   }
 }
 
-const sharedAccessKey = process.env.AZURE_SHARED_ACCESS_KEY || config.azure.SharedAccessKey
-const queueConnectionString = `Endpoint=sb://${config.azure.host}/;SharedAccessKeyName=${config.azure.SharedAccessKeyName};SharedAccessKey=${sharedAccessKey}`
-const queue = createQueue(queueConnectionString)
+const sBConnectionString = `Endpoint=sb://lms-queue.servicebus.windows.net/;SharedAccessKeyName=${process.env.AZURE_SHARED_ACCESS_KEY_NAME};SharedAccessKey=${process.env.AZURE_SHARED_ACCESS_KEY}`
+const sBService = createSBService(sBConnectionString)
+let topicName = ''
 
 function sendAndWaitUntilMessageProcessed (message) {
   console.log('Send and read a message', message)
@@ -52,35 +65,32 @@ function sendAndWaitUntilMessageProcessed (message) {
     })
   })
 
-  console.log('sending a message to the queue:', config.azure.queueName)
-  queue.sendQueueMessage(config.azure.queueName, message)
-    .catch(err => console.error(err))
+  console.log('sending a message to the topic:', topicName)
+  sBService.sendTopicMessage(topicName, message).catch(err => console.error(err))
 
   return resultPromise
 }
 
 async function handleMessages (...messages) {
   try {
-    consumeMessages.onDetached = () => {}
-
     console.log('handle messages', messages.length)
-    config.azure.queueName = config.azure.queueName = 'lms-sync-users-integration-tests-' + Math.random().toString(36)
+    process.env.AZURE_SERVICE_BUS_URL = serviceBusUrl
+    topicName = `${topicNamePrefix}${crypto.randomBytes(8).toString('hex')}`
+    process.env.AZURE_SUBSCRIPTION_NAME = `${subscriptionNamePrefix}${crypto.randomBytes(8).toString('hex')}`
+    process.env.AZURE_SUBSCRIPTION_PATH = `${topicName}/Subscriptions`
+    await sBService.createTopicIfNotExists(topicName)
+    await sBService.createSubscription(topicName, process.env.AZURE_SUBSCRIPTION_NAME)
 
-    await queue.createQueueIfNotExists(config.azure.queueName)
-    const receiver = await consumeMessages.start()
+    await consumeMessages.start()
+
     const result = await Promise.mapSeries(messages, sendAndWaitUntilMessageProcessed)
-    console.log('Close the receiver...')
-    await new Promise((resolve, reject) => {
-      receiver.detach()
-      receiver.on('detached', () => resolve())
-    })
+    consumeMessages.__get__('connection').close()
 
-    console.log('Close the connection...')
-    const client = consumeMessages.__get__('client')
-    await client.disconnect()
     return result
+  } catch (e) {
+    console.error(`An exception occured when running handleMessage: ${e}`)
   } finally {
-    queue.deleteQueue(config.azure.queueName)
+    sBService.deleteTopic(topicName)
   }
 }
 

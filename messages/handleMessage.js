@@ -1,13 +1,11 @@
-'use strict'
-
-const {handleCourseMessage} = require('./handleCourseMessage')
+const { handleCourseMessage } = require('./handleCourseMessage')
 const handleUserMessage = require('./handleUserMessage')
-const {handleStaffMessage} = require('./handleStaffMessage')
-const {type} = require('kth-message-type')
+const { handleStaffMessage } = require('./handleStaffMessage')
+const { type } = require('kth-message-type')
 const log = require('../server/logging')
 
 module.exports = function (msg) {
-  log.info({'metric.handleMessage': 1})
+  log.info({ 'metric.handleMessage': 1 })
   if (msg._desc.type === type.course && msg._desc.userType !== type.antagna) {
     log.info('Started handling message to update a course info...')
     return handleCourseMessage(msg)

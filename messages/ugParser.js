@@ -7,7 +7,7 @@ function parseKeyReRegistered (key) {
   return {
     courseCode: courseCodeString.replace('.', ''),
     shortYear: parseInt(shortYear),
-    term: termNum === '1' ? 'VT' : 'HT'}
+    term: termNum === '1' ? 'VT' : 'HT' }
 }
 
 function parseKeyTeacher (key) {

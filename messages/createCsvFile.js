@@ -1,14 +1,14 @@
-const {writeLine} = require('../csvFile')
-const config = require('../config')
+const { writeLine } = require('../csvFile')
 const Promise = require('bluebird')
 const fs = require('fs')
 const readFile = Promise.promisify(fs.readFile)
 const log = require('../server/logging')
+require('dotenv').config()
 
 module.exports = async function createCsvFile (msg, sisCourseCodes, csvDir, csvVol) {
   let userType = msg._desc.userType
 
-  const fileName = `${config.localFile.csvDir}enrollments.${userType}.${sisCourseCodes[0]}.${Date.now()}.csv`
+  const fileName = `${process.env.CSV_DIR}enrollments.${userType}.${sisCourseCodes[0]}.${Date.now()}.csv`
   // Make sure that sisCourseCodes is an array, which makes the rest of this function simpler
   if (!Array.isArray(sisCourseCodes)) {
     sisCourseCodes = [sisCourseCodes]
@@ -23,5 +23,5 @@ module.exports = async function createCsvFile (msg, sisCourseCodes, csvDir, csvV
   await Promise.map(msg.member, oneLinePerSisCourseId)
   const data = await readFile(fileName, 'utf8')
   log.info('Wrote file', fileName, '\n', data)
-  return {name: fileName}
+  return { name: fileName }
 }
