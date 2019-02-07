@@ -1,7 +1,6 @@
 {
   "//": "The production flag is added in the jenkins build script.",
   "name": "lms-sync-users",
-  "version": "1.2.1",
   "description": "Node.js based API template application.",
   "main": "app.js",
   "private": true,
@@ -19,14 +18,14 @@
     "bunyan": "^1.8.12",
     "dotenv": "^6.2.0",
     "express": "^4.16.4",
-    "inquirer": "^6.2.1",
+    "inquirer": "^6.2.2",
     "kth-canvas-api": "^0.15.6",
     "kth-message-type": "^1.9.0",
     "kth-node-server": "^3.1.1",
-    "moment": "^2.23.0",
+    "moment": "^2.24.0",
     "request": "^2.88.0",
     "request-promise": "^4.2.2",
-    "rhea": "^0.3.8",
+    "rhea": "^0.3.9",
     "urlencode": "^1.1.0"
   },
   "devDependencies": {
