@@ -14,8 +14,8 @@ function init (extraConfiguration) {
 
 const configuration = {
   log: {
-    level: process.env.LOG_LEVEL,
-    src: process.env.LOG_SRC
+    level: process.env.LOG_LEVEL || 'info',
+    src: process.env.LOG_SRC || false
   }
 }
 
