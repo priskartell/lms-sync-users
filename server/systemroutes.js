@@ -11,7 +11,6 @@ const [waitAmount, waitUnit] = [10, 'hours']
 const history = require('../messages/history')
 const log = require('../server/logging')
 const version = require('../config/version')
-require('dotenv').config()
 
 /* GET /_about
  * About page

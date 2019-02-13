@@ -3,7 +3,6 @@ const canvasApi = require('../canvasApi')
 const { promisify } = require('util')
 const unlink = promisify(require('fs').unlink)
 const logging = require('../server/logging')
-require('dotenv').config()
 
 const fileName = `${process.env.CSV_DIR}/staff_enroll.csv`
 

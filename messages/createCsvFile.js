@@ -3,7 +3,6 @@ const Promise = require('bluebird')
 const fs = require('fs')
 const readFile = Promise.promisify(fs.readFile)
 const log = require('../server/logging')
-require('dotenv').config()
 
 module.exports = async function createCsvFile (msg, sisCourseCodes, csvDir, csvVol) {
   let userType = msg._desc.userType

@@ -1,6 +1,5 @@
 const packageFile = require('../package.json')
 const bunyan = require('bunyan')
-require('dotenv').config()
 
 function init (extraConfiguration) {
   const logConf = {
