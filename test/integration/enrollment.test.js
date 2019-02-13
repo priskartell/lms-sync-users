@@ -95,7 +95,7 @@ test('should enroll an employee in Miljöutbildningen and Canvas at KTH', async 
   )
 })
 
-test('should enroll a re-registered student in an existing course in Canvas', async t => {
+test('should NOT enroll a re-registered student in an existing course in Canvas', async t => {
   t.plan(1)
   const cc0 = 'A' + randomstring.generate(1)
   const cc1 = randomstring.generate(4)
@@ -109,11 +109,11 @@ test('should enroll a re-registered student in an existing course in Canvas', as
     member: [studentId]
   }
 
-  const [{ resp }] = await handleMessages(message)
-  await canvasApi.pollUntilSisComplete(resp.id)
+  await handleMessages(message)
+  await promisify(setTimeout)(5000)
 
   const enrollments = await canvasApi.getEnrollments(canvasCourse.id)
-  t.equal(enrollments[0].sis_user_id, studentId)
+  t.deepEqual(enrollments, [])
 })
 
 test('should enroll a student in an existing course', async t => {
