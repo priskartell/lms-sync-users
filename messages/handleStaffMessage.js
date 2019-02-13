@@ -4,7 +4,7 @@ const { promisify } = require('util')
 const unlink = promisify(require('fs').unlink)
 const logging = require('../server/logging')
 
-const fileName = `${process.env.CSV_DIR}/staff_enroll.csv`
+const fileName = `${process.env.CSV_DIR || '/tmp/'}staff_enroll.csv`
 
 async function handleStaffMessage (msg) {
   try {
