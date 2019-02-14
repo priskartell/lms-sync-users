@@ -30,25 +30,46 @@ instead of logging lines in this file
 */
 module.exports = {
   init (extraConfiguration) {
+    if (process.env.NODE_ENV === 'test') {
+      return console
+    }
     logger.trace('initializing log with settings', extraConfiguration)
     logger = init(extraConfiguration)
   },
   get trace () {
+    if (process.env.NODE_ENV === 'test') {
+      return console.trace
+    }
     return logger.trace.bind(logger)
   },
   get debug () {
+    if (process.env.NODE_ENV === 'test') {
+      return console.debug
+    }
     return logger.debug.bind(logger)
   },
   get info () {
+    if (process.env.NODE_ENV === 'test') {
+      return console.info
+    }
     return logger.info.bind(logger)
   },
   get warn () {
+    if (process.env.NODE_ENV === 'test') {
+      return console.warn
+    }
     return logger.warn.bind(logger)
   },
   get error () {
+    if (process.env.NODE_ENV === 'test') {
+      return console.error
+    }
     return logger.error.bind(logger)
   },
   get fatal () {
+    if (process.env.NODE_ENV === 'test') {
+      return console.error
+    }
     return logger.fatal.bind(logger)
   }
 }
