@@ -24,12 +24,3 @@ test('Parse student group name for a fall round', t => {
     'DM2517HT161')
   t.end()
 })
-
-test('Parse omreg group name for a fall round', t => {
-  t.deepEqual(ugParser.parseKeyReRegistered('ladok2.kurser.KD.1070.omregistrerade_20171'),
-    { courseCode: 'KD1070',
-      shortYear: 17,
-      term: 'VT' } // No ladok id, has to query kopps to find it
-  )
-  t.end()
-})
