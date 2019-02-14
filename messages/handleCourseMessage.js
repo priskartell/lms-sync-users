@@ -2,9 +2,7 @@
 
 const { type } = require('kth-message-type')
 const canvasApi = require('../canvasApi')
-const log = require('../server/logging')
 const ugParser = require('./ugParser')
-const calcSisForOmregistrerade = require('./calcSisForOmregistrerade')
 const createCsvFile = require('./createCsvFile')
 
 function parseKey ({ ug1Name, _desc }) {
@@ -23,13 +21,7 @@ function parseKey ({ ug1Name, _desc }) {
 
 async function handleCourseMessage (msg) {
   let sisCourseCodeFunction
-  if (msg._desc.userType === type.omregistrerade) {
-    log.info('using calcSisForOmregistrerade')
-    sisCourseCodeFunction = calcSisForOmregistrerade
-  } else {
-    log.info('using parseKey')
-    sisCourseCodeFunction = parseKey
-  }
+  sisCourseCodeFunction = parseKey
 
   const sisCourseCode = sisCourseCodeFunction(msg)
   const { name } = await createCsvFile(msg, sisCourseCode)
