@@ -20,10 +20,7 @@ function parseKey ({ ug1Name, _desc }) {
 }
 
 async function handleCourseMessage (msg) {
-  let sisCourseCodeFunction
-  sisCourseCodeFunction = parseKey
-
-  const sisCourseCode = sisCourseCodeFunction(msg)
+  const sisCourseCode = parseKey(msg)
   const { name } = await createCsvFile(msg, sisCourseCode)
   const canvasReturnValue = await canvasApi.sendCsvFile(name, true)
 
