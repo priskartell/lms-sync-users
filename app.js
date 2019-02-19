@@ -1,13 +1,15 @@
+require('dotenv').config()
 const consumeMessages = require('./messages/consumeMessages')
 const app = require('kth-node-server')
 const systemRoutes = require('./server/systemroutes')
 const log = require('./server/logging')
-require('dotenv').config()
 
 consumeMessages.start()
 
-app.use(process.env.PROXY_PREFIX_PATH, systemRoutes)
+const prefix = process.env.PROXY_PREFIX_PATH || '/lms-sync-users'
+
+app.use(prefix, systemRoutes)
 
 // also serve the same urls without the /api prefix. TODO: this can be removed once the old, inprem servers has been removed
-app.use('/api' + process.env.PROXY_PREFIX_PATH, systemRoutes)
+app.use('/api' + prefix, systemRoutes)
 app.start({ logger: log })

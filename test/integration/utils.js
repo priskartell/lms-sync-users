@@ -3,7 +3,6 @@ const Promise = require('bluebird')
 const rewire = require('rewire')
 const azureSb = require('azure-sb')
 const azureCommon = require('azure-common')
-require('dotenv').config()
 
 const consumeMessages = rewire('../../messages/consumeMessages')
 

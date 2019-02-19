@@ -5,7 +5,6 @@ const history = require('./history')
 const { addDescription } = require('kth-message-type')
 const handleMessage = require('./handleMessage')
 const container = require('rhea')
-require('dotenv').config()
 
 // The number of credits give to the message receiver at a time i.e. how many messages can be handled in parallell.
 // Note that the code logic is primarily adapted to handle one message, so this value should not be altered without code improvements.
