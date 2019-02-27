@@ -80,7 +80,7 @@ async function handleMessages (...messages) {
     await sBService.createTopicIfNotExists(topicName)
     await sBService.createSubscription(topicName, process.env.AZURE_SUBSCRIPTION_NAME)
 
-    await consumeMessages.start()
+    await consumeMessages.start(false)
 
     const result = await Promise.mapSeries(messages, sendAndWaitUntilMessageProcessed)
     consumeMessages.__get__('connection').close()

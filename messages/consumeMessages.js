@@ -10,6 +10,8 @@ const container = require('rhea')
 // Note that the code logic is primarily adapted to handle one message, so this value should not be altered without code improvements.
 const CREDIT_INCREMENT = 1
 
+// Variable for determining behavior on connection closed.
+let reconnectClosedConnection = true
 // Simply saving a reference to the latest connection, for testing purposes.
 let connection // eslint-disable-line
 
@@ -17,8 +19,11 @@ let connection // eslint-disable-line
  * To make sure rhea is consuming one message at a time, we are manually handling the receiver's credits.
  * Upon opening a receiver, it is handed a number of credits equal to the constant CREDIT_INCREMENT.
  * This credit is consumed once a message is received, and yet another credit given once it has been handled.
+ * To be able to handle both a production scenario where we never want the connection to close and a testing scenarion,
+ * there is a parameter for reconnecting even when a connection is closed.
  */
-async function start () {
+async function start (reconnect = true) {
+  reconnectClosedConnection = reconnect
   log.info(`connecting to the following azure service bus: ${process.env.AZURE_SERVICE_BUS_URL}`)
   connection = container.connect({
     transport: 'tls',
@@ -70,6 +75,10 @@ container.on('connection_open', function (context) {
 
 container.on('connection_close', function (context) {
   log.warn('Connection was closed!')
+  if (reconnectClosedConnection) {
+    log.info('Attempting to connect to azure once more!')
+    start()
+  }
 })
 
 container.on('connection_error', function (context) {
