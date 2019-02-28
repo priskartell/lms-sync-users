@@ -31,6 +31,12 @@ function convertToCanvasUser (msg) {
         type: 'email',
         address: msg.primary_email,
         skip_confirmation: true
+      },
+      custom_data: { // for syncing ladok uid (separate request)
+        'ns': 'se.kth.lms-sync-users',
+        'data': {
+          'ladok_uid': msg.ladok3_student_uid
+        }
       }
     }
     return user
@@ -40,19 +46,23 @@ function convertToCanvasUser (msg) {
 }
 
 async function createOrUpdate (user) {
+  let userFromCanvas = ''
   try {
-    const userFromCanvas = await canvasApi.getUser(user.pseudonym.sis_user_id)
+    userFromCanvas = await canvasApi.getUser(user.pseudonym.sis_user_id)
     log.info('found user in canvas', userFromCanvas)
     log.info('update the user with new values: ', user)
     await canvasApi.updateUser(user, userFromCanvas.id)
   } catch (e) {
     if (e.statusCode === 404) {
       log.info('user doesnt exist in canvas. Create it.', user)
-      const res = await canvasApi.createUser(user)
-      log.info('Success! User created', res)
-      return res
+      userFromCanvas = await canvasApi.createUser(user)
+      log.info('Success! User created', userFromCanvas)
     } else {
       throw e
+    }
+  } finally {
+    if (userFromCanvas) {
+      canvasApi.storeCustomData(user.custom_data, userFromCanvas.id)
     }
   }
 }
