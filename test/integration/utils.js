@@ -1,10 +1,9 @@
 const crypto = require('crypto')
 const Promise = require('bluebird')
-const rewire = require('rewire')
 const azureSb = require('azure-sb')
 const azureCommon = require('azure-common')
 
-const consumeMessages = rewire('../../messages/consumeMessages')
+const consumeMessages = require('../../messages/consumeMessages')
 
 const serviceBusUrl = 'lms-queue.servicebus.windows.net'
 const topicNamePrefix = 'lms-topic-integration-test-'
@@ -83,7 +82,7 @@ async function handleMessages (...messages) {
     await consumeMessages.start(false)
 
     const result = await Promise.mapSeries(messages, sendAndWaitUntilMessageProcessed)
-    consumeMessages.__get__('connection').close()
+    consumeMessages.getConnection().close()
 
     return result
   } catch (e) {

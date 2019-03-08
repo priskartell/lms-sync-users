@@ -1,7 +1,6 @@
 const log = require('../server/logging')
 const EventEmitter = require('events')
 const eventEmitter = new EventEmitter()
-const history = require('./history')
 const { addDescription } = require('@kth/message-type')
 const handleMessage = require('./handleMessage')
 const container = require('rhea')
@@ -109,7 +108,6 @@ container.on('message', async function (context) {
       jsonData = { body: JSON.parse(Buffer.from(context.message.body.content).toString()) }
       initLogger(jsonData)
       log.info(`New message from ug queue for AMQP container ${context.connection.container_id}`, jsonData)
-      history.setIdleTimeStart()
       if (jsonData.body) {
         try {
           const body = addDescription(jsonData.body)
@@ -140,5 +138,8 @@ container.on('message', async function (context) {
 
 module.exports = {
   start,
-  eventEmitter
+  eventEmitter,
+  getConnection: function () {
+    return connection
+  }
 }

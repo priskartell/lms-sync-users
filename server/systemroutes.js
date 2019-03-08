@@ -6,11 +6,9 @@ const rp = require('request-promise')
 const express = require('express')
 const router = express.Router()
 const packageFile = require('../package.json')
-const moment = require('moment')
-const [waitAmount, waitUnit] = [10, 'hours']
-const history = require('../messages/history')
 const log = require('../server/logging')
 const version = require('../config/version')
+const consumeMessages = require('../messages/consumeMessages.js')
 
 /* GET /_about
  * About page
@@ -51,15 +49,15 @@ function status () {
 var _monitor = function (req, res) {
   status().then(({ canvasOk, canvasKeyOk }) => {
     res.setHeader('Content-Type', 'text/plain')
-    const checkTimeAgainst = moment().subtract(waitAmount, waitUnit)
-    const idleTimeOk = history.idleTimeStart.isAfter(checkTimeAgainst)
 
-    log.info(`checking idle time: last time a message was read was: ${history.idleTimeStart}, compare this to now minus some predifined time: ${checkTimeAgainst}`)
-    const statusStr = `APPLICATION_STATUS: ${idleTimeOk && canvasKeyOk ? 'OK' : 'ERROR'} ${packageFile.name}-${packageFile.version}-${version.jenkinsBuild}
-READ MESSAGE FROM AZURE: ${idleTimeOk ? `OK. The server has waited less then ${waitAmount} ${waitUnit} for a message.` : `ERROR. The server has not received a message in the last ${waitAmount} ${waitUnit}`}
-CANVAS: ${canvasOk ? 'OK' : 'Canvas is down'}
-CANVASKEY: ${canvasKeyOk ? 'OK' : 'Invalid access token (in case if CANVAS is "OK")'}
-  `
+    const isConnectionOpen = consumeMessages.getConnection().is_open()
+    const statusStr = [
+      `APPLICATION_STATUS: ${isConnectionOpen && canvasKeyOk ? 'OK' : 'ERROR'} ${packageFile.name}-${packageFile.version}-${version.jenkinsBuild}`,
+      `CONNECTION TO AZURE ALIVE: ${isConnectionOpen ? `OK. The connection to Azure is alive and well.` : `ERROR. The connection to Azure seems to have been lost.`}`,
+      `CANVAS: ${canvasOk ? 'OK' : 'Canvas is down'}`,
+      `CANVASKEY: ${canvasKeyOk ? 'OK' : 'Invalid access token (in case if CANVAS is "OK")'}`
+    ].join('\n')
+
     log.info('monitor page displays:', statusStr)
     res.send(statusStr)
   })
