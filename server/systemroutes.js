@@ -50,7 +50,7 @@ var _monitor = function (req, res) {
   status().then(({ canvasOk, canvasKeyOk }) => {
     res.setHeader('Content-Type', 'text/plain')
 
-    const isConnectionOpen = consumeMessages.getConnection().is_open()
+    const isConnectionOpen = consumeMessages.getConnection() && consumeMessages.getConnection().is_open()
     const statusStr = [
       `APPLICATION_STATUS: ${isConnectionOpen && canvasKeyOk ? 'OK' : 'ERROR'} ${packageFile.name}-${packageFile.version}-${version.jenkinsBuild}`,
       `CONNECTION TO AZURE ALIVE: ${isConnectionOpen ? `OK. The connection to Azure is alive and well.` : `ERROR. The connection to Azure seems to have been lost.`}`,
