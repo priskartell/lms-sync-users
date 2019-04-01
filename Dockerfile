@@ -1,4 +1,4 @@
-FROM kthse/kth-nodejs:9.11.0
+FROM node:10.12-alpine
 RUN apk update; apk add python make;
 COPY ["package.json", "package.json"]
 COPY ["package-lock.json", "package-lock.json"]
