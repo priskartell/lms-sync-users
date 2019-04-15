@@ -93,6 +93,9 @@ container.on('connection_error', function (context) {
 })
 
 container.on('disconnected', function (context) {
+  if (context.error) {
+    log.error(context.error)
+  }
   log.warn('Connection was disconnected!')
 })
 
@@ -118,6 +121,8 @@ container.on('message', async function (context) {
   let jsonData
   let result
   try {
+      log.debug(`logging azure library ids. container id: ${context.container.id}, identifier: ${context.connection.amqp_transport.identifier}`)
+
     log.debug(`Consumed 1 credit. `)
     if (context.message.body.typecode === 117) {
       jsonData = { body: JSON.parse(Buffer.from(context.message.body.content).toString()) }
