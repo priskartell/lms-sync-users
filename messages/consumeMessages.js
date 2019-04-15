@@ -24,7 +24,7 @@ let connection // eslint-disable-line
  */
 async function start (reconnect = true) {
   reconnectClosedConnection = reconnect
-  log.info(`connecting to the following azure service bus: ${process.env.AZURE_SERVICE_BUS_URL}`)
+  log.info(`Connecting to the following azure service bus: ${process.env.AZURE_SERVICE_BUS_URL}`)
   connection = container.connect({
     transport: 'tls',
     host: process.env.AZURE_SERVICE_BUS_URL,
@@ -36,6 +36,13 @@ async function start (reconnect = true) {
     reconnect: true,
     reconnect_limit: 100
   })
+}
+
+async function stop () {
+  log.info('Closing all existing connections.')
+  if (connection) {
+    connection.close()
+  }
 }
 
 function initLogger (msg) {
@@ -98,6 +105,13 @@ container.on('receiver_open', function (context) {
 container.on('receiver_close', function (context) {
   log.warn('Receiver was closed!')
   log.warn(context.receiver.remote.detach)
+})
+
+container.on('receiver_error', function (context) {
+  log.warn('Receiver had an error!')
+  if (reconnectClosedConnection) {
+    stop()
+  }
 })
 
 container.on('message', async function (context) {
