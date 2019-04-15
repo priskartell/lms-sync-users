@@ -24,7 +24,7 @@ let connection // eslint-disable-line
  */
 async function start (reconnect = true) {
   reconnectClosedConnection = reconnect
-  log.info(`connecting to the following azure service bus: ${process.env.AZURE_SERVICE_BUS_URL}`)
+  log.info(`Connecting to the following azure service bus: ${process.env.AZURE_SERVICE_BUS_URL}`)
   connection = container.connect({
     transport: 'tls',
     host: process.env.AZURE_SERVICE_BUS_URL,
@@ -36,6 +36,13 @@ async function start (reconnect = true) {
     reconnect: true,
     reconnect_limit: 100
   })
+}
+
+async function stop () {
+  log.info('Closing all existing connections.')
+  if (connection) {
+    connection.close()
+  }
 }
 
 function initLogger (msg) {
@@ -86,6 +93,9 @@ container.on('connection_error', function (context) {
 })
 
 container.on('disconnected', function (context) {
+  if (context.error) {
+    log.error(context.error)
+  }
   log.warn('Connection was disconnected!')
 })
 
@@ -100,10 +110,19 @@ container.on('receiver_close', function (context) {
   log.warn(context.receiver.remote.detach)
 })
 
+container.on('receiver_error', function (context) {
+  log.warn('Receiver had an error!')
+  if (reconnectClosedConnection) {
+    stop()
+  }
+})
+
 container.on('message', async function (context) {
   let jsonData
   let result
   try {
+    log.debug(`logging azure library ids. container id: ${context.container.id}, identifier: ${context.connection.amqp_transport.identifier}`)
+
     log.debug(`Consumed 1 credit. `)
     if (context.message.body.typecode === 117) {
       jsonData = { body: JSON.parse(Buffer.from(context.message.body.content).toString()) }
