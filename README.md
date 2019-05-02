@@ -2,3 +2,5 @@
 
 ## Synchronizing users and courses to Canvas
 
+
+# Anyone can change anything in this repo, isn't that nice? 
